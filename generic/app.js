@@ -1,9 +1,9 @@
 var fs = require('fs');
-var db = require('./lib/db');
+var db = require('../shared/lib/db');
 var express = require('express');
 var Log = require('log');
 var ERROR_RESPONSE_CODE = 422;
-var cache = require('./lib/cache').getRedisClient();
+var cache = require('../shared/lib/cache').getRedisClient();
 var CACHE_PREFIX = 'piper-generic-handler:';
 var request = require('request');
 var http = require('http');
@@ -39,7 +39,7 @@ fs.readFile('./html/oauth.css', 'utf8', function (err,data) {
 
 
 // Create the Express application
-var app = express();
+var app = exports.app = express();
 
 // Define environment variables
 var port = process.env.PORT || 80;
@@ -288,7 +288,7 @@ router.get('/timeline', function(req, res) {
 					    		logger.info(errmsg);
 					            res.end (errmsg);
 					        }else{
-					        	var data[] = (JSON.parse(body)).data;
+					        	var data = (JSON.parse(body)).data;
 					        	var i
 					        	for (i in data) {
     								if (data[i].type == 'image'){
@@ -324,11 +324,6 @@ router.get('/timeline', function(req, res) {
 // Register all our routes with /
 app.use('/', router);
 
-// Start the server
-try {
-	app.listen(port);
-} catch(e){
-	logger.error('Error: ' + JSON.stringify(e));
-}
+
 
 

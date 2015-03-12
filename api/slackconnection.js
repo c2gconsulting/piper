@@ -1,9 +1,9 @@
 // This is a worker class for the Slack client
 var EventEmitter = require('events').EventEmitter
 var Slack = require('slack-client');
-var wit = require('./lib/wit');
-var db = require('./lib/db');
-var witConfig = require('./config/wit.json');
+var wit = require('../shared/lib/wit');
+var db = require('../shared/lib/db');
+var witConfig = require('../shared/config/wit.json');
 var Log = require('log');
 var CACHE_PREFIX = 'slackrouter:';
 var cache;
@@ -11,7 +11,7 @@ var cache;
 
 function SlackConnection(client) {
 	EventEmitter.call(this);
-	cache = require('./lib/cache').getRedisClient();
+	cache = require('../shared/lib/cache').getRedisClient();
 	this.client = client;
 	this.witAccessToken = process.env.WIT_ACCESS_TOKEN || witConfig.WIT_ACCESS_TOKEN; //enable local env variable settings to override global config
 	this.inContext = {};

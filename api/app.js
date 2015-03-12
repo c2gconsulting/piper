@@ -1,15 +1,15 @@
 var fs = require('fs');
-var db = require('./lib/db');
+var db = require('../shared/lib/db');
 var express = require('express');
 var SlackConnection = require('./slackconnection');
 var Log = require('log');
 var ERROR_RESPONSE_CODE = 422;
-var cache = require('./lib/cache').getRedisClient();
+var cache = require('../shared/lib/cache').getRedisClient();
 var CACHE_PREFIX = 'server:';
 var w = [];
 
 // Create the Express application
-var app = express();
+var app = exports.app = express();
 
 // Define environment variables
 var port = process.env.PORT || 80;
@@ -207,20 +207,6 @@ router.get('/getclients', function(req, res) {
 	});
 });
 
-router.get('/healthcheck', function(req, res) {
-	Client.find({}, function (err, clients) {
-		if (!err && clients && clients.length > 0){
-			res.json(clients);
-		} else if (!err) {
-			res.end('No clients registered');
-			logger.info('No clients registered');
-		} else {
-			res.statusCode = ERROR_RESPONSE_CODE;
-			res.end('There has been an error: ' + err);
-			logger.error('There has been an error: ' + err);
-		}
-	});
-});
 
 router.get('/getconnections', function(req, res) {
 	cache.zrange(CACHE_PREFIX + 'connections', 0, -1, function(err, connections) {
@@ -274,13 +260,6 @@ router.get('/gethandler', function(req, res) {
 
 // Register all our routes with /
 app.use('/', router);
-
-// Start the server
-try {
-	app.listen(port);
-} catch(e){
-	logger.error('Error: ' + JSON.stringify(e));
-}
 
 
 var createSlackConnection = function(client) {

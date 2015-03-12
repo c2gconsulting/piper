@@ -1,10 +1,16 @@
-[
-	{
-		"host" : "api.piperlabs.com",
-		"path" : "api"
-	},
-	{
-		"host" : "generic.piperlabs.com",
-		"path" : "generic"
-	}
-]
+{
+	"services": [
+		{
+			"host" : "api.piperlabs.com",
+			"path" : "./api"
+		},
+		{
+			"host" : "localhost",
+			"path" : "./api"
+		},
+		{
+			"host" : "generic.piperlabs.com",
+			"path" : "./generic"
+		}
+	]
+}
