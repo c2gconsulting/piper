@@ -7,5 +7,4 @@ npm-debug.log
 *.sublime-workspace
 
 #Temporary local files
-tmp/dbinit.js
 dump.rdb
