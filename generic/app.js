@@ -1,5 +1,5 @@
 var fs = require('fs');
-var db = require('../shared/lib/db');
+var db = require('../shared/lib/db'); // CHANGED -> to reference /shared
 var express = require('express');
 var Log = require('log');
 var ERROR_RESPONSE_CODE = 422;
@@ -39,10 +39,8 @@ fs.readFile('./html/oauth.css', 'utf8', function (err,data) {
 
 
 // Create the Express application
-var app = exports.app = express();
+var app = exports.app = express(); // CHANGED -> to include exports.app. Final change, try/catch for port listen deleted
 
-// Define environment variables
-var port = process.env.PORT || 80;
 
 // Create our Express router
 var router = express.Router();
