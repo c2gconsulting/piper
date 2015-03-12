@@ -1,9 +1,0 @@
-{
-  "clientID": "String",
-  "name": "String",
-  "hostURI": "String",
-  "serverToken": "String",
-  "params": "String",
-  "isActive": "String"
-}
-
