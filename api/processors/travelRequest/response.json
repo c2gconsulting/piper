@@ -1,0 +1,62 @@
+{
+    "initialize" : [
+            "Interesting but Where and when would you like to go",
+            "Specifying your current state and your destination with the period you wish to stay will help me assist you",
+            "I could book a ticket for you if you give me more information about your travelling",
+            "Ok now let me be formal Dear Sir/MA can you please give me information about your travel or I will let your Line manager know that you are incompetent "
+            ],
+    "getStartAndEndDate" : [
+            "It'd be much more easier if i know the start and end date and time",
+            "From when to when ? remember to add time",
+            "what day do you intend to travel and when do you intend to return",
+            "enter start and end date please, oh time also very necessary"
+            ],
+    "getStartDateAndTime" : [
+            "Great so what day are we looking at and what time?",
+            "When do you intend to go? telling me the actual time also would help",
+            "are you travelling today by 9pm? lol just kidding!",
+            "Can you tell me when you would like to travel?"
+            ],
+    "getEndDateAndTime" : [
+            "When do you intend to return?",
+            "I could help you pick a return date if you're dumb...So sorry just kidding",
+            "I guess you'll be coming soon but what day and time will you be coming back",
+            "You must have told me earlier but i need you to tell me when you shall return. Can you be more specific on the date and time ? it doesn't matter how you express it."
+            ],
+    "getDestination" : [
+                "Hmmmm. Where are you travelling to?",
+                "I'd love to visit Dubai! But where are you travelling to?",
+                "Can you please give me your destination?",
+                "Telling me your destination will help me to assist you"
+            ],
+    "getSource" : [
+                "I'm getting old and my memory is not too smart I've forgotten where you told me you are or where you would like to book the flight from",
+                "Where would you be travelling from?",
+                "Can you tell me the source ?",
+                "So you are travelling from ? please tell me"
+            ],
+    "getSourceAndDestination" : [
+                "From where to where ? ",
+                "your popular destination is Lagos to Abuja : can you tell me your source and destination this time?",
+                "Ok so where are you now and where would you be going to?",
+                "Source and Destination have not been given"
+            ],
+    "getHelp" : [
+                "I could easily understand statements like I want to go to Abuja on Friday by flight",
+                "To avoid less back and front provide information like source, destination, travel by, time",
+                "Please ensure to give Piper useful information about your travelling",
+                "Piper is here to help you do even more when travelling kindly tell piper what you want and how you want to travel"
+            ],
+    "getMode" : [
+                "Most times you like travelling by flight... Please tell me how you'd like to travel this time",
+                "So how would you like to travel",
+                "by road or by flight? or would you try water instead...  I know you dont like water",
+                "Travel by are or by flight"
+            ],
+    "complete" : [
+                "Ok i shall now attempt to book your travel and do some cool stuff for you.. A response will be sent to you once i am done",
+                "Thank you for providing the necessary details needed to book your travel on your leave platform",
+                "thanks... I've gotten all i need from you to enable me book a flight thicket for you",
+                "Getting these information wasn't easy at all... I know for sure I'm an Intelligent Bot Created by Mocheje"
+            ]
+}

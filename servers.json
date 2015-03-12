@@ -1,0 +1,10 @@
+[
+	{
+		"host" : "api.piperlabs.com",
+		"path" : "api"
+	},
+	{
+		"host" : "generic.piperlabs.com",
+		"path" : "generic"
+	}
+]

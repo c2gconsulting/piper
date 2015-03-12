@@ -1,9 +1,9 @@
-# Piper-API
+# Piper
 
 Piper is an AI personal assistant that automates the fulfilment of tasks on back end enterprise systems, for example: piper can help you make the booking and approval of your next travel request an interactive, painless excercise.
 
-### Contributing to Piper-API Development
-**The Piper-API Development Workflow:**
+### Contributing to Piper Development
+**The Piper Development Workflow:**
 
 Download and Install the following:
 	
@@ -12,10 +12,10 @@ Download and Install the following:
 - [Mongo DB](https://www.mongodb.org/downloads)
 - [Git](http://git-scm.com/downloads)
 
-Clone the Piper-Api Repository 
+Clone the Piper Repository 
 
     $cd <your local development directory>
-    $git clone https://github.com/c2gconsulting/piper-api.git piper-api
+    $git clone https://github.com/c2gconsulting/piper.git
 
 Create a branch for the task you want to work on
 
