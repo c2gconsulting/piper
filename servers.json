@@ -5,7 +5,7 @@
 			"path" : "./api"
 		},
 		{
-			"host" : "api.piperlabs.local",
+			"host" : "api.example.com",
 			"path" : "./api"
 		},
 		{
@@ -13,7 +13,7 @@
 			"path" : "./generic"
 		},
 		{
-			"host" : "generic.piperlabs.local",
+			"host" : "generic.example.com",
 			"path" : "./generic"
 		}
 	]
