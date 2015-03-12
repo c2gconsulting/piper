@@ -1,0 +1,9 @@
+{
+  "name": "String",
+  "slackHandle": "String",
+  "slackToken": "String",
+  "adminContact": "String",
+  "adminEmail": "String",
+  "isActive": "Boolean"
+}
+

@@ -1,0 +1,11 @@
+{
+  "username": "String",
+  "slackHandle": "String",
+  "leaveType": "String",
+  "startDate": "Date",
+  "endDate": "Date",
+  "duration": "Number",
+  "genericDate": "Date",
+  "lastDemand": "String",
+  "conversationDepth": "Number"
+}

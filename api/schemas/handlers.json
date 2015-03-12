@@ -1,0 +1,7 @@
+{
+  "slackHandle": "String",
+  "state": "String",
+  "handler": "String",
+  "createdAt": "Date"
+}
+
