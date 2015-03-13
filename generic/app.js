@@ -138,7 +138,7 @@ router.get('/register', function(req, res) {
 
 	} else {
 		res.statusCode = ERROR_RESPONSE_CODE;
-		res.end ('Missingx parameter for: ' + invalidParam);
+		res.end ('Missing parameter for: ' + invalidParam);
 		logger.error("Missing parameter for: " + invalidParam);
 	}
 });
