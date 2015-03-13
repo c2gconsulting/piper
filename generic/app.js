@@ -1,5 +1,5 @@
 var fs = require('fs');
-var db = require('../shared/lib/db'); // CHANGED -> to reference /shared
+var db = require('../shared/lib/db');
 var express = require('express');
 var Log = require('log');
 var ERROR_RESPONSE_CODE = 422;
@@ -28,7 +28,7 @@ var responseHTML = "<!DOCTYPE html> \
 	</body> \
 	</html>";
 
-fs.readFile('./html/oauth.css', 'utf8', function (err,data) {
+fs.readFile('./generic/html/oauth.css', 'utf8', function (err,data) {
 	if (err) {
 		responseHTML = responseHTML.replace("@css", '');
 	}else{
@@ -39,8 +39,10 @@ fs.readFile('./html/oauth.css', 'utf8', function (err,data) {
 
 
 // Create the Express application
-var app = exports.app = express(); // CHANGED -> to include exports.app. Final change, try/catch for port listen deleted
+var app = exports.app = express(); 
 
+// Define environment variables
+var port = process.env.PORT || 80;
 
 // Create our Express router
 var router = express.Router();
@@ -211,9 +213,9 @@ router.get('/getoauth', function(req, res) {
 							//update cache with user's access token
 							cache.hmset(CACHE_PREFIX + 'user:' + userID + "@" + clientID, 'access_token', access_token);  
 							
-							res.end (responseHTML.replace("@message",msg).replace("@color","black"));
-				        	
 				        	msg = "Congratulations, you have successfully registered for this service. You can now use piper access Instagram";
+				        	res.end (responseHTML.replace("@message",msg).replace("@color","black"));
+
 				        	logger.info("Token obtained: " + access_token + " for " + userID + "@" + clientID);
 
 				        }
@@ -288,14 +290,15 @@ router.get('/timeline', function(req, res) {
 					        }else{
 					        	var data = (JSON.parse(body)).data;
 					        	var i
+					        	var msg = ''
 					        	for (i in data) {
     								if (data[i].type == 'image'){
-    									res.write(data[i].images['standard_resolution'].url) 
+    									msg = msg + "<p><img height=\"100\" width=\"100\" src=\"" + data[i].images['standard_resolution'].url + "\"></p>"
     								}
 								}
 					        	
-					        	res.end ();
-								logger.info("Timeline Obtained: " + JSON.stringify(body));
+					        	res.end (responseHTML.replace("@message",msg).replace("@color","black"));
+								//logger.info("Timeline Obtained: " + JSON.stringify(body));
 
 					        }
 					        
@@ -318,10 +321,8 @@ router.get('/timeline', function(req, res) {
 	}
 });
 
-
 // Register all our routes with /
 app.use('/', router);
-
 
 
 
