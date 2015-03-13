@@ -84,7 +84,7 @@ HandlerEndPoints.find({'isActive': true }, function (err, handlerEndPoints) {
 
 router.get('/register', function(req, res) {
 
-	//http://localhost:3001/register?clientID=c2g&name=c2g%20consulting&hostURI=https://api.instagram.com&params=%7B%22instagram_client_id%22%3A%2203c54c6e8db94a34a3ab146cf997504a%22%2C%22instagram_client_secret%22%3A%22fc971c5759ad4e54b800da47a3914405%22%2C%22instagram_redirect_uri%22%3A%22http%3A%2F%2Fpiperlabs.io%3A3001%2Fgetoauth%2F%3FclientID%3D%40cid%26userID%3D%40uid%22%7D%20%09
+	//http://generic.piperlabs.io/register?clientID=c2g&name=c2g%20consulting&hostURI=https://api.instagram.com&params=%7B%22instagram_client_id%22%3A%2203c54c6e8db94a34a3ab146cf997504a%22%2C%22instagram_client_secret%22%3A%22fc971c5759ad4e54b800da47a3914405%22%2C%22instagram_redirect_uri%22%3A%22http%3A%2F%2Fgeneric.piperlabs.io%2Fgetoauth%2F%3FclientID%3D%40cid%26userID%3D%40uid%22%7D%20%09
     //{"instagram_client_id":"03c54c6e8db94a34a3ab146cf997504a","instagram_client_secret":"fc971c5759ad4e54b800da47a3914405","instagram_redirect_uri":"http://piperlabs.io:3001/getoauth/?clientID=@cid&userID=@uid"}
 	
 	var clientID = req.query.clientID,
@@ -262,7 +262,10 @@ router.get('/timeline', function(req, res) {
 
 					if((err) || (user == null)){
 
-						var oauthURI = handlerEndPoint.hostURI + '/oauth/authorize/?client_id=03c54c6e8db94a34a3ab146cf997504a&redirect_uri=http%3A%2F%2Fpiperlabs.io%3A3001%2Fgetoauth%2F%3FclientID%3D@cid%26userID%3D@uid&response_type=code';		
+						params = JSON.parse(handlerEndPoint.params);
+						instagram_redirect_uri = encodeURI(params.instagram_redirect_uri.replace("@cid", clientID).replace("@uid", userID));
+				
+						var oauthURI = handlerEndPoint.hostURI + '/oauth/authorize/?client_id=03c54c6e8db94a34a3ab146cf997504a&response_type=code&redirect_uri=' + instagram_redirect_uri;		
 						oauthURI = oauthURI.replace("@cid", clientID).replace("@uid", userID);
 						msg = 'You have to permit Piper to access Instagram. Don\'t worry, you only have to do this once. Click <a href=\'@oauthURI\'>this link to do this</a>';
 						msg = msg.replace("@oauthURI", oauthURI);
