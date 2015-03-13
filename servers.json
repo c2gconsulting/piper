@@ -5,11 +5,19 @@
 			"path" : "./api"
 		},
 		{
+			"host" : "api.piperlabs.io",
+			"path" : "./api"
+		},
+		{
 			"host" : "api.example.com",
 			"path" : "./api"
 		},
 		{
 			"host" : "generic.piperlabs.com",
+			"path" : "./generic"
+		},
+		{
+			"host" : "generic.piperlabs.io",
 			"path" : "./generic"
 		},
 		{
