@@ -173,7 +173,7 @@ router.get('/getoauth', function(req, res) {
 				var instagram_redirect_uri = '';
 				try {
 					params = JSON.parse(handlerEndPoint.params);
-					instagram_redirect_uri = encodeURI(params.instagram_redirect_uri.replace("@cid", clientID).replace("@uid", userID));
+					instagram_redirect_uri = encodeURIComponent(params.instagram_redirect_uri.replace("@cid", clientID).replace("@uid", userID));
 				}catch(ex){
 					logger.error('Could not obtain params for handler end point: ' + ex);
 				}
@@ -231,6 +231,9 @@ router.get('/getoauth', function(req, res) {
 });
 
 router.get('/timeline', function(req, res) {
+
+	logger.info("Hellooos  " + ("http://generic.piperlabs.io/getoauth/?clientID=c2g&userID=pablodexera"));
+
 	
 	var userID = req.query.userID,
 		clientID = req.query.clientID;
@@ -263,7 +266,7 @@ router.get('/timeline', function(req, res) {
 					if((err) || (user == null)){
 
 						params = JSON.parse(handlerEndPoint.params);
-						instagram_redirect_uri = encodeURI(params.instagram_redirect_uri.replace("@cid", clientID).replace("@uid", userID));
+						instagram_redirect_uri = encodeURIComponent(params.instagram_redirect_uri.replace("@cid", clientID).replace("@uid", userID));
 				
 						var oauthURI = handlerEndPoint.hostURI + '/oauth/authorize/?client_id=03c54c6e8db94a34a3ab146cf997504a&response_type=code&redirect_uri=' + instagram_redirect_uri;		
 						oauthURI = oauthURI.replace("@cid", clientID).replace("@uid", userID);
