@@ -34,7 +34,7 @@ var getVar = function(obj) {
             return obj3;
 
         } catch(e){
-            rt('', e)
+            rt('', e);
             console.log('Mergin error' + e);
         }
     };
@@ -44,7 +44,7 @@ var getVar = function(obj) {
         destination = u['destination'];
 
 
-    }
+    };
     this.processDate = function(date) {
         var dt = date.split('T');
         return dt[0];

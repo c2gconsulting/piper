@@ -6,7 +6,7 @@ var betap = require('./betaProc');
 var ttl_time = require('./settings');
 
 //using redis to temporarily cache data;
-var rd_client = require('../../lib/cache').getRedisClient();
+var rd_client = require('../../../shared/lib/cache').getRedisClient();
 rd_client.on('error', function(error) {
     console.log("Redis Error " + error );
 });
