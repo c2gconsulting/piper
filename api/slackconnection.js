@@ -6,6 +6,7 @@ var db = require('../shared/lib/db');
 var witConfig = require('../shared/config/wit.json');
 var Log = require('log');
 var CACHE_PREFIX = 'slackrouter:';
+var CONTEXT_TTL = 900;
 var cache;
 
 
@@ -18,6 +19,7 @@ function SlackConnection(client) {
 	this.outContext = {};
 	this.slack = {};
 	this.logger = new Log(process.env.PIPER_LOG_LEVEL || 'info');
+
 }
 
 
@@ -117,7 +119,7 @@ SlackConnection.prototype.onMessage = function(message) {
 					me.logger.info('@%s responded with "%s"', me.slack.self.name, response);
 				} else {
 					intentBody = feedback;
-					//me.logger.debug('Feedback: ' + JSON.stringify(feedback));
+					me.logger.debug('Feedback: ' + JSON.stringify(feedback));
 				
 					// Retrieve processor
 					var processorMap = require('./processors/map.json');
@@ -144,7 +146,7 @@ SlackConnection.prototype.onMessage = function(message) {
 					cache.hgetall(userkey, function(err, obj) {
 						me.logger.debug('New context for ' + userkey + ': ' + JSON.stringify(obj));
 					});
-					
+					cache.expire(userkey, CONTEXT_TTL);
 
 					if (intent){
 						var processorModule = processorMap.processors[0][me.getState(intent)];
