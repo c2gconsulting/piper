@@ -63,6 +63,7 @@ SlackConnection.prototype.onOpen = function() {
 	logger.info('You are in: %s', channels.join(', '));
 	logger.info('As well as: %s', groups.join(', '));
 	logger.info('You have %s unread ' + (unreads === 1 ? 'message' : 'messages'), unreads);
+	logger.info('SLACK_CONNECTION: Connection Opened');
 }
 
 
@@ -77,6 +78,7 @@ SlackConnection.prototype.onMessage = function(message) {
 
 	try{
 		logger.info('Received: %s %s @%s %s "%s"', type, (channel.is_channel ? '#' : '') + channel.name, user.name, time, text);
+		logger.info('SLACK_CONNECTION: Message Received');
 	} catch (e) {
 
 	}
@@ -213,7 +215,8 @@ SlackConnection.prototype.getState = function(intent) {
 
 SlackConnection.prototype.onError = function(error) {
 	this.emit('error', error, this.client);
-	//logger.error('Error: %s', error);
+	logger.error('Error: %s', error);
+	logger.info('SLACK_CONNECTION: Connection Error');
 }
 
 
