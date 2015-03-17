@@ -2,7 +2,7 @@ var fs = require('fs');
 var db = require('../shared/lib/db');
 var express = require('express');
 var SlackConnection = require('./slackconnection');
-var Log = require('log');
+var logger = require('../shared/lib/log');
 var ERROR_RESPONSE_CODE = 422;
 var cache = require('../shared/lib/cache').getRedisClient();
 var CACHE_PREFIX = 'server:';
@@ -17,8 +17,6 @@ var port = process.env.PORT || 80;
 // Create our Express router
 var router = express.Router();
 
-// Initialize logger
-var logger = new Log(process.env.PIPER_LOG_LEVEL || 'info');
 
 
 /* 	Retrieve Models:
@@ -263,7 +261,7 @@ app.use('/', router);
 
 
 var createSlackConnection = function(client) {
-	//console.log('in createSlackConnection: ' + client.slackHandle);
+	//logger.info('in createSlackConnection: ' + client.slackHandle);
 	if (!w[client._id]) {
 		try {
 			w[client._id] = new SlackConnection(client);
@@ -276,23 +274,23 @@ var createSlackConnection = function(client) {
 			logger.info('Updating registry for client ' + client.slackHandle + '...');
 
 			// Open connection
-			//console.log('Client: ' + w[client._id].client.slackHandle);
+			//logger.info('Client: ' + w[client._id].client.slackHandle);
 			w[client._id].connect();
 
 
 			// Listen for messages from connections
 			w[client._id].on('open', function(cl){
-				console.log('[Client: ' + cl._id + ' - ' + cl.name + '] Connection established...listening for messages');
+				logger.info('[Client: ' + cl._id + ' - ' + cl.name + '] Connection established...listening for messages');
 			});
 
 			w[client._id].on('message', function(user, message, cl){
-				console.log('[Client: ' + cl._id + ' - ' + cl.name + '] Response dispatched to ' + user.name + ' for message: ' + message);
+				logger.info('[Client: ' + cl._id + ' - ' + cl.name + '] Response dispatched to ' + user.name + ' for message: ' + message);
 			});
 
 			w[client._id].on('error', function(error, cl){
-				console.log('[Client: ' + cl._id + ' - ' + cl.name + '] Error: ' + error);
+				logger.info('[Client: ' + cl._id + ' - ' + cl.name + '] Error: ' + error);
 				if (error === 'account_inactive') {
-					console.log('[Client: ' + cl._id + ' - ' + cl.name + '] Removing connection... ')
+					logger.info('[Client: ' + cl._id + ' - ' + cl.name + '] Removing connection... ')
 					removeSlackConnection(cl);
 				}
 			});
@@ -303,7 +301,7 @@ var createSlackConnection = function(client) {
 
 		        //remove from array
 		        delete w[cl._id];
-		        console.log('[Client: ' + cl._id + ' - ' + cl.name + '] De-registering connection from registry...');
+		        logger.info('[Client: ' + cl._id + ' - ' + cl.name + '] De-registering connection from registry...');
 			});
 
 			return true;

@@ -4,7 +4,7 @@ var Slack = require('slack-client');
 var wit = require('../shared/lib/wit');
 var db = require('../shared/lib/db');
 var witConfig = require('../shared/config/wit.json');
-var Log = require('log');
+var logger = require('../shared/lib/log');
 var CACHE_PREFIX = 'slackrouter:';
 var CONTEXT_TTL = 900;
 var cache;
@@ -18,8 +18,7 @@ function SlackConnection(client) {
 	this.inContext = {};
 	this.outContext = {};
 	this.slack = {};
-	this.logger = new Log(process.env.PIPER_LOG_LEVEL || 'info');
-
+	
 }
 
 
@@ -32,7 +31,7 @@ SlackConnection.prototype.connect = function(){
 	try {
 		this.slack.login();
 	} catch (e) {
-		this.logger.error('Cannot create connection for ' + this.client.slackHandle + '.slack.com: ' + e);
+		logger.error('Cannot create connection for ' + this.client.slackHandle + '.slack.com: ' + e);
 	}
 	
 	this.slack.on('open', this.onOpen.bind(this));
@@ -60,10 +59,10 @@ SlackConnection.prototype.onOpen = function() {
 	}
 	this.emit('open', this.client);
 
-	this.logger.info('Welcome to Slack. You are @%s of %s', this.slack.self.name, this.slack.team.name);
-	this.logger.info('You are in: %s', channels.join(', '));
-	this.logger.info('As well as: %s', groups.join(', '));
-	this.logger.info('You have %s unread ' + (unreads === 1 ? 'message' : 'messages'), unreads);
+	logger.info('Welcome to Slack. You are @%s of %s', this.slack.self.name, this.slack.team.name);
+	logger.info('You are in: %s', channels.join(', '));
+	logger.info('As well as: %s', groups.join(', '));
+	logger.info('You have %s unread ' + (unreads === 1 ? 'message' : 'messages'), unreads);
 }
 
 
@@ -77,7 +76,7 @@ SlackConnection.prototype.onMessage = function(message) {
 	    response = '';
 
 	try{
-		this.logger.info('Received: %s %s @%s %s "%s"', type, (channel.is_channel ? '#' : '') + channel.name, user.name, time, text);
+		logger.info('Received: %s %s @%s %s "%s"', type, (channel.is_channel ? '#' : '') + channel.name, user.name, time, text);
 	} catch (e) {
 
 	}
@@ -85,56 +84,56 @@ SlackConnection.prototype.onMessage = function(message) {
 	if (type === 'message' && channel.name === user.name) {
 		var me = this;
 		var userkey = CACHE_PREFIX + user.name + '@' + this.client.slackHandle;
-		this.logger.debug('Userkey: ' + userkey);
+		logger.debug('Userkey: ' + userkey);
 
 		// Retrieve user context from cache
 		cache.hget(userkey, 'state', function (err, value) {
 			if (value){
 				me.inContext.state = value;
 				cache.hdel(userkey, 'state');
-				me.logger.debug('State for ' + userkey + ': ' + value);
+				logger.debug('State for ' + userkey + ': ' + value);
 			} else {
 				// error OR no existing context -> initialize
 				me.inContext = {
     					'state': ''
 					};
-				me.logger.info('No context: ' + JSON.stringify(me.inContext));
+				logger.info('No context: ' + JSON.stringify(me.inContext));
 			}
 
 			// Update context with current user time
 			var dateTime = new Date(time*1000);
 			me.inContext.reference_time = dateTime.toISOString();
-			me.logger.debug(me.inContext.reference_time);
+			logger.debug(me.inContext.reference_time);
 			
 			// Interprete inbound message -> wit
 			var intentBody;
 			wit.captureTextIntent(me.witAccessToken, text, me.inContext, function(error,feedback) {
 				if (error) {
 					response = JSON.stringify(feedback);
-					me.logger.debug('Error retrieving intent from wit.ai: '+ JSON.stringify(error));
-					me.logger.debug('Feedback: ' + JSON.stringify(feedback));
+					logger.debug('Error retrieving intent from wit.ai: '+ JSON.stringify(error));
+					logger.debug('Feedback: ' + JSON.stringify(feedback));
 					
 					// Reply
 					channel.send(response);
-					me.logger.info('@%s responded with "%s"', me.slack.self.name, response);
+					logger.info('@%s responded with "%s"', me.slack.self.name, response);
 				} else {
 					intentBody = feedback;
-					me.logger.debug('Feedback: ' + JSON.stringify(feedback));
+					logger.debug('Feedback: ' + JSON.stringify(feedback));
 				
 					// Retrieve processor
 					var processorMap = require('./processors/map.json');
 					var intent = intentBody.outcomes[0]['intent'];
 
-					me.logger.debug("Intent: " + intent);
+					logger.debug("Intent: " + intent);
 
 					// Check confidence level
 					if (intentBody.outcomes[0]['confidence'] < witConfig.MIN_CONFIDENCE) {
 						intent = 'intent_not_found';
-						me.logger.info('Low confidence, changing intent to intent_not_found');
+						logger.info('Low confidence, changing intent to intent_not_found');
 					}
 
 					//console.log("Updated Intent: " + intent);
-					me.logger.debug("Confidence: " + intentBody.outcomes[0]['confidence']);
+					logger.debug("Confidence: " + intentBody.outcomes[0]['confidence']);
 
 					// Create new UserContext and update
 					me.outContext = {
@@ -144,7 +143,7 @@ SlackConnection.prototype.onMessage = function(message) {
 					// Save to cache
 					cache.hset(userkey, 'state', me.getState(intent));
 					cache.hgetall(userkey, function(err, obj) {
-						me.logger.debug('New context for ' + userkey + ': ' + JSON.stringify(obj));
+						logger.debug('New context for ' + userkey + ': ' + JSON.stringify(obj));
 					});
 					cache.expire(userkey, CONTEXT_TTL);
 
@@ -152,11 +151,11 @@ SlackConnection.prototype.onMessage = function(message) {
 						var processorModule = processorMap.processors[0][me.getState(intent)];
 						if (!processorModule) {
 							processorModule = processorMap.processors[0][me.getState('intent_not_found')];
-							me.logger.debug('Processor not found for ' + me.getState(intent) + ', defaulting to ' + me.getState('intent_not_found'));
+							logger.debug('Processor not found for ' + me.getState(intent) + ', defaulting to ' + me.getState('intent_not_found'));
 						}
 					} else {
 						var processorModule = processorMap.processors[0][me.getState('intent_not_found')];
-						me.logger.debug('No intent found, defaulting to ' + me.getState('intent_not_found'));
+						logger.debug('No intent found, defaulting to ' + me.getState('intent_not_found'));
 					}
 
 					// Run
@@ -164,7 +163,7 @@ SlackConnection.prototype.onMessage = function(message) {
 						var processor = require(processorModule);
 					} catch (e) {
 						var processor = require(processorMap.processors[0][me.getState('intent_not_found')]);
-						me.logger.debug('Error processing intent for state: ' + me.getState(intent) + ' -> ' + e + ', defaulting to ' + me.getState('intent_not_found'));
+						logger.debug('Error processing intent for state: ' + me.getState(intent) + ' -> ' + e + ', defaulting to ' + me.getState('intent_not_found'));
 					}
 
 					//console.log('ProcessorModule: '+ processorModule);
@@ -172,13 +171,13 @@ SlackConnection.prototype.onMessage = function(message) {
 					processor.run(intentBody, user, me.client, function(err, resp) {
 						if (err) {
 							response = resp;
-							me.logger.debug('Error2: '+ JSON.stringify(err));
-							me.logger.debug('Feedback: ' + JSON.stringify(resp));
+							logger.debug('Error2: '+ JSON.stringify(err));
+							logger.debug('Feedback: ' + JSON.stringify(resp));
 						} else {
 							response = resp;
 						}
 						channel.send(response);
-						me.logger.info('@%s responded with "%s"', me.slack.self.name, response);
+						logger.info('@%s responded with "%s"', me.slack.self.name, response);
 
 						// Notify all listeners
 						me.emit('message', user, text, me.client);
@@ -201,11 +200,11 @@ SlackConnection.prototype.getState = function(intent) {
 		var state = processorMap.states[0][intent];
 		if (!state) {
 			state = processorMap.states[0]['intent_not_found'];
-			this.logger.debug('State not found for ' + intent + ', defaulting...');
+			logger.debug('State not found for ' + intent + ', defaulting...');
 		}
 	} else {
 		var state = processorMap.states[0]['intent_not_found'];
-		this.logger.debug('No intent found, defaulting to intent_not_found');
+		logger.debug('No intent found, defaulting to intent_not_found');
 	}
 
 	return state;
@@ -214,7 +213,7 @@ SlackConnection.prototype.getState = function(intent) {
 
 SlackConnection.prototype.onError = function(error) {
 	this.emit('error', error, this.client);
-	//this.logger.error('Error: %s', error);
+	//logger.error('Error: %s', error);
 }
 
 

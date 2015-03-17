@@ -4,8 +4,7 @@ var getModel = function(obj, callback) {
   var mongoose = require('mongoose');
   var Schema = mongoose.Schema;
 
-  var Log = require('log');
-  var logger = new Log(process.env.PIPER_LOG_LEVEL || 'info');
+  var logger = require('./log');
 
   if (!mongoose.models[obj]) {
     var uristring = 'mongodb://' + mongoConfig.host + '/piper'; 

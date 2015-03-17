@@ -1,12 +1,12 @@
 var db = require('./shared/lib/db');
 var express = require('express');
 var vhost = require('vhost');
-var Log = require('log');
+var logger = require('./shared/lib/log');
 var services = require('./servers.json').services;
 
 
 var ERROR_RESPONSE_CODE = 422;
-var logger = new Log(process.env.PIPER_LOG_LEVEL || 'info');
+//var logger = new Log(process.env.PIPER_LOG_LEVEL || 'info');
 
 
 //Create server and router

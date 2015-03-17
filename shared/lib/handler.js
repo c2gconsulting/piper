@@ -1,8 +1,7 @@
 // Retrieve handler for client->slackHandle and state
 var getHandler = function(slackHandle, state, callback) {
   var db = require('../lib/db');
-  var Log = require('log');
-  var logger = new Log(process.env.PIPER_LOG_LEVEL || 'info');
+  var logger = require('./log');
   var Handler;
 
   // Get db model

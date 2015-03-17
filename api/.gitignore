@@ -8,4 +8,5 @@ npm-debug.log
 
 #Temporary local files
 tmp/dbinit.js
+shared/tmp/piper.log
 dump.rdb
