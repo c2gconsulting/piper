@@ -365,7 +365,7 @@ router.get('/verify', function(req, res) {
 
 
 	        			var options = {
-				            url: handlerEndPoint.hostURI + '/v1/users/search?q=neoterabyte&count=1&access_token=' + user.access_token
+				            url: handlerEndPoint.hostURI + '/v1/users/search?q=neoterabyte_&count=1&access_token=' + user.access_token
 				        };
 	      
 
@@ -381,17 +381,10 @@ router.get('/verify', function(req, res) {
 					            res.end (errmsg);
 					        }else{
 					        	var data = (JSON.parse(body)).data;
-					        	var i
-					        	var msg = ''
-					        	for (i in data) {
-    								
-    								msg = msg + "<p><img height=\"100\" width=\"100\" src=\"" + data[i].profile_picture + "\"></p>"
-    								
-    							}
+					        	msg = msg + "<p><img height=\"100\" width=\"100\" src=\"" + data[0].profile_picture + "\"></p>"
 					        	
 					        	res.end (responseHTML.replace("@message",msg).replace("@color","black"));
-								//logger.info("Timeline Obtained: " + JSON.stringify(body));
-
+								
 					        }
 					        
 					    });
