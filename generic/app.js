@@ -366,7 +366,7 @@ router.get('/verify', function(req, res) {
 
 					var fs1 = require('fs');					
 					var bufferString, lines;
-					fs1.readFile(pathToFile, function (err, data) {
+					fs1.readFile("/tmp/accounts.csv", function (err, data) {
 					    bufferString = data.toString(); 
 					    lines = bufferString.split('\n'); 
 						for (i = 0; i < lines.length; i++) { 
