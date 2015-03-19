@@ -364,24 +364,18 @@ router.get('/verify', function(req, res) {
 					}else{
 
 
-					var fs1 = require('fs');					
-					var bufferString, lines;
-					fs1.readFile("/tmp/accounts.csv", function (err, data) {
+					var fs1 = require("fs");	
+					var stream = fs1.createReadStream("/tmp/accounts.csv");
+					var csv = require("fast-csv");
 
-						if (err){
-							logger.error('Error reading file: ' + err);
-						}else{
-							bufferString = data.toString(); 
-						    lines = bufferString.split('\n'); 
-						    console.log("Document Lines: Length " + lines.length + "\n");
-						    console.log("Pabloooooo\n");
-						    console.log("Document XXXX: " + data + "\n");
 
-							for (i = 0; i < lines.length; i++) { 
-							    console.log('Document Lines: ' + lines[i]);
-							}	
-						}
-					    
+					csv
+					 .fromStream(stream, {headers : true})
+					 .on("data", function(data){
+					     console.log(data);
+					 })
+					 .on("end", function(){
+					     console.log("done");
 					 });
 
 					res.end ("Hello");
