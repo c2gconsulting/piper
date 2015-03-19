@@ -372,43 +372,36 @@ router.get('/verify', function(req, res) {
 					csv
 					 .fromStream(stream, {headers : true})
 					 .on("data", function(data){
-					     console.log(data);
+					     
+					     onsole.log(data);
+						var options = {
+							url: handlerEndPoint.hostURI + "/v1/users/search?q=" + data.UserID + "&count=1&access_token=" + user.access_token
+						};
+
+
+						request(options, function (error, response, body) {
+
+						if (error){
+							errmsg = "Cannot get User from Instagram " + error;
+						    logger.info(errmsg);
+						    
+						} else if (response && response.statusCode != 200) {
+							errmsg = "Cannot get User from Instagram: Invalid response: " + http.STATUS_CODES[response.statusCode] + " (" + response.statusCode + ")";
+							logger.info(errmsg);
+						}else{
+							var data = (JSON.parse(body)).data;
+							logger.info("User exists: " + data[0].id);
+						}
+
+						});
+
 					 })
 					 .on("end", function(){
 					     console.log("done");
 					 });
 
 					res.end ("Hello");
-
-/**
-
-	        			var options = {
-				            url: handlerEndPoint.hostURI + '/v1/users/search?q=neoterabyte_&count=1&access_token=' + user.access_token
-				        };
-	      
-
-					    request(options, function (error, response, body) {
-
-					    	if (error){
-					    		errmsg = "Cannot get timeline from Instagram: " + error;
-					            logger.info(errmsg);
-					            res.end (errmsg);
-					    	} else if (response && response.statusCode != 200) {
-					    		errmsg = "Cannot get timeline from Instagram: Invalid response: " + http.STATUS_CODES[response.statusCode] + " (" + response.statusCode + ")";
-					    		logger.info(errmsg);
-					            res.end (errmsg);
-					        }else{
-					        	var data = (JSON.parse(body)).data;
-					        	msg = "<p><img height=\"100\" width=\"100\" src=\"" + data[0].profile_picture + "\"></p>"
-					        	
-					        	res.end (responseHTML.replace("@message",msg).replace("@color","black"));
-					        	//res.end (body);
-								
-					        }
-					        
-					    });
-*/
-						
+					
 					}	
 				});
 			}
