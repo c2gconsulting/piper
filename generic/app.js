@@ -262,7 +262,7 @@ router.get('/timeline', function(req, res) {
 						instagram_redirect_uri = encodeURIComponent(params.instagram_redirect_uri.replace("@cid", clientID).replace("@uid", userID));
 						handlerEndPoint.hostURI + '/oauth/authorize/?client_id=' + params.instagram_client_id + '&redirect_uri=' + instagram_redirect_uri + '&response_type=code';
 
-						var oauthURI = handlerEndPoint.hostURI + '/oauth/authorize/?client_id=03c54c6e8db94a34a3ab146cf997504a&response_type=code&redirect_uri=' + instagram_redirect_uri;		
+						var oauthURI = handlerEndPoint.hostURI + '/oauth/authorize/?client_id=' + params.instagram_client_id + '&response_type=code&redirect_uri=' + instagram_redirect_uri;		
 						msg = 'You have to permit Piper to access Instagram. Don\'t worry, you only have to do this once. Click <a href=\'@oauthURI\'>this link to do this</a>';
 						msg = msg.replace("@oauthURI", oauthURI);
 						res.end (responseHTML.replace("@message",msg).replace("@color","black"));
