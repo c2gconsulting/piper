@@ -381,7 +381,7 @@ router.get('/verify', function(req, res) {
 					            res.end (errmsg);
 					        }else{
 					        	var data = (JSON.parse(body)).data;
-					        	msg = msg + "<p><img height=\"100\" width=\"100\" src=\"" + data[0].profile_picture + "\"></p>"
+					        	msg = msg + "<p><img height=\"100\" width=\"100\" src=\"" + data[1].profile_picture + "\"></p>"
 					        	
 					        	res.end (responseHTML.replace("@message",msg).replace("@color","black"));
 								
