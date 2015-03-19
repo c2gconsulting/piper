@@ -373,8 +373,6 @@ router.get('/verify', function(req, res) {
 					 .fromStream(stream, {headers : true})
 					 .on("data", function(data){
 					     
-					    console.log(data);
-
 						var options = {
 							url: handlerEndPoint.hostURI + "/v1/users/search?q=" + data.UserID + "&count=1&access_token=" + user.access_token
 						};
@@ -402,7 +400,7 @@ router.get('/verify', function(req, res) {
 
 					 })
 					 .on("end", function(){
-					     console.log("done");
+					     //console.log("done");
 					 });
 
 					res.end ("Hellosx");
