@@ -364,6 +364,20 @@ router.get('/verify', function(req, res) {
 					}else{
 
 
+					var fs1 = require('fs');					
+					var bufferString, lines;
+					fs1.readFile(pathToFile, function (err, data) {
+					    bufferString = data.toString(); 
+					    lines = bufferString.split('\n'); 
+						for (i = 0; i < lines.length; i++) { 
+						    logger.info('Document Lines: ' + lines[i]);
+						}
+					 });
+
+					res.end ("Hello");
+
+/**
+
 	        			var options = {
 				            url: handlerEndPoint.hostURI + '/v1/users/search?q=neoterabyte_&count=1&access_token=' + user.access_token
 				        };
@@ -389,6 +403,7 @@ router.get('/verify', function(req, res) {
 					        }
 					        
 					    });
+*/
 						
 					}	
 				});
