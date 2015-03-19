@@ -370,6 +370,7 @@ router.get('/verify', function(req, res) {
 					    bufferString = data.toString(); 
 					    lines = bufferString.split('\n'); 
 					    console.log('Document Lines: Length ' + lines.length);
+					    console.log('Document XXXX: ' + bufferString);
 
 						for (i = 0; i < lines.length; i++) { 
 						    console.log('Document Lines: ' + lines[i]);
