@@ -133,3 +133,26 @@
 {"level":"info","message":"You are in: #general","timestamp":"2015-03-17T20:57:52.972Z"}
 {"level":"info","message":"As well as: ","timestamp":"2015-03-17T20:57:52.972Z"}
 {"level":"info","message":"You have 3 unread messages","timestamp":"2015-03-17T20:57:52.972Z"}
+{"level":"info","message":"Piper server listening on port 3000 in development mode","timestamp":"2015-03-19T08:35:20.614Z"}
+{"level":"info","message":"Successfully connected to: mongodb://localhost/piper","timestamp":"2015-03-19T08:35:20.630Z"}
+{"level":"info","message":"Updating registry for client mobilizr...","timestamp":"2015-03-19T08:35:20.635Z"}
+{"level":"info","message":"Updating registry for client c2gstudio...","timestamp":"2015-03-19T08:35:20.657Z"}
+{"level":"info","message":"Registered connection for client: mobilizr","timestamp":"2015-03-19T08:35:20.660Z"}
+{"level":"info","message":"Registered connection for client: c2gstudio","timestamp":"2015-03-19T08:35:20.660Z"}
+{"level":"info","message":"[Client: 54f4b9f27355bca9db02ee3f - Mobilizr] Connection established...listening for messages","timestamp":"2015-03-19T08:35:24.215Z"}
+{"level":"info","message":"Welcome to Slack. You are @blanka of Mobilizr","timestamp":"2015-03-19T08:35:24.215Z"}
+{"level":"info","message":"You are in: #general","timestamp":"2015-03-19T08:35:24.215Z"}
+{"level":"info","message":"As well as: ","timestamp":"2015-03-19T08:35:24.215Z"}
+{"level":"info","message":"You have 1 unread message","timestamp":"2015-03-19T08:35:24.216Z"}
+{"level":"info","message":"SLACK_CONNECTION: Connection Opened","timestamp":"2015-03-19T08:35:24.216Z"}
+{"level":"info","message":"[Client: 54f4b9f27355bca9db02ee40 - C2G Studio] Connection established...listening for messages","timestamp":"2015-03-19T08:35:24.282Z"}
+{"level":"info","message":"Welcome to Slack. You are @blonker of devstudio","timestamp":"2015-03-19T08:35:24.282Z"}
+{"level":"info","message":"You are in: #general","timestamp":"2015-03-19T08:35:24.282Z"}
+{"level":"info","message":"As well as: ","timestamp":"2015-03-19T08:35:24.282Z"}
+{"level":"info","message":"You have 4 unread messages","timestamp":"2015-03-19T08:35:24.283Z"}
+{"level":"info","message":"SLACK_CONNECTION: Connection Opened","timestamp":"2015-03-19T08:35:24.283Z"}
+{"level":"info","message":"Received: message kachi @kachi 1426754136.000002 \"hey\"","timestamp":"2015-03-19T08:35:36.852Z"}
+{"level":"info","message":"SLACK_CONNECTION: Message Received","timestamp":"2015-03-19T08:35:36.853Z"}
+{"level":"info","message":"No context: {\"state\":\"\"}","timestamp":"2015-03-19T08:35:36.855Z"}
+{"level":"info","message":"@blanka responded with \"Hows it going?\"","timestamp":"2015-03-19T08:35:40.647Z"}
+{"level":"info","message":"[Client: 54f4b9f27355bca9db02ee3f - Mobilizr] Response dispatched to kachi for message: hey","timestamp":"2015-03-19T08:35:40.647Z"}

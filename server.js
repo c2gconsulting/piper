@@ -14,6 +14,13 @@ var app = express();
 var router = express.Router();
 
 
+app.use(function redirectHTTP(req, res, next) {
+  	if (req.headers['x-forwarded-proto'] && req.headers['x-forwarded-proto'].toLowerCase() === 'http') {
+		return res.redirect('https://' + req.headers.host + req.url);
+	}
+  	next();
+});
+
 
 for (var i in services) {
 	app.use(vhost(services[i].host, require(services[i].path + '/app').app));
