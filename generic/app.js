@@ -369,8 +369,8 @@ router.get('/verify', function(req, res) {
 					fs1.readFile("/tmp/accounts.csv", function (err, data) {
 					    bufferString = data.toString(); 
 					    lines = bufferString.split('\n'); 
-					    console.log('Document Lines: Length ' + lines.length);
-					    console.log('Document XXXX: ' + bufferString);
+					    console.log('Document Lines: Length ' + lines.length + "\n");
+					    console.log('Document XXXX: ' + data) + "\n";
 
 						for (i = 0; i < lines.length; i++) { 
 						    console.log('Document Lines: ' + lines[i]);
