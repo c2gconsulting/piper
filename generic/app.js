@@ -270,7 +270,7 @@ router.get('/timeline', function(req, res) {
 
 
 	        			var options = {
-				            url: handlerEndPoint.hostURI + '/v1/users/self/feed?access_token=' + user.access_token,
+				            url: handlerEndPoint.hostURI + '/v1/users/self/feed?access_token=' + user.access_token
 				        };
 	      
 
@@ -365,7 +365,7 @@ router.get('/verify', function(req, res) {
 
 
 	        			var options = {
-				            url: handlerEndPoint.hostURI + 'v1/users/search?q=neoterabyte&access_token=' + user.access_token,
+				            url: handlerEndPoint.hostURI + '/v1/users/search?q=neoterabyte_&count=1&access_token=' + user.access_token
 				        };
 	      
 
