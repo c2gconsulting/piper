@@ -225,8 +225,6 @@ router.get('/getoauth', function(req, res) {
 
 router.get('/timeline', function(req, res) {
 
-	logger.info("Hellooos  " + ("http://generic.piperlabs.io/getoauth/?clientID=c2g&userID=pablodexera"));
-
 	
 	var userID = req.query.userID,
 		clientID = req.query.clientID;
@@ -319,6 +317,103 @@ router.get('/timeline', function(req, res) {
 		logger.error("Missing parameter for: " + invalidParam);
 	}
 });
+
+router.get('/verify', function(req, res) {
+
+	
+	var userID = req.query.userID,
+		clientID = req.query.clientID;
+
+	var dataOk = true,
+	invalidParam = '';
+		
+	if (!userID) {
+		dataOk = false;
+		invalidParam = 'userID';
+	}else if (!clientID) {
+		dataOk = false;
+		invalidParam = 'clientID';
+	}
+
+
+	if (dataOk) {
+
+		//1. Check that piper client is valid client.
+		cache.hgetall(CACHE_PREFIX + 'client:' + clientID, function (err, handlerEndPoint) {
+
+			if((err) || (handlerEndPoint == null)){
+				res.statusCode = ERROR_RESPONSE_CODE;
+				res.end ('Settings not found for Client: ' + clientID);
+				logger.error('Settings not found Client: ' + clientID);
+			}else{
+
+				cache.hgetall(CACHE_PREFIX + 'user:' + userID  + '@' + clientID, function (err, user) {
+
+					if((err) || (user == null)){
+
+						params = JSON.parse(handlerEndPoint.params);
+						instagram_redirect_uri = encodeURIComponent(params.instagram_redirect_uri.replace("@cid", clientID).replace("@uid", userID));
+						handlerEndPoint.hostURI + '/oauth/authorize/?client_id=' + params.instagram_client_id + '&redirect_uri=' + instagram_redirect_uri + '&response_type=code';
+
+						var oauthURI = handlerEndPoint.hostURI + '/oauth/authorize/?client_id=' + params.instagram_client_id + '&response_type=code&redirect_uri=' + instagram_redirect_uri;		
+						msg = 'You have to permit Piper to access Instagram. Don\'t worry, you only have to do this once. Click <a href=\'@oauthURI\'>this link to do this</a>';
+						msg = msg.replace("@oauthURI", oauthURI);
+						res.end (responseHTML.replace("@message",msg).replace("@color","black"));
+						logger.error('Settings not found User: ' + userID + " Error: " + err);
+							
+					}else{
+
+
+	        			var options = {
+				            url: handlerEndPoint.hostURI + 'v1/users/search?q=neoterabyte&access_token=' + user.access_token,
+				        };
+	      
+
+					    request(options, function (error, response, body) {
+
+					    	if (error){
+					    		errmsg = "Cannot get timeline from Instagram: " + error;
+					            logger.info(errmsg);
+					            res.end (errmsg);
+					    	} else if (response && response.statusCode != 200) {
+					    		errmsg = "Cannot get timeline from Instagram: Invalid response: " + http.STATUS_CODES[response.statusCode] + " (" + response.statusCode + ")";
+					    		logger.info(errmsg);
+					            res.end (errmsg);
+					        }else{
+					        	var data = (JSON.parse(body)).data;
+					        	var i
+					        	var msg = ''
+					        	for (i in data) {
+    								if (data[i].type == 'image'){
+    									msg = msg + "<p><img height=\"100\" width=\"100\" src=\"" + data[i].profile_picture + "\"></p>"
+    								}
+								}
+					        	
+					        	res.end (responseHTML.replace("@message",msg).replace("@color","black"));
+								//logger.info("Timeline Obtained: " + JSON.stringify(body));
+
+					        }
+					        
+					    });
+						
+					}	
+				});
+			}
+
+		});
+
+		
+		//2. Check that we have valid client token
+
+
+	} else {
+		res.statusCode = ERROR_RESPONSE_CODE;
+		res.end ('Missing parameter for: ' + invalidParam);
+		logger.error("Missing parameter for: " + invalidParam);
+	}
+});
+
+
 
 // Register all our routes with /
 app.use('/', router);
