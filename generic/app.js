@@ -390,9 +390,12 @@ router.get('/verify', function(req, res) {
 							errmsg = "Cannot get User from Instagram: Invalid response: " + http.STATUS_CODES[response.statusCode] + " (" + response.statusCode + ")";
 							logger.info(errmsg);
 						}else{
-							//var data = (JSON.parse(body)).data;
-							//logger.info("User exists: " + data[0].id);
-							logger.info("User exists: " + body);
+							var userdata = (JSON.parse(body)).data;
+							if (userdata.length > 0){
+								logger.info(userdata[0].username + ": valid user");								
+							}else{
+								logger.info(data.UserID  + ": invalid user");
+							}
 						}
 
 						});
@@ -402,7 +405,7 @@ router.get('/verify', function(req, res) {
 					     console.log("done");
 					 });
 
-					res.end ("Hellos");
+					res.end ("Hellosx");
 					
 					}	
 				});
