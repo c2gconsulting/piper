@@ -402,7 +402,7 @@ router.get('/verify', function(req, res) {
 					     console.log("done");
 					 });
 
-					res.end ("Hello");
+					res.end ("Hellos");
 					
 					}	
 				});
