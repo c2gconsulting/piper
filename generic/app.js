@@ -373,8 +373,9 @@ router.get('/verify', function(req, res) {
 						}else{
 							bufferString = data.toString(); 
 						    lines = bufferString.split('\n'); 
-						    console.log('Document Lines: Length ' + lines.length + "\n");
-						    console.log('Document XXXX: ' + data) + "\n";
+						    console.log("Document Lines: Length " + lines.length + "\n");
+						    console.log("Pabloooooo\n");
+						    console.log("Document XXXX: " + data) + "\n");
 
 							for (i = 0; i < lines.length; i++) { 
 							    console.log('Document Lines: ' + lines[i]);
