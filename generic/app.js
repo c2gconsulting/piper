@@ -374,7 +374,7 @@ router.get('/verify', function(req, res) {
 					 .on("data", function(data){
 					     
 					    console.log(data);
-					    
+
 						var options = {
 							url: handlerEndPoint.hostURI + "/v1/users/search?q=" + data.UserID + "&count=1&access_token=" + user.access_token
 						};
@@ -390,8 +390,9 @@ router.get('/verify', function(req, res) {
 							errmsg = "Cannot get User from Instagram: Invalid response: " + http.STATUS_CODES[response.statusCode] + " (" + response.statusCode + ")";
 							logger.info(errmsg);
 						}else{
-							var data = (JSON.parse(body)).data;
-							logger.info("User exists: " + data[0].id);
+							//var data = (JSON.parse(body)).data;
+							//logger.info("User exists: " + data[0].id);
+							logger.info("User exists: " + body);
 						}
 
 						});
