@@ -1,5 +1,6 @@
 var fs = require('fs');
 var db = require('../shared/lib/db');
+var mq = require('../shared/lib/mq');
 var express = require('express');
 var SlackConnection = require('./slackconnection');
 var logger = require('../shared/lib/log');
@@ -7,46 +8,48 @@ var ERROR_RESPONSE_CODE = 422;
 var cache = require('../shared/lib/cache').getRedisClient();
 var CACHE_PREFIX = 'server:';
 var w = [];
+var processors = [];
 
-// Create the Express application
-var app = exports.app = express();
 
-// Define environment variables
-var port = process.env.PORT || 80;
-
-// Create our Express router
-var router = express.Router();
-
+var app = exports.app = express(); // Create the Express application
+var port = process.env.PORT || 80; // Define environment variables
+var router = express.Router(); // Create our Express router
 
 
 /* 	Retrieve Models:
- * 	- slackconnections
  * 	- clients
- * 	- handlers
  */
-
-db.getModel('handlers', function(err, model) {
-    if (err) {
-      // Unable to retrieve clients db object
-      logger.error('Fatal error: ' + err + '. Please resolve and restart the service');
-    } else {
-      Handler = model;
-    } 
- });
 
 db.getModel('clients', function(err, model) {
 	if (err) {
-		// Unable to retrieve clients db object
-		logger.error('Fatal error: ' + err + '. Please resolve and restart the service');
-
+		logger.error('Fatal error: ' + err + '. Please resolve and restart the service'); // Unable to retrieve clients db object
 	} else {
 		Client = model;
 	}	
 });
 
-cache.del(CACHE_PREFIX + 'connections');
 
-// Fire up connections ...
+/*
+ * setup subscriber for new trigger MQs (messages not in response to a request)
+ */
+var sub = mq.context.socket('SUB', {routing: 'topic'});
+
+logger.info('Piper Controller: Connecting to MQ Exchange <piper.events.in>...');
+sub.connect('piper.events.in', 'new.trigger', function() {
+	logger.info('Piper Controller: MQ Exchange <piper.events.in> connected');
+});
+
+sub.on('data', function(data) {
+	jsonData = JSON.parse(data);
+	if (data) this.in(jsonData.user, jsonData.client, jsonData.module, jsonData.body);
+});
+
+
+
+/* 
+ *Fire up connections ...
+ */
+cache.del(CACHE_PREFIX + 'connections'); 
 Client.find({'isActive': true }, function (err, clients) {
 	if (!err && clients && clients.length > 0){
 		for (var i in clients) {
@@ -63,8 +66,8 @@ Client.find({'isActive': true }, function (err, clients) {
 });
 
 
-router.get('/register', function(req, res) {
-	
+
+router.get('/register', function(req, res) {	
 	var name = req.query.name,
 		slackHandle = req.query.handle,
 		slackToken = req.query.token,
@@ -110,7 +113,6 @@ router.get('/register', function(req, res) {
 		res.end ('Missing parameter for ' + invalidParam);
 	}
 });
-
 
 /* 
  *	Endpoints
@@ -274,21 +276,21 @@ var createSlackConnection = function(client) {
 			logger.info('Updating registry for client ' + client.slackHandle + '...');
 
 			// Open connection
-			//logger.info('Client: ' + w[client._id].client.slackHandle);
 			w[client._id].connect();
-
 
 			// Listen for messages from connections
 			w[client._id].on('open', function(cl){
-				logger.info('[Client: ' + cl._id + ' - ' + cl.name + '] Connection established...listening for messages');
+				logger.info(cl.name.toUpperCase() + ': Connection established...listening for messages');
 			});
 
-			w[client._id].on('message', function(user, message, cl){
-				logger.info('[Client: ' + cl._id + ' - ' + cl.name + '] Response dispatched to ' + user.name + ' for message: ' + message);
+			w[client._id].on('dispatch', function(username, message, cl){
+				//message dispatched
 			});
+
+			w[client._id].on('message', onSlackEvent);
 
 			w[client._id].on('error', function(error, cl){
-				logger.info('[Client: ' + cl._id + ' - ' + cl.name + '] Error: ' + error);
+				logger.info(cl.name.toUpperCase() + ' Error: ' + JSON.stringify(error));
 				if (error === 'account_inactive') {
 					logger.info('[Client: ' + cl._id + ' - ' + cl.name + '] Removing connection... ')
 					removeSlackConnection(cl);
@@ -299,7 +301,7 @@ var createSlackConnection = function(client) {
 				// remove from registry
 				cache.zrem(CACHE_PREFIX + 'connections', cl._id);
 
-		        //remove from array
+		        // remove from array
 		        delete w[cl._id];
 		        logger.info('[Client: ' + cl._id + ' - ' + cl.name + '] De-registering connection from registry...');
 			});
@@ -314,6 +316,80 @@ var createSlackConnection = function(client) {
 		return false;
 	}
 
+}
+
+var onSlackEvent = function(username, client, Processor, intentBody) {
+	if (!processors[Processor.MODULE]) {
+		//instantiate and setup processor
+		processors[Processor.MODULE] = new Processor();
+		processors[Processor.MODULE].init();
+		processors[Processor.MODULE].on('message', onProcessorEvent);
+		processors[Processor.MODULE].on('error', onProcessorError);	
+	} 
+
+	processors[Processor.MODULE].out(username, client, intentBody);
+}
+
+var onHandlerEvent = function(username, clientHandle, module, data) {
+	
+	if (!processors[module]) {
+		//instantiate and setup processor
+		var Processor = getProcessor(module);
+		if (Processor) {
+			processors[Processor.MODULE] = new Processor();
+			processors[Processor.MODULE].init();
+			processors[Processor.MODULE].on('message', onProcessorEvent);
+			processors[Processor.MODULE].on('error', onProcessorError);	
+
+			// send request
+			processors[Processor.MODULE].in(username, clientHandle, data);
+		}
+	} else {
+		processors[Processor.MODULE].in(username, clientHandle, data);
+	}
+}
+
+var onProcessorEvent = function(module, username, clientHandle, message) {
+	getClientID(clientHandle, function(err, clientID) {
+		if (clientID) {
+			logger.debug('module: %s, user: %s, client: %s, message: %s', module, username, clientHandle, message);
+			if (w[clientID]) {
+				w[clientID].sendDM(username, message);
+				logger.debug('Message: ' + message + ' sent to user ' + username);
+			}
+		}
+	});
+}
+
+var onProcessorError = function(module, username, clientHandle, error, message) {
+	logger.info('PROCESSOR ERROR - %s: %s', module, error);
+	getClientID(clientHandle, function(err, clientID) {
+		if (clientID) {
+			if (w[clientID]) {
+				w[clientID].sendDM(username, message);
+				logger.error('There is a problem: ' + error);
+			}
+		}
+	});
+}
+
+var getProcessor = function(module) {
+	if (module) {
+		var processorMap = require('./processors/map.json');
+		var processorModule = processorMap.processors[0][module];
+		if (processorModule) {
+			try {
+				return require(processorModule);
+			} catch (e) {
+				return false;
+			}
+		}
+	}
+	return false;
+}
+
+var getClientID = function(clientHandle, callback) {
+	cache.hget('clients', clientHandle, callback);
 }
 
 var removeSlackConnection = function(client) {
@@ -362,4 +438,6 @@ var registerClient = function(client) {
 	}
 
 }
+
+
 

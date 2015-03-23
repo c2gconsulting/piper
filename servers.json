@@ -15,6 +15,15 @@
 		{
 			"host" : "generic.example.com",
 			"path" : "./generic"
+		},
+		{
+			"host" : "chitchat.example.com",
+			"path" : "./chitchat"
+		},
+		{
+			"host" : "chitchat.piperlabs.com",
+			"path" : "./chitchat"
 		}
+
 	]
 }

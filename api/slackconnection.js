@@ -1,4 +1,3 @@
-// This is a worker class for the Slack client
 var EventEmitter = require('events').EventEmitter
 var Slack = require('slack-client');
 var wit = require('../shared/lib/wit');
@@ -76,14 +75,28 @@ SlackConnection.prototype.onMessage = function(message) {
 	    text = message.text,
 	    response = '';
 
+	var ignoreFlag = false;
+
+	if (message.subtype)
+		ignoreFlag = true;
+	
+	if (message.subtype === "message_changed") {
+		user = this.slack.getUserByID(message.message.user);
+		text = message.message.text;
+		logger.warn('SlackConnection.onMessage: Original message changed by %s', user.name);
+		if (user.name === channel.name) channel.send('Hey @' + user.id + ' quit changing your messages you already sent, its very confusing');
+	}
+
 	try{
 		logger.info('Received: %s %s @%s %s "%s"', type, (channel.is_channel ? '#' : '') + channel.name, user.name, time, text);
-		logger.info('SLACK_CONNECTION: Message Received');
 	} catch (e) {
 
 	}
 	
-	if (type === 'message' && channel.name === user.name) {
+
+	if (!ignoreFlag && type === 'message' && (channel.name === user.name || text.search(this.slack.self.id) > 0)) {
+		logger.info('SLACK_CONNECTION: Message Received');
+		
 		var me = this;
 		var userkey = CACHE_PREFIX + user.name + '@' + this.client.slackHandle;
 		logger.debug('Userkey: ' + userkey);
@@ -120,7 +133,7 @@ SlackConnection.prototype.onMessage = function(message) {
 					logger.info('@%s responded with "%s"', me.slack.self.name, response);
 				} else {
 					intentBody = feedback;
-					logger.debug('Feedback: ' + JSON.stringify(feedback));
+					//logger.debug('Feedback: ' + JSON.stringify(feedback));
 				
 					// Retrieve processor
 					var processorMap = require('./processors/map.json');
@@ -143,79 +156,71 @@ SlackConnection.prototype.onMessage = function(message) {
 						};
 						
 					// Save to cache
-					cache.hset(userkey, 'state', me.getState(intent));
+					cache.hset(userkey, 'state', me.getModule(intent));
 					cache.hgetall(userkey, function(err, obj) {
 						logger.debug('New context for ' + userkey + ': ' + JSON.stringify(obj));
 					});
 					cache.expire(userkey, CONTEXT_TTL);
 
 					if (intent){
-						var processorModule = processorMap.processors[0][me.getState(intent)];
+						var processorModule = processorMap.processors[0][me.getModule(intent)];
 						if (!processorModule) {
-							processorModule = processorMap.processors[0][me.getState('intent_not_found')];
-							logger.debug('Processor not found for ' + me.getState(intent) + ', defaulting to ' + me.getState('intent_not_found'));
+							processorModule = processorMap.processors[0][me.getModule('intent_not_found')];
+							logger.debug('Processor not found for ' + me.getModule(intent) + ', defaulting to ' + me.getModule('intent_not_found'));
 						}
 					} else {
-						var processorModule = processorMap.processors[0][me.getState('intent_not_found')];
-						logger.debug('No intent found, defaulting to ' + me.getState('intent_not_found'));
+						var processorModule = processorMap.processors[0][me.getModule('intent_not_found')];
+						logger.debug('No intent found, defaulting to ' + me.getModule('intent_not_found'));
 					}
 
 					// Run
 					try {
-						var processor = require(processorModule);
+						var Processor = require(processorModule);
 					} catch (e) {
-						var processor = require(processorMap.processors[0][me.getState('intent_not_found')]);
-						logger.debug('Error processing intent for state: ' + me.getState(intent) + ' -> ' + e + ', defaulting to ' + me.getState('intent_not_found'));
+						var Processor = require(processorMap.processors[0][me.getModule('intent_not_found')]);
+						logger.debug('Error processing intent for state: ' + me.getModule(intent) + ' -> ' + e + ', defaulting to ' + me.getModule('intent_not_found'));
 					}
 
 					//console.log('ProcessorModule: '+ processorModule);
+					me.emit('message', user.name, me.client, Processor, intentBody);
 
-					processor.run(intentBody, user, me.client, function(err, resp) {
-						if (err) {
-							response = resp;
-							logger.debug('Error2: '+ JSON.stringify(err));
-							logger.debug('Feedback: ' + JSON.stringify(resp));
-						} else {
-							response = resp;
-						}
-						channel.send(response);
-						logger.info('@%s responded with "%s"', me.slack.self.name, response);
-
-						// Notify all listeners
-						me.emit('message', user, text, me.client);
-
-					});
-				}		
-				
-				
+				}										
 			});
 		});
-
 	}
-
 }
 
-SlackConnection.prototype.getState = function(intent) {
+SlackConnection.prototype.sendDM = function(username, message) {
+	try {
+		this.slack.getDMByName(username).send(message);
+		logger.info('@%s responded with "%s"', this.slack.self.name, message);
+		this.emit('dispatch', username, message, this.client);
+	} catch (e) {
+		logger.error('Unable to dispatch message to user %s, error: %s', username, e);
+	}
+}
+
+SlackConnection.prototype.getModule = function(intent) {
 	var processorMap = require('./processors/map.json');
 	
 	if (intent){
-		var state = processorMap.states[0][intent];
-		if (!state) {
-			state = processorMap.states[0]['intent_not_found'];
-			logger.debug('State not found for ' + intent + ', defaulting...');
+		var module = processorMap.modules[0][intent];
+		if (!module) {
+			module = processorMap.modules[0]['intent_not_found'];
+			logger.debug('Module not found for ' + intent + ', defaulting...');
 		}
 	} else {
-		var state = processorMap.states[0]['intent_not_found'];
+		var module = processorMap.modules[0]['intent_not_found'];
 		logger.debug('No intent found, defaulting to intent_not_found');
 	}
 
-	return state;
+	return module;
 }
 
 
 SlackConnection.prototype.onError = function(error) {
 	this.emit('error', error, this.client);
-	logger.error('Error: %s', error);
+	logger.error('Error: ' + JSON.stringify(error));
 	logger.info('SLACK_CONNECTION: Connection Error');
 }
 

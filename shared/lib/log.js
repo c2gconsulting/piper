@@ -13,9 +13,17 @@ var logger = new (winston.Logger)({
     transports: [
       new winston.transports.Console({
       	level: 'debug',
-        handleExceptions: true,
+        handleExceptions: false,
         json: false,
-        colorize: true
+        colorize: false,
+        timestamp: function() {
+          return new Date();
+        },
+        formatter: function(options) {
+        // Return string will be passed to logger.
+        return '[' + options.timestamp().toString() + '] '+ options.level.toUpperCase() +' '+ (undefined !== options.message ? options.message : '') +
+          (options.meta && Object.keys(options.meta).length ? '\n\t'+ JSON.stringify(options.meta) : '' );
+        }
       }),
       new winston.transports.File({ 
       	level: 'info',
@@ -24,10 +32,24 @@ var logger = new (winston.Logger)({
         json: true,
         maxsize: 5242880, //5MB
         maxFiles: 5,
+        timestamp: true,
         colorize: false
       })
     ],
     exceptionHandlers: [
+      new winston.transports.Console({
+        handleExceptions: true,
+        json: true,
+        colorize: false,
+        timestamp: function() {
+          return new Date();
+        },
+        formatter: function(options) {
+        // Return string will be passed to logger.
+        return '[' + options.timestamp().toString() + '] '+ options.level.toUpperCase() +' '+ (undefined !== options.message ? options.message : '') +
+          (options.meta && Object.keys(options.meta).length ? '\n\t'+ JSON.stringify(options.meta) : '' );
+        }
+      }),
       new winston.transports.File({ filename: logfile })
     ],
     exitOnError: false
