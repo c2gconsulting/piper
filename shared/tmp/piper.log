@@ -4783,3 +4783,283 @@
 {"level":"info","message":"As well as: ","timestamp":"2015-03-23T07:58:27.379Z"}
 {"level":"info","message":"You have 4 unread messages","timestamp":"2015-03-23T07:58:27.379Z"}
 {"level":"info","message":"SLACK_CONNECTION: Connection Opened","timestamp":"2015-03-23T07:58:27.379Z"}
+{"level":"info","message":"Piper Controller: Connecting to MQ Exchange <piper.events.in>...","timestamp":"2015-03-23T08:14:43.570Z"}
+{"level":"info","message":"CHITCHAT Handler: Connecting to MQ Exchange <piper.events.out>...","timestamp":"2015-03-23T08:14:43.580Z"}
+{"level":"info","message":"Piper server listening on port 3000 in development mode","timestamp":"2015-03-23T08:14:43.584Z"}
+{"level":"info","message":"Successfully connected to: mongodb://localhost/piper","timestamp":"2015-03-23T08:14:43.605Z"}
+{"level":"info","message":"Updating registry for client mobilizr...","timestamp":"2015-03-23T08:14:43.608Z"}
+{"level":"info","message":"Updating registry for client c2gstudio...","timestamp":"2015-03-23T08:14:43.622Z"}
+{"level":"info","message":"Registered connection for client: mobilizr","timestamp":"2015-03-23T08:14:43.624Z"}
+{"level":"info","message":"Registered connection for client: c2gstudio","timestamp":"2015-03-23T08:14:43.625Z"}
+{"level":"info","message":"CHITCHAT Handler <piper.events.out>: Binding to mobilizr.CHITCHAT...","timestamp":"2015-03-23T08:14:43.626Z"}
+{"level":"info","message":"CHITCHAT Handler <piper.events.out>: Binding to c2gstudio.CHITCHAT...","timestamp":"2015-03-23T08:14:43.626Z"}
+{"level":"info","message":"Piper Controller: MQ Exchange <piper.events.in> connected","timestamp":"2015-03-23T08:14:43.629Z"}
+{"level":"info","message":"C2G STUDIO: Connection established...listening for messages","timestamp":"2015-03-23T08:14:46.956Z"}
+{"level":"info","message":"Welcome to Slack. You are @blonker of devstudio","timestamp":"2015-03-23T08:14:46.956Z"}
+{"level":"info","message":"You are in: #general","timestamp":"2015-03-23T08:14:46.956Z"}
+{"level":"info","message":"As well as: ","timestamp":"2015-03-23T08:14:46.957Z"}
+{"level":"info","message":"You have 4 unread messages","timestamp":"2015-03-23T08:14:46.958Z"}
+{"level":"info","message":"SLACK_CONNECTION: Connection Opened","timestamp":"2015-03-23T08:14:46.958Z"}
+{"level":"info","message":"MOBILIZR: Connection established...listening for messages","timestamp":"2015-03-23T08:14:46.960Z"}
+{"level":"info","message":"Welcome to Slack. You are @blanka of Mobilizr","timestamp":"2015-03-23T08:14:46.960Z"}
+{"level":"info","message":"You are in: #general","timestamp":"2015-03-23T08:14:46.960Z"}
+{"level":"info","message":"As well as: ","timestamp":"2015-03-23T08:14:46.961Z"}
+{"level":"info","message":"You have 0 unread messages","timestamp":"2015-03-23T08:14:46.961Z"}
+{"level":"info","message":"SLACK_CONNECTION: Connection Opened","timestamp":"2015-03-23T08:14:46.961Z"}
+{"level":"info","message":"C2G STUDIO Error: \"ENOTFOUND\"","timestamp":"2015-03-23T09:22:00.794Z"}
+{"level":"error","message":"Error: \"ENOTFOUND\"","timestamp":"2015-03-23T09:22:00.795Z"}
+{"level":"info","message":"SLACK_CONNECTION: Connection Error","timestamp":"2015-03-23T09:22:00.795Z"}
+{"level":"info","message":"MOBILIZR Error: \"ENOTFOUND\"","timestamp":"2015-03-23T09:22:00.796Z"}
+{"level":"error","message":"Error: \"ENOTFOUND\"","timestamp":"2015-03-23T09:22:00.797Z"}
+{"level":"info","message":"SLACK_CONNECTION: Connection Error","timestamp":"2015-03-23T09:22:00.797Z"}
+{"level":"info","message":"C2G STUDIO: Connection established...listening for messages","timestamp":"2015-03-23T09:22:06.175Z"}
+{"level":"info","message":"Welcome to Slack. You are @blonker of devstudio","timestamp":"2015-03-23T09:22:06.175Z"}
+{"level":"info","message":"You are in: #general","timestamp":"2015-03-23T09:22:06.176Z"}
+{"level":"info","message":"As well as: ","timestamp":"2015-03-23T09:22:06.176Z"}
+{"level":"info","message":"You have 4 unread messages","timestamp":"2015-03-23T09:22:06.176Z"}
+{"level":"info","message":"SLACK_CONNECTION: Connection Opened","timestamp":"2015-03-23T09:22:06.176Z"}
+{"level":"info","message":"MOBILIZR: Connection established...listening for messages","timestamp":"2015-03-23T09:22:06.237Z"}
+{"level":"info","message":"Welcome to Slack. You are @blanka of Mobilizr","timestamp":"2015-03-23T09:22:06.237Z"}
+{"level":"info","message":"You are in: #general","timestamp":"2015-03-23T09:22:06.237Z"}
+{"level":"info","message":"As well as: ","timestamp":"2015-03-23T09:22:06.238Z"}
+{"level":"info","message":"You have 0 unread messages","timestamp":"2015-03-23T09:22:06.238Z"}
+{"level":"info","message":"SLACK_CONNECTION: Connection Opened","timestamp":"2015-03-23T09:22:06.238Z"}
+{"level":"info","message":"C2G STUDIO Error: \"ENOTFOUND\"","timestamp":"2015-03-23T10:36:11.733Z"}
+{"level":"error","message":"Error: \"ENOTFOUND\"","timestamp":"2015-03-23T10:36:11.734Z"}
+{"level":"info","message":"SLACK_CONNECTION: Connection Error","timestamp":"2015-03-23T10:36:11.735Z"}
+{"level":"info","message":"MOBILIZR Error: \"ENOTFOUND\"","timestamp":"2015-03-23T10:36:11.794Z"}
+{"level":"error","message":"Error: \"ENOTFOUND\"","timestamp":"2015-03-23T10:36:11.794Z"}
+{"level":"info","message":"SLACK_CONNECTION: Connection Error","timestamp":"2015-03-23T10:36:11.794Z"}
+{"level":"info","message":"C2G STUDIO Error: \"ENOTFOUND\"","timestamp":"2015-03-23T10:36:13.742Z"}
+{"level":"error","message":"Error: \"ENOTFOUND\"","timestamp":"2015-03-23T10:36:13.742Z"}
+{"level":"info","message":"SLACK_CONNECTION: Connection Error","timestamp":"2015-03-23T10:36:13.742Z"}
+{"level":"info","message":"MOBILIZR Error: \"ENOTFOUND\"","timestamp":"2015-03-23T10:36:13.799Z"}
+{"level":"error","message":"Error: \"ENOTFOUND\"","timestamp":"2015-03-23T10:36:13.799Z"}
+{"level":"info","message":"SLACK_CONNECTION: Connection Error","timestamp":"2015-03-23T10:36:13.799Z"}
+{"level":"info","message":"C2G STUDIO Error: \"ENOTFOUND\"","timestamp":"2015-03-23T10:36:16.749Z"}
+{"level":"error","message":"Error: \"ENOTFOUND\"","timestamp":"2015-03-23T10:36:16.749Z"}
+{"level":"info","message":"SLACK_CONNECTION: Connection Error","timestamp":"2015-03-23T10:36:16.749Z"}
+{"level":"info","message":"MOBILIZR Error: \"ENOTFOUND\"","timestamp":"2015-03-23T10:36:16.805Z"}
+{"level":"error","message":"Error: \"ENOTFOUND\"","timestamp":"2015-03-23T10:36:16.806Z"}
+{"level":"info","message":"SLACK_CONNECTION: Connection Error","timestamp":"2015-03-23T10:36:16.806Z"}
+{"level":"info","message":"MOBILIZR: Connection established...listening for messages","timestamp":"2015-03-23T10:36:27.434Z"}
+{"level":"info","message":"Welcome to Slack. You are @blanka of Mobilizr","timestamp":"2015-03-23T10:36:27.434Z"}
+{"level":"info","message":"You are in: #general","timestamp":"2015-03-23T10:36:27.434Z"}
+{"level":"info","message":"As well as: ","timestamp":"2015-03-23T10:36:27.434Z"}
+{"level":"info","message":"You have 0 unread messages","timestamp":"2015-03-23T10:36:27.435Z"}
+{"level":"info","message":"SLACK_CONNECTION: Connection Opened","timestamp":"2015-03-23T10:36:27.435Z"}
+{"level":"info","message":"C2G STUDIO: Connection established...listening for messages","timestamp":"2015-03-23T10:36:27.442Z"}
+{"level":"info","message":"Welcome to Slack. You are @blonker of devstudio","timestamp":"2015-03-23T10:36:27.442Z"}
+{"level":"info","message":"You are in: #general","timestamp":"2015-03-23T10:36:27.443Z"}
+{"level":"info","message":"As well as: ","timestamp":"2015-03-23T10:36:27.443Z"}
+{"level":"info","message":"You have 4 unread messages","timestamp":"2015-03-23T10:36:27.443Z"}
+{"level":"info","message":"SLACK_CONNECTION: Connection Opened","timestamp":"2015-03-23T10:36:27.443Z"}
+{"level":"info","message":"MOBILIZR Error: \"ENOTFOUND\"","timestamp":"2015-03-23T21:00:47.951Z"}
+{"level":"error","message":"Error: \"ENOTFOUND\"","timestamp":"2015-03-23T21:00:47.952Z"}
+{"level":"info","message":"SLACK_CONNECTION: Connection Error","timestamp":"2015-03-23T21:00:47.952Z"}
+{"level":"info","message":"C2G STUDIO Error: \"ENOTFOUND\"","timestamp":"2015-03-23T21:00:47.952Z"}
+{"level":"error","message":"Error: \"ENOTFOUND\"","timestamp":"2015-03-23T21:00:47.952Z"}
+{"level":"info","message":"SLACK_CONNECTION: Connection Error","timestamp":"2015-03-23T21:00:47.952Z"}
+{"level":"info","message":"MOBILIZR: Connection established...listening for messages","timestamp":"2015-03-23T21:01:13.700Z"}
+{"level":"info","message":"Welcome to Slack. You are @blanka of Mobilizr","timestamp":"2015-03-23T21:01:13.700Z"}
+{"level":"info","message":"You are in: #general","timestamp":"2015-03-23T21:01:13.700Z"}
+{"level":"info","message":"As well as: ","timestamp":"2015-03-23T21:01:13.700Z"}
+{"level":"info","message":"You have 0 unread messages","timestamp":"2015-03-23T21:01:13.700Z"}
+{"level":"info","message":"SLACK_CONNECTION: Connection Opened","timestamp":"2015-03-23T21:01:13.701Z"}
+{"level":"info","message":"C2G STUDIO: Connection established...listening for messages","timestamp":"2015-03-23T21:01:17.634Z"}
+{"level":"info","message":"Welcome to Slack. You are @blonker of devstudio","timestamp":"2015-03-23T21:01:17.635Z"}
+{"level":"info","message":"You are in: #general","timestamp":"2015-03-23T21:01:17.635Z"}
+{"level":"info","message":"As well as: ","timestamp":"2015-03-23T21:01:17.635Z"}
+{"level":"info","message":"You have 4 unread messages","timestamp":"2015-03-23T21:01:17.636Z"}
+{"level":"info","message":"SLACK_CONNECTION: Connection Opened","timestamp":"2015-03-23T21:01:17.636Z"}
+{"level":"info","message":"C2G STUDIO Error: \"ENOTFOUND\"","timestamp":"2015-03-23T21:52:52.461Z"}
+{"level":"error","message":"Error: \"ENOTFOUND\"","timestamp":"2015-03-23T21:52:52.462Z"}
+{"level":"info","message":"SLACK_CONNECTION: Connection Error","timestamp":"2015-03-23T21:52:52.463Z"}
+{"level":"info","message":"MOBILIZR Error: \"ENOTFOUND\"","timestamp":"2015-03-23T21:52:52.463Z"}
+{"level":"error","message":"Error: \"ENOTFOUND\"","timestamp":"2015-03-23T21:52:52.464Z"}
+{"level":"info","message":"SLACK_CONNECTION: Connection Error","timestamp":"2015-03-23T21:52:52.464Z"}
+{"level":"info","message":"C2G STUDIO Error: \"ENOTFOUND\"","timestamp":"2015-03-23T21:53:24.566Z"}
+{"level":"error","message":"Error: \"ENOTFOUND\"","timestamp":"2015-03-23T21:53:24.566Z"}
+{"level":"info","message":"SLACK_CONNECTION: Connection Error","timestamp":"2015-03-23T21:53:24.566Z"}
+{"level":"info","message":"MOBILIZR Error: \"ENOTFOUND\"","timestamp":"2015-03-23T21:53:24.567Z"}
+{"level":"error","message":"Error: \"ENOTFOUND\"","timestamp":"2015-03-23T21:53:24.567Z"}
+{"level":"info","message":"SLACK_CONNECTION: Connection Error","timestamp":"2015-03-23T21:53:24.567Z"}
+{"level":"info","message":"MOBILIZR Error: \"ENOTFOUND\"","timestamp":"2015-03-23T21:54:02.572Z"}
+{"level":"error","message":"Error: \"ENOTFOUND\"","timestamp":"2015-03-23T21:54:02.572Z"}
+{"level":"info","message":"SLACK_CONNECTION: Connection Error","timestamp":"2015-03-23T21:54:02.572Z"}
+{"level":"info","message":"C2G STUDIO Error: \"ENOTFOUND\"","timestamp":"2015-03-23T21:54:02.573Z"}
+{"level":"error","message":"Error: \"ENOTFOUND\"","timestamp":"2015-03-23T21:54:02.573Z"}
+{"level":"info","message":"SLACK_CONNECTION: Connection Error","timestamp":"2015-03-23T21:54:02.573Z"}
+{"level":"info","message":"MOBILIZR Error: \"ENOTFOUND\"","timestamp":"2015-03-23T21:54:06.582Z"}
+{"level":"error","message":"Error: \"ENOTFOUND\"","timestamp":"2015-03-23T21:54:06.582Z"}
+{"level":"info","message":"SLACK_CONNECTION: Connection Error","timestamp":"2015-03-23T21:54:06.583Z"}
+{"level":"info","message":"C2G STUDIO Error: \"ENOTFOUND\"","timestamp":"2015-03-23T21:54:06.583Z"}
+{"level":"error","message":"Error: \"ENOTFOUND\"","timestamp":"2015-03-23T21:54:06.584Z"}
+{"level":"info","message":"SLACK_CONNECTION: Connection Error","timestamp":"2015-03-23T21:54:06.584Z"}
+{"level":"info","message":"C2G STUDIO Error: \"ENOTFOUND\"","timestamp":"2015-03-23T21:54:17.580Z"}
+{"level":"error","message":"Error: \"ENOTFOUND\"","timestamp":"2015-03-23T21:54:17.580Z"}
+{"level":"info","message":"SLACK_CONNECTION: Connection Error","timestamp":"2015-03-23T21:54:17.581Z"}
+{"level":"info","message":"MOBILIZR Error: \"ENOTFOUND\"","timestamp":"2015-03-23T21:54:17.581Z"}
+{"level":"error","message":"Error: \"ENOTFOUND\"","timestamp":"2015-03-23T21:54:17.582Z"}
+{"level":"info","message":"SLACK_CONNECTION: Connection Error","timestamp":"2015-03-23T21:54:17.582Z"}
+{"level":"info","message":"C2G STUDIO Error: \"ECONNRESET\"","timestamp":"2015-03-23T21:57:01.920Z"}
+{"level":"error","message":"Error: \"ECONNRESET\"","timestamp":"2015-03-23T21:57:01.920Z"}
+{"level":"info","message":"SLACK_CONNECTION: Connection Error","timestamp":"2015-03-23T21:57:01.920Z"}
+{"level":"info","message":"MOBILIZR Error: \"ECONNRESET\"","timestamp":"2015-03-23T21:57:06.871Z"}
+{"level":"error","message":"Error: \"ECONNRESET\"","timestamp":"2015-03-23T21:57:06.871Z"}
+{"level":"info","message":"SLACK_CONNECTION: Connection Error","timestamp":"2015-03-23T21:57:06.871Z"}
+{"level":"info","message":"C2G STUDIO Error: \"ECONNRESET\"","timestamp":"2015-03-23T21:58:59.923Z"}
+{"level":"error","message":"Error: \"ECONNRESET\"","timestamp":"2015-03-23T21:58:59.923Z"}
+{"level":"info","message":"SLACK_CONNECTION: Connection Error","timestamp":"2015-03-23T21:58:59.924Z"}
+{"level":"info","message":"MOBILIZR Error: \"ETIMEDOUT\"","timestamp":"2015-03-23T22:02:50.422Z"}
+{"level":"error","message":"Error: \"ETIMEDOUT\"","timestamp":"2015-03-23T22:02:50.422Z"}
+{"level":"info","message":"SLACK_CONNECTION: Connection Error","timestamp":"2015-03-23T22:02:50.422Z"}
+{"level":"info","message":"C2G STUDIO Error: \"ETIMEDOUT\"","timestamp":"2015-03-23T22:03:12.342Z"}
+{"level":"error","message":"Error: \"ETIMEDOUT\"","timestamp":"2015-03-23T22:03:12.345Z"}
+{"level":"info","message":"SLACK_CONNECTION: Connection Error","timestamp":"2015-03-23T22:03:12.345Z"}
+{"level":"info","message":"MOBILIZR Error: \"ETIMEDOUT\"","timestamp":"2015-03-23T22:07:09.156Z"}
+{"level":"error","message":"Error: \"ETIMEDOUT\"","timestamp":"2015-03-23T22:07:09.157Z"}
+{"level":"info","message":"SLACK_CONNECTION: Connection Error","timestamp":"2015-03-23T22:07:09.157Z"}
+{"level":"info","message":"C2G STUDIO Error: \"ETIMEDOUT\"","timestamp":"2015-03-23T22:07:22.643Z"}
+{"level":"error","message":"Error: \"ETIMEDOUT\"","timestamp":"2015-03-23T22:07:22.643Z"}
+{"level":"info","message":"SLACK_CONNECTION: Connection Error","timestamp":"2015-03-23T22:07:22.643Z"}
+{"level":"info","message":"MOBILIZR Error: \"ECONNRESET\"","timestamp":"2015-03-23T22:09:58.559Z"}
+{"level":"error","message":"Error: \"ECONNRESET\"","timestamp":"2015-03-23T22:09:58.559Z"}
+{"level":"info","message":"SLACK_CONNECTION: Connection Error","timestamp":"2015-03-23T22:09:58.559Z"}
+{"level":"info","message":"MOBILIZR Error: \"ECONNRESET\"","timestamp":"2015-03-23T22:12:25.573Z"}
+{"level":"error","message":"Error: \"ECONNRESET\"","timestamp":"2015-03-23T22:12:25.573Z"}
+{"level":"info","message":"SLACK_CONNECTION: Connection Error","timestamp":"2015-03-23T22:12:25.573Z"}
+{"level":"info","message":"C2G STUDIO Error: \"ETIMEDOUT\"","timestamp":"2015-03-23T22:12:29.703Z"}
+{"level":"error","message":"Error: \"ETIMEDOUT\"","timestamp":"2015-03-23T22:12:29.704Z"}
+{"level":"info","message":"SLACK_CONNECTION: Connection Error","timestamp":"2015-03-23T22:12:29.704Z"}
+{"level":"info","message":"C2G STUDIO Error: \"ETIMEDOUT\"","timestamp":"2015-03-23T22:16:47.610Z"}
+{"level":"error","message":"Error: \"ETIMEDOUT\"","timestamp":"2015-03-23T22:16:47.610Z"}
+{"level":"info","message":"SLACK_CONNECTION: Connection Error","timestamp":"2015-03-23T22:16:47.611Z"}
+{"level":"info","message":"MOBILIZR Error: \"ETIMEDOUT\"","timestamp":"2015-03-23T22:18:15.084Z"}
+{"level":"error","message":"Error: \"ETIMEDOUT\"","timestamp":"2015-03-23T22:18:15.084Z"}
+{"level":"info","message":"SLACK_CONNECTION: Connection Error","timestamp":"2015-03-23T22:18:15.085Z"}
+{"level":"info","message":"MOBILIZR Error: \"ENOTFOUND\"","timestamp":"2015-03-23T22:18:27.091Z"}
+{"level":"error","message":"Error: \"ENOTFOUND\"","timestamp":"2015-03-23T22:18:27.091Z"}
+{"level":"info","message":"SLACK_CONNECTION: Connection Error","timestamp":"2015-03-23T22:18:27.091Z"}
+{"level":"info","message":"MOBILIZR Error: \"ENOTFOUND\"","timestamp":"2015-03-23T22:18:40.096Z"}
+{"level":"error","message":"Error: \"ENOTFOUND\"","timestamp":"2015-03-23T22:18:40.096Z"}
+{"level":"info","message":"SLACK_CONNECTION: Connection Error","timestamp":"2015-03-23T22:18:40.096Z"}
+{"level":"info","message":"MOBILIZR Error: \"ENOTFOUND\"","timestamp":"2015-03-23T22:18:54.099Z"}
+{"level":"error","message":"Error: \"ENOTFOUND\"","timestamp":"2015-03-23T22:18:54.099Z"}
+{"level":"info","message":"SLACK_CONNECTION: Connection Error","timestamp":"2015-03-23T22:18:54.099Z"}
+{"level":"info","message":"MOBILIZR: Connection established...listening for messages","timestamp":"2015-03-23T22:19:18.509Z"}
+{"level":"info","message":"Welcome to Slack. You are @blanka of Mobilizr","timestamp":"2015-03-23T22:19:18.510Z"}
+{"level":"info","message":"You are in: #general","timestamp":"2015-03-23T22:19:18.511Z"}
+{"level":"info","message":"As well as: ","timestamp":"2015-03-23T22:19:18.512Z"}
+{"level":"info","message":"You have 0 unread messages","timestamp":"2015-03-23T22:19:18.512Z"}
+{"level":"info","message":"SLACK_CONNECTION: Connection Opened","timestamp":"2015-03-23T22:19:18.512Z"}
+{"level":"info","message":"C2G STUDIO Error: \"ETIMEDOUT\"","timestamp":"2015-03-23T22:22:54.768Z"}
+{"level":"error","message":"Error: \"ETIMEDOUT\"","timestamp":"2015-03-23T22:22:54.769Z"}
+{"level":"info","message":"SLACK_CONNECTION: Connection Error","timestamp":"2015-03-23T22:22:54.769Z"}
+{"level":"info","message":"C2G STUDIO: Connection established...listening for messages","timestamp":"2015-03-23T22:23:11.356Z"}
+{"level":"info","message":"Welcome to Slack. You are @blonker of devstudio","timestamp":"2015-03-23T22:23:11.356Z"}
+{"level":"info","message":"You are in: #general","timestamp":"2015-03-23T22:23:11.356Z"}
+{"level":"info","message":"As well as: ","timestamp":"2015-03-23T22:23:11.356Z"}
+{"level":"info","message":"You have 4 unread messages","timestamp":"2015-03-23T22:23:11.356Z"}
+{"level":"info","message":"SLACK_CONNECTION: Connection Opened","timestamp":"2015-03-23T22:23:11.356Z"}
+{"level":"info","message":"MOBILIZR Error: \"ENOTFOUND\"","timestamp":"2015-03-24T03:36:39.679Z"}
+{"level":"error","message":"Error: \"ENOTFOUND\"","timestamp":"2015-03-24T03:36:39.679Z"}
+{"level":"info","message":"SLACK_CONNECTION: Connection Error","timestamp":"2015-03-24T03:36:39.680Z"}
+{"level":"info","message":"C2G STUDIO: Connection established...listening for messages","timestamp":"2015-03-24T03:36:47.636Z"}
+{"level":"info","message":"Welcome to Slack. You are @blonker of devstudio","timestamp":"2015-03-24T03:36:47.636Z"}
+{"level":"info","message":"You are in: #general","timestamp":"2015-03-24T03:36:47.636Z"}
+{"level":"info","message":"As well as: ","timestamp":"2015-03-24T03:36:47.636Z"}
+{"level":"info","message":"You have 4 unread messages","timestamp":"2015-03-24T03:36:47.637Z"}
+{"level":"info","message":"SLACK_CONNECTION: Connection Opened","timestamp":"2015-03-24T03:36:47.639Z"}
+{"level":"info","message":"MOBILIZR: Connection established...listening for messages","timestamp":"2015-03-24T03:36:47.922Z"}
+{"level":"info","message":"Welcome to Slack. You are @blanka of Mobilizr","timestamp":"2015-03-24T03:36:47.922Z"}
+{"level":"info","message":"You are in: #general","timestamp":"2015-03-24T03:36:47.922Z"}
+{"level":"info","message":"As well as: ","timestamp":"2015-03-24T03:36:47.922Z"}
+{"level":"info","message":"You have 0 unread messages","timestamp":"2015-03-24T03:36:47.922Z"}
+{"level":"info","message":"SLACK_CONNECTION: Connection Opened","timestamp":"2015-03-24T03:36:47.922Z"}
+{"level":"info","message":"C2G STUDIO Error: \"ENOTFOUND\"","timestamp":"2015-03-24T05:41:11.936Z"}
+{"level":"error","message":"Error: \"ENOTFOUND\"","timestamp":"2015-03-24T05:41:11.936Z"}
+{"level":"info","message":"SLACK_CONNECTION: Connection Error","timestamp":"2015-03-24T05:41:11.936Z"}
+{"level":"info","message":"MOBILIZR Error: \"ENOTFOUND\"","timestamp":"2015-03-24T05:41:12.168Z"}
+{"level":"error","message":"Error: \"ENOTFOUND\"","timestamp":"2015-03-24T05:41:12.168Z"}
+{"level":"info","message":"SLACK_CONNECTION: Connection Error","timestamp":"2015-03-24T05:41:12.168Z"}
+{"level":"info","message":"C2G STUDIO: Connection established...listening for messages","timestamp":"2015-03-24T05:41:18.574Z"}
+{"level":"info","message":"Welcome to Slack. You are @blonker of devstudio","timestamp":"2015-03-24T05:41:18.574Z"}
+{"level":"info","message":"You are in: #general","timestamp":"2015-03-24T05:41:18.574Z"}
+{"level":"info","message":"As well as: ","timestamp":"2015-03-24T05:41:18.575Z"}
+{"level":"info","message":"You have 4 unread messages","timestamp":"2015-03-24T05:41:18.575Z"}
+{"level":"info","message":"SLACK_CONNECTION: Connection Opened","timestamp":"2015-03-24T05:41:18.575Z"}
+{"level":"info","message":"MOBILIZR: Connection established...listening for messages","timestamp":"2015-03-24T05:41:18.576Z"}
+{"level":"info","message":"Welcome to Slack. You are @blanka of Mobilizr","timestamp":"2015-03-24T05:41:18.576Z"}
+{"level":"info","message":"You are in: #general","timestamp":"2015-03-24T05:41:18.576Z"}
+{"level":"info","message":"As well as: ","timestamp":"2015-03-24T05:41:18.576Z"}
+{"level":"info","message":"You have 0 unread messages","timestamp":"2015-03-24T05:41:18.576Z"}
+{"level":"info","message":"SLACK_CONNECTION: Connection Opened","timestamp":"2015-03-24T05:41:18.576Z"}
+{"level":"info","message":"MOBILIZR: Connection established...listening for messages","timestamp":"2015-03-24T07:51:44.294Z"}
+{"level":"info","message":"Welcome to Slack. You are @blanka of Mobilizr","timestamp":"2015-03-24T07:51:44.294Z"}
+{"level":"info","message":"You are in: #general","timestamp":"2015-03-24T07:51:44.294Z"}
+{"level":"info","message":"As well as: ","timestamp":"2015-03-24T07:51:44.294Z"}
+{"level":"info","message":"You have 0 unread messages","timestamp":"2015-03-24T07:51:44.295Z"}
+{"level":"info","message":"SLACK_CONNECTION: Connection Opened","timestamp":"2015-03-24T07:51:44.295Z"}
+{"level":"info","message":"MOBILIZR Error: \"ENOTFOUND\"","timestamp":"2015-03-24T09:28:16.228Z"}
+{"level":"error","message":"Error: \"ENOTFOUND\"","timestamp":"2015-03-24T09:28:16.228Z"}
+{"level":"info","message":"SLACK_CONNECTION: Connection Error","timestamp":"2015-03-24T09:28:16.228Z"}
+{"level":"info","message":"MOBILIZR Error: \"ENOTFOUND\"","timestamp":"2015-03-24T09:28:18.238Z"}
+{"level":"error","message":"Error: \"ENOTFOUND\"","timestamp":"2015-03-24T09:28:18.239Z"}
+{"level":"info","message":"SLACK_CONNECTION: Connection Error","timestamp":"2015-03-24T09:28:18.239Z"}
+{"level":"info","message":"MOBILIZR: Connection established...listening for messages","timestamp":"2015-03-24T09:28:25.362Z"}
+{"level":"info","message":"Welcome to Slack. You are @blanka of Mobilizr","timestamp":"2015-03-24T09:28:25.362Z"}
+{"level":"info","message":"You are in: #general","timestamp":"2015-03-24T09:28:25.362Z"}
+{"level":"info","message":"As well as: ","timestamp":"2015-03-24T09:28:25.362Z"}
+{"level":"info","message":"You have 0 unread messages","timestamp":"2015-03-24T09:28:25.362Z"}
+{"level":"info","message":"SLACK_CONNECTION: Connection Opened","timestamp":"2015-03-24T09:28:25.362Z"}
+{"level":"info","message":"MOBILIZR Error: \"ENOTFOUND\"","timestamp":"2015-03-24T11:03:54.818Z"}
+{"level":"error","message":"Error: \"ENOTFOUND\"","timestamp":"2015-03-24T11:03:54.818Z"}
+{"level":"info","message":"SLACK_CONNECTION: Connection Error","timestamp":"2015-03-24T11:03:54.818Z"}
+{"level":"info","message":"MOBILIZR Error: \"ENOTFOUND\"","timestamp":"2015-03-24T11:03:56.825Z"}
+{"level":"error","message":"Error: \"ENOTFOUND\"","timestamp":"2015-03-24T11:03:56.825Z"}
+{"level":"info","message":"SLACK_CONNECTION: Connection Error","timestamp":"2015-03-24T11:03:56.825Z"}
+{"level":"info","message":"MOBILIZR: Connection established...listening for messages","timestamp":"2015-03-24T11:04:11.784Z"}
+{"level":"info","message":"Welcome to Slack. You are @blanka of Mobilizr","timestamp":"2015-03-24T11:04:11.785Z"}
+{"level":"info","message":"You are in: #general","timestamp":"2015-03-24T11:04:11.785Z"}
+{"level":"info","message":"As well as: ","timestamp":"2015-03-24T11:04:11.785Z"}
+{"level":"info","message":"You have 0 unread messages","timestamp":"2015-03-24T11:04:11.785Z"}
+{"level":"info","message":"SLACK_CONNECTION: Connection Opened","timestamp":"2015-03-24T11:04:11.785Z"}
+{"level":"info","message":"MOBILIZR: Connection established...listening for messages","timestamp":"2015-03-24T11:32:04.516Z"}
+{"level":"info","message":"Welcome to Slack. You are @blanka of Mobilizr","timestamp":"2015-03-24T11:32:04.516Z"}
+{"level":"info","message":"You are in: #general","timestamp":"2015-03-24T11:32:04.516Z"}
+{"level":"info","message":"As well as: ","timestamp":"2015-03-24T11:32:04.516Z"}
+{"level":"info","message":"You have 0 unread messages","timestamp":"2015-03-24T11:32:04.517Z"}
+{"level":"info","message":"SLACK_CONNECTION: Connection Opened","timestamp":"2015-03-24T11:32:04.517Z"}
+{"level":"info","message":"MOBILIZR Error: \"ENOTFOUND\"","timestamp":"2015-03-24T11:58:01.654Z"}
+{"level":"error","message":"Error: \"ENOTFOUND\"","timestamp":"2015-03-24T11:58:01.655Z"}
+{"level":"info","message":"SLACK_CONNECTION: Connection Error","timestamp":"2015-03-24T11:58:01.655Z"}
+{"level":"info","message":"MOBILIZR: Connection established...listening for messages","timestamp":"2015-03-24T11:58:14.378Z"}
+{"level":"info","message":"Welcome to Slack. You are @blanka of Mobilizr","timestamp":"2015-03-24T11:58:14.379Z"}
+{"level":"info","message":"You are in: #general","timestamp":"2015-03-24T11:58:14.379Z"}
+{"level":"info","message":"As well as: ","timestamp":"2015-03-24T11:58:14.379Z"}
+{"level":"info","message":"You have 0 unread messages","timestamp":"2015-03-24T11:58:14.379Z"}
+{"level":"info","message":"SLACK_CONNECTION: Connection Opened","timestamp":"2015-03-24T11:58:14.379Z"}
+{"level":"info","message":"Piper Controller: Connecting to MQ Exchange <piper.events.in>...","timestamp":"2015-03-24T14:28:59.900Z"}
+{"level":"info","message":"CHITCHAT Handler: Connecting to MQ Exchange <piper.events.out>...","timestamp":"2015-03-24T14:28:59.912Z"}
+{"level":"info","message":"Piper server listening on port 3000 in development mode","timestamp":"2015-03-24T14:28:59.916Z"}
+{"level":"info","message":"Successfully connected to: mongodb://localhost/piper","timestamp":"2015-03-24T14:28:59.936Z"}
+{"level":"info","message":"CHITCHAT Handler <piper.events.out>: Binding to mobilizr.CHITCHAT...","timestamp":"2015-03-24T14:28:59.945Z"}
+{"level":"info","message":"CHITCHAT Handler <piper.events.out>: Binding to c2gstudio.CHITCHAT...","timestamp":"2015-03-24T14:28:59.945Z"}
+{"level":"info","message":"Updating registry for client mobilizr...","timestamp":"2015-03-24T14:28:59.947Z"}
+{"level":"info","message":"Updating registry for client c2gstudio...","timestamp":"2015-03-24T14:28:59.964Z"}
+{"level":"info","message":"Registered connection for client: mobilizr","timestamp":"2015-03-24T14:28:59.967Z"}
+{"level":"info","message":"Registered connection for client: c2gstudio","timestamp":"2015-03-24T14:28:59.967Z"}
+{"level":"info","message":"Piper Controller: MQ Exchange <piper.events.in> connected","timestamp":"2015-03-24T14:29:07.935Z"}
+{"date":"Tue Mar 24 2015 15:29:15 GMT+0100 (WAT)","process":{"pid":74720,"uid":502,"gid":20,"cwd":"/Users/cizukanne/Development/workspace/piper","execPath":"/usr/local/bin/node","version":"v0.10.35","argv":["node","/Users/cizukanne/Development/workspace/piper/server","index.js"],"memoryUsage":{"rss":31911936,"heapTotal":18635008,"heapUsed":9467704}},"os":{"loadavg":[2.25634765625,2.52880859375,2.67333984375],"uptime":1147461},"trace":[{"column":25,"file":"module.js","function":"Module._compile","line":439,"method":"_compile","native":false},{"column":10,"file":"module.js","function":"Object.Module._extensions..js","line":474,"method":"Module._extensions..js","native":false},{"column":32,"file":"module.js","function":"Module.load","line":356,"method":"load","native":false},{"column":12,"file":"module.js","function":"Function.Module._load","line":312,"method":"Module._load","native":false},{"column":17,"file":"module.js","function":"Module.require","line":364,"method":"require","native":false},{"column":17,"file":"module.js","function":"require","line":380,"method":null,"native":false},{"column":23,"file":"/Users/cizukanne/Development/workspace/piper/api/app.js","function":"","line":5,"method":null,"native":false},{"column":26,"file":"module.js","function":"Module._compile","line":456,"method":"_compile","native":false},{"column":10,"file":"module.js","function":"Object.Module._extensions..js","line":474,"method":"Module._extensions..js","native":false},{"column":32,"file":"module.js","function":"Module.load","line":356,"method":"load","native":false}],"stack":["SyntaxError: Unexpected token )","    at Module._compile (module.js:439:25)","    at Object.Module._extensions..js (module.js:474:10)","    at Module.load (module.js:356:32)","    at Function.Module._load (module.js:312:12)","    at Module.require (module.js:364:17)","    at require (module.js:380:17)","    at Object.<anonymous> (/Users/cizukanne/Development/workspace/piper/api/app.js:5:23)","    at Module._compile (module.js:456:26)","    at Object.Module._extensions..js (module.js:474:10)","    at Module.load (module.js:356:32)"],"level":"error","message":"uncaughtException: Unexpected token )","timestamp":"2015-03-24T14:29:15.568Z"}
+{"date":"Tue Mar 24 2015 15:29:15 GMT+0100 (WAT)","process":{"pid":74720,"uid":502,"gid":20,"cwd":"/Users/cizukanne/Development/workspace/piper","execPath":"/usr/local/bin/node","version":"v0.10.35","argv":["node","/Users/cizukanne/Development/workspace/piper/server","index.js"],"memoryUsage":{"rss":31911936,"heapTotal":18635008,"heapUsed":9467704}},"os":{"loadavg":[2.25634765625,2.52880859375,2.67333984375],"uptime":1147461},"trace":[{"column":25,"file":"module.js","function":"Module._compile","line":439,"method":"_compile","native":false},{"column":10,"file":"module.js","function":"Object.Module._extensions..js","line":474,"method":"Module._extensions..js","native":false},{"column":32,"file":"module.js","function":"Module.load","line":356,"method":"load","native":false},{"column":12,"file":"module.js","function":"Function.Module._load","line":312,"method":"Module._load","native":false},{"column":17,"file":"module.js","function":"Module.require","line":364,"method":"require","native":false},{"column":17,"file":"module.js","function":"require","line":380,"method":null,"native":false},{"column":23,"file":"/Users/cizukanne/Development/workspace/piper/api/app.js","function":"","line":5,"method":null,"native":false},{"column":26,"file":"module.js","function":"Module._compile","line":456,"method":"_compile","native":false},{"column":10,"file":"module.js","function":"Object.Module._extensions..js","line":474,"method":"Module._extensions..js","native":false},{"column":32,"file":"module.js","function":"Module.load","line":356,"method":"load","native":false}],"stack":["SyntaxError: Unexpected token )","    at Module._compile (module.js:439:25)","    at Object.Module._extensions..js (module.js:474:10)","    at Module.load (module.js:356:32)","    at Function.Module._load (module.js:312:12)","    at Module.require (module.js:364:17)","    at require (module.js:380:17)","    at Object.<anonymous> (/Users/cizukanne/Development/workspace/piper/api/app.js:5:23)","    at Module._compile (module.js:456:26)","    at Object.Module._extensions..js (module.js:474:10)","    at Module.load (module.js:356:32)"],"level":"error","message":"uncaughtException: Unexpected token )","timestamp":"2015-03-24T14:29:15.569Z"}
+{"date":"Tue Mar 24 2015 15:29:27 GMT+0100 (WAT)","process":{"pid":74754,"uid":502,"gid":20,"cwd":"/Users/cizukanne/Development/workspace/piper","execPath":"/usr/local/bin/node","version":"v0.10.35","argv":["node","/Users/cizukanne/Development/workspace/piper/server","index.js"],"memoryUsage":{"rss":32059392,"heapTotal":18635008,"heapUsed":9468360}},"os":{"loadavg":[2.38916015625,2.544921875,2.6767578125],"uptime":1147473},"trace":[{"column":25,"file":"module.js","function":"Module._compile","line":439,"method":"_compile","native":false},{"column":10,"file":"module.js","function":"Object.Module._extensions..js","line":474,"method":"Module._extensions..js","native":false},{"column":32,"file":"module.js","function":"Module.load","line":356,"method":"load","native":false},{"column":12,"file":"module.js","function":"Function.Module._load","line":312,"method":"Module._load","native":false},{"column":17,"file":"module.js","function":"Module.require","line":364,"method":"require","native":false},{"column":17,"file":"module.js","function":"require","line":380,"method":null,"native":false},{"column":23,"file":"/Users/cizukanne/Development/workspace/piper/api/app.js","function":"","line":5,"method":null,"native":false},{"column":26,"file":"module.js","function":"Module._compile","line":456,"method":"_compile","native":false},{"column":10,"file":"module.js","function":"Object.Module._extensions..js","line":474,"method":"Module._extensions..js","native":false},{"column":32,"file":"module.js","function":"Module.load","line":356,"method":"load","native":false}],"stack":["SyntaxError: Unexpected token )","    at Module._compile (module.js:439:25)","    at Object.Module._extensions..js (module.js:474:10)","    at Module.load (module.js:356:32)","    at Function.Module._load (module.js:312:12)","    at Module.require (module.js:364:17)","    at require (module.js:380:17)","    at Object.<anonymous> (/Users/cizukanne/Development/workspace/piper/api/app.js:5:23)","    at Module._compile (module.js:456:26)","    at Object.Module._extensions..js (module.js:474:10)","    at Module.load (module.js:356:32)"],"level":"error","message":"uncaughtException: Unexpected token )","timestamp":"2015-03-24T14:29:27.711Z"}
+{"date":"Tue Mar 24 2015 15:29:27 GMT+0100 (WAT)","process":{"pid":74754,"uid":502,"gid":20,"cwd":"/Users/cizukanne/Development/workspace/piper","execPath":"/usr/local/bin/node","version":"v0.10.35","argv":["node","/Users/cizukanne/Development/workspace/piper/server","index.js"],"memoryUsage":{"rss":32059392,"heapTotal":18635008,"heapUsed":9468360}},"os":{"loadavg":[2.38916015625,2.544921875,2.6767578125],"uptime":1147473},"trace":[{"column":25,"file":"module.js","function":"Module._compile","line":439,"method":"_compile","native":false},{"column":10,"file":"module.js","function":"Object.Module._extensions..js","line":474,"method":"Module._extensions..js","native":false},{"column":32,"file":"module.js","function":"Module.load","line":356,"method":"load","native":false},{"column":12,"file":"module.js","function":"Function.Module._load","line":312,"method":"Module._load","native":false},{"column":17,"file":"module.js","function":"Module.require","line":364,"method":"require","native":false},{"column":17,"file":"module.js","function":"require","line":380,"method":null,"native":false},{"column":23,"file":"/Users/cizukanne/Development/workspace/piper/api/app.js","function":"","line":5,"method":null,"native":false},{"column":26,"file":"module.js","function":"Module._compile","line":456,"method":"_compile","native":false},{"column":10,"file":"module.js","function":"Object.Module._extensions..js","line":474,"method":"Module._extensions..js","native":false},{"column":32,"file":"module.js","function":"Module.load","line":356,"method":"load","native":false}],"stack":["SyntaxError: Unexpected token )","    at Module._compile (module.js:439:25)","    at Object.Module._extensions..js (module.js:474:10)","    at Module.load (module.js:356:32)","    at Function.Module._load (module.js:312:12)","    at Module.require (module.js:364:17)","    at require (module.js:380:17)","    at Object.<anonymous> (/Users/cizukanne/Development/workspace/piper/api/app.js:5:23)","    at Module._compile (module.js:456:26)","    at Object.Module._extensions..js (module.js:474:10)","    at Module.load (module.js:356:32)"],"level":"error","message":"uncaughtException: Unexpected token )","timestamp":"2015-03-24T14:29:27.712Z"}
+{"date":"Tue Mar 24 2015 15:30:18 GMT+0100 (WAT)","process":{"pid":74868,"uid":502,"gid":20,"cwd":"/Users/cizukanne/Development/workspace/piper","execPath":"/usr/local/bin/node","version":"v0.10.35","argv":["node","/Users/cizukanne/Development/workspace/piper/server","index.js"],"memoryUsage":{"rss":31924224,"heapTotal":18635008,"heapUsed":9468232}},"os":{"loadavg":[2.14453125,2.44384765625,2.630859375],"uptime":1147524},"trace":[{"column":25,"file":"module.js","function":"Module._compile","line":439,"method":"_compile","native":false},{"column":10,"file":"module.js","function":"Object.Module._extensions..js","line":474,"method":"Module._extensions..js","native":false},{"column":32,"file":"module.js","function":"Module.load","line":356,"method":"load","native":false},{"column":12,"file":"module.js","function":"Function.Module._load","line":312,"method":"Module._load","native":false},{"column":17,"file":"module.js","function":"Module.require","line":364,"method":"require","native":false},{"column":17,"file":"module.js","function":"require","line":380,"method":null,"native":false},{"column":23,"file":"/Users/cizukanne/Development/workspace/piper/api/app.js","function":"","line":5,"method":null,"native":false},{"column":26,"file":"module.js","function":"Module._compile","line":456,"method":"_compile","native":false},{"column":10,"file":"module.js","function":"Object.Module._extensions..js","line":474,"method":"Module._extensions..js","native":false},{"column":32,"file":"module.js","function":"Module.load","line":356,"method":"load","native":false}],"stack":["SyntaxError: Unexpected token )","    at Module._compile (module.js:439:25)","    at Object.Module._extensions..js (module.js:474:10)","    at Module.load (module.js:356:32)","    at Function.Module._load (module.js:312:12)","    at Module.require (module.js:364:17)","    at require (module.js:380:17)","    at Object.<anonymous> (/Users/cizukanne/Development/workspace/piper/api/app.js:5:23)","    at Module._compile (module.js:456:26)","    at Object.Module._extensions..js (module.js:474:10)","    at Module.load (module.js:356:32)"],"level":"error","message":"uncaughtException: Unexpected token )","timestamp":"2015-03-24T14:30:18.248Z"}
+{"date":"Tue Mar 24 2015 15:30:18 GMT+0100 (WAT)","process":{"pid":74868,"uid":502,"gid":20,"cwd":"/Users/cizukanne/Development/workspace/piper","execPath":"/usr/local/bin/node","version":"v0.10.35","argv":["node","/Users/cizukanne/Development/workspace/piper/server","index.js"],"memoryUsage":{"rss":31924224,"heapTotal":18635008,"heapUsed":9468232}},"os":{"loadavg":[2.14453125,2.44384765625,2.630859375],"uptime":1147524},"trace":[{"column":25,"file":"module.js","function":"Module._compile","line":439,"method":"_compile","native":false},{"column":10,"file":"module.js","function":"Object.Module._extensions..js","line":474,"method":"Module._extensions..js","native":false},{"column":32,"file":"module.js","function":"Module.load","line":356,"method":"load","native":false},{"column":12,"file":"module.js","function":"Function.Module._load","line":312,"method":"Module._load","native":false},{"column":17,"file":"module.js","function":"Module.require","line":364,"method":"require","native":false},{"column":17,"file":"module.js","function":"require","line":380,"method":null,"native":false},{"column":23,"file":"/Users/cizukanne/Development/workspace/piper/api/app.js","function":"","line":5,"method":null,"native":false},{"column":26,"file":"module.js","function":"Module._compile","line":456,"method":"_compile","native":false},{"column":10,"file":"module.js","function":"Object.Module._extensions..js","line":474,"method":"Module._extensions..js","native":false},{"column":32,"file":"module.js","function":"Module.load","line":356,"method":"load","native":false}],"stack":["SyntaxError: Unexpected token )","    at Module._compile (module.js:439:25)","    at Object.Module._extensions..js (module.js:474:10)","    at Module.load (module.js:356:32)","    at Function.Module._load (module.js:312:12)","    at Module.require (module.js:364:17)","    at require (module.js:380:17)","    at Object.<anonymous> (/Users/cizukanne/Development/workspace/piper/api/app.js:5:23)","    at Module._compile (module.js:456:26)","    at Object.Module._extensions..js (module.js:474:10)","    at Module.load (module.js:356:32)"],"level":"error","message":"uncaughtException: Unexpected token )","timestamp":"2015-03-24T14:30:18.249Z"}
+{"date":"Tue Mar 24 2015 15:30:56 GMT+0100 (WAT)","process":{"pid":74950,"uid":502,"gid":20,"cwd":"/Users/cizukanne/Development/workspace/piper","execPath":"/usr/local/bin/node","version":"v0.10.35","argv":["node","/Users/cizukanne/Development/workspace/piper/server","index.js"],"memoryUsage":{"rss":31989760,"heapTotal":18635008,"heapUsed":9468544}},"os":{"loadavg":[2.28369140625,2.43408203125,2.6171875],"uptime":1147562},"trace":[{"column":25,"file":"module.js","function":"Module._compile","line":439,"method":"_compile","native":false},{"column":10,"file":"module.js","function":"Object.Module._extensions..js","line":474,"method":"Module._extensions..js","native":false},{"column":32,"file":"module.js","function":"Module.load","line":356,"method":"load","native":false},{"column":12,"file":"module.js","function":"Function.Module._load","line":312,"method":"Module._load","native":false},{"column":17,"file":"module.js","function":"Module.require","line":364,"method":"require","native":false},{"column":17,"file":"module.js","function":"require","line":380,"method":null,"native":false},{"column":23,"file":"/Users/cizukanne/Development/workspace/piper/api/app.js","function":"","line":5,"method":null,"native":false},{"column":26,"file":"module.js","function":"Module._compile","line":456,"method":"_compile","native":false},{"column":10,"file":"module.js","function":"Object.Module._extensions..js","line":474,"method":"Module._extensions..js","native":false},{"column":32,"file":"module.js","function":"Module.load","line":356,"method":"load","native":false}],"stack":["SyntaxError: Unexpected token )","    at Module._compile (module.js:439:25)","    at Object.Module._extensions..js (module.js:474:10)","    at Module.load (module.js:356:32)","    at Function.Module._load (module.js:312:12)","    at Module.require (module.js:364:17)","    at require (module.js:380:17)","    at Object.<anonymous> (/Users/cizukanne/Development/workspace/piper/api/app.js:5:23)","    at Module._compile (module.js:456:26)","    at Object.Module._extensions..js (module.js:474:10)","    at Module.load (module.js:356:32)"],"level":"error","message":"uncaughtException: Unexpected token )","timestamp":"2015-03-24T14:30:56.650Z"}
+{"date":"Tue Mar 24 2015 15:30:56 GMT+0100 (WAT)","process":{"pid":74950,"uid":502,"gid":20,"cwd":"/Users/cizukanne/Development/workspace/piper","execPath":"/usr/local/bin/node","version":"v0.10.35","argv":["node","/Users/cizukanne/Development/workspace/piper/server","index.js"],"memoryUsage":{"rss":31989760,"heapTotal":18635008,"heapUsed":9468544}},"os":{"loadavg":[2.28369140625,2.43408203125,2.6171875],"uptime":1147562},"trace":[{"column":25,"file":"module.js","function":"Module._compile","line":439,"method":"_compile","native":false},{"column":10,"file":"module.js","function":"Object.Module._extensions..js","line":474,"method":"Module._extensions..js","native":false},{"column":32,"file":"module.js","function":"Module.load","line":356,"method":"load","native":false},{"column":12,"file":"module.js","function":"Function.Module._load","line":312,"method":"Module._load","native":false},{"column":17,"file":"module.js","function":"Module.require","line":364,"method":"require","native":false},{"column":17,"file":"module.js","function":"require","line":380,"method":null,"native":false},{"column":23,"file":"/Users/cizukanne/Development/workspace/piper/api/app.js","function":"","line":5,"method":null,"native":false},{"column":26,"file":"module.js","function":"Module._compile","line":456,"method":"_compile","native":false},{"column":10,"file":"module.js","function":"Object.Module._extensions..js","line":474,"method":"Module._extensions..js","native":false},{"column":32,"file":"module.js","function":"Module.load","line":356,"method":"load","native":false}],"stack":["SyntaxError: Unexpected token )","    at Module._compile (module.js:439:25)","    at Object.Module._extensions..js (module.js:474:10)","    at Module.load (module.js:356:32)","    at Function.Module._load (module.js:312:12)","    at Module.require (module.js:364:17)","    at require (module.js:380:17)","    at Object.<anonymous> (/Users/cizukanne/Development/workspace/piper/api/app.js:5:23)","    at Module._compile (module.js:456:26)","    at Object.Module._extensions..js (module.js:474:10)","    at Module.load (module.js:356:32)"],"level":"error","message":"uncaughtException: Unexpected token )","timestamp":"2015-03-24T14:30:56.652Z"}
+{"date":"Tue Mar 24 2015 15:34:32 GMT+0100 (WAT)","process":{"pid":75387,"uid":502,"gid":20,"cwd":"/Users/cizukanne/Development/workspace/piper","execPath":"/usr/local/bin/node","version":"v0.10.35","argv":["node","/Users/cizukanne/Development/workspace/piper/server","index.js"],"memoryUsage":{"rss":31997952,"heapTotal":18635008,"heapUsed":9467904}},"os":{"loadavg":[2.142578125,2.3994140625,2.5595703125],"uptime":1147778},"trace":[{"column":25,"file":"module.js","function":"Module._compile","line":439,"method":"_compile","native":false},{"column":10,"file":"module.js","function":"Object.Module._extensions..js","line":474,"method":"Module._extensions..js","native":false},{"column":32,"file":"module.js","function":"Module.load","line":356,"method":"load","native":false},{"column":12,"file":"module.js","function":"Function.Module._load","line":312,"method":"Module._load","native":false},{"column":17,"file":"module.js","function":"Module.require","line":364,"method":"require","native":false},{"column":17,"file":"module.js","function":"require","line":380,"method":null,"native":false},{"column":23,"file":"/Users/cizukanne/Development/workspace/piper/api/app.js","function":"","line":5,"method":null,"native":false},{"column":26,"file":"module.js","function":"Module._compile","line":456,"method":"_compile","native":false},{"column":10,"file":"module.js","function":"Object.Module._extensions..js","line":474,"method":"Module._extensions..js","native":false},{"column":32,"file":"module.js","function":"Module.load","line":356,"method":"load","native":false}],"stack":["SyntaxError: Unexpected token )","    at Module._compile (module.js:439:25)","    at Object.Module._extensions..js (module.js:474:10)","    at Module.load (module.js:356:32)","    at Function.Module._load (module.js:312:12)","    at Module.require (module.js:364:17)","    at require (module.js:380:17)","    at Object.<anonymous> (/Users/cizukanne/Development/workspace/piper/api/app.js:5:23)","    at Module._compile (module.js:456:26)","    at Object.Module._extensions..js (module.js:474:10)","    at Module.load (module.js:356:32)"],"level":"error","message":"uncaughtException: Unexpected token )","timestamp":"2015-03-24T14:34:32.936Z"}
+{"date":"Tue Mar 24 2015 15:34:32 GMT+0100 (WAT)","process":{"pid":75387,"uid":502,"gid":20,"cwd":"/Users/cizukanne/Development/workspace/piper","execPath":"/usr/local/bin/node","version":"v0.10.35","argv":["node","/Users/cizukanne/Development/workspace/piper/server","index.js"],"memoryUsage":{"rss":31997952,"heapTotal":18635008,"heapUsed":9467904}},"os":{"loadavg":[2.142578125,2.3994140625,2.5595703125],"uptime":1147778},"trace":[{"column":25,"file":"module.js","function":"Module._compile","line":439,"method":"_compile","native":false},{"column":10,"file":"module.js","function":"Object.Module._extensions..js","line":474,"method":"Module._extensions..js","native":false},{"column":32,"file":"module.js","function":"Module.load","line":356,"method":"load","native":false},{"column":12,"file":"module.js","function":"Function.Module._load","line":312,"method":"Module._load","native":false},{"column":17,"file":"module.js","function":"Module.require","line":364,"method":"require","native":false},{"column":17,"file":"module.js","function":"require","line":380,"method":null,"native":false},{"column":23,"file":"/Users/cizukanne/Development/workspace/piper/api/app.js","function":"","line":5,"method":null,"native":false},{"column":26,"file":"module.js","function":"Module._compile","line":456,"method":"_compile","native":false},{"column":10,"file":"module.js","function":"Object.Module._extensions..js","line":474,"method":"Module._extensions..js","native":false},{"column":32,"file":"module.js","function":"Module.load","line":356,"method":"load","native":false}],"stack":["SyntaxError: Unexpected token )","    at Module._compile (module.js:439:25)","    at Object.Module._extensions..js (module.js:474:10)","    at Module.load (module.js:356:32)","    at Function.Module._load (module.js:312:12)","    at Module.require (module.js:364:17)","    at require (module.js:380:17)","    at Object.<anonymous> (/Users/cizukanne/Development/workspace/piper/api/app.js:5:23)","    at Module._compile (module.js:456:26)","    at Object.Module._extensions..js (module.js:474:10)","    at Module.load (module.js:356:32)"],"level":"error","message":"uncaughtException: Unexpected token )","timestamp":"2015-03-24T14:34:32.937Z"}
+{"date":"Tue Mar 24 2015 15:34:59 GMT+0100 (WAT)","process":{"pid":75449,"uid":502,"gid":20,"cwd":"/Users/cizukanne/Development/workspace/piper","execPath":"/usr/local/bin/node","version":"v0.10.35","argv":["node","/Users/cizukanne/Development/workspace/piper/server","index.js"],"memoryUsage":{"rss":31944704,"heapTotal":18635008,"heapUsed":9468232}},"os":{"loadavg":[2.076171875,2.365234375,2.54248046875],"uptime":1147805},"trace":[{"column":25,"file":"module.js","function":"Module._compile","line":439,"method":"_compile","native":false},{"column":10,"file":"module.js","function":"Object.Module._extensions..js","line":474,"method":"Module._extensions..js","native":false},{"column":32,"file":"module.js","function":"Module.load","line":356,"method":"load","native":false},{"column":12,"file":"module.js","function":"Function.Module._load","line":312,"method":"Module._load","native":false},{"column":17,"file":"module.js","function":"Module.require","line":364,"method":"require","native":false},{"column":17,"file":"module.js","function":"require","line":380,"method":null,"native":false},{"column":23,"file":"/Users/cizukanne/Development/workspace/piper/api/app.js","function":"","line":5,"method":null,"native":false},{"column":26,"file":"module.js","function":"Module._compile","line":456,"method":"_compile","native":false},{"column":10,"file":"module.js","function":"Object.Module._extensions..js","line":474,"method":"Module._extensions..js","native":false},{"column":32,"file":"module.js","function":"Module.load","line":356,"method":"load","native":false}],"stack":["SyntaxError: Unexpected token )","    at Module._compile (module.js:439:25)","    at Object.Module._extensions..js (module.js:474:10)","    at Module.load (module.js:356:32)","    at Function.Module._load (module.js:312:12)","    at Module.require (module.js:364:17)","    at require (module.js:380:17)","    at Object.<anonymous> (/Users/cizukanne/Development/workspace/piper/api/app.js:5:23)","    at Module._compile (module.js:456:26)","    at Object.Module._extensions..js (module.js:474:10)","    at Module.load (module.js:356:32)"],"level":"error","message":"uncaughtException: Unexpected token )","timestamp":"2015-03-24T14:34:59.210Z"}
+{"date":"Tue Mar 24 2015 15:34:59 GMT+0100 (WAT)","process":{"pid":75449,"uid":502,"gid":20,"cwd":"/Users/cizukanne/Development/workspace/piper","execPath":"/usr/local/bin/node","version":"v0.10.35","argv":["node","/Users/cizukanne/Development/workspace/piper/server","index.js"],"memoryUsage":{"rss":31944704,"heapTotal":18635008,"heapUsed":9468232}},"os":{"loadavg":[2.076171875,2.365234375,2.54248046875],"uptime":1147805},"trace":[{"column":25,"file":"module.js","function":"Module._compile","line":439,"method":"_compile","native":false},{"column":10,"file":"module.js","function":"Object.Module._extensions..js","line":474,"method":"Module._extensions..js","native":false},{"column":32,"file":"module.js","function":"Module.load","line":356,"method":"load","native":false},{"column":12,"file":"module.js","function":"Function.Module._load","line":312,"method":"Module._load","native":false},{"column":17,"file":"module.js","function":"Module.require","line":364,"method":"require","native":false},{"column":17,"file":"module.js","function":"require","line":380,"method":null,"native":false},{"column":23,"file":"/Users/cizukanne/Development/workspace/piper/api/app.js","function":"","line":5,"method":null,"native":false},{"column":26,"file":"module.js","function":"Module._compile","line":456,"method":"_compile","native":false},{"column":10,"file":"module.js","function":"Object.Module._extensions..js","line":474,"method":"Module._extensions..js","native":false},{"column":32,"file":"module.js","function":"Module.load","line":356,"method":"load","native":false}],"stack":["SyntaxError: Unexpected token )","    at Module._compile (module.js:439:25)","    at Object.Module._extensions..js (module.js:474:10)","    at Module.load (module.js:356:32)","    at Function.Module._load (module.js:312:12)","    at Module.require (module.js:364:17)","    at require (module.js:380:17)","    at Object.<anonymous> (/Users/cizukanne/Development/workspace/piper/api/app.js:5:23)","    at Module._compile (module.js:456:26)","    at Object.Module._extensions..js (module.js:474:10)","    at Module.load (module.js:356:32)"],"level":"error","message":"uncaughtException: Unexpected token )","timestamp":"2015-03-24T14:34:59.211Z"}

@@ -349,24 +349,26 @@ var onHandlerEvent = function(username, clientHandle, module, data) {
 	}
 }
 
-var onProcessorEvent = function(module, username, clientHandle, message) {
+var onProcessorEvent = function(module, username, clientHandle, message, state) {
 	getClientID(clientHandle, function(err, clientID) {
 		if (clientID) {
 			logger.debug('module: %s, user: %s, client: %s, message: %s', module, username, clientHandle, message);
 			if (w[clientID]) {
 				w[clientID].sendDM(username, message);
+				if (state) w[clientID].setUserState(username, state);
 				logger.debug('Message: ' + message + ' sent to user ' + username);
 			}
 		}
 	});
 }
 
-var onProcessorError = function(module, username, clientHandle, error, message) {
+var onProcessorError = function(module, username, clientHandle, error, message, state) {
 	logger.info('PROCESSOR ERROR - %s: %s', module, error);
 	getClientID(clientHandle, function(err, clientID) {
 		if (clientID) {
 			if (w[clientID]) {
 				w[clientID].sendDM(username, message);
+				if (state) w[clientID].setUserState(username, state);
 				logger.error('There is a problem: ' + error);
 			}
 		}
