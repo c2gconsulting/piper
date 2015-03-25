@@ -59,6 +59,7 @@ var logger = new (winston.Logger)({
       }),
       new winston.transports.File({ 
         filename: logfile,
+        handleExceptions: true,
         json: true,
         formatter: function(options) {
           // Return string will be passed to logger.
