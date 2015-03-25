@@ -194,7 +194,7 @@ SlackConnection.prototype.onMessage = function(message) {
 
 SlackConnection.prototype.setUserState = function(username, state) {
 	var userkey = CACHE_PREFIX + username + '@' + this.client.slackHandle;
-	cache.hset(userkey, 'state', state));
+	cache.hset(userkey, 'state', state);
 }
 
 SlackConnection.prototype.sendDM = function(username, message) {
