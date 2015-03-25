@@ -156,3 +156,21 @@
 {"level":"info","message":"No context: {\"state\":\"\"}","timestamp":"2015-03-19T08:35:36.855Z"}
 {"level":"info","message":"@blanka responded with \"Hows it going?\"","timestamp":"2015-03-19T08:35:40.647Z"}
 {"level":"info","message":"[Client: 54f4b9f27355bca9db02ee3f - Mobilizr] Response dispatched to kachi for message: hey","timestamp":"2015-03-19T08:35:40.647Z"}
+{"level":"info","message":"Piper server listening on port 3000 in development mode","timestamp":"2015-03-25T14:52:19.475Z"}
+{"level":"info","message":"Successfully connected to: mongodb://localhost/piper","timestamp":"2015-03-25T14:52:19.490Z"}
+{"level":"info","message":"Updating registry for client mobilizr...","timestamp":"2015-03-25T14:52:19.494Z"}
+{"level":"info","message":"Updating registry for client c2gstudio...","timestamp":"2015-03-25T14:52:19.507Z"}
+{"level":"info","message":"Registered connection for client: mobilizr","timestamp":"2015-03-25T14:52:19.510Z"}
+{"level":"info","message":"Registered connection for client: c2gstudio","timestamp":"2015-03-25T14:52:19.510Z"}
+{"level":"info","message":"[Client: 54f4b9f27355bca9db02ee3f - Mobilizr] Connection established...listening for messages","timestamp":"2015-03-25T14:52:23.832Z"}
+{"level":"info","message":"Welcome to Slack. You are @blanka of Mobilizr","timestamp":"2015-03-25T14:52:23.832Z"}
+{"level":"info","message":"You are in: #general","timestamp":"2015-03-25T14:52:23.832Z"}
+{"level":"info","message":"As well as: ","timestamp":"2015-03-25T14:52:23.832Z"}
+{"level":"info","message":"You have 0 unread messages","timestamp":"2015-03-25T14:52:23.833Z"}
+{"level":"info","message":"SLACK_CONNECTION: Connection Opened","timestamp":"2015-03-25T14:52:23.833Z"}
+{"level":"info","message":"[Client: 54f4b9f27355bca9db02ee40 - C2G Studio] Connection established...listening for messages","timestamp":"2015-03-25T14:52:23.884Z"}
+{"level":"info","message":"Welcome to Slack. You are @blonker of devstudio","timestamp":"2015-03-25T14:52:23.884Z"}
+{"level":"info","message":"You are in: #general","timestamp":"2015-03-25T14:52:23.884Z"}
+{"level":"info","message":"As well as: ","timestamp":"2015-03-25T14:52:23.884Z"}
+{"level":"info","message":"You have 4 unread messages","timestamp":"2015-03-25T14:52:23.884Z"}
+{"level":"info","message":"SLACK_CONNECTION: Connection Opened","timestamp":"2015-03-25T14:52:23.884Z"}
