@@ -20,19 +20,26 @@ var logger = new (winston.Logger)({
           return new Date();
         },
         formatter: function(options) {
-        // Return string will be passed to logger.
-        return '[' + options.timestamp().toString() + '] '+ options.level.toUpperCase() +' '+ (undefined !== options.message ? options.message : '') +
-          (options.meta && Object.keys(options.meta).length ? '\n\t'+ JSON.stringify(options.meta) : '' );
+          // Return string will be passed to logger.
+          return '[' + options.timestamp().toString() + '] '+ options.level.toUpperCase() +' '+ (undefined !== options.message ? options.message : '') +
+            (options.meta && Object.keys(options.meta).length ? '\n\t'+ JSON.stringify(options.meta) : '' );
         }
       }),
       new winston.transports.File({ 
       	level: 'info',
         filename: logfile,
         handleExceptions: true,
-        json: true,
+        json: false,
         maxsize: 5242880, //5MB
         maxFiles: 5,
-        timestamp: true,
+        timestamp: function() {
+          return new Date();
+        },
+        formatter: function(options) {
+          // Return string will be passed to logger.
+          return '[' + options.timestamp().toString() + '] '+ options.level.toUpperCase() +' '+ (undefined !== options.message ? options.message : '') +
+            (options.meta && Object.keys(options.meta).length ? '\n\t'+ JSON.stringify(options.meta) : '' );
+        },
         colorize: false
       })
     ],
@@ -50,7 +57,19 @@ var logger = new (winston.Logger)({
           (options.meta && Object.keys(options.meta).length ? '\n\t'+ JSON.stringify(options.meta) : '' );
         }
       }),
-      new winston.transports.File({ filename: logfile })
+      new winston.transports.File({ 
+        filename: logfile,
+        json: true,
+        formatter: function(options) {
+          // Return string will be passed to logger.
+          return '[' + options.timestamp().toString() + '] '+ options.level.toUpperCase() +' '+ (undefined !== options.message ? options.message : '') +
+            (options.meta && Object.keys(options.meta).length ? '\n\t'+ JSON.stringify(options.meta) : '' );
+        }, 
+        timestamp: function() {
+          return new Date();
+        }
+        
+      })
     ],
     exitOnError: false
 });
