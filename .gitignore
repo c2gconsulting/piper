@@ -1,7 +1,6 @@
 # NPM files
 npm-debug.log
 node_modules
-shared/tmp/piper.log
 
 # Sublime Project files
 *.sublime-project
