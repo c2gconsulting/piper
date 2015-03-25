@@ -1,0 +1,10 @@
+# NPM files
+npm-debug.log
+# node_modules
+
+# Sublime Project files
+*.sublime-project
+*.sublime-workspace
+
+#Temporary local files
+dump.rdb

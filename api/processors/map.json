@@ -1,22 +1,22 @@
 {
 	"processors" : [
 		{
-			"LEAVE_REQ" : "./processors/leaveRequest/leaveRequest.redis",
-			"TRAVEL_REQ" : "./processors/travelRequest/bookFlight",
-			"NOTHING_DOING" : "./processors/general/doNothing",
-			"CHIT_CHAT" : "./processors/general/notFound",
-			"CUSTOMER_ANALYTICS" : "./processors/analytics/customerAnalytics"
+			"LEAVE.REQ" : "./processors/leaveRequest/leaveRequest.redis",
+			"TRAVEL.REQ" : "./processors/travelRequest/bookFlight",
+			"NOTHING.DOING" : "./processors/general/doNothing",
+			"CHITCHAT" : "./processors/general/chitchat.mq",
+			"CUSTOMER.ANALYTICS" : "./processors/analytics/customerAnalytics"
 		}
 	],
-	"states" : [
+	"modules" : [
 		{
-			"request_leave" : "LEAVE_REQ",
-			"confirm_leave" : "LEAVE_REQ",
-			"book_travel" : "TRAVEL_REQ",
-			"do_nothing" : "NOTHING_DOING",
-			"intent_not_found" : "CHIT_CHAT",
-			"chitchat" : "CHIT_CHAT",
-			"predict_customer_sales" : "CUSTOMER_ANALYTICS"
+			"request_leave" : "LEAVE.REQ",
+			"confirm_leave" : "LEAVE.REQ",
+			"book_travel" : "TRAVEL.REQ",
+			"do_nothing" : "NOTHING.DOING",
+			"intent_not_found" : "CHITCHAT",
+			"chitchat" : "CHITCHAT",
+			"predict_customer_sales" : "CUSTOMER.ANALYTICS"
 		}
 
 	]
