@@ -30,12 +30,13 @@ db.getModel('clients', function(err, model) {
 
 
 /*
- * setup subscriber for new trigger MQs (messages not in response to a request)
+ * Setup subscriber for new trigger MQs (messages not in response to a request)
+ * All such messages should be sent by handlers with routing key <mq.CONTROLLER_INBOUND>
  */
 var sub = mq.context.socket('SUB', {routing: 'topic'});
 
 logger.info('Piper Controller: Connecting to MQ Exchange <piper.events.in>...');
-sub.connect('piper.events.in', 'new.trigger', function() {
+sub.connect('piper.events.in', mq.CONTROLLER_INBOUND, function() {
 	logger.info('Piper Controller: MQ Exchange <piper.events.in> connected');
 });
 
@@ -43,7 +44,6 @@ sub.on('data', function(data) {
 	jsonData = JSON.parse(data);
 	if (data) this.in(jsonData.user, jsonData.client, jsonData.module, jsonData.body);
 });
-
 
 
 /* 
@@ -64,8 +64,6 @@ Client.find({'isActive': true }, function (err, clients) {
 		logger.info('No clients currently registered or active, listening for new clients...');
 	}
 });
-
-
 
 router.get('/register', function(req, res) {	
 	var name = req.query.name,

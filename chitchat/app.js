@@ -33,8 +33,8 @@ db.getModel('chitchat_subscribers', function(err, model) {
 CCSubscriber.find({}, function (err, subscribers) {
 	if (!err && subscribers && subscribers.length > 0){
 		for (var i in subscribers) {
-			logger.info('CHITCHAT Handler <piper.events.out>: Binding to %s.CHITCHAT...', subscribers[i].handle);
-			sub.connect('piper.events.out', subscribers[i].handle + '.CHITCHAT');
+			logger.info('CHITCHAT Handler <piper.events.out>: Binding to %s.chitchat...', subscribers[i].handle);
+			sub.connect('piper.events.out', subscribers[i].handle + '.chitchat');
 		}
 	} else {
 		logger.info('No subscribers currently registered or active, listening for new clients...');
@@ -68,7 +68,7 @@ var onMessage = function (id, user, client, body) {
 	logger.info('CHITCHAT Handler: Connecting to MQ Exchange <piper.events.in>...');
 	pub.connect('piper.events.in', function() {
 		logger.info('CHITCHAT Handler:  MQ Exchange <piper.events.in> connected');
-		pub.publish('CHITCHAT', JSON.stringify(data));
+		pub.publish('chitchat', JSON.stringify(data));
 	});
 }
 
@@ -102,8 +102,8 @@ var subscribeClient = function(handle) {
 						logger.error('Cannot subscribe new client: ' + err);
 					} else {
 						logger.info('Client successfully subscribed, firing up MQ listener...');
-						sub.connect('piper.events.out', handle + '.CHITCHAT', function() {
-							logger.info('CHITCHAT Handler <piper.events.out>: Bound to %s.CHITCHAT', handle);
+						sub.connect('piper.events.out', handle + '.chitchat', function() {
+							logger.info('CHITCHAT Handler <piper.events.out>: Bound to %s.chitchat', handle);
 						});
 					}
 				});
