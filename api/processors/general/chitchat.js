@@ -20,7 +20,7 @@ ChitChat.prototype.constructor = ChitChat;
 ChitChat.prototype.init = function(){
 	// subscribe to inbound MQ exchange
 	logger.info('%s Processor: Connecting to MQ Exchange <piper.events.in>...', MODULE);
-	this.sub.connect('piper.events.in', MODULE, function() {
+	this.sub.connect('piper.events.in', MODULE.toLowerCase(), function() {
 		logger.info('%s Processor: <piper.events.in> connected', MODULE);
 	});
 }
@@ -64,7 +64,7 @@ ChitChat.prototype.push = function(username, clientHandle, body) {
 	logger.info('%s Processor: Connecting to MQ Exchange <piper.events.out>...', MODULE);
 	this.pub.connect('piper.events.out', function() {
 		logger.info('%s Processor: <piper.events.out> connected', MODULE);
-		this.pub.publish(clientHandle + '.' + MODULE, JSON.stringify(message));
+		this.pub.publish(clientHandle + '.' + MODULE.toLowerCase(), JSON.stringify(message));
 	});
 }
 

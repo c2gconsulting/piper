@@ -23,6 +23,14 @@
 		{
 			"host" : "chitchat.piperlabs.com",
 			"path" : "./chitchat"
+		},
+		{
+			"host" : "sales.example.com",
+			"path" : "./sales"
+		},
+		{
+			"host" : "sales.piperlabs.com",
+			"path" : "./sales"
 		}
 
 	]
