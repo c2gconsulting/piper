@@ -3,22 +3,22 @@ var logger = require('../../../shared/lib/log');
 var mq = require('../../../shared/lib/mq');
 var cache = require('../../../shared/lib/cache').getRedisClient();
 
-var CACHE_PREFIX = 'chitchat:';
-var MODULE = 'CHITCHAT';
+var CACHE_PREFIX = 'sales:';
+var MODULE = 'SALES';
 var MSGKEYS_TTL = 300;
 	
 
-function ChitChat(data) {
+function Sales(data) {
 	EventEmitter.call(this);
 	this.pub = mq.context.socket('PUB', {routing: 'topic'});
 	this.sub = mq.context.socket('SUB', {routing: 'topic'});
 	this.msgid = new Date().getTime();
 }
 
-ChitChat.prototype = Object.create(EventEmitter.prototype);
-ChitChat.prototype.constructor = ChitChat;
+Sales.prototype = Object.create(EventEmitter.prototype);
+Sales.prototype.constructor = ChitChat;
 
-ChitChat.prototype.init = function(){
+Sales.prototype.init = function(){
 	// subscribe to inbound MQ exchange
 	logger.info('%s Processor: Connecting to MQ Exchange <piper.events.in>...', MODULE);
 	this.sub.connect('piper.events.in', MODULE.toLowerCase(), function() {
@@ -38,7 +38,7 @@ ChitChat.prototype.init = function(){
  * @param client - the company that owns this message
  * @param body - JSON object with request details
  */
-ChitChat.prototype.out = function(username, client, body) {
+Sales.prototype.out = function(username, client, body) {
 	this.push(username, client.slackHandle, body);
 }
 
@@ -48,7 +48,7 @@ ChitChat.prototype.out = function(username, client, body) {
  * @param clientHandle - handle of the company that owns this message
  * @param body - JSON object with request details
  */
-ChitChat.prototype.in = function(msgid, username, clientHandle, body) {
+Sales.prototype.in = function(msgid, username, clientHandle, body) {
 	var me = this;
 
 	// check for message uniqueness
@@ -72,7 +72,7 @@ ChitChat.prototype.in = function(msgid, username, clientHandle, body) {
  * @param clientHandle - handle of the company that owns this message
  * @param message - JSON object with message to be processed by the handler
  */
-ChitChat.prototype.push = function(username, clientHandle, body) {
+Sales.prototype.push = function(username, clientHandle, body) {
 	data = {  'id': new Date().getTime(), 'user': username, 'client': clientHandle, 'body': body };
 	logger.info('%s Processor: Connecting to MQ Exchange <piper.events.out>...', MODULE);
 	var me = this;
@@ -83,7 +83,7 @@ ChitChat.prototype.push = function(username, clientHandle, body) {
 }
 
 
-module.exports = ChitChat;
+module.exports = Sales;
 
 
 
