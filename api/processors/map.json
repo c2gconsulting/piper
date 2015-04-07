@@ -5,18 +5,24 @@
 			"TRAVEL.REQ" : "./processors/travelRequest/bookFlight",
 			"NOTHING.DOING" : "./processors/general/doNothing",
 			"CHITCHAT" : "./processors/general/chitchat.mq",
-			"CUSTOMER.ANALYTICS" : "./processors/analytics/customerAnalytics"
+			"RIDES" : "./processors/rides/index"
 		}
 	],
 	"modules" : [
 		{
-			"request_leave" : "LEAVE.REQ",
-			"confirm_leave" : "LEAVE.REQ",
-			"book_travel" : "TRAVEL.REQ",
-			"do_nothing" : "NOTHING.DOING",
+			"rides_confirm_booking" : "RIDES",
+			"rides_confirm_carrier" : "RIDES",
+			"rides_confirm_location" : "RIDES",
+			"rides_request_price_estimate" : "RIDES",
+			"rides_request_eta" : "RIDES",
+			"rides_request_trip" : "RIDES",
+			"rides_cancel_trip" : "RIDES",
+			"request_leave" : "LEAVE",
+			"confirm_leave" : "LEAVE",
+			"book_travel" : "TRAVEL",
+			"do_nothing" : "NOTHING",
 			"intent_not_found" : "CHITCHAT",
-			"chitchat" : "CHITCHAT",
-			"predict_customer_sales" : "CUSTOMER.ANALYTICS"
+			"chitchat" : "CHITCHAT"
 		}
 
 	]

@@ -16,7 +16,7 @@ function Sales(data) {
 }
 
 Sales.prototype = Object.create(EventEmitter.prototype);
-Sales.prototype.constructor = ChitChat;
+Sales.prototype.constructor = Rides;
 
 Sales.prototype.init = function(){
 	// subscribe to inbound MQ exchange

@@ -25,12 +25,20 @@
 			"path" : "./chitchat"
 		},
 		{
-			"host" : "sales.example.com",
-			"path" : "./sales"
+			"host" : "salesforce.example.com",
+			"path" : "./salesforce"
 		},
 		{
-			"host" : "sales.piperlabs.com",
-			"path" : "./sales"
+			"host" : "salesforce.piperlabs.com",
+			"path" : "./salesforce"
+		},
+		{
+			"host" : "uber.example.com",
+			"path" : "./uber"
+		},
+		{
+			"host" : "uber.piperlabs.com",
+			"path" : "./uber"
 		}
 
 	]
