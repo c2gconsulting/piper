@@ -1,0 +1,38 @@
+{
+	"location" : [
+		"Please click this link so I know where you are... %s",
+		"I still need your location. Here's the link again, PLEASE... %s",
+		"I can't send your ride if I don't know where to send it. The link again... %s",
+		"Sorry, can't proceed without your location"
+	],
+	"carrier" : [
+		"%s is the cheapest option, is that fine?",
+		"./processors/travelRequest/bookFlight",
+		"./processors/general/doNothing",
+		"./processors/general/chitchat.mq",
+		"./processors/analytics/customerAnalytics",
+		"./processors/sales/index"
+	],
+	"endAddress" : [
+		"./processors/leaveRequest/leaveRequest.redis",
+		"./processors/travelRequest/bookFlight",
+		"./processors/general/doNothing",
+		"./processors/general/chitchat.mq",
+		"./processors/analytics/customerAnalytics",
+		"./processors/sales/index"
+	],
+	"departTime" : [
+		"./processors/leaveRequest/leaveRequest.redis",
+		"./processors/travelRequest/bookFlight",
+		"./processors/general/doNothing",
+		"./processors/general/chitchat.mq",
+		"./processors/analytics/customerAnalytics",
+		"./processors/sales/index"
+	],
+	"confirmRequest" : [
+		"Can I go ahead and book your ride?",
+		"I'm still waiting for your confirmation",
+		"%s, your ride? Tell me whether to continue or not",
+		"Whenever you're ready, can't continue till you give the go ahead",
+	]
+}

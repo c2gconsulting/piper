@@ -14,6 +14,10 @@ var dateFromISOString = function(date, callback) {
 }
 
 
+var getAbsoluteURL = function(path, module) {
+	return 'http://mobilizr.net';
+}
+
 // Export the Collection constructor from this module.
 module.exports.dateFromISOString = dateFromISOString;
 
