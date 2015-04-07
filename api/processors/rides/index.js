@@ -195,8 +195,11 @@ Rides.prototype.processData = function(username, client, body, handlerTodo) {
 		var indata = [];
 		var entities = body.outcomes[0].entities,
 		var eKeys = Object.keys(entities);
-		for (var e=0; e<eKeys.length; e++) {
-			indata[e] = entities[e][0].value;
+
+		if (eKeys) {
+			for (var e=0; e<eKeys.length; e++) {
+				indata[e] = entities[e][0].value;
+			}
 		}
 
 		cache.hmset(userkey + ':payload', indata).then(function(value) {
@@ -245,8 +248,6 @@ Rides.prototype.processData = function(username, client, body, handlerTodo) {
 		});
 		
 	});
-
-
 }
 
 /**
