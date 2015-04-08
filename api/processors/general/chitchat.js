@@ -3,7 +3,6 @@ var logger = require('../../../shared/lib/log');
 var mq = require('../../../shared/lib/mq');
 
 var CACHE_PREFIX = 'chitchat:';
-var MODULE = 'CHITCHAT';
 var cache;
 
 
@@ -16,12 +15,13 @@ function ChitChat(data) {
 
 ChitChat.prototype = Object.create(EventEmitter.prototype);
 ChitChat.prototype.constructor = ChitChat;
+ChitChat.MODULE = 'CHITCHAT';
 
 ChitChat.prototype.init = function(){
 	// subscribe to inbound MQ exchange
-	logger.info('%s Processor: Connecting to MQ Exchange <piper.events.in>...', MODULE);
-	this.sub.connect('piper.events.in', MODULE.toLowerCase(), function() {
-		logger.info('%s Processor: <piper.events.in> connected', MODULE);
+	logger.info('%s Processor: Connecting to MQ Exchange <piper.events.in>...', ChitChat.MODULE);
+	this.sub.connect('piper.events.in', ChitChat.MODULE.toLowerCase(), function() {
+		logger.info('%s Processor: <piper.events.in> connected', ChitChat.MODULE);
 	});
 }
 
@@ -37,9 +37,9 @@ ChitChat.prototype.out = function(username, client, body) {
 	var me = this;
   	cBot.write(body._text, function(err, text){
   		if (!err) {
-  			me.emit('message', MODULE, username, client, text);	
+  			me.emit('message', ChitChat.MODULE, username, client, text);	
   		} else {
-  			me.emit('error', MODULE, username, client, err, text);
+  			me.emit('error', ChitChat.MODULE, username, client, err, text);
   		}
   	});
 }
@@ -61,10 +61,10 @@ ChitChat.prototype.in = function(username, client, body) {
  */
 ChitChat.prototype.push = function(username, clientHandle, body) {
 	data = { 'user': username, 'client': clientHandle, 'body': body };
-	logger.info('%s Processor: Connecting to MQ Exchange <piper.events.out>...', MODULE);
+	logger.info('%s Processor: Connecting to MQ Exchange <piper.events.out>...', ChitChat.MODULE);
 	this.pub.connect('piper.events.out', function() {
-		logger.info('%s Processor: <piper.events.out> connected', MODULE);
-		this.pub.publish(clientHandle + '.' + MODULE.toLowerCase(), JSON.stringify(message));
+		logger.info('%s Processor: <piper.events.out> connected', ChitChat.MODULE);
+		this.pub.publish(clientHandle + '.' + ChitChat.MODULE.toLowerCase(), JSON.stringify(message));
 	});
 }
 

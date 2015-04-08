@@ -319,12 +319,16 @@ var createSlackConnection = function(client) {
 var onSlackEvent = function(username, client, Processor, intentBody) {
 	if (!processors[Processor.MODULE]) {
 		//instantiate and setup processor
+		logger.warn('Calling new... ' + Processor.MODULE)
 		processors[Processor.MODULE] = new Processor();
+		logger.warn('Calling init... ' + Processor.MODULE)
 		processors[Processor.MODULE].init();
+		logger.warn('Calling onMessage... ' + Processor.MODULE)
 		processors[Processor.MODULE].on('message', onProcessorEvent);
 		processors[Processor.MODULE].on('error', onProcessorError);	
 	} 
 
+	logger.warn('Calling out... ' + Processor.MODULE)
 	processors[Processor.MODULE].out(username, client, intentBody);
 }
 

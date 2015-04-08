@@ -9,7 +9,6 @@ var when = require('when');
 
 var CACHE_PREFIX = 'rides:';
 var MSGKEYS_TTL = 300;
-var CONTEXT_TTL = 1800;
 	
 cache.on("error", function (err) {
     logger.error("Redis Error: " + err);
@@ -32,171 +31,143 @@ function Rides(data) {
 						'endAddress',
 						'departureTime',
 						'confirmRequest'
-					],
-		'rides_cancel_trip' : [
-						'confirmCancellation'
-					]			
+					]
 	};
 
 	this.validations = {
-		'confirmCancellation' : [
-						function(d, e) {
-							logger.debug('Got here in confirmNeed... d.confirmNeed is %s', d.confirmNeed)
-							if (d.confirmCancellation === 'true' || d.confirmCancellation === true) return d.confirmCancellation = true;
-							if (d.confirmCancellation === 'false' || d.confirmCancellation === false) {
-								d.confirmCancellation = false;
-								return true;
-							}
-							return false;
-						}
-					],
 		'confirmNeed' : [
 						function(d, e) {
-							if (d.intent !== 'rides_go_out' && d.intent !== 'rides_confirm_ride_needed') return d.confirmNeed = true;
-							logger.debug('Got here in confirmNeed... d.confirmNeed is %s', d.confirmNeed)
-							if (d.confirmNeed === 'true' || d.confirmNeed === true) return d.confirmNeed = true;
-							if (d.confirmNeed === 'false' || d.confirmNeed === false) {
-								d.confirmNeed = false;
-								return true;
+							if (d.intent !== 'rides_go_out' && d.intent !== 'rides_confirm_ride_needed') {
+								d.confirmNeed = d.valid = true;
+								return d;
 							}
-							return false;
+							if (d.confirmNeed === 'on' || d.confirmNeed === true) {
+								d.confirmNeed = d.valid = true;
+								return d;
+							}
+							if (d.confirmNeed === 'off' || d.confirmNeed === false) {
+								d.confirmNeed = false;
+								d.valid = true;
+								return d;
+							}
+							d.valid = false;
+							return d;
 						}
 					],
 		'startLong' : [
 						function(d, e) {
-							if(d.confirmNeed === false) return true; // exit validations if trip cancelled
-							if (!d.startLong || d.startLong === 0) return false;
-							return true;
+							if (!d.startLong || d.startLong === 0) {
+								d.valid = false;
+								return d;
+							}
+							d.valid = true;
+							return d;
 						}
 					],
 		'startLat' 	: [
 						function(d, e) {
-							if(d.confirmNeed === false) return true; // exit validations if trip cancelled
-							if (!d.startLat || d.startLat === 0) return false;
-							return true;
-						},
-						function(d, e) {
-							return true;
+							if (!d.startLat || d.startLat === 0) {
+								d.valid = false;
+								return d;
+							}
+							d.valid = true;
+							return d;
 						}
 					],
 		'carrier' 	: [
 						function(d, e) {
-							if(d.confirmNeed === false) return true; // exit validations if trip cancelled
-							return true;
+							d.valid = true;
+							return d;
 						}
 					],
 		'endAddress': [
 						function(d, e) {
-							if(d.confirmNeed === false) return true; // exit validations if trip cancelled
-							return true;
+							d.valid = true;
+							return d;
 						}
 					],
 		'departureTime': [
 						function(d, e) {
-							if(d.confirmNeed === false) return true; // exit validations if trip cancelled
-							return true;
+							d.valid = true;
+							return d;
 						}
 					],
 		'confirmRequest' : [
 						function(d, e) {
-							if(d.confirmNeed === false) return true; // exit validations if trip cancelled
 							if (d.confirmRequest === false || d.confirmRequest === 'off') {
 								d.confirmRequest = false;
-								return true;
+								d.valid = true;
+								return d;
 							}
-							if (d.confirmRequest === 'on' || d.confirmRequest === true) return d.confirmRequest = true;
-							return false;
+							if (d.confirmRequest === 'on' || d.confirmRequest === true) {
+								d.confirmRequest = true;
+								d.valid = true;
+								return d;
+							}
+							d.valid = false
+							return d;
 						}
 					]
 
 	};
 
 	this.response = {
-		'confirmCancellation' : function(username, clientHandle, data) {
-						if (!data.lvlConfirmCancellationQueries || isNaN(data.lvlConfirmCancellationQueries)) data.lvlConfirmCancellationQueries = 0;
-						while (!responses.confirmCancellation[data.lvlConfirmCancellationQueries] && data.lvlConfirmCancellationQueries > 0) data.lvlConfirmCancellationQueries--;
-						var responseText = responses.confirmCancellation[data.lvlConfirmCancellationQueries] ? responses.confirmCancellation[data.lvlConfirmCancellationQueries] : "I'm a bit confused..."; 
-						data.lvlConfirmCancellationQueries++; 
-						
-						me.emit('message', Rides.MODULE, username, clientHandle, responseText, Rides.MODULE + "_confirm_cancellation");
-						return false;
-					},	
 		'confirmNeed' : function(username, clientHandle, data) {
-						if (!data.lvlConfirmNeedQueries || isNaN(data.lvlConfirmNeedQueries)) data.lvlConfirmNeedQueries = 0;
-						//logger.debug('lvlConfirmNeedQueries2: %s', data.lvlConfirmNeedQueries);
+						data.lvlConfirmNeedQueries = data.lvlConfirmNeedQueries ? data.lvlConfirmNeedQueries + 1 : 0;
 						while (!responses.confirmNeed[data.lvlConfirmNeedQueries] && data.lvlConfirmNeedQueries > 0) data.lvlConfirmNeedQueries--;
 						var responseText = responses.confirmNeed[data.lvlConfirmNeedQueries] ? responses.confirmNeed[data.lvlConfirmNeedQueries] : "I'm a bit confused..."; 
-						data.lvlConfirmNeedQueries++; // data.lvlConfirmNeedQueries ? data.lvlConfirmNeedQueries + 1 : 0;
 						
 						me.emit('message', Rides.MODULE, username, clientHandle, responseText, Rides.MODULE + "_confirm_ride_needed");
-						return false;
+						data.proceed = false;
+						return data
 					},	
 		'startLong' : function(username, clientHandle, data) {
-						if (!data.lvlLocationQueries || isNaN(data.lvlLocationQueries)) data.lvlLocationQueries = 0;
+						data.lvlLocationQueries = data.lvlLocationQueries ? data.lvlLocationQueries + 1 : 0;
 						while (!responses.location[data.lvlLocationQueries] && data.lvlLocationQueries > 0) data.lvlLocationQueries--;
 						var responseText = responses.location[data.lvlLocationQueries] ? responses.location[data.lvlLocationQueries].replace("@locationlink", getLocationLink()) : "I'm a bit confused..."; 
-						data.lvlLocationQueries++;
-
-						me.emit('message', Rides.MODULE, username, clientHandle, responseText, Rides.MODULE + "_get_location");
-						return false;
-					},
-		'startLat' 	: function(username, clientHandle, data) {
-						if (!data.lvlLocationQueries || isNaN(data.lvlLocationQueries)) data.lvlLocationQueries = 0;
-						while (!responses.location[data.lvlLocationQueries] && data.lvlLocationQueries > 0) data.lvlLocationQueries--;
-						var responseText = responses.location[data.lvlLocationQueries] ? responses.location[data.lvlLocationQueries].replace("@locationlink", getLocationLink()) : "I'm a bit confused..."; 
-						data.lvlLocationQueries++;
 						
 						me.emit('message', Rides.MODULE, username, clientHandle, responseText, Rides.MODULE + "_get_location");
-						return false;
+						data.proceed = false;
+						return data
+					},
+		'startLat' 	: function(username, clientHandle, data) {
+						data.lvlLocationQueries = data.lvlLocationQueries ? data.lvlLocationQueries + 1 : 0;
+						while (!responses.location[data.lvlLocationQueries] && data.lvlLocationQueries > 0) data.lvlLocationQueries--;
+						var responseText = responses.location[data.lvlLocationQueries] ? responses.location[data.lvlLocationQueries].replace("@locationlink", getLocationLink()) : "I'm a bit confused..."; 
+						
+						me.emit('message', Rides.MODULE, username, clientHandle, responseText, Rides.MODULE + "_get_location");
+						data.proceed = false;
+						return data
 					},
 		'carrier' 	: function(username, clientHandle, data) {
 						if (data.preferredCarrier) {
-							if (!data.lvlCarrierQueries || isNaN(data.lvlCarrierQueries)) data.lvlCarrierQueries = 0;
+							data.lvlCarrierQueries = data.lvlCarrierQueries ? data.lvlCarrierQueries + 1 : 0;
 							while (!responses.carrier[data.lvlCarrierQueries] && data.lvlCarrierQueries > 0) data.lvlCarrierQueries--;
 							var responseText = responses.carrier[data.lvlCarrierQueries] ? responses.carrier[data.lvlCarrierQueries].replace("@preferredCarrier", data.preferredCarrier) : "I'm a bit confused..."; 
-							data.lvlCarrierQueries++;
-						
+							
 							me.emit('message', Rides.MODULE, username, clientHandle, responseText, Rides.MODULE + "_confirm_carrier");
 						} 
-						return false;
+						data.proceed = false;
+						return data
 					},
 		'endAddress': function(username, clientHandle, data) {
-						return true;
+						data.proceed = true;
+						return data
 					},
 		'departureTime' : function(username, clientHandle, data) {
-						return true;
+						data.proceed = true;
+						return data
 					},
 		'confirmRequest' : function(username, clientHandle, data) {
-						if (!data.lvlConfirmRequestQueries || isNaN(data.lvlConfirmRequestQueries)) data.lvlConfirmRequestQueries = 0;
+						data.lvlConfirmRequestQueries = data.lvlConfirmRequestQueries ? data.lvlConfirmRequestQueries + 1 : 0;
 						while (!responses.confirmRequest[data.lvlConfirmRequestQueries] && data.lvlConfirmRequestQueries > 0) data.lvlConfirmRequestQueries--;
 						var responseText = responses.confirmRequest[data.lvlConfirmRequestQueries] ? responses.confirmRequest[data.lvlConfirmRequestQueries].replace("@username", username) : "I'm a bit confused..."; 
-						data.lvlConfirmRequestQueries++;
-
+						
 						me.emit('message', Rides.MODULE, username, clientHandle, responseText, Rides.MODULE + "_confirm_request");
-						return false;
+						data.proceed = false;
+						return data
 					}			
 					
-	};
-
-	this.handleRequest = {
-		'rides_cancel_trip' : function(username, clientHandle, data) {
-						me.cancelRequest(username, clientHandle, data);
-						me.emit('message', Rides.MODULE, username, clientHandle, 'Fine, your trip request has been cancelled');
-					},
-		'rides_request_price_estimate' : function(username, clientHandle, data) {
-
-					},
-		'rides_request_eta' : function(username, clientHandle, data) {
-
-					},
-		'rides_book_trip' : function(username, clientHandle, data) {
-						if (data.confirmNeed === false) {
-							me.cancelRequest(username, clientHandle, data);
-						} else {
-							me.emit('message', Rides.MODULE, username, clientHandle, 'One second, let me see...');
-							me.push(username, clientHandle, data);
-						}
-					}
 	};
 
 }
@@ -298,9 +269,10 @@ Rides.prototype.processData = function(username, client, body, handlerTodo) {
 				for (var i=0; i<datakeys.length; i++) {
 					var fieldValid = true;
 					for (var f=0; f<me.validations[datakeys[i]].length; f++) {
-						fieldValid = fieldValid && me.validations[datakeys[i]][f](datahash, entities);
+						datahash = me.validations[datakeys[i]][f](datahash, entities);
+						fieldValid = fieldValid && datahash.valid;
 					}
-					logger.debug('fieldValid: %s, datakeys[i]: %s', fieldValid, datakeys[i] );
+
 					if (fieldValid) {
 						datacheckPromises[i] = cache.zrem(userkey + ':datacheck', datakeys[i]); // remove from datacheck if valid
 					} else {
@@ -317,43 +289,27 @@ Rides.prototype.processData = function(username, client, body, handlerTodo) {
 								if (proceed && me.handlerKeys[handlerTodo].indexOf(missingKeys[k]) > -1) {
 									missingData = true;
 									logger.debug('MissingKeys: %s; CurrentKey: %s; key: %s', JSON.stringify(missingKeys), missingKeys[k], k);
-									proceed = me.response[missingKeys[k]](username, clientHandle, datahash);
+									datahash = me.response[missingKeys[k]](username, clientHandle, datahash);
+									proceed = datahash.proceed;
 								}
 							}
 						}
 
+						if (!missingData) {
+							// data is complete and valid
+							me.emit('message', Rides.MODULE, username, clientHandle, 'One second, let me see...');
+							me.push(username, client.slackHandle, datahash);
+						}
+						
 						logger.debug('Datahash: %s', JSON.stringify(datahash));
 						cache.hmset(userkey + ':payload', datahash);
 
-						if (!missingData) {
-							// data is complete and valid
-							me.handleRequest[handlerTodo](username, client.slackHandle, datahash);
-						}
-
-						
 					});
 				});
 			});
-			cache.expire(userkey + ':payload', CONTEXT_TTL);
-		});
+		});	
 	});
 }
-
-/**
- * Cancel request and delete all cache records
- * @param username - the user making the request
- * @param client - the company that owns this message
- * @param body - JSON object with request details
- */
-Rides.prototype.cancelRequest = function(username, clientHandle, data) {
-    var userkey = CACHE_PREFIX + username + '@' + clientHandle;
-
-    cache.del(userkey + ':payload');
-    cache.del(userkey + ':datacheck');
-    data = {};
-}
-	
-
 
 /**
  * Receive a message from back-end handlers for processing
