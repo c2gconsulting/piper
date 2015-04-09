@@ -51,7 +51,7 @@ var onMessage = function (id, user, client, body) {
 		var cBot = new Cleverbot();
 		cBot.write(body._text, function(err, text){
 			if (err) logger.error('CHITCHAT Handler: Cannot process message ' + err);
-			push(user, client, { 'text': text });	
+			push(user.name, client, { 'text': text });	
 		});
 		msgid = id;
 	}
@@ -59,12 +59,12 @@ var onMessage = function (id, user, client, body) {
 
 /**
  * Push a message to the message exchange for a handler to pick up
- * @param user - user that owns this message
+ * @param username - user that owns this message
  * @param client - handle of the company that owns this message
  * @param body - JSON object with message to be processed by the handler
  */
- var push = function(user, client, body) {
-	data = { 'id': new Date().getTime(), 'user': user, 'client': client, 'body': body };
+ var push = function(username, client, body) {
+	data = { 'id': new Date().getTime(), 'user': username, 'client': client, 'body': body };
 	logger.info('CHITCHAT Handler: Connecting to MQ Exchange <piper.events.in>...');
 	pub.connect('piper.events.in', function() {
 		logger.info('CHITCHAT Handler:  MQ Exchange <piper.events.in> connected');

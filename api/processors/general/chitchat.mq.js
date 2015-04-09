@@ -34,12 +34,12 @@ ChitChat.prototype.init = function(){
 
 /**
  * Receive a message for processing from the front-end
- * @param username - the user making the request
+ * @param user - the user making the request
  * @param client - the company that owns this message
  * @param body - JSON object with request details
  */
-ChitChat.prototype.out = function(username, client, body) {
-	this.push(username, client.slackHandle, body);
+ChitChat.prototype.out = function(user, client, body) {
+	this.push(user, client.slackHandle, body);
 }
 
 /**
@@ -69,11 +69,12 @@ ChitChat.prototype.in = function(msgid, username, clientHandle, body) {
 
 /**
  * Push a message to the message exchange for a handler to pick up
+ * @param user - the user making the request
  * @param clientHandle - handle of the company that owns this message
  * @param message - JSON object with message to be processed by the handler
  */
-ChitChat.prototype.push = function(username, clientHandle, body) {
-	data = {  'id': new Date().getTime(), 'user': username, 'client': clientHandle, 'body': body };
+ChitChat.prototype.push = function(user, clientHandle, body) {
+	data = {  'id': new Date().getTime(), 'user': user, 'client': clientHandle, 'body': body };
 	logger.info('%s Processor: Connecting to MQ Exchange <piper.events.out>...', ChitChat.MODULE);
 	var me = this;
 	this.pub.connect('piper.events.out', function() {

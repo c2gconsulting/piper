@@ -40,7 +40,7 @@ function Rides(data) {
 
 	this.validations = {
 		'confirmCancellation' : [
-						function(d, e) {
+						function(d, b) {
 							logger.debug('Got here in confirmNeed... d.confirmNeed is %s', d.confirmNeed)
 							if (d.confirmCancellation === 'true' || d.confirmCancellation === true) return d.confirmCancellation = true;
 							if (d.confirmCancellation === 'false' || d.confirmCancellation === false) {
@@ -51,8 +51,8 @@ function Rides(data) {
 						}
 					],
 		'confirmNeed' : [
-						function(d, e) {
-							if (d.intent !== 'rides_go_out' && d.intent !== 'rides_confirm_ride_needed') return d.confirmNeed = true;
+						function(d, b) {
+							if (d.intent !== 'rides_go_out' && b.context.state !== 'RIDES_confirm_ride_needed') return true;
 							logger.debug('Got here in confirmNeed... d.confirmNeed is %s', d.confirmNeed)
 							if (d.confirmNeed === 'true' || d.confirmNeed === true) return d.confirmNeed = true;
 							if (d.confirmNeed === 'false' || d.confirmNeed === false) {
@@ -63,42 +63,42 @@ function Rides(data) {
 						}
 					],
 		'startLong' : [
-						function(d, e) {
+						function(d, b) {
 							if(d.confirmNeed === false) return true; // exit validations if trip cancelled
 							if (!d.startLong || d.startLong === 0) return false;
 							return true;
 						}
 					],
 		'startLat' 	: [
-						function(d, e) {
+						function(d, b) {
 							if(d.confirmNeed === false) return true; // exit validations if trip cancelled
 							if (!d.startLat || d.startLat === 0) return false;
 							return true;
 						},
-						function(d, e) {
+						function(d, b) {
 							return true;
 						}
 					],
 		'carrier' 	: [
-						function(d, e) {
+						function(d, b) {
 							if(d.confirmNeed === false) return true; // exit validations if trip cancelled
 							return true;
 						}
 					],
 		'endAddress': [
-						function(d, e) {
+						function(d, b) {
 							if(d.confirmNeed === false) return true; // exit validations if trip cancelled
 							return true;
 						}
 					],
 		'departureTime': [
-						function(d, e) {
+						function(d, b) {
 							if(d.confirmNeed === false) return true; // exit validations if trip cancelled
 							return true;
 						}
 					],
 		'confirmRequest' : [
-						function(d, e) {
+						function(d, b) {
 							if(d.confirmNeed === false) return true; // exit validations if trip cancelled
 							if (d.confirmRequest === false || d.confirmRequest === 'off') {
 								d.confirmRequest = false;
@@ -112,89 +112,91 @@ function Rides(data) {
 	};
 
 	this.response = {
-		'confirmCancellation' : function(username, clientHandle, data) {
+		'confirmCancellation' : function(user, clientHandle, data) {
 						if (!data.lvlConfirmCancellationQueries || isNaN(data.lvlConfirmCancellationQueries)) data.lvlConfirmCancellationQueries = 0;
 						while (!responses.confirmCancellation[data.lvlConfirmCancellationQueries] && data.lvlConfirmCancellationQueries > 0) data.lvlConfirmCancellationQueries--;
 						var responseText = responses.confirmCancellation[data.lvlConfirmCancellationQueries] ? responses.confirmCancellation[data.lvlConfirmCancellationQueries] : "I'm a bit confused..."; 
 						data.lvlConfirmCancellationQueries++; 
 						
-						me.emit('message', Rides.MODULE, username, clientHandle, responseText, Rides.MODULE + "_confirm_cancellation");
+						me.emit('message', Rides.MODULE, user.name, clientHandle, responseText, Rides.MODULE + "_confirm_cancellation");
 						return false;
 					},	
-		'confirmNeed' : function(username, clientHandle, data) {
+		'confirmNeed' : function(user, clientHandle, data) {
 						if (!data.lvlConfirmNeedQueries || isNaN(data.lvlConfirmNeedQueries)) data.lvlConfirmNeedQueries = 0;
 						//logger.debug('lvlConfirmNeedQueries2: %s', data.lvlConfirmNeedQueries);
 						while (!responses.confirmNeed[data.lvlConfirmNeedQueries] && data.lvlConfirmNeedQueries > 0) data.lvlConfirmNeedQueries--;
 						var responseText = responses.confirmNeed[data.lvlConfirmNeedQueries] ? responses.confirmNeed[data.lvlConfirmNeedQueries] : "I'm a bit confused..."; 
 						data.lvlConfirmNeedQueries++; // data.lvlConfirmNeedQueries ? data.lvlConfirmNeedQueries + 1 : 0;
 						
-						me.emit('message', Rides.MODULE, username, clientHandle, responseText, Rides.MODULE + "_confirm_ride_needed");
+						me.emit('message', Rides.MODULE, user.name, clientHandle, responseText, Rides.MODULE + "_confirm_ride_needed");
 						return false;
 					},	
-		'startLong' : function(username, clientHandle, data) {
+		'startLong' : function(user, clientHandle, data) {
 						if (!data.lvlLocationQueries || isNaN(data.lvlLocationQueries)) data.lvlLocationQueries = 0;
 						while (!responses.location[data.lvlLocationQueries] && data.lvlLocationQueries > 0) data.lvlLocationQueries--;
 						var responseText = responses.location[data.lvlLocationQueries] ? responses.location[data.lvlLocationQueries].replace("@locationlink", getLocationLink()) : "I'm a bit confused..."; 
 						data.lvlLocationQueries++;
 
-						me.emit('message', Rides.MODULE, username, clientHandle, responseText, Rides.MODULE + "_get_location");
+						me.emit('message', Rides.MODULE, user.name, clientHandle, responseText, Rides.MODULE + "_get_location");
 						return false;
 					},
-		'startLat' 	: function(username, clientHandle, data) {
+		'startLat' 	: function(user, clientHandle, data) {
 						if (!data.lvlLocationQueries || isNaN(data.lvlLocationQueries)) data.lvlLocationQueries = 0;
 						while (!responses.location[data.lvlLocationQueries] && data.lvlLocationQueries > 0) data.lvlLocationQueries--;
 						var responseText = responses.location[data.lvlLocationQueries] ? responses.location[data.lvlLocationQueries].replace("@locationlink", getLocationLink()) : "I'm a bit confused..."; 
 						data.lvlLocationQueries++;
 						
-						me.emit('message', Rides.MODULE, username, clientHandle, responseText, Rides.MODULE + "_get_location");
+						me.emit('message', Rides.MODULE, user.name, clientHandle, responseText, Rides.MODULE + "_get_location");
 						return false;
 					},
-		'carrier' 	: function(username, clientHandle, data) {
+		'carrier' 	: function(user, clientHandle, data) {
 						if (data.preferredCarrier) {
 							if (!data.lvlCarrierQueries || isNaN(data.lvlCarrierQueries)) data.lvlCarrierQueries = 0;
 							while (!responses.carrier[data.lvlCarrierQueries] && data.lvlCarrierQueries > 0) data.lvlCarrierQueries--;
 							var responseText = responses.carrier[data.lvlCarrierQueries] ? responses.carrier[data.lvlCarrierQueries].replace("@preferredCarrier", data.preferredCarrier) : "I'm a bit confused..."; 
 							data.lvlCarrierQueries++;
 						
-							me.emit('message', Rides.MODULE, username, clientHandle, responseText, Rides.MODULE + "_confirm_carrier");
+							me.emit('message', Rides.MODULE, user.name, clientHandle, responseText, Rides.MODULE + "_confirm_carrier");
 						} 
 						return false;
 					},
-		'endAddress': function(username, clientHandle, data) {
+		'endAddress': function(user, clientHandle, data) {
 						return true;
 					},
-		'departureTime' : function(username, clientHandle, data) {
+		'departureTime' : function(user, clientHandle, data) {
 						return true;
 					},
-		'confirmRequest' : function(username, clientHandle, data) {
+		'confirmRequest' : function(user, clientHandle, data) {
 						if (!data.lvlConfirmRequestQueries || isNaN(data.lvlConfirmRequestQueries)) data.lvlConfirmRequestQueries = 0;
 						while (!responses.confirmRequest[data.lvlConfirmRequestQueries] && data.lvlConfirmRequestQueries > 0) data.lvlConfirmRequestQueries--;
 						var responseText = responses.confirmRequest[data.lvlConfirmRequestQueries] ? responses.confirmRequest[data.lvlConfirmRequestQueries].replace("@username", username) : "I'm a bit confused..."; 
 						data.lvlConfirmRequestQueries++;
 
-						me.emit('message', Rides.MODULE, username, clientHandle, responseText, Rides.MODULE + "_confirm_request");
+						me.emit('message', Rides.MODULE, user.name, clientHandle, responseText, Rides.MODULE + "_confirm_request");
 						return false;
 					}			
 					
 	};
 
 	this.handleRequest = {
-		'rides_cancel_trip' : function(username, clientHandle, data) {
-						me.cancelRequest(username, clientHandle, data);
-						me.emit('message', Rides.MODULE, username, clientHandle, 'Fine, your trip request has been cancelled');
+		'rides_cancel_trip' : function(user, clientHandle, data) {
+						me.cancelRequest(user.name, clientHandle, data);
+						me.emit('message', Rides.MODULE, user.name, clientHandle, 'Fine, your trip request has been cancelled');
 					},
-		'rides_request_price_estimate' : function(username, clientHandle, data) {
+		'rides_request_price_estimate' : function(user, clientHandle, data) {
 
 					},
-		'rides_request_eta' : function(username, clientHandle, data) {
+		'rides_request_eta' : function(user, clientHandle, data) {
 
 					},
-		'rides_book_trip' : function(username, clientHandle, data) {
+		'rides_book_trip' : function(user, clientHandle, data) {
+						logger.debug('HandleRequest: handling for rides_book_trip... %s', JSON.stringify(data));
 						if (data.confirmNeed === false) {
-							me.cancelRequest(username, clientHandle, data);
+							logger.debug('HandleRequest: handling for rides_book_trip...calling cancelrequest');
+							me.cancelRequest(user.name, clientHandle, data);
 						} else {
-							me.emit('message', Rides.MODULE, username, clientHandle, 'One second, let me see...');
-							me.push(username, clientHandle, data);
+							me.emit('message', Rides.MODULE, user.name, clientHandle, 'One second, let me see...');
+							me.push(user, clientHandle, data);
 						}
 					}
 	};
@@ -221,45 +223,38 @@ Rides.prototype.init = function(){
 
 /**
  * Receive a message for processing from the front-end
- * @param username - the user making the request
+ * @param user - the user making the request
  * @param client - the company that owns this message
  * @param body - JSON object with request details
  */
-Rides.prototype.out = function(username, client, body) {
+Rides.prototype.out = function(user, client, body) {
 	var handlerTodo = '';
 	
-	switch(body.outcomes[0].intent) {
-        case "rides_cancel_trip":
-            // cancel existing trip 
-            handlerTodo = body.outcomes[0].intent;
-            break;
-        case "rides_request_price_estimate":
-            // retrieve price for products available to user
-            handlerTodo = body.outcomes[0].intent;
-            break;
-        case "rides_request_eta":
-        	// retrieve ETA for user ride
-            handlerTodo = body.outcomes[0].intent;
-            break;
-        default:
-            handlerTodo = "rides_book_trip";
-
-  	}
+	if (body.outcomes[0].intent === 'rides_cancel_trip' || body.context.state === 'RIDES_confirm_cancellation') {
+		handlerTodo = 'rides_cancel_trip';
+	} else if (body.outcomes[0].intent === 'rides_request_price_estimate' || body.context.state === 'RIDES_request_price_estimate') {
+		handlerTodo = 'rides_request_price_estimate';
+	} else if (body.outcomes[0].intent === 'rides_request_eta' || body.context.state === 'RIDES_request_eta') {
+		handlerTodo = 'rides_request_eta';
+	} else {
+		handlerTodo = 'rides_book_trip';
+	}  
             
-    this.processData(username, client, body, handlerTodo);
+    this.processData(user, client, body, handlerTodo);
 
 }
 
 
 /**
  * Validate data sufficiency and trigger request to endpoint
- * @param username - the user making the request
+ * @param user - the user making the request
  * @param client - the company that owns this message
  * @param body - JSON object with request details
  */
-Rides.prototype.processData = function(username, client, body, handlerTodo) {
+Rides.prototype.processData = function(user, client, body, handlerTodo) {
     var me = this;
     var clientHandle = client.slackHandle;
+    var username = user.name;
 	var userkey = CACHE_PREFIX + username + '@' + clientHandle;
 	
 
@@ -298,7 +293,7 @@ Rides.prototype.processData = function(username, client, body, handlerTodo) {
 				for (var i=0; i<datakeys.length; i++) {
 					var fieldValid = true;
 					for (var f=0; f<me.validations[datakeys[i]].length; f++) {
-						fieldValid = fieldValid && me.validations[datakeys[i]][f](datahash, entities);
+						fieldValid = fieldValid && me.validations[datakeys[i]][f](datahash, body);
 					}
 					logger.debug('fieldValid: %s, datakeys[i]: %s', fieldValid, datakeys[i] );
 					if (fieldValid) {
@@ -317,7 +312,7 @@ Rides.prototype.processData = function(username, client, body, handlerTodo) {
 								if (proceed && me.handlerKeys[handlerTodo].indexOf(missingKeys[k]) > -1) {
 									missingData = true;
 									logger.debug('MissingKeys: %s; CurrentKey: %s; key: %s', JSON.stringify(missingKeys), missingKeys[k], k);
-									proceed = me.response[missingKeys[k]](username, clientHandle, datahash);
+									proceed = me.response[missingKeys[k]](user, clientHandle, datahash);
 								}
 							}
 						}
@@ -327,7 +322,8 @@ Rides.prototype.processData = function(username, client, body, handlerTodo) {
 
 						if (!missingData) {
 							// data is complete and valid
-							me.handleRequest[handlerTodo](username, client.slackHandle, datahash);
+							logger.debug('No more missing data: calling handleRequest for %s', handlerTodo);
+							me.handleRequest[handlerTodo](user, client.slackHandle, datahash);
 						}
 
 						
@@ -346,7 +342,9 @@ Rides.prototype.processData = function(username, client, body, handlerTodo) {
  * @param body - JSON object with request details
  */
 Rides.prototype.cancelRequest = function(username, clientHandle, data) {
-    var userkey = CACHE_PREFIX + username + '@' + clientHandle;
+	logger.debug('CancelRequest: cancelling for ... %s', JSON.stringify(data));
+						
+	var userkey = CACHE_PREFIX + username + '@' + clientHandle;
 
     cache.del(userkey + ':payload');
     cache.del(userkey + ':datacheck');
@@ -385,8 +383,8 @@ Rides.prototype.in = function(msgid, username, clientHandle, body) {
  * @param clientHandle - handle of the company that owns this message
  * @param message - JSON object with message to be processed by the handler
  */
-Rides.prototype.push = function(username, clientHandle, body) {
-	data = {  'id': new Date().getTime(), 'user': username, 'client': clientHandle, 'body': body };
+Rides.prototype.push = function(user, clientHandle, body) {
+	data = {  'id': new Date().getTime(), 'user': user, 'client': clientHandle, 'body': body };
 	logger.info('%s Processor: Connecting to MQ Exchange <piper.events.out>...', Rides.MODULE);
 	var me = this;
 	this.pub.connect('piper.events.out', function() {
