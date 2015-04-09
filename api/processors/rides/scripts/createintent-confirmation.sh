@@ -1,8 +1,8 @@
 curl -XPOST 'https://api.wit.ai/intents?v=20141022' \
-  -H "Authorization: Bearer AQOYK6OZNJMM6X6ELUK2NE2RGT5GMURC" \
+  -H "Authorization: Bearer QJKD3F66M5PUDUCYVUHS6QQ5HYVUJUWT" \
   -H "Content-Type: application/json" \
-  -d '{"name":"rides_confirm_booking",
-       "doc":"Confirm booking of a ride request",
+  -d '{"name":"default_confirm",
+       "doc":"Confirm yes or no",
        "expressions":[{
           "body" : "no don\u0027t"
         }, {

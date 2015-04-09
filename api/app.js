@@ -409,11 +409,8 @@ var onSlackEvent = function(user, client, message) {
 				} catch (e) {
 					logger.debug('Error processing intent for state: ' + getModule(intent, inContext.state) + ' -> ' + e + ', defaulting to ' + getModule('intent_not_found'));
 					var Processor = require(processorMap.processors[0][getModule('intent_not_found')]);
-					processMessage(user, client, Processor, intentBody);
-					
+					processMessage(user, client, Processor, intentBody);					
 				}
-
-
 			}										
 		});
 	});
