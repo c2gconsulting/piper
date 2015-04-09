@@ -42,8 +42,9 @@ function Rides(data) {
 		'confirmCancellation' : [
 						function(d, b) {
 							logger.debug('Got here in confirmNeed... d.confirmNeed is %s', d.confirmNeed)
-							if (d.confirmCancellation === 'true' || d.confirmCancellation === true) return d.confirmCancellation = true;
-							if (d.confirmCancellation === 'false' || d.confirmCancellation === false) {
+							var state = b.context.state;
+							if ((state === 'RIDES_confirm_cancellation' && d.yes_no === 'yes') || d.confirmCancellation === true) return d.confirmCancellation = true;
+							if ((state === 'RIDES_confirm_cancellation' && d.yes_no === 'no') || d.confirmCancellation === false)  {
 								d.confirmCancellation = false;
 								return true;
 							}
@@ -52,10 +53,11 @@ function Rides(data) {
 					],
 		'confirmNeed' : [
 						function(d, b) {
-							if (d.intent !== 'rides_go_out' && b.context.state !== 'RIDES_confirm_ride_needed') return true;
+							var state = b.context.state;
+							if (d.intent !== 'rides_go_out' && state !== 'RIDES_confirm_ride_needed') return true;
 							logger.debug('Got here in confirmNeed... d.confirmNeed is %s', d.confirmNeed)
-							if (d.confirmNeed === 'true' || d.confirmNeed === true) return d.confirmNeed = true;
-							if (d.confirmNeed === 'false' || d.confirmNeed === false) {
+							if ((state === 'RIDES_confirm_ride_needed' && d.yes_no === 'yes')  || d.confirmNeed === true) return d.confirmNeed = true;
+							if ((state === 'RIDES_confirm_ride_needed' && d.yes_no === 'no') || d.confirmNeed === false) {
 								d.confirmNeed = false;
 								return true;
 							}
@@ -230,7 +232,7 @@ Rides.prototype.init = function(){
 Rides.prototype.out = function(user, client, body) {
 	var handlerTodo = '';
 	
-	if (body.outcomes[0].intent === 'rides_cancel_trip' || body.context.state === 'RIDES_confirm_cancellation') {
+	if (body.outcomes[0].intent === 'rides_cancel_trip' || body.outcomes[0].intent === 'default_cancel_request' || body.context.state === 'RIDES_confirm_cancellation') {
 		handlerTodo = 'rides_cancel_trip';
 	} else if (body.outcomes[0].intent === 'rides_request_price_estimate' || body.context.state === 'RIDES_request_price_estimate') {
 		handlerTodo = 'rides_request_price_estimate';
