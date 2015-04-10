@@ -371,8 +371,11 @@ var onSlackEvent = function(user, client, message) {
 				logger.debug("Intent: " + intent);
 
 				// Check confidence level
+
+				var intentChanged = false;
 				if (intentBody.outcomes[0]['confidence'] < witConfig.MIN_CONFIDENCE) {
 					intent = 'intent_not_found';
+					intentChanged = true; // don't change state if intent changed
 					logger.info('Low confidence, changing intent to intent_not_found');
 				}
 
@@ -385,7 +388,12 @@ var onSlackEvent = function(user, client, message) {
 					};
 					
 				// Save to cache
-				cache.hset(userkey, 'state', getModule(intent, inContext.state));
+				if (!intentChanged) {
+					cache.hset(userkey, 'state', getModule(intent, inContext.state)); // update state to reflect new module
+				} else {
+					cache.hset(userkey, 'state', inContext.state); // retain original state -> allows user to proceed with conversation with the old state
+				}
+				
 				cache.hgetall(userkey, function(err, obj) {
 					logger.debug('New context for ' + userkey + ': ' + JSON.stringify(obj));
 				});
