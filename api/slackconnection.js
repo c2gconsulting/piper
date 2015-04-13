@@ -99,7 +99,7 @@ SlackConnection.prototype.onMessage = function(message) {
 						  'last_name' : user.profile.last_name,
 						  'full_name' : user.profile.real_name,
 						  'phone' : user.profile.phone,
-						  'image' : user.profile.image_48 };
+						  'avatar' : user.profile.image_48 };
 
 		var chatMessage = { 'text' : text,
 							'time' : time,

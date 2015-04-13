@@ -6,8 +6,9 @@ var services = require('./servers.json').services;
 
 
 var ERROR_RESPONSE_CODE = 422;
-//var logger = new Log(process.env.PIPER_LOG_LEVEL || 'info');
 
+// Connect to our mongo database
+db.connect();
 
 //Create server and router
 var app = express();

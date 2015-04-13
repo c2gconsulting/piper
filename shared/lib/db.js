@@ -1,26 +1,31 @@
+var mongoConfig = require('../config/mongo.json');
+var mongoose = require('mongoose');
+var logger = require('./log');
+
+// Connect to db
+exports.connect = function() {
+  var uristring = 'mongodb://' + mongoConfig.host + '/piper'; 
+
+  if (!mongoose.connection.db) {
+      mongoose.connect(uristring, function (err, res) {
+      if (err) {
+        logger.error ('ERROR connecting to: ' + uristring + '. ' + err);
+      } else {
+        logger.info ('Successfully connected to: ' + uristring);
+      }
+    });
+  }
+}
+
 // Retrieve or create database object
 var getModel = function(obj, callback) {
-  var mongoConfig = require('../config/mongo.json');
-  var mongoose = require('mongoose');
+  
   var Schema = mongoose.Schema;
 
-  var logger = require('./log');
-
+  
   if (!mongoose.models[obj]) {
     var uristring = 'mongodb://' + mongoConfig.host + '/piper'; 
-    
 
-    // Connect to mongodb
-    if (!mongoose.connection.db) {
-        mongoose.connect(uristring, function (err, res) {
-        if (err) {
-          logger.error ('ERROR connecting to: ' + uristring + '. ' + err);
-        } else {
-          logger.info ('Successfully connected to: ' + uristring);
-        }
-
-      });
-    }
 
     // Create schema
     try {

@@ -40,11 +40,10 @@ function Rides(data) {
 
 	this.validations = {
 		'confirmCancellation' : [
-						function(d, b) {
-							logger.debug('Got here in confirmNeed... d.confirmNeed is %s', d.confirmNeed)
+						function(d, b, i) {
 							var state = b.context.state;
-							if ((state === 'RIDES_confirm_cancellation' && d.yes_no === 'yes') || d.confirmCancellation === true) return d.confirmCancellation = true;
-							if ((state === 'RIDES_confirm_cancellation' && d.yes_no === 'no') || d.confirmCancellation === false)  {
+							if ((state === 'RIDES_confirm_cancellation' && i.yes_no === 'yes') || d.confirmCancellation === true) return d.confirmCancellation = true;
+							if ((state === 'RIDES_confirm_cancellation' && i.yes_no === 'no') || d.confirmCancellation === false)  {
 								d.confirmCancellation = false;
 								return true;
 							}
@@ -52,12 +51,12 @@ function Rides(data) {
 						}
 					],
 		'confirmNeed' : [
-						function(d, b) {
+						function(d, b, i) {
 							var state = b.context.state;
 							if (d.intent !== 'rides_go_out' && state !== 'RIDES_confirm_ride_needed') return true;
 							logger.debug('Got here in confirmNeed... d.confirmNeed is %s', d.confirmNeed)
-							if ((state === 'RIDES_confirm_ride_needed' && d.yes_no === 'yes')  || d.confirmNeed === true) return d.confirmNeed = true;
-							if ((state === 'RIDES_confirm_ride_needed' && d.yes_no === 'no') || d.confirmNeed === false) {
+							if ((state === 'RIDES_confirm_ride_needed' && i.yes_no === 'yes')  || d.confirmNeed === true) return d.confirmNeed = true;
+							if ((state === 'RIDES_confirm_ride_needed' && i.yes_no === 'no') || d.confirmNeed === false) {
 								d.confirmNeed = false;
 								return true;
 							}
@@ -65,48 +64,48 @@ function Rides(data) {
 						}
 					],
 		'startLong' : [
-						function(d, b) {
+						function(d, b, i) {
 							if(d.confirmNeed === false) return true; // exit validations if trip cancelled
 							if (!d.startLong || d.startLong === 0) return false;
 							return true;
 						}
 					],
 		'startLat' 	: [
-						function(d, b) {
+						function(d, b, i) {
 							if(d.confirmNeed === false) return true; // exit validations if trip cancelled
 							if (!d.startLat || d.startLat === 0) return false;
 							return true;
 						},
-						function(d, b) {
+						function(d, b, i) {
 							return true;
 						}
 					],
 		'carrier' 	: [
-						function(d, b) {
+						function(d, b, i) {
 							if(d.confirmNeed === false) return true; // exit validations if trip cancelled
 							return true;
 						}
 					],
 		'endAddress': [
-						function(d, b) {
+						function(d, b, i) {
 							if(d.confirmNeed === false) return true; // exit validations if trip cancelled
 							return true;
 						}
 					],
 		'departureTime': [
-						function(d, b) {
+						function(d, b, i) {
 							if(d.confirmNeed === false) return true; // exit validations if trip cancelled
 							return true;
 						}
 					],
 		'confirmRequest' : [
-						function(d, b) {
+						function(d, b, i) {
 							if(d.confirmNeed === false) return true; // exit validations if trip cancelled
-							if (d.confirmRequest === false || d.confirmRequest === 'off') {
+							if ((state === 'RIDES_confirm_request' && i.yes_no === 'yes') || d.confirmRequest === true) return d.confirmRequest = true;
+							if ((state === 'RIDES_confirm_request' && i.yes_no === 'no') || d.confirmRequest === false)  {
 								d.confirmRequest = false;
 								return true;
 							}
-							if (d.confirmRequest === 'on' || d.confirmRequest === true) return d.confirmRequest = true;
 							return false;
 						}
 					]
@@ -259,6 +258,7 @@ Rides.prototype.processData = function(user, client, body, handlerTodo) {
     var username = user.name;
 	var userkey = CACHE_PREFIX + username + '@' + clientHandle;
 	
+	var indata = extractEntities(body);
 
 	// check if this is a new request from the user
 	cache.exists(userkey + ':datacheck').then(function (check) {
@@ -270,70 +270,53 @@ Rides.prototype.processData = function(user, client, body, handlerTodo) {
 			}
 		}
 
-		// extract data from body
-		var indata = { 'handlerTodo' : handlerTodo };
-		var entities = body.outcomes[0].entities;
-		var eKeys = Object.keys(entities);
+		cache.hgetall(userkey + ':payload').then(function(datahash) {
+			datahash.handlerTodo = handlerTodo;
+			datahash.intent = body.outcomes[0].intent;
 
-		logger.debug('Entities: %s', JSON.stringify(entities));
-
-		if (eKeys) {
-			for (var e=0; e<eKeys.length; e++) {
-				indata[eKeys[e]] = entities[eKeys[e]][0].value;
-			}
-		}
-
-		logger.info('indata: ' + JSON.stringify(indata));
-
-		cache.hmset(userkey + ':payload', indata).then(function(value) {
-			// load back full hash and validate fields
-			cache.hgetall(userkey + ':payload').then(function(datahash) {
-				datahash.handlerTodo = handlerTodo;
-				datahash.intent = body.outcomes[0].intent;
-
-				var datacheckPromises = [];
-				for (var i=0; i<datakeys.length; i++) {
-					var fieldValid = true;
-					for (var f=0; f<me.validations[datakeys[i]].length; f++) {
-						fieldValid = fieldValid && me.validations[datakeys[i]][f](datahash, body);
-					}
-					logger.debug('fieldValid: %s, datakeys[i]: %s', fieldValid, datakeys[i] );
-					if (fieldValid) {
-						datacheckPromises[i] = cache.zrem(userkey + ':datacheck', datakeys[i]); // remove from datacheck if valid
-					} else {
-						datacheckPromises[i] = cache.zadd(userkey + ':datacheck', i, datakeys[i]); // add to datacheck if not valid (leave in datahash)
-					}
+			var datacheckPromises = [];
+			for (var i=0; i<datakeys.length; i++) {
+				var fieldValid = true;
+				for (var f=0; f<me.validations[datakeys[i]].length; f++) {
+					fieldValid = fieldValid && me.validations[datakeys[i]][f](datahash, body, indata);
 				}
+				logger.debug('fieldValid: %s, datakeys[i]: %s', fieldValid, datakeys[i] );
+				if (fieldValid) {
+					datacheckPromises[i] = cache.zrem(userkey + ':datacheck', datakeys[i]); // remove from datacheck if valid
+				} else {
+					datacheckPromises[i] = cache.zadd(userkey + ':datacheck', i, datakeys[i]); // add to datacheck if not valid (leave in datahash)
+				}
+			}
 
-				when.all(datacheckPromises).then(function() {
-					cache.zrange(userkey + ':datacheck', 0, -1).then(function(missingKeys) {
-						var missingData = false;
-						if (missingKeys.length > 0 && datakeys && datakeys.length > 0) {
-							var proceed = true;
-							for (var k=0; k<missingKeys.length; k++) {
-								if (proceed && me.handlerKeys[handlerTodo].indexOf(missingKeys[k]) > -1) {
-									missingData = true;
-									logger.debug('MissingKeys: %s; CurrentKey: %s; key: %s', JSON.stringify(missingKeys), missingKeys[k], k);
-									proceed = me.response[missingKeys[k]](user, clientHandle, datahash);
-								}
+			when.all(datacheckPromises).then(function() {
+				cache.zrange(userkey + ':datacheck', 0, -1).then(function(missingKeys) {
+					var missingData = false;
+					if (missingKeys.length > 0 && datakeys && datakeys.length > 0) {
+						var proceed = true;
+						for (var k=0; k<missingKeys.length; k++) {
+							if (proceed && me.handlerKeys[handlerTodo].indexOf(missingKeys[k]) > -1) {
+								missingData = true;
+								logger.debug('MissingKeys: %s; CurrentKey: %s; key: %s', JSON.stringify(missingKeys), missingKeys[k], k);
+								proceed = me.response[missingKeys[k]](user, clientHandle, datahash);
 							}
 						}
+					}
 
-						logger.debug('Datahash: %s', JSON.stringify(datahash));
-						cache.hmset(userkey + ':payload', datahash);
+					logger.debug('Datahash: %s', JSON.stringify(datahash));
+					cache.hmset(userkey + ':payload', datahash);
 
-						if (!missingData) {
-							// data is complete and valid
-							logger.debug('No more missing data: calling handleRequest for %s', handlerTodo);
-							me.handleRequest[handlerTodo](user, client.slackHandle, datahash);
-						}
+					if (!missingData) {
+						// data is complete and valid
+						logger.debug('No more missing data: calling handleRequest for %s', handlerTodo);
+						me.handleRequest[handlerTodo](user, client.slackHandle, datahash);
+					}
 
-						
-					});
+					
 				});
 			});
-			cache.expire(userkey + ':payload', CONTEXT_TTL);
 		});
+		cache.expire(userkey + ':payload', CONTEXT_TTL);
+	
 	});
 }
 
@@ -354,6 +337,20 @@ Rides.prototype.cancelRequest = function(username, clientHandle, data) {
 }
 	
 
+Rides.prototype.extractEntities = function(body) {
+	var indata = {};
+	var entities = body.outcomes[0].entities;
+	var eKeys = Object.keys(entities);
+
+	logger.debug('Entities: %s', JSON.stringify(entities));
+
+	if (eKeys) {
+		for (var e=0; e<eKeys.length; e++) {
+			indata[eKeys[e]] = entities[eKeys[e]][0].value;
+		}
+	}
+	return indata;
+}
 
 /**
  * Receive a message from back-end handlers for processing

@@ -1,4 +1,4 @@
-var db = require('../shared/lib/db');
+var ChitChatSubscriber = require('../shared/models/ChitChatSubscriber');
 var mq = require('../shared/lib/mq');
 var logger = require('../shared/lib/log');
 var express = require('express');
@@ -21,7 +21,7 @@ logger.info('CHITCHAT Handler: Connecting to MQ Exchange <piper.events.out>...')
 
 /* 
  * Bind to all subscribed clients...
- */
+ 
 db.getModel('chitchat_subscribers', function(err, model) {
 	if (err) {
 		logger.error('Fatal error: ' + err + '. Please resolve and restart the service'); // Unable to retrieve chitchat_subscribers db object
@@ -40,6 +40,19 @@ CCSubscriber.find({}, function (err, subscribers) {
 		logger.info('No subscribers currently registered or active, listening for new clients...');
 	}
 });
+*/
+
+ChitChatSubscriber.getSubscribers()
+	.then( function(subscribers) {
+		if (subscribers) {
+			subscribers.forEach(function(subscriber) {
+				logger.info('CHITCHAT Handler <piper.events.out>: Binding to %s.chitchat...', subscriber.handle);
+				sub.connect('piper.events.out', subscriber.handle + '.chitchat');
+			});
+		} else {
+			logger.info('No CHITCHAT subscribers currently registered or active, listening for new clients...');
+		}
+	});
 
 sub.on('data', function(data) {
 	jsonData = JSON.parse(data);
