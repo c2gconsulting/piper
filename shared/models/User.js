@@ -17,8 +17,8 @@ var schema = new mongoose.Schema({
     , is_admin      : String
   }]
   , preferences     : [{
-      homeAddress   : String
-    , officeAddress : String
+      pKey   : String
+    , pValue : String
   }]
 });
 

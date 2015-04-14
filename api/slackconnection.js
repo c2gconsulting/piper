@@ -93,12 +93,14 @@ SlackConnection.prototype.onMessage = function(message) {
 	if (!ignoreFlag && type === 'message' && (channel.name === user.name || text.search(this.slack.self.id) > 0)) {
 		logger.info('SLACK_CONNECTION: Message Received');
 
-		var piperUser = { 'name' : user.name,
+		var piperUser = { 'slackId' : user.id,
+						  'name' : user.name,
 						  'email' : user.profile.email,
 						  'first_name' : user.profile.first_name,
 						  'last_name' : user.profile.last_name,
 						  'full_name' : user.profile.real_name,
 						  'phone' : user.profile.phone,
+						  'is_admin' : user.is_admin,
 						  'avatar' : user.profile.image_48 };
 
 		var chatMessage = { 'text' : text,

@@ -328,10 +328,77 @@ var onSlackEvent = function(user, client, message) {
 		outContext = {};
 
 	var userkey = CACHE_PREFIX + user.name + '@' + client.slackHandle + ':context';
+	var sukey = CACHE_PREFIX + 'slackusers';
 	logger.debug('Userkey: ' + userkey);
+	logger.debug('SlackUserKey: %s, user.slackId: %s', sukey, user.slackId);
+	
 
-	//check if user already registered, else register
+	// Check if user registered and register
+	cache.sismember(sukey, user.slackId)
+		.then( function(value) {
+			if (value === 1) {
+				// user record exists...do nothing
+				logger.debug('User exists');
+				User.getUserBySlackID(user.slackId) 
+					.then(function(doc) {
+						if (doc) {
+							logger.debug('User: %s', JSON.stringify(doc));
+						}
+					});
+			} else {
+				// user record does not exist -> check if user exists by email
+				User.getUserByEmail(user.email)
+					.then(function(doc) {
+						if (doc) {
+							// user exists
+							User.findOneAndUpdate (
+								{ email: user.email }, 
+								{ slackProfiles   : [{
+								      id            : user.slackId
+								    , name          : user.name
+								    , clientHandle  : client.slackHandle
+								    , is_admin      : user.is_admin
+								  }]
+								},
+								{upsert: true}, function (err) {
+								if (err) {
+									logger.error('Unable to update user slack profile: ' + err);
+								} else {
+									logger.info('Slack Profile for User %s successfully created', user.email);
+									cache.sadd(sukey, user.slackId);
+								}
+							});
+						} else {
+							newUser = new User({
+								first_name      : user.first_name
+							  , last_name       : user.last_name
+							  , full_name       : user.full_name
+							  , email           : user.email
+							  , phone           : user.phone
+							  , avatar          : user.avatar 
+							  , active          : true
+							  , createdAt       : new Date()
+							  , slackProfiles   : [{
+							      id            : user.slackId
+							    , name          : user.name
+							    , clientHandle  : client.slackHandle
+							    , is_admin      : user.is_admin
+							  }]
+							});
+							newUser.save( function (err) {
+								if (err) {
+									logger.error ('Cannot register new user %s: %s', user.email, err);
+								} else {
+									logger.info('User %s successfully created', user.email);
+									cache.sadd(sukey, user.slackId);
+								}
+							});	
+						}
 
+					});
+			}
+		});
+	
 
 	// Retrieve user context from cache
 	cache.hget(userkey, 'state').then(function (value) {
