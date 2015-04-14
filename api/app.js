@@ -4,6 +4,7 @@ var mq = require('../shared/lib/mq');
 var express = require('express');
 var wit = require('../shared/lib/wit');
 var SlackConnection = require('./slackconnection');
+var User = require('../shared/models/User');
 var logger = require('../shared/lib/log');
 var witConfig = require('../shared/config/wit.json');
 var cache = require('../shared/lib/cache').getRedisClient();
@@ -328,6 +329,9 @@ var onSlackEvent = function(user, client, message) {
 
 	var userkey = CACHE_PREFIX + user.name + '@' + client.slackHandle + ':context';
 	logger.debug('Userkey: ' + userkey);
+
+	//check if user already registered, else register
+
 
 	// Retrieve user context from cache
 	cache.hget(userkey, 'state').then(function (value) {
