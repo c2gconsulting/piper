@@ -2,7 +2,7 @@
 	"processors" : [
 		{
 			"LEAVE.REQ" : "./processors/leaveRequest/leaveRequest.redis",
-			"TRAVEL.REQ" : "./processors/travelRequest/bookFlight",
+			"TRAVEL" : "./processors/travelRequest/bookFlight",
 			"NOTHING.DOING" : "./processors/general/doNothing",
 			"CHITCHAT" : "./processors/general/chitchat.mq",
 			"RIDES" : "./processors/rides/index"

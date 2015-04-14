@@ -39,7 +39,11 @@
 		{
 			"host" : "uber.piperlabs.com",
 			"path" : "./uber"
-		}
+		},
+      {
+        "host" : "travel.example.com",
+        "path" : "./travel"
+      }
 
 	]
 }
