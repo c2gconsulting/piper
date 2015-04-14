@@ -330,7 +330,6 @@ var onSlackEvent = function(user, client, message) {
 	var userkey = CACHE_PREFIX + user.name + '@' + client.slackHandle + ':context';
 	var sukey = CACHE_PREFIX + 'slackusers';
 	logger.debug('Userkey: ' + userkey);
-	logger.debug('SlackUserKey: %s, user.slackId: %s', sukey, user.slackId);
 	
 
 	// Check if user registered and register
@@ -491,16 +490,12 @@ var onSlackEvent = function(user, client, message) {
 var processMessage = function(user, client, Processor, body) {
 	if (!processors[Processor.MODULE]) {
 		//instantiate and setup processor
-		logger.warn('Calling new... ' + Processor.MODULE)
 		processors[Processor.MODULE] = new Processor();
-		logger.warn('Calling init... ' + Processor.MODULE)
 		processors[Processor.MODULE].init();
-		logger.warn('Calling onMessage... ' + Processor.MODULE)
 		processors[Processor.MODULE].on('message', onProcessorEvent);
 		processors[Processor.MODULE].on('error', onProcessorError);	
 	} 
 
-	logger.warn('Calling out... ' + Processor.MODULE)
 	processors[Processor.MODULE].out(user, client, body);
 }
 
