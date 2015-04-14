@@ -338,13 +338,6 @@ var onSlackEvent = function(user, client, message) {
 		.then( function(value) {
 			if (value === 1) {
 				// user record exists...do nothing
-				logger.debug('User exists');
-				User.getUserBySlackID(user.slackId) 
-					.then(function(doc) {
-						if (doc) {
-							logger.debug('User: %s', JSON.stringify(doc));
-						}
-					});
 			} else {
 				// user record does not exist -> check if user exists by email
 				User.getUserByEmail(user.email)
@@ -583,6 +576,8 @@ var getModule = function(intent, state) {
 				module = state.indexOf('_') > 0 ? state.substring(0, state.indexOf('_')).toUpperCase() : state.toUpperCase();
 				if (!processorMap.processors[0][module]) module = processorMap.modules[0]['intent_not_found'];
 				logger.debug('Module for intent %s and state %s resolved to %s', intent, state, module);
+			} else {
+				module = processorMap.modules[0]['intent_not_found'];
 			}
 		}
 	} else {

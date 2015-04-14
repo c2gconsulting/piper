@@ -35,6 +35,9 @@ function Rides(data) {
 					],
 		'rides_cancel_trip' : [
 						'confirmCancellation'
+					],
+		'rides_get_info' : [
+						'infotype'
 					]			
 	};
 
@@ -100,12 +103,22 @@ function Rides(data) {
 					],
 		'confirmRequest' : [
 						function(d, b, i) {
+							var state = b.context.state;
 							if(d.confirmNeed === false) return true; // exit validations if trip cancelled
 							if ((state === 'RIDES_confirm_request' && i.yes_no === 'yes') || d.confirmRequest === true) return d.confirmRequest = true;
 							if ((state === 'RIDES_confirm_request' && i.yes_no === 'no') || d.confirmRequest === false)  {
 								d.confirmRequest = false;
 								return true;
 							}
+							return false;
+						}
+					],
+		'infotype': [
+						function(d, b, i) {
+							if(i.infotype) {
+								d.infotype = i.infotype;
+								return true;
+							}  // exit validations if trip cancelled
 							return false;
 						}
 					]
@@ -175,7 +188,11 @@ function Rides(data) {
 
 						me.emit('message', Rides.MODULE, user.name, clientHandle, responseText, Rides.MODULE + "_confirm_request");
 						return false;
-					}			
+					},
+		'infotype' : function(user, clientHandle, data) {
+						me.emit('message', Rides.MODULE, user.name, clientHandle, 'What do you want to know?', Rides.MODULE + "_info_query");
+						return false;
+					},			
 					
 	};
 
@@ -199,6 +216,9 @@ function Rides(data) {
 							me.emit('message', Rides.MODULE, user.name, clientHandle, 'One second, let me see...');
 							me.push(user, clientHandle, data);
 						}
+					},
+		'rides_get_info' : function(user, clientHandle, data) {
+						me.emit('message', Rides.MODULE, user.name, clientHandle, 'You want to know ' + data.infotype);
 					}
 	};
 
@@ -237,6 +257,8 @@ Rides.prototype.out = function(user, client, body) {
 		handlerTodo = 'rides_request_price_estimate';
 	} else if (body.outcomes[0].intent === 'rides_request_eta' || body.context.state === 'RIDES_request_eta') {
 		handlerTodo = 'rides_request_eta';
+	} else if (body.outcomes[0].intent === 'rides_get_info' || body.context.state === 'RIDES_info_query' ) {
+		handlerTodo = 'rides_get_info';
 	} else {
 		handlerTodo = 'rides_book_trip';
 	}  
@@ -258,7 +280,7 @@ Rides.prototype.processData = function(user, client, body, handlerTodo) {
     var username = user.name;
 	var userkey = CACHE_PREFIX + username + '@' + clientHandle;
 	
-	var indata = extractEntities(body);
+	var indata = this.extractEntities(body);
 
 	// check if this is a new request from the user
 	cache.exists(userkey + ':datacheck').then(function (check) {
@@ -271,7 +293,11 @@ Rides.prototype.processData = function(user, client, body, handlerTodo) {
 		}
 
 		cache.hgetall(userkey + ':payload').then(function(datahash) {
-			datahash.handlerTodo = handlerTodo;
+			if (!datahash) {
+				datahash = { 'handlerTodo' : handlerTodo};
+			} else {
+				datahash.handlerTodo = handlerTodo;
+			}
 			datahash.intent = body.outcomes[0].intent;
 
 			var datacheckPromises = [];
