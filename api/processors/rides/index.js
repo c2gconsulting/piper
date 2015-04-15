@@ -58,11 +58,16 @@ function Rides(data) {
 							var state = b.context.state;
 							if (d.intent !== 'rides_go_out' && state !== 'RIDES_confirm_ride_needed') return d.confirmNeed = true;
 							logger.debug('Got here in confirmNeed... d.confirmNeed is %s', d.confirmNeed)
-							if ((state === 'RIDES_confirm_ride_needed' && i.yes_no === 'yes')  || d.confirmNeed === true) return d.confirmNeed = true;
-							if ((state === 'RIDES_confirm_ride_needed' && i.yes_no === 'no') || d.confirmNeed === false) {
+							if ((state === 'RIDES_confirm_ride_needed' && i.yes_no === 'yes')  || d.confirmNeed === true || d.confirmNeed === 'true') {
+								logger.debug('Got here in confirmNeed 2... d.confirmNeed is %s', d.confirmNeed);
+								return d.confirmNeed = true;
+							}
+							if ((state === 'RIDES_confirm_ride_needed' && i.yes_no === 'no') || d.confirmNeed === false || d.confirmNeed === 'false') {
+								logger.debug('Got here in confirmNeed 3... d.confirmNeed is %s', d.confirmNeed)
 								d.confirmNeed = false;
 								return true;
 							}
+							logger.debug('Got here in confirmNeed 4... d.confirmNeed is %s', d.confirmNeed)
 							return false;
 						}
 					],
