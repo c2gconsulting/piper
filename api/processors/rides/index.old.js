@@ -300,32 +300,19 @@ Rides.prototype.processData = function(user, client, body, handlerTodo) {
 			}
 			datahash.intent = body.outcomes[0].intent;
 
-			var datacheckPromises = [],
-				validationPromises = [],
-				fvPromises = [];
+			var datacheckPromises = [];
 			for (var i=0; i<datakeys.length; i++) {
-				validationPromises[i] = [];
+				var fieldValid = true;
 				for (var f=0; f<me.validations[datakeys[i]].length; f++) {
-					validationPromises[i][f] = when.lift(me.validations[datakeys[i]][f])(datahash, body, indata);
+					fieldValid = fieldValid && me.validations[datakeys[i]][f](datahash, body, indata);
 				}
-
-				fvPromises[i] = when.reduce(validationPromises[i], function (validAgg, value) {
-				    logger.debug('validAgg: %s, value: %s', validAgg, value);
-				    return validAgg && value;
-				}, true);
+				logger.debug('fieldValid: %s, datakeys[i]: %s', fieldValid, datakeys[i] );
+				if (fieldValid) {
+					datacheckPromises[i] = cache.zrem(userkey + ':datacheck', datakeys[i]); // remove from datacheck if valid
+				} else {
+					datacheckPromises[i] = cache.zadd(userkey + ':datacheck', i, datakeys[i]); // add to datacheck if not valid (leave in datahash)
+				}
 			}
-
-			when.all(fvPromises).then(function(validityChecks) {
-				for (var i=0; i<validityChecks.length; i++) {
-					logger.debug('fieldValid: %s, datakeys[i]: %s', validityChecks[i], datakeys[i] );
-
-					if (validityChecks[i]) {
-						datacheckPromises[i] = cache.zrem(userkey + ':datacheck', datakeys[i]); // remove from datacheck if valid
-					} else {
-						datacheckPromises[i] = cache.zadd(userkey + ':datacheck', i, datakeys[i]); // add to datacheck if not valid (leave in datahash)
-					}	
-				}
-			});
 
 			when.all(datacheckPromises).then(function() {
 				cache.zrange(userkey + ':datacheck', 0, -1).then(function(missingKeys) {
