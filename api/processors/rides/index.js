@@ -73,7 +73,13 @@ function Rides(data) {
 					],
 		'startLong' : [
 						function(d, b, i) {
+							var state = b.context.state;
 							if(d.confirmNeed === false) return true; // exit validations if trip cancelled
+							if (!d.startLong || d.startLong === 0) return false;
+							return true;
+						},
+						function(d, b, i) {
+							var state = b.context.state;
 							if (!d.startLong || d.startLong === 0) return false;
 							return true;
 						}
@@ -315,8 +321,8 @@ Rides.prototype.processData = function(user, client, body, handlerTodo) {
 				}
 
 				fvPromises[i] = when.reduce(validationPromises[i], function (validAgg, value) {
-				    return validAgg && value;
-				}, true);
+				    return validAgg || value;
+				}, false);
 			}
 
 			when.all(fvPromises).then(function(validityChecks) {
