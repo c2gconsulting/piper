@@ -56,7 +56,7 @@ function Rides(data) {
 		'confirmNeed' : [
 						function(d, b, i) {
 							var state = b.context.state;
-							if (d.intent !== 'rides_go_out' && state !== 'RIDES_confirm_ride_needed') return true;
+							if (d.intent !== 'rides_go_out' && state !== 'RIDES_confirm_ride_needed') return d.confirmNeed = true;
 							logger.debug('Got here in confirmNeed... d.confirmNeed is %s', d.confirmNeed)
 							if ((state === 'RIDES_confirm_ride_needed' && i.yes_no === 'yes')  || d.confirmNeed === true) return d.confirmNeed = true;
 							if ((state === 'RIDES_confirm_ride_needed' && i.yes_no === 'no') || d.confirmNeed === false) {
@@ -310,14 +310,13 @@ Rides.prototype.processData = function(user, client, body, handlerTodo) {
 				}
 
 				fvPromises[i] = when.reduce(validationPromises[i], function (validAgg, value) {
-				    logger.debug('validAgg: %s, value: %s', validAgg, value);
 				    return validAgg && value;
 				}, true);
 			}
 
 			when.all(fvPromises).then(function(validityChecks) {
 				for (var i=0; i<validityChecks.length; i++) {
-					logger.debug('fieldValid: %s, datakeys[i]: %s', validityChecks[i], datakeys[i] );
+					logger.debug('Datakey: %s, Validity Check: %s', datakeys[i], validityChecks[i]);
 
 					if (validityChecks[i]) {
 						datacheckPromises[i] = cache.zrem(userkey + ':datacheck', datakeys[i]); // remove from datacheck if valid
