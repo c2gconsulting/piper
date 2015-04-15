@@ -2,17 +2,11 @@ var fs = require('fs');
 var db = require('../shared/lib/db');
 var mq = require('../shared/lib/mq');
 var express = require('express');
-var wit = require('../shared/lib/wit');
 var SlackConnection = require('./slackconnection');
-var User = require('../shared/models/User');
 var logger = require('../shared/lib/log');
-var witConfig = require('../shared/config/wit.json');
-var cache = require('../shared/lib/cache').getRedisClient();
-
-var CACHE_PREFIX = 'api-server:';
 var ERROR_RESPONSE_CODE = 422;
-var CONTEXT_TTL = 900;
-
+var cache = require('../shared/lib/cache').getRedisClient();
+var CACHE_PREFIX = 'server:';
 var w = [];
 var processors = [];
 
@@ -20,7 +14,7 @@ var processors = [];
 var app = exports.app = express(); // Create the Express application
 var port = process.env.PORT || 80; // Define environment variables
 var router = express.Router(); // Create our Express router
-var witAccessToken = process.env.WIT_ACCESS_TOKEN || witConfig.WIT_ACCESS_TOKEN; //enable local env variable settings to override global config
+
 
 /* 	Retrieve Models:
  * 	- clients
@@ -322,113 +316,7 @@ var createSlackConnection = function(client) {
 
 }
 
-var onSlackEvent = function(user, client, message) {
-
-	var inContext = {},
-		outContext = {};
-
-	var userkey = CACHE_PREFIX + user.name + '@' + client.slackHandle + ':context';
-	logger.debug('Userkey: ' + userkey);
-
-	//check if user already registered, else register
-
-
-	// Retrieve user context from cache
-	cache.hget(userkey, 'state').then(function (value) {
-		if (value){
-			inContext.state = value;
-			cache.hdel(userkey, 'state');
-			logger.debug('State for ' + userkey + ': ' + value);
-		} else {
-			// error OR no existing context -> initialize
-			inContext = {
-					'state': ''
-				};
-			logger.info('No context: ' + JSON.stringify(inContext));
-		}
-
-		// Update context with current user time
-		var dateTime = new Date(message.time*1000);
-		inContext.reference_time = dateTime.toISOString();
-		logger.debug(inContext.reference_time);
-		
-		// Interprete inbound message -> wit
-		var intentBody;
-		wit.captureTextIntent(witAccessToken, message.text, inContext, function(error,feedback) {
-			if (error) {
-				var response = JSON.stringify(feedback);
-				logger.error('Error retrieving intent from wit.ai: '+ JSON.stringify(error));
-				logger.debug('Feedback: ' + JSON.stringify(feedback));
-				
-				// Reply
-				//channel.send(response);
-				//logger.info('@%s responded with "%s"', me.slack.self.name, response);
-			} else {
-				intentBody = feedback;
-				intentBody.context = inContext;
-				logger.debug('IntentBody: %s', JSON.stringify(intentBody));
-
-				// Retrieve processor
-				var processorMap = require('./processors/map.json');
-				var intent = intentBody.outcomes[0]['intent'];
-
-				logger.debug("Intent: " + intent);
-
-				// Check confidence level
-
-				var intentChanged = false;
-				if (intentBody.outcomes[0]['confidence'] < witConfig.MIN_CONFIDENCE) {
-					intent = 'intent_not_found';
-					intentChanged = true; // don't change state if intent changed
-					logger.info('Low confidence, changing intent to intent_not_found');
-				}
-
-				//console.log("Updated Intent: " + intent);
-				logger.debug("Confidence: " + intentBody.outcomes[0]['confidence']);
-
-				// Create new UserContext and update
-				outContext = {
-						 state : '' 
-					};
-					
-				// Save to cache
-				if (!intentChanged) {
-					cache.hset(userkey, 'state', getModule(intent, inContext.state)); // update state to reflect new module
-				} else {
-					cache.hset(userkey, 'state', inContext.state); // retain original state -> allows user to proceed with conversation with the old state
-				}
-				
-				cache.hgetall(userkey, function(err, obj) {
-					logger.debug('New context for ' + userkey + ': ' + JSON.stringify(obj));
-				});
-				cache.expire(userkey, CONTEXT_TTL);
-
-				if (intent){
-					var processorModule = processorMap.processors[0][getModule(intent, inContext.state)];
-					if (!processorModule) {
-						processorModule = processorMap.processors[0][getModule('intent_not_found')];
-						logger.debug('Processor not found for ' + getModule(intent, inContext.state) + ', defaulting to ' + getModule('intent_not_found'));
-					}
-				} else {
-					var processorModule = processorMap.processors[0][getModule('intent_not_found')];
-					logger.debug('No intent found, defaulting to ' + getModule('intent_not_found'));
-				}
-
-				// Run
-				try {
-					var Processor = require(processorModule);
-					processMessage(user, client, Processor, intentBody);
-				} catch (e) {
-					logger.debug('Error processing intent for state: ' + getModule(intent, inContext.state) + ' -> ' + e + ', defaulting to ' + getModule('intent_not_found'));
-					var Processor = require(processorMap.processors[0][getModule('intent_not_found')]);
-					processMessage(user, client, Processor, intentBody);					
-				}
-			}										
-		});
-	});
-}
-
-var processMessage = function(user, client, Processor, body) {
+var onSlackEvent = function(username, client, Processor, intentBody) {
 	if (!processors[Processor.MODULE]) {
 		//instantiate and setup processor
 		logger.warn('Calling new... ' + Processor.MODULE)
@@ -441,7 +329,7 @@ var processMessage = function(user, client, Processor, body) {
 	} 
 
 	logger.warn('Calling out... ' + Processor.MODULE)
-	processors[Processor.MODULE].out(user, client, body);
+	processors[Processor.MODULE].out(username, client, intentBody);
 }
 
 var onHandlerEvent = function(username, clientHandle, module, data) {
@@ -469,7 +357,7 @@ var onProcessorEvent = function(module, username, clientHandle, message, state) 
 			logger.debug('module: %s, user: %s, client: %s, message: %s', module, username, clientHandle, message);
 			if (w[clientID]) {
 				w[clientID].sendDM(username, message);
-				if (state) setUserState(username, clientHandle, state);
+				if (state) w[clientID].setUserState(username, state);
 				logger.debug('Message: ' + message + ' sent to user ' + username);
 			}
 		}
@@ -503,36 +391,6 @@ var getProcessor = function(module) {
 	}
 	return false;
 }
-
-
-var getModule = function(intent, state) {
-	var processorMap = require('./processors/map.json');
-	
-	if (intent){
-		var module = processorMap.modules[0][intent];
-		if (!module || module === 'DEFAULT') {
-			if (state) {
-				// retrieve module based on state
-				module = state.indexOf('_') > 0 ? state.substring(0, state.indexOf('_')).toUpperCase() : state.toUpperCase();
-				if (!processorMap.processors[0][module]) module = processorMap.modules[0]['intent_not_found'];
-				logger.debug('Module for intent %s and state %s resolved to %s', intent, state, module);
-			}
-		}
-	} else {
-		var module = processorMap.modules[0]['intent_not_found'];
-		logger.debug('No intent found, defaulting to intent_not_found');
-	}
-
-	return module;
-}
-
-
-var setUserState = function(username, clientHandle, state) {
-	var userkey = CACHE_PREFIX + username + '@' + clientHandle + ':context';
-	cache.hset(userkey, 'state', state);
-}
-
-
 
 var getClientID = function(clientHandle, callback) {
 	cache.hget('clients', clientHandle, callback);

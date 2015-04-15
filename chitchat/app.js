@@ -1,4 +1,4 @@
-var db = require('../shared/lib/db');
+var ChitChatSubscriber = require('../shared/models/ChitChatSubscriber');
 var mq = require('../shared/lib/mq');
 var logger = require('../shared/lib/log');
 var express = require('express');
@@ -21,7 +21,7 @@ logger.info('CHITCHAT Handler: Connecting to MQ Exchange <piper.events.out>...')
 
 /* 
  * Bind to all subscribed clients...
- */
+ 
 db.getModel('chitchat_subscribers', function(err, model) {
 	if (err) {
 		logger.error('Fatal error: ' + err + '. Please resolve and restart the service'); // Unable to retrieve chitchat_subscribers db object
@@ -40,6 +40,19 @@ CCSubscriber.find({}, function (err, subscribers) {
 		logger.info('No subscribers currently registered or active, listening for new clients...');
 	}
 });
+*/
+
+ChitChatSubscriber.getSubscribers()
+	.then( function(subscribers) {
+		if (subscribers) {
+			subscribers.forEach(function(subscriber) {
+				logger.info('CHITCHAT Handler <piper.events.out>: Binding to %s.chitchat...', subscriber.handle);
+				sub.connect('piper.events.out', subscriber.handle + '.chitchat');
+			});
+		} else {
+			logger.info('No CHITCHAT subscribers currently registered or active, listening for new clients...');
+		}
+	});
 
 sub.on('data', function(data) {
 	jsonData = JSON.parse(data);
@@ -51,7 +64,7 @@ var onMessage = function (id, user, client, body) {
 		var cBot = new Cleverbot();
 		cBot.write(body._text, function(err, text){
 			if (err) logger.error('CHITCHAT Handler: Cannot process message ' + err);
-			push(user, client, { 'text': text });	
+			push(user.name, client, { 'text': text });	
 		});
 		msgid = id;
 	}
@@ -59,12 +72,12 @@ var onMessage = function (id, user, client, body) {
 
 /**
  * Push a message to the message exchange for a handler to pick up
- * @param user - user that owns this message
+ * @param username - user that owns this message
  * @param client - handle of the company that owns this message
  * @param body - JSON object with message to be processed by the handler
  */
- var push = function(user, client, body) {
-	data = { 'id': new Date().getTime(), 'user': user, 'client': client, 'body': body };
+ var push = function(username, client, body) {
+	data = { 'id': new Date().getTime(), 'user': username, 'client': client, 'body': body };
 	logger.info('CHITCHAT Handler: Connecting to MQ Exchange <piper.events.in>...');
 	pub.connect('piper.events.in', function() {
 		logger.info('CHITCHAT Handler:  MQ Exchange <piper.events.in> connected');

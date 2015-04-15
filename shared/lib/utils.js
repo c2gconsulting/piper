@@ -1,5 +1,5 @@
 // Convert Date String in ISO format to JavaScript Date
-var dateFromISOString = function(date, callback) {
+exports.dateFromISOString = function(date, callback) {
   
   var dateString = date.replace(/\D/g," ");
   var dateComponents = dateString.split(" ");
@@ -14,12 +14,11 @@ var dateFromISOString = function(date, callback) {
 }
 
 
-var getAbsoluteURL = function(path, module) {
+exports.getAbsoluteURL = function(path, module) {
 	return 'http://mobilizr.net';
 }
 
-// Export the Collection constructor from this module.
-module.exports.dateFromISOString = dateFromISOString;
+
 
 
 

@@ -8,8 +8,8 @@ var responses = require('./responses.json');
 var when = require('when');
 
 var CACHE_PREFIX = 'rides:';
-var MODULE = 'RIDES';
 var MSGKEYS_TTL = 300;
+var CONTEXT_TTL = 1800;
 	
 cache.on("error", function (err) {
     logger.error("Redis Error: " + err);
@@ -25,50 +25,87 @@ function Rides(data) {
 
 	this.handlerKeys = {
 		'rides_book_trip' : [
+						'confirmNeed',
 						'startLong',
 						'startLat',
 						'carrier',
 						'endAddress',
 						'departureTime',
 						'confirmRequest'
-					]
+					],
+		'rides_cancel_trip' : [
+						'confirmCancellation'
+					]			
 	};
 
 	this.validations = {
+		'confirmCancellation' : [
+						function(d, b, i) {
+							var state = b.context.state;
+							if ((state === 'RIDES_confirm_cancellation' && i.yes_no === 'yes') || d.confirmCancellation === true) return d.confirmCancellation = true;
+							if ((state === 'RIDES_confirm_cancellation' && i.yes_no === 'no') || d.confirmCancellation === false)  {
+								d.confirmCancellation = false;
+								return true;
+							}
+							return false;
+						}
+					],
+		'confirmNeed' : [
+						function(d, b, i) {
+							var state = b.context.state;
+							if (d.intent !== 'rides_go_out' && state !== 'RIDES_confirm_ride_needed') return true;
+							logger.debug('Got here in confirmNeed... d.confirmNeed is %s', d.confirmNeed)
+							if ((state === 'RIDES_confirm_ride_needed' && i.yes_no === 'yes')  || d.confirmNeed === true) return d.confirmNeed = true;
+							if ((state === 'RIDES_confirm_ride_needed' && i.yes_no === 'no') || d.confirmNeed === false) {
+								d.confirmNeed = false;
+								return true;
+							}
+							return false;
+						}
+					],
 		'startLong' : [
-						function(d) {
+						function(d, b, i) {
+							if(d.confirmNeed === false) return true; // exit validations if trip cancelled
 							if (!d.startLong || d.startLong === 0) return false;
 							return true;
 						}
 					],
 		'startLat' 	: [
-						function(d) {
+						function(d, b, i) {
+							if(d.confirmNeed === false) return true; // exit validations if trip cancelled
 							if (!d.startLat || d.startLat === 0) return false;
 							return true;
 						},
-						function(d) {
+						function(d, b, i) {
 							return true;
 						}
 					],
 		'carrier' 	: [
-						function(d) {
+						function(d, b, i) {
+							if(d.confirmNeed === false) return true; // exit validations if trip cancelled
 							return true;
 						}
 					],
 		'endAddress': [
-						function(d) {
+						function(d, b, i) {
+							if(d.confirmNeed === false) return true; // exit validations if trip cancelled
 							return true;
 						}
 					],
 		'departureTime': [
-						function(d) {
+						function(d, b, i) {
+							if(d.confirmNeed === false) return true; // exit validations if trip cancelled
 							return true;
 						}
 					],
 		'confirmRequest' : [
-						function(d) {
-							if (!d.confirmRequest || d.confirmRequest === 'off') return d.confirmRequest = false;
-							if (d.confirmRequest === 'on' || d.confirmRequest === true) return d.confirmRequest = true;
+						function(d, b, i) {
+							if(d.confirmNeed === false) return true; // exit validations if trip cancelled
+							if ((state === 'RIDES_confirm_request' && i.yes_no === 'yes') || d.confirmRequest === true) return d.confirmRequest = true;
+							if ((state === 'RIDES_confirm_request' && i.yes_no === 'no') || d.confirmRequest === false)  {
+								d.confirmRequest = false;
+								return true;
+							}
 							return false;
 						}
 					]
@@ -76,59 +113,106 @@ function Rides(data) {
 	};
 
 	this.response = {
-		'startLong' : function(username, clientHandle, data) {
-						data.lvlLocationQueries = data.lvlLocationQueries ? data.lvlLocationQueries + 1 : 0;
+		'confirmCancellation' : function(user, clientHandle, data) {
+						if (!data.lvlConfirmCancellationQueries || isNaN(data.lvlConfirmCancellationQueries)) data.lvlConfirmCancellationQueries = 0;
+						while (!responses.confirmCancellation[data.lvlConfirmCancellationQueries] && data.lvlConfirmCancellationQueries > 0) data.lvlConfirmCancellationQueries--;
+						var responseText = responses.confirmCancellation[data.lvlConfirmCancellationQueries] ? responses.confirmCancellation[data.lvlConfirmCancellationQueries] : "I'm a bit confused..."; 
+						data.lvlConfirmCancellationQueries++; 
+						
+						me.emit('message', Rides.MODULE, user.name, clientHandle, responseText, Rides.MODULE + "_confirm_cancellation");
+						return false;
+					},	
+		'confirmNeed' : function(user, clientHandle, data) {
+						if (!data.lvlConfirmNeedQueries || isNaN(data.lvlConfirmNeedQueries)) data.lvlConfirmNeedQueries = 0;
+						//logger.debug('lvlConfirmNeedQueries2: %s', data.lvlConfirmNeedQueries);
+						while (!responses.confirmNeed[data.lvlConfirmNeedQueries] && data.lvlConfirmNeedQueries > 0) data.lvlConfirmNeedQueries--;
+						var responseText = responses.confirmNeed[data.lvlConfirmNeedQueries] ? responses.confirmNeed[data.lvlConfirmNeedQueries] : "I'm a bit confused..."; 
+						data.lvlConfirmNeedQueries++; // data.lvlConfirmNeedQueries ? data.lvlConfirmNeedQueries + 1 : 0;
+						
+						me.emit('message', Rides.MODULE, user.name, clientHandle, responseText, Rides.MODULE + "_confirm_ride_needed");
+						return false;
+					},	
+		'startLong' : function(user, clientHandle, data) {
+						if (!data.lvlLocationQueries || isNaN(data.lvlLocationQueries)) data.lvlLocationQueries = 0;
 						while (!responses.location[data.lvlLocationQueries] && data.lvlLocationQueries > 0) data.lvlLocationQueries--;
 						var responseText = responses.location[data.lvlLocationQueries] ? responses.location[data.lvlLocationQueries].replace("@locationlink", getLocationLink()) : "I'm a bit confused..."; 
-						
-						me.emit('message', MODULE, username, clientHandle, responseText, MODULE + "_get_location");
+						data.lvlLocationQueries++;
+
+						me.emit('message', Rides.MODULE, user.name, clientHandle, responseText, Rides.MODULE + "_get_location");
 						return false;
 					},
-		'startLat' 	: function(username, clientHandle, data) {
-						data.lvlLocationQueries = data.lvlLocationQueries ? data.lvlLocationQueries + 1 : 0;
+		'startLat' 	: function(user, clientHandle, data) {
+						if (!data.lvlLocationQueries || isNaN(data.lvlLocationQueries)) data.lvlLocationQueries = 0;
 						while (!responses.location[data.lvlLocationQueries] && data.lvlLocationQueries > 0) data.lvlLocationQueries--;
 						var responseText = responses.location[data.lvlLocationQueries] ? responses.location[data.lvlLocationQueries].replace("@locationlink", getLocationLink()) : "I'm a bit confused..."; 
+						data.lvlLocationQueries++;
 						
-						me.emit('message', MODULE, username, clientHandle, responseText, MODULE + "_get_location");
+						me.emit('message', Rides.MODULE, user.name, clientHandle, responseText, Rides.MODULE + "_get_location");
 						return false;
 					},
-		'carrier' 	: function(username, clientHandle, data) {
+		'carrier' 	: function(user, clientHandle, data) {
 						if (data.preferredCarrier) {
-							data.lvlCarrierQueries = data.lvlCarrierQueries ? data.lvlCarrierQueries + 1 : 0;
+							if (!data.lvlCarrierQueries || isNaN(data.lvlCarrierQueries)) data.lvlCarrierQueries = 0;
 							while (!responses.carrier[data.lvlCarrierQueries] && data.lvlCarrierQueries > 0) data.lvlCarrierQueries--;
 							var responseText = responses.carrier[data.lvlCarrierQueries] ? responses.carrier[data.lvlCarrierQueries].replace("@preferredCarrier", data.preferredCarrier) : "I'm a bit confused..."; 
-							
-							me.emit('message', MODULE, username, clientHandle, responseText, MODULE + "_confirm_carrier");
+							data.lvlCarrierQueries++;
+						
+							me.emit('message', Rides.MODULE, user.name, clientHandle, responseText, Rides.MODULE + "_confirm_carrier");
 						} 
 						return false;
 					},
-		'endAddress': function(username, clientHandle, data) {
+		'endAddress': function(user, clientHandle, data) {
 						return true;
 					},
-		'departureTime' : function(username, clientHandle, data) {
+		'departureTime' : function(user, clientHandle, data) {
 						return true;
 					},
-		'confirmRequest' : function(username, clientHandle, data) {
-						data.lvlConfirmationQueries = data.lvlConfirmationQueries ? data.lvlConfirmationQueries + 1 : 0;
-						while (!responses.confirmRequest[data.lvlConfirmationQueries] && data.lvlConfirmationQueries > 0) data.lvlConfirmationQueries--;
-						var responseText = responses.confirmRequest[data.lvlConfirmationQueries] ? responses.confirmRequest[data.lvlConfirmationQueries].replace("@username", username) : "I'm a bit confused..."; 
-						
-						me.emit('message', MODULE, username, clientHandle, responseText, MODULE + "_confirm_request");
+		'confirmRequest' : function(user, clientHandle, data) {
+						if (!data.lvlConfirmRequestQueries || isNaN(data.lvlConfirmRequestQueries)) data.lvlConfirmRequestQueries = 0;
+						while (!responses.confirmRequest[data.lvlConfirmRequestQueries] && data.lvlConfirmRequestQueries > 0) data.lvlConfirmRequestQueries--;
+						var responseText = responses.confirmRequest[data.lvlConfirmRequestQueries] ? responses.confirmRequest[data.lvlConfirmRequestQueries].replace("@username", username) : "I'm a bit confused..."; 
+						data.lvlConfirmRequestQueries++;
+
+						me.emit('message', Rides.MODULE, user.name, clientHandle, responseText, Rides.MODULE + "_confirm_request");
 						return false;
 					}			
 					
+	};
+
+	this.handleRequest = {
+		'rides_cancel_trip' : function(user, clientHandle, data) {
+						me.cancelRequest(user.name, clientHandle, data);
+						me.emit('message', Rides.MODULE, user.name, clientHandle, 'Fine, your trip request has been cancelled');
+					},
+		'rides_request_price_estimate' : function(user, clientHandle, data) {
+
+					},
+		'rides_request_eta' : function(user, clientHandle, data) {
+
+					},
+		'rides_book_trip' : function(user, clientHandle, data) {
+						logger.debug('HandleRequest: handling for rides_book_trip... %s', JSON.stringify(data));
+						if (data.confirmNeed === false) {
+							logger.debug('HandleRequest: handling for rides_book_trip...calling cancelrequest');
+							me.cancelRequest(user.name, clientHandle, data);
+						} else {
+							me.emit('message', Rides.MODULE, user.name, clientHandle, 'One second, let me see...');
+							me.push(user, clientHandle, data);
+						}
+					}
 	};
 
 }
 
 Rides.prototype = Object.create(EventEmitter.prototype);
 Rides.prototype.constructor = Rides;
+Rides.MODULE = 'RIDES';
 
 Rides.prototype.init = function(){
 	// subscribe to inbound MQ exchange
-	logger.info('%s Processor: Connecting to MQ Exchange <piper.events.in>...', MODULE);
-	this.sub.connect('piper.events.in', MODULE.toLowerCase(), function() {
-		logger.info('%s Processor: <piper.events.in> connected', MODULE);
+	logger.info('%s Processor: Connecting to MQ Exchange <piper.events.in>...', Rides.MODULE);
+	this.sub.connect('piper.events.in', Rides.MODULE.toLowerCase(), function() {
+		logger.info('%s Processor: <piper.events.in> connected', Rides.MODULE);
 	});
 	var me = this;
 	this.sub.on('data', function(data) {
@@ -140,46 +224,41 @@ Rides.prototype.init = function(){
 
 /**
  * Receive a message for processing from the front-end
- * @param username - the user making the request
+ * @param user - the user making the request
  * @param client - the company that owns this message
  * @param body - JSON object with request details
  */
-Rides.prototype.out = function(username, client, body) {
+Rides.prototype.out = function(user, client, body) {
 	var handlerTodo = '';
 	
-	switch(body.outcomes[0].intent) {
-        case "rides_cancel_trip":
-            // cancel existing trip 
-            handlerTodo = body.outcomes[0].intent;
-            break;
-        case "rides_request_price_estimate":
-            // retrieve price for products available to user
-            handlerTodo = body.outcomes[0].intent;
-            break;
-        case "rides_request_eta":
-        	// retrieve ETA for user ride
-            handlerTodo = body.outcomes[0].intent;
-            break;
-        default:
-            handlerTodo = "rides_book_trip";
-
-  	}
+	if (body.outcomes[0].intent === 'rides_cancel_trip' || body.outcomes[0].intent === 'default_cancel_request' || body.context.state === 'RIDES_confirm_cancellation') {
+		handlerTodo = 'rides_cancel_trip';
+	} else if (body.outcomes[0].intent === 'rides_request_price_estimate' || body.context.state === 'RIDES_request_price_estimate') {
+		handlerTodo = 'rides_request_price_estimate';
+	} else if (body.outcomes[0].intent === 'rides_request_eta' || body.context.state === 'RIDES_request_eta') {
+		handlerTodo = 'rides_request_eta';
+	} else {
+		handlerTodo = 'rides_book_trip';
+	}  
             
-    this.processData(username, client, body, handlerTodo);
+    this.processData(user, client, body, handlerTodo);
 
 }
 
 
 /**
  * Validate data sufficiency and trigger request to endpoint
- * @param username - the user making the request
+ * @param user - the user making the request
  * @param client - the company that owns this message
  * @param body - JSON object with request details
  */
-Rides.prototype.processData = function(username, client, body, handlerTodo) {
+Rides.prototype.processData = function(user, client, body, handlerTodo) {
     var me = this;
-	var userkey = CACHE_PREFIX + username + '@' + client.slackHandle;
+    var clientHandle = client.slackHandle;
+    var username = user.name;
+	var userkey = CACHE_PREFIX + username + '@' + clientHandle;
 	
+	var indata = extractEntities(body);
 
 	// check if this is a new request from the user
 	cache.exists(userkey + ':datacheck').then(function (check) {
@@ -187,67 +266,90 @@ Rides.prototype.processData = function(username, client, body, handlerTodo) {
 		if (check === 0 && datakeys && datakeys.length > 0) {
 			// new request: initialize datacheck set with entity list
 			for (var d=0; d<datakeys.length; d++) {
-				cache.sadd(userkey + ':datacheck', datakeys[d]);
+				cache.zadd(userkey + ':datacheck', d, datakeys[d]);
 			}
 		}
 
-		// extract data from body
-		var indata = [];
-		var entities = body.outcomes[0].entities,
-		var eKeys = Object.keys(entities);
+		cache.hgetall(userkey + ':payload').then(function(datahash) {
+			datahash.handlerTodo = handlerTodo;
+			datahash.intent = body.outcomes[0].intent;
 
-		if (eKeys) {
-			for (var e=0; e<eKeys.length; e++) {
-				indata[e] = entities[e][0].value;
-			}
-		}
-
-		cache.hmset(userkey + ':payload', indata).then(function(value) {
-			// load back full hash and validate fields
-			cache.hgetall(userkey + ':payload').then(function(datahash) {
-				datahash.handlerTodo = handlerTodo;
-				datahash.intent = body.outcomes[0].intent;
-
-				var datacheckPromises;
-				for (var i=0; i<datakeys.length; i++) {
-					var fieldValid = true;
-					for (var f=0; f<me.validations[datakeys[i]].length; f++) {
-						fieldValid = fieldValid && me.validations[datakeys[i]][f](datahash);
-					}
-
-					if (fieldValid) {
-						datacheckPromises[i] = cache.srem(userkey + ':datacheck', datakeys[i]); // remove from datacheck if valid
-					} else {
-						datacheckPromises[i] = cache.sadd(userkey + ':datacheck', datakeys[i]); // add to datacheck if not valid (leave in datahash)
-					}
+			var datacheckPromises = [];
+			for (var i=0; i<datakeys.length; i++) {
+				var fieldValid = true;
+				for (var f=0; f<me.validations[datakeys[i]].length; f++) {
+					fieldValid = fieldValid && me.validations[datakeys[i]][f](datahash, body, indata);
 				}
-			
-				when.all(datacheckPromises).then(function() {
-					cache.smembers(userkey + ':datacheck').then(function(missingKeys) {
-						var missingData = false;
-						if (missingKeys.length > 0 && datakeys && datakeys.length > 0) {
-							var continue = true;
-							for (var k=0; k<missingKeys.length; k++) {
-								if (continue && me.handlerKeys[handlerTodo].indexOf(missingKeys[k]) > -1) {
-									missingData = true;
-									continue = me.response[missingKeys[k]](username, clientHandle, datahash);
-								}
+				logger.debug('fieldValid: %s, datakeys[i]: %s', fieldValid, datakeys[i] );
+				if (fieldValid) {
+					datacheckPromises[i] = cache.zrem(userkey + ':datacheck', datakeys[i]); // remove from datacheck if valid
+				} else {
+					datacheckPromises[i] = cache.zadd(userkey + ':datacheck', i, datakeys[i]); // add to datacheck if not valid (leave in datahash)
+				}
+			}
+
+			when.all(datacheckPromises).then(function() {
+				cache.zrange(userkey + ':datacheck', 0, -1).then(function(missingKeys) {
+					var missingData = false;
+					if (missingKeys.length > 0 && datakeys && datakeys.length > 0) {
+						var proceed = true;
+						for (var k=0; k<missingKeys.length; k++) {
+							if (proceed && me.handlerKeys[handlerTodo].indexOf(missingKeys[k]) > -1) {
+								missingData = true;
+								logger.debug('MissingKeys: %s; CurrentKey: %s; key: %s', JSON.stringify(missingKeys), missingKeys[k], k);
+								proceed = me.response[missingKeys[k]](user, clientHandle, datahash);
 							}
 						}
+					}
 
-						if (!missingData) {
-							// data is complete and valid
-							me.emit('message', MODULE, username, clientHandle, 'One second, let me see...');
-							me.push(username, client.slackHandle, datahash);
-						}
-					});
+					logger.debug('Datahash: %s', JSON.stringify(datahash));
+					cache.hmset(userkey + ':payload', datahash);
+
+					if (!missingData) {
+						// data is complete and valid
+						logger.debug('No more missing data: calling handleRequest for %s', handlerTodo);
+						me.handleRequest[handlerTodo](user, client.slackHandle, datahash);
+					}
+
+					
 				});
-
-				cache.hmset(userkey + ':payload', datahash);
 			});
 		});
-		
+		cache.expire(userkey + ':payload', CONTEXT_TTL);
+	
 	});
+}
+
+/**
+ * Cancel request and delete all cache records
+ * @param username - the user making the request
+ * @param client - the company that owns this message
+ * @param body - JSON object with request details
+ */
+Rides.prototype.cancelRequest = function(username, clientHandle, data) {
+	logger.debug('CancelRequest: cancelling for ... %s', JSON.stringify(data));
+						
+	var userkey = CACHE_PREFIX + username + '@' + clientHandle;
+
+    cache.del(userkey + ':payload');
+    cache.del(userkey + ':datacheck');
+    data = {};
+}
+	
+
+Rides.prototype.extractEntities = function(body) {
+	var indata = {};
+	var entities = body.outcomes[0].entities;
+	var eKeys = Object.keys(entities);
+
+	logger.debug('Entities: %s', JSON.stringify(entities));
+
+	if (eKeys) {
+		for (var e=0; e<eKeys.length; e++) {
+			indata[eKeys[e]] = entities[eKeys[e]][0].value;
+		}
+	}
+	return indata;
 }
 
 /**
@@ -266,7 +368,7 @@ Rides.prototype.in = function(msgid, username, clientHandle, body) {
 				// not duplicate, process
 		//		logger.warn('MESSAGE deets ' + msgid + JSON.stringify(body));
 		//		cache.sadd(CACHE_PREFIX + username + '@' + clientHandle + ':msgid', msgid);
-				me.emit('message', MODULE, username, clientHandle, body.text);
+				me.emit('message', Rides.MODULE, username, clientHandle, body.text);
 		//	}	
 		//});
 		this.msgid = msgid;
@@ -280,19 +382,19 @@ Rides.prototype.in = function(msgid, username, clientHandle, body) {
  * @param clientHandle - handle of the company that owns this message
  * @param message - JSON object with message to be processed by the handler
  */
-Rides.prototype.push = function(username, clientHandle, body) {
-	data = {  'id': new Date().getTime(), 'user': username, 'client': clientHandle, 'body': body };
-	logger.info('%s Processor: Connecting to MQ Exchange <piper.events.out>...', MODULE);
+Rides.prototype.push = function(user, clientHandle, body) {
+	data = {  'id': new Date().getTime(), 'user': user, 'client': clientHandle, 'body': body };
+	logger.info('%s Processor: Connecting to MQ Exchange <piper.events.out>...', Rides.MODULE);
 	var me = this;
 	this.pub.connect('piper.events.out', function() {
-		logger.info('%s Processor: <piper.events.out> connected', MODULE);
-		me.pub.publish(clientHandle + '.' + MODULE.toLowerCase(), JSON.stringify(data));
+		logger.info('%s Processor: <piper.events.out> connected', Rides.MODULE);
+		me.pub.publish(clientHandle + '.' + Rides.MODULE.toLowerCase(), JSON.stringify(data));
 	});
 }
 
 function getLocationLink(){
 	// provide path to file to utils object and retrieve url
-	return utils.getAbsoluteURL("./geo.html", MODULE);
+	return utils.getAbsoluteURL("./geo.html", Rides.MODULE);
 	// retrieve 
 }
 

@@ -4,7 +4,6 @@ var mq = require('../../../shared/lib/mq');
 var cache = require('../../../shared/lib/cache').getRedisClient();
 
 var CACHE_PREFIX = 'chitchat:';
-var MODULE = 'CHITCHAT';
 var MSGKEYS_TTL = 300;
 	
 
@@ -17,12 +16,13 @@ function ChitChat(data) {
 
 ChitChat.prototype = Object.create(EventEmitter.prototype);
 ChitChat.prototype.constructor = ChitChat;
+ChitChat.MODULE = 'CHITCHAT';
 
 ChitChat.prototype.init = function(){
 	// subscribe to inbound MQ exchange
-	logger.info('%s Processor: Connecting to MQ Exchange <piper.events.in>...', MODULE);
-	this.sub.connect('piper.events.in', MODULE.toLowerCase(), function() {
-		logger.info('%s Processor: <piper.events.in> connected', MODULE);
+	logger.info('%s Processor: Connecting to MQ Exchange <piper.events.in>...', ChitChat.MODULE);
+	this.sub.connect('piper.events.in', ChitChat.MODULE.toLowerCase(), function() {
+		logger.info('%s Processor: <piper.events.in> connected', ChitChat.MODULE);
 	});
 	var me = this;
 	this.sub.on('data', function(data) {
@@ -34,12 +34,12 @@ ChitChat.prototype.init = function(){
 
 /**
  * Receive a message for processing from the front-end
- * @param username - the user making the request
+ * @param user - the user making the request
  * @param client - the company that owns this message
  * @param body - JSON object with request details
  */
-ChitChat.prototype.out = function(username, client, body) {
-	this.push(username, client.slackHandle, body);
+ChitChat.prototype.out = function(user, client, body) {
+	this.push(user, client.slackHandle, body);
 }
 
 /**
@@ -58,7 +58,7 @@ ChitChat.prototype.in = function(msgid, username, clientHandle, body) {
 				// not duplicate, process
 		//		logger.warn('MESSAGE deets ' + msgid + JSON.stringify(body));
 		//		cache.sadd(CACHE_PREFIX + username + '@' + clientHandle + ':msgid', msgid);
-				me.emit('message', MODULE, username, clientHandle, body.text);
+				me.emit('message', ChitChat.MODULE, username, clientHandle, body.text);
 		//	}	
 		//});
 		this.msgid = msgid;
@@ -69,16 +69,17 @@ ChitChat.prototype.in = function(msgid, username, clientHandle, body) {
 
 /**
  * Push a message to the message exchange for a handler to pick up
+ * @param user - the user making the request
  * @param clientHandle - handle of the company that owns this message
  * @param message - JSON object with message to be processed by the handler
  */
-ChitChat.prototype.push = function(username, clientHandle, body) {
-	data = {  'id': new Date().getTime(), 'user': username, 'client': clientHandle, 'body': body };
-	logger.info('%s Processor: Connecting to MQ Exchange <piper.events.out>...', MODULE);
+ChitChat.prototype.push = function(user, clientHandle, body) {
+	data = {  'id': new Date().getTime(), 'user': user, 'client': clientHandle, 'body': body };
+	logger.info('%s Processor: Connecting to MQ Exchange <piper.events.out>...', ChitChat.MODULE);
 	var me = this;
 	this.pub.connect('piper.events.out', function() {
-		logger.info('%s Processor: <piper.events.out> connected', MODULE);
-		me.pub.publish(clientHandle + '.' + MODULE.toLowerCase(), JSON.stringify(data));
+		logger.info('%s Processor: <piper.events.out> connected', ChitChat.MODULE);
+		me.pub.publish(clientHandle + '.' + ChitChat.MODULE.toLowerCase(), JSON.stringify(data));
 	});
 }
 
