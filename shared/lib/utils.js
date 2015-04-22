@@ -47,7 +47,7 @@ exports.getUserLocationLink = function(username, clientHandle, module) {
 		var cachekey = CACHE_PREFIX + ref;
 		cache.hmset(cachekey, data);
 
-		var baseURL = 'http://www.example.com:3000/geo';
+		var baseURL = 'http://www.piperlabs.com/geo';
 		return shortenLink(baseURL + '?ref=' + ref);
 		//return baseURL + '?ref=' + ref;
 	} else {
