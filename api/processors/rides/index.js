@@ -104,7 +104,7 @@ function Rides(data) {
 						},
 						function(d, b, i) {
 							var state = b.context.state;
-							if (i.location) setTerminal(d, b, i);
+							if (i.location || d.errStartLocation === 'UNKNOWN_TERMINAL') setTerminal(d, b, i);
 							if (i.from) {
 								// check for location keyword
 								var lockeyword;
@@ -302,20 +302,24 @@ function Rides(data) {
 		'startLong' : function(user, clientHandle, data) {
 						if (data.cancelFlagSL === true) {
 							data.errStartLocation = "CONFIRM_REQUEST_CANCEL";
-							delete d.cancelFlagSL;
+							delete data.cancelFlagSL;
 						} else if (!data.errStartLocation || errKeys.indexOf(data.errStartLocation) < 0) {
 							data.errStartLocation = 'NO_START_LOCATION'; 
 						}
 
 						var responseText = getResponse(data, data.errStartLocation);
 
-						responseText = responseText.replace("@locationlink", getLocationLink(user.name, clientHandle));
 						responseText = responseText.replace("@lockeyword", data.fromLocKeyword);
 						responseText = responseText.replace("@username", user.name);
 						responseText = responseText.replace("@address", data.tempLocation);
 						
-						me.emit('message', Rides.MODULE, user.name, clientHandle, responseText, errorContext[data.errStartLocation]);
-						return false;
+						return getLocationLink(user.name, clientHandle).then(function(loclink){
+							var replink = loclink != false ? loclink : '[Oops, missing link :thumbsdown:]';
+							replink = replink.replace(/(\r\n|\n|\r)/gm,"");
+							responseText = responseText.replace("@locationlink", replink);
+							me.emit('message', Rides.MODULE, user.name, clientHandle, responseText, errorContext[data.errStartLocation]);
+							return false;
+						});
 					},
 		'carrier' 	: function(user, clientHandle, data) {
 						if (data.preferredCarrier) {
@@ -337,7 +341,7 @@ function Rides(data) {
 		'confirmRequest' : function(user, clientHandle, data) {
 						if (data.cancelFlagCR === true) {
 							data.errConfirmRequest = "CONFIRM_REQUEST_CANCEL";
-							delete d.cancelFlagCR;
+							delete data.cancelFlagCR;
 						} else if (!data.errConfirmRequest || errKeys.indexOf(data.errConfirmRequest) < 0) {
 							data.errConfirmRequest = 'NO_CONFIRM_REQUEST'; 
 						}
@@ -523,43 +527,58 @@ Rides.prototype.processData = function(user, clientHandle, body, handlerTodo) {
 				when.all(datacheckPromises).then(function() {
 					cache.zrange(userkey + ':datacheck', 0, -1).then(function(missingKeys) {
 						var missingData = false;
+							var stop = false;
+							var count = 0;
+							var pResponses = [];
+							var currMissingKeys = [];
+
 						if (missingKeys.length > 0 && datakeys && datakeys.length > 0) {
-							var proceed = true;
 							for (var k=0; k<missingKeys.length; k++) {
-								if (proceed && me.handlerKeys[handlerTodo].indexOf(missingKeys[k]) > -1) {
+								if (me.handlerKeys[handlerTodo].indexOf(missingKeys[k]) > -1) {
 									missingData = true;
-									logger.debug('MissingKeys: %s; CurrentKey: %s; key: %s', JSON.stringify(missingKeys), missingKeys[k], k);
-									proceed = me.response[missingKeys[k]](user, clientHandle, datahash);
+									pResponses[count] = when.lift(me.response[missingKeys[k]]);
+									currMissingKeys[count] = missingKeys[k];
+									count++;
 								}
 							}
+
+							logger.debug('Missing Keys for %s: %s', handlerTodo, JSON.stringify(currMissingKeys));
 						}
-
-						logger.debug('Datahash: %s', JSON.stringify(datahash));
-						logger.debug('Body: %s', JSON.stringify(body));
-						logger.debug('Indata: %s', JSON.stringify(indata));
-
-						logger.debug(userkey);
-						if (datahash.lvlQueries) logger.debug('Datahash.lvlQueries: %s', JSON.stringify(datahash.lvlQueries));
-						datahash.lvlQueries = JSON.stringify(datahash.lvlQueries);
-						cache.hmset(userkey + ':payload', datahash);
-
-						if (!missingData) {
-							// data is complete and valid
-							logger.debug('No more missing data: calling handleRequest for %s', handlerTodo);
-							me.handleRequest[handlerTodo](user, clientHandle, datahash);
-						}
-
 						
+						when.unfold(function(pResponses) {
+							logger.debug('Datahash from unfold: %s', JSON.stringify(datahash));
+						    return [pResponses[0](user, clientHandle, datahash), pResponses.slice(1)];
+						}, function(remaining) {
+						    // Stop when all done or return value is true
+						    logger.debug('Predicate: ' + remaining.length);
+						    return remaining.length < 1 || stop;
+						}, function(proceed) {
+								if (!proceed) stop = true;
+						}, pResponses).done(function(){
 
-						
+							logger.debug('Datahash: %s', JSON.stringify(datahash));
+							logger.debug('Body: %s', JSON.stringify(body));
+							logger.debug('Indata: %s', JSON.stringify(indata));
+
+							logger.debug(userkey);
+							if (datahash.lvlQueries) logger.debug('Datahash.lvlQueries: %s', JSON.stringify(datahash.lvlQueries));
+							datahash.lvlQueries = JSON.stringify(datahash.lvlQueries);
+							cache.hmset(userkey + ':payload', datahash);
+
+							if (!missingData) {
+								// data is complete and valid
+								logger.debug('No more missing data: calling handleRequest for %s', handlerTodo);
+								me.handleRequest[handlerTodo](user, clientHandle, datahash);
+
+							}
+						});
 					});
 				});
 			});
 		});
 		cache.expire(userkey + ':payload', CONTEXT_TTL);
 		cache.expire(userkey + ':datacheck', CONTEXT_TTL);
-			
-	
+				
 	});
 }
 
@@ -594,13 +613,16 @@ Rides.prototype.in = function(msgid, username, clientHandle, body) {
 			case 'GEO_DATA':
 				setUserGeoData(username, clientHandle, body);
 				logger.debug('Done setting user geodata...');
-				this.emit('message', Rides.MODULE, username, clientHandle, 'Thanks, I have your location \n' + geo.getGeoStaticMapLink(body.lat, body.longt));
 
-				//refresh dialog
-				cache.hgetall(username + '@' + clientHandle).then(function(user){
-					var handlerTodo = 'rides_book_trip';
-					var body = { context: { state : Rides.MODULE }};
-					if (user) me.processData(user, clientHandle, body, handlerTodo);
+				geo.getGeoStaticMapLink(body.lat, body.longt).then (function (mapLink) {
+					me.emit('message', Rides.MODULE, username, clientHandle, 'Thanks, I have your location \n' + mapLink);
+
+					//refresh dialog
+					cache.hgetall(username + '@' + clientHandle).then(function(user){
+						var handlerTodo = 'rides_book_trip';
+						var body = { context: { state : Rides.MODULE }};
+						if (user) me.processData(user, clientHandle, body, handlerTodo);
+					});
 				});
 
 				break;
@@ -651,7 +673,15 @@ function extractEntities(body) {
 }
 
 function getLocationByAddress(address) {
-	return when({longt : 1, lat: 1});
+	return geo.getCode(address).then(function(data){
+		//logger.info('Geo data: ' + JSON.stringify(data));
+		if (data.status === 'OK' && data.results[0].geometry.location.lng) {
+			return {longt : data.results[0].geometry.location.lng, lat : data.results[0].geometry.location.lat };
+		} else {
+			return false;
+		}
+	});
+	// return when({longt : 1, lat: 1});
 }
 
 function getResponse(data, errorMsg) {
@@ -704,9 +734,12 @@ function setTerminal(d, b, i) {
 			terminalSet = true;
 			break;
 		case 'RIDES_confirm_start_location':
+			logger.debug('Got here 1');
 			if (i.yes_no === 'yes') {
+				logger.debug('Got here 2');
 				i.from = d.tempLocation;
-				d.currLocation = END_LOC;
+				d.currLocation = START_LOC;
+				if (d.errStartLocation === 'UNKNOWN_TERMINAL') delete d.errStartLocation;
 				delete d.tempLocation;
 				terminalSet = true;
 			}
@@ -715,6 +748,9 @@ function setTerminal(d, b, i) {
 				d.currLocation = END_LOC;
 				delete d.tempLocation;
 				terminalSet = true;
+				if (d.errStartLocation === 'UNKNOWN_TERMINAL') delete d.errStartLocation;
+				if (d.cancelFlagSL) delete d.cancelFlagSL;
+				if (d.errStartLocation === 'CONFIRM_REQUEST_CANCEL') delete d.errStartLocation;
 			}
 			break;
 	}
@@ -757,9 +793,8 @@ function setTerminal(d, b, i) {
 
 
 function getLocationLink(username, clientHandle){
-	var ret = utils.getUserLocationLink(username, clientHandle, Rides.MODULE);
-	if (ret) return ret;
-	return '[Oops, missing link :thumbsdown:]';
+	return utils.getUserLocationLink(username, clientHandle, Rides.MODULE);
+	
 }
 
 module.exports = Rides;

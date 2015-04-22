@@ -2,11 +2,12 @@
 var key = 'AIzaSyAirrY3I7ccfsfG9y6LcRsWRkZzLcVhHKA';
 var request = require('request-promise');
 var when = require('when');
+var utils = require('../../../../shared/lib/utils');
 
 exports.getGeoStaticMapLink = function(lat,longt) {
     var latlongt = lat + ',' + longt;
     var rand = Math.floor((Math.random() * 50) + 1); // random suffix to force unfurling
-    return 'https://maps.googleapis.com/maps/api/staticmap?center=' + latlongt + '&zoom=16&size=400x400&markers=color:red%7Clabel:X%7C' + latlongt + '&r=' + rand;
+    return utils.shortenLink('https://maps.googleapis.com/maps/api/staticmap?center=' + latlongt + '&zoom=16&size=400x400&markers=color:red%7Clabel:X%7C' + latlongt + '&r=' + rand);
 }
 
 var getCode = function(address) {
@@ -16,7 +17,13 @@ var getCode = function(address) {
         'method': 'get',
         'qs': {'address': address, 'key': key}
     };
-    return request(requrl);
+    return request(requrl).then(function(data) {
+        try {
+            return JSON.parse(data);
+        } catch (e) {
+            return data;
+        }
+     });
 };
 
 var getNearby = function(address){

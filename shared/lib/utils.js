@@ -2,6 +2,9 @@ var cache = require('./cache').getRedisClient();
 var logger = require('./log');
 var mq = require('./mq');
 var when = require('when');
+var request = require('request-promise');
+var bitlyConfig = require('../config/bitly.json');
+
 var CACHE_PREFIX = 'utils:';
 var CONTEXT_TTL = 300;
 
@@ -21,6 +24,14 @@ exports.dateFromISOString = function(date, callback) {
 
 }
 
+var shortenLink = exports.shortenLink = function(longURL) {
+    var requrl = {
+        'url': 'https://api-ssl.bitly.com/v3/shorten?',
+        'method': 'get',
+        'qs': {'access_token': bitlyConfig.GENERIC_ACCESS_TOKEN, 'longUrl': longURL, 'format': 'txt'}
+    };
+    return request(requrl);
+};
 
 
 exports.getUserLocationLink = function(username, clientHandle, module) {
@@ -37,10 +48,10 @@ exports.getUserLocationLink = function(username, clientHandle, module) {
 		cache.hmset(cachekey, data);
 
 		var baseURL = 'http://www.example.com:3000/geo';
-		return baseURL + '?ref=' + ref;
-
+		return shortenLink(baseURL + '?ref=' + ref);
+		//return baseURL + '?ref=' + ref;
 	} else {
-		return false;
+		return when(false);
 	}
 
 }
