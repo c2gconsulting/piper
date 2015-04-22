@@ -1,4 +1,4 @@
-var when = require('when');
+/*var when = require('when');
 
 /*
 when.iterate(function(x) {
@@ -12,7 +12,7 @@ when.iterate(function(x) {
     console.log('handler: ' + x);
 }, 0).done();
 */
-
+/*
 var stop = false;
 
 var mlist = [1,2,3,4,5,6,7,8];
@@ -27,4 +27,16 @@ when.unfold(function(mlist) {
 }, function(item) {
 	if (item === 3) stop = true;
     console.log('handler: ' + item);
-}, mlist).done();
+}, mlist).done();*/
+
+
+var getTextFromHyperlink = function(linkText) {
+    try {
+        return linkText.match(/<a [^>]+>([^<]+)<\/a>/)[1];
+    } catch (e) {
+        return linkText;
+    }
+}
+
+console.log(getTextFromHyperlink('<a href=\"tel:1429723747626\">1429723747626</a>'));
+console.log(getTextFromHyperlink('1429723747626'));

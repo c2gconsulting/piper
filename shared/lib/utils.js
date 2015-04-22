@@ -59,6 +59,7 @@ exports.getUserLocationLink = function(username, clientHandle, module) {
 exports.processGeo = function(data) {
 	// extract ref
 	if (data.ref != false) {
+		data.ref = getTextFromHyperlink(data.ref);
 		var cachekey = CACHE_PREFIX + data.ref;
 		logger.debug('CACHEKEY: %s', cachekey);
 		cache.hgetall(cachekey).then( function(userdata) {
@@ -78,6 +79,12 @@ exports.processGeo = function(data) {
 	
 }
 
-
+var getTextFromHyperlink = exports.getTextFromHyperlink = function(linkText) {
+    try {
+        return linkText.match(/<a [^>]+>([^<]+)<\/a>/)[1];
+    } catch (e) {
+        return linkText;
+    }
+}
 
 
