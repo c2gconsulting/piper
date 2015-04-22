@@ -48,6 +48,7 @@ exports.getUserLocationLink = function(username, clientHandle, module) {
 		cache.hmset(cachekey, data);
 
 		var baseURL = 'https://www.piperlabs.com/geo';
+		//var baseURL = 'http://www.example.com:3000/geo';
 		return shortenLink(baseURL + '?ref=' + ref);
 		//return baseURL + '?ref=' + ref;
 	} else {
@@ -60,17 +61,18 @@ exports.processGeo = function(data) {
 	// extract ref
 	if (data.ref != false) {
 		data.ref = getTextFromHyperlink(data.ref);
+		logger.debug('Retrieved REF: %s', data.ref);
 		var cachekey = CACHE_PREFIX + data.ref;
 		logger.debug('CACHEKEY: %s', cachekey);
 		cache.hgetall(cachekey).then( function(userdata) {
 			if (userdata.module) {
 				var pub = mq.context.socket('PUB', {routing: 'topic'});
 				qbody = { header : 'GEO_DATA', lat : data.lat, longt : data.longt };
-				qdata = { id : new Date().getTime(), user : userdata.user, client: userdata.client, body : qbody };
+				qdata = { id : new Date().getTime(), user : userdata.user, client : userdata.client, module : userdata.module, body : qbody };
 				logger.info('UTILS: Connecting to MQ Exchange <piper.events.in>...');
 				pub.connect('piper.events.in', function() {
 					logger.info('UTILS: <piper.events.in> connected');
-					pub.publish(userdata.module.toLowerCase(), JSON.stringify(qdata));
+					pub.publish(mq.CONTROLLER_INBOUND, JSON.stringify(qdata));
 				});
 			}
 			cache.expire(cachekey, CONTEXT_TTL);

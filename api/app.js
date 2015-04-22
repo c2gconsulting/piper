@@ -20,7 +20,6 @@ var processors = [];
 
 
 var app = exports.app = express(); // Create the Express application
-var port = process.env.PORT || 80; // Define environment variables
 var router = express.Router(); // Create our Express router
 var witAccessToken = process.env.WIT_ACCESS_TOKEN || witConfig.WIT_ACCESS_TOKEN; //enable local env variable settings to override global config
 
@@ -50,7 +49,7 @@ sub.connect('piper.events.in', mq.CONTROLLER_INBOUND, function() {
 
 sub.on('data', function(data) {
 	jsonData = JSON.parse(data);
-	if (data) this.in(jsonData.user, jsonData.client, jsonData.module, jsonData.body);
+	if (data) onHandlerEvent(jsonData.id, jsonData.user, jsonData.client, jsonData.module, jsonData.body);
 });
 
 
@@ -504,7 +503,7 @@ var processMessage = function(user, client, Processor, body) {
 	processors[Processor.MODULE].out(user, client, body);
 }
 
-var onHandlerEvent = function(username, clientHandle, module, data) {
+var onHandlerEvent = function(msgid, username, clientHandle, module, data) {
 	
 	if (!processors[module]) {
 		//instantiate and setup processor
@@ -516,10 +515,10 @@ var onHandlerEvent = function(username, clientHandle, module, data) {
 			processors[Processor.MODULE].on('error', onProcessorError);	
 
 			// send request
-			processors[Processor.MODULE].in(username, clientHandle, data);
+			processors[Processor.MODULE].in(msgid, username, clientHandle, data);
 		}
 	} else {
-		processors[Processor.MODULE].in(username, clientHandle, data);
+		processors[module].in(msgid, username, clientHandle, data);
 	}
 }
 
