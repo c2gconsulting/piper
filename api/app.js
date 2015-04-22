@@ -1,7 +1,9 @@
-var fs = require('fs');
-var db = require('../shared/lib/db');
-var mq = require('../shared/lib/mq');
+var fs = require('fs'),
+	db = require('../shared/lib/db'),
+	mq = require('../shared/lib/mq');
+
 var express = require('express');
+
 var wit = require('../shared/lib/wit');
 var SlackConnection = require('./slackconnection');
 var User = require('../shared/models/User');
@@ -11,7 +13,7 @@ var cache = require('../shared/lib/cache').getRedisClient();
 
 var CACHE_PREFIX = 'api-server:';
 var ERROR_RESPONSE_CODE = 422;
-var CONTEXT_TTL = 900;
+var CONTEXT_TTL = 7200;
 
 var w = [];
 var processors = [];
@@ -71,7 +73,11 @@ Client.find({'isActive': true }, function (err, clients) {
 	}
 });
 
-router.get('/register', function(req, res) {	
+
+/* 
+ *	Endpoints
+ */
+ router.get('/register', function(req, res) {	
 	var name = req.query.name,
 		slackHandle = req.query.handle,
 		slackToken = req.query.token,
@@ -118,9 +124,6 @@ router.get('/register', function(req, res) {
 	}
 });
 
-/* 
- *	Endpoints
- */
 router.get('/connect', function(req, res) {
 	var slackHandle = req.query.handle;
 
@@ -391,6 +394,8 @@ var onSlackEvent = function(user, client, message) {
 			}
 		});
 	
+	// save user details to cache
+	cache.hmset(user.name + '@' + client.slackHandle, user);
 
 	// Retrieve user context from cache
 	cache.hget(userkey, 'state').then(function (value) {

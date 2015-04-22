@@ -1,0 +1,5 @@
+{
+	"locations": { "home" : [ "home", "house", "crib", "hood", "my address" ],
+					"office" : [ "office", "work", "workplace", "place of business", "place of work", "bureau" ] 
+				}
+}

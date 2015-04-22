@@ -9,6 +9,22 @@
 			"path" : "./api"
 		},
 		{
+			"host" : "www.piperlabs.com",
+			"path" : "./web"
+		},
+		{
+			"host" : "www.example.com",
+			"path" : "./web"
+		},
+		{
+			"host" : "piperlabs.com",
+			"path" : "./web"
+		},
+		{
+			"host" : "example.com",
+			"path" : "./web"
+		},
+		{
 			"host" : "generic.piperlabs.com",
 			"path" : "./generic"
 		},

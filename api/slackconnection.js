@@ -77,10 +77,14 @@ SlackConnection.prototype.onMessage = function(message) {
 		ignoreFlag = true;
 	
 	if (message.subtype === "message_changed") {
+		if (ignoreFlag) logger.debug('IGNORE FLAG SET');
 		user = this.slack.getUserByID(message.message.user);
 		text = message.message.text;
 		logger.warn('SlackConnection.onMessage: Original message changed by %s', user.name);
-		if (user.name === channel.name) channel.send('Hey @' + user.id + ' quit changing your messages you already sent, its very confusing');
+		logger.warn('Message: %s', JSON.stringify(message));
+		logger.warn('Message.Message: %s', JSON.stringify(message.message));
+		logger.warn('Message.Subtype: %s', JSON.stringify(message.subtype));
+		// if (user.name === channel.name) channel.send('Hey @' + user.name + ' quit changing your messages you already sent, its very confusing');
 	}
 
 	try{
@@ -90,7 +94,10 @@ SlackConnection.prototype.onMessage = function(message) {
 	}
 	
 
-	if (!ignoreFlag && type === 'message' && (channel.name === user.name || text.search(this.slack.self.id) > 0)) {
+	if (!message.subtype && type === 'message' && (channel.name === user.name || text.search(this.slack.self.id) > 0)) {
+		if (ignoreFlag) logger.debug('IGNORE FLAG SET');
+		logger.debug('IGNORE FLAG: ' + ignoreFlag);
+		
 		logger.info('SLACK_CONNECTION: Message Received');
 
 		var piperUser = { 'slackId' : user.id,
