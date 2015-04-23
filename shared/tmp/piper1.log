@@ -2206,3 +2206,30 @@ http://bit.ly/1DjDMdu
 [Thu Apr 23 2015 02:34:29 GMT+0100 (WAT)] INFO As well as: 
 [Thu Apr 23 2015 02:34:29 GMT+0100 (WAT)] INFO You have 0 unread messages
 [Thu Apr 23 2015 02:34:29 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Opened
+[Thu Apr 23 2015 02:41:18 GMT+0100 (WAT)] INFO Piper Controller: Connecting to MQ Exchange <piper.events.in>...
+[Thu Apr 23 2015 02:41:19 GMT+0100 (WAT)] INFO CHITCHAT Handler: Connecting to MQ Exchange <piper.events.out>...
+[Thu Apr 23 2015 02:41:19 GMT+0100 (WAT)] INFO SALES Handler: Connecting to MQ Exchange <piper.events.out>...
+[Thu Apr 23 2015 02:41:19 GMT+0100 (WAT)] INFO SALES Handler: Connecting to MQ Exchange <piper.events.out>...
+[Thu Apr 23 2015 02:41:19 GMT+0100 (WAT)] ERROR Invalid Schema: ./schemas/sales_subscribers.json
+[Thu Apr 23 2015 02:41:20 GMT+0100 (WAT)] INFO Piper server listening on port 3000 in development mode
+[Thu Apr 23 2015 02:41:20 GMT+0100 (WAT)] INFO Successfully connected to: mongodb://localhost/piper
+[Thu Apr 23 2015 02:41:20 GMT+0100 (WAT)] INFO Updating registry for client mobilizr...
+[Thu Apr 23 2015 02:41:20 GMT+0100 (WAT)] INFO Updating registry for client c2gstudio...
+[Thu Apr 23 2015 02:41:20 GMT+0100 (WAT)] INFO Registered connection for client: mobilizr
+[Thu Apr 23 2015 02:41:20 GMT+0100 (WAT)] INFO Registered connection for client: c2gstudio
+[Thu Apr 23 2015 02:41:20 GMT+0100 (WAT)] INFO CHITCHAT Handler <piper.events.out>: Binding to mobilizr.chitchat...
+[Thu Apr 23 2015 02:41:20 GMT+0100 (WAT)] INFO CHITCHAT Handler <piper.events.out>: Binding to c2gstudio.chitchat...
+[Thu Apr 23 2015 02:41:20 GMT+0100 (WAT)] INFO No subscribers currently registered or active, listening for new clients...
+[Thu Apr 23 2015 02:41:20 GMT+0100 (WAT)] INFO Piper Controller: MQ Exchange <piper.events.in> connected
+[Thu Apr 23 2015 02:41:23 GMT+0100 (WAT)] INFO C2G STUDIO: Connection established...listening for messages
+[Thu Apr 23 2015 02:41:23 GMT+0100 (WAT)] INFO Welcome to Slack. You are @blonker of c2gstudio
+[Thu Apr 23 2015 02:41:23 GMT+0100 (WAT)] INFO You are in: #general
+[Thu Apr 23 2015 02:41:23 GMT+0100 (WAT)] INFO As well as: 
+[Thu Apr 23 2015 02:41:23 GMT+0100 (WAT)] INFO You have 4 unread messages
+[Thu Apr 23 2015 02:41:23 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Opened
+[Thu Apr 23 2015 02:41:23 GMT+0100 (WAT)] INFO MOBILIZR: Connection established...listening for messages
+[Thu Apr 23 2015 02:41:23 GMT+0100 (WAT)] INFO Welcome to Slack. You are @blanka of Mobilizr
+[Thu Apr 23 2015 02:41:23 GMT+0100 (WAT)] INFO You are in: #general
+[Thu Apr 23 2015 02:41:23 GMT+0100 (WAT)] INFO As well as: 
+[Thu Apr 23 2015 02:41:23 GMT+0100 (WAT)] INFO You have 0 unread messages
+[Thu Apr 23 2015 02:41:23 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Opened

@@ -41,7 +41,7 @@ db.getModel('clients', function(err, model) {
 	}	
 });
 
-router.get('/healthcheck', function(req, res) {
+router.get('/', function(req, res) {
 	res.send('OK');
 });
 
