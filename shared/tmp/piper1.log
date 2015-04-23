@@ -2251,3 +2251,131 @@ http://bit.ly/1DjDMdu
 [Thu Apr 23 2015 02:55:05 GMT+0100 (WAT)] INFO As well as: 
 [Thu Apr 23 2015 02:55:05 GMT+0100 (WAT)] INFO You have 0 unread messages
 [Thu Apr 23 2015 02:55:05 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Opened
+[Thu Apr 23 2015 10:10:38 GMT+0100 (WAT)] INFO Piper Controller: Connecting to MQ Exchange <piper.events.in>...
+[Thu Apr 23 2015 10:10:39 GMT+0100 (WAT)] INFO CHITCHAT Handler: Connecting to MQ Exchange <piper.events.out>...
+[Thu Apr 23 2015 10:10:39 GMT+0100 (WAT)] INFO SALES Handler: Connecting to MQ Exchange <piper.events.out>...
+[Thu Apr 23 2015 10:10:39 GMT+0100 (WAT)] INFO SALES Handler: Connecting to MQ Exchange <piper.events.out>...
+[Thu Apr 23 2015 10:10:39 GMT+0100 (WAT)] ERROR Invalid Schema: ./schemas/sales_subscribers.json
+[Thu Apr 23 2015 10:10:39 GMT+0100 (WAT)] INFO Piper server listening on port 3000 in development mode
+[Thu Apr 23 2015 10:10:39 GMT+0100 (WAT)] INFO Successfully connected to: mongodb://localhost/piper
+[Thu Apr 23 2015 10:10:39 GMT+0100 (WAT)] INFO Updating registry for client mobilizr...
+[Thu Apr 23 2015 10:10:39 GMT+0100 (WAT)] INFO Updating registry for client c2gstudio...
+[Thu Apr 23 2015 10:10:39 GMT+0100 (WAT)] INFO Registered connection for client: mobilizr
+[Thu Apr 23 2015 10:10:39 GMT+0100 (WAT)] INFO Registered connection for client: c2gstudio
+[Thu Apr 23 2015 10:10:39 GMT+0100 (WAT)] INFO CHITCHAT Handler <piper.events.out>: Binding to mobilizr.chitchat...
+[Thu Apr 23 2015 10:10:39 GMT+0100 (WAT)] INFO CHITCHAT Handler <piper.events.out>: Binding to c2gstudio.chitchat...
+[Thu Apr 23 2015 10:10:39 GMT+0100 (WAT)] INFO No subscribers currently registered or active, listening for new clients...
+[Thu Apr 23 2015 10:10:40 GMT+0100 (WAT)] INFO Piper Controller: MQ Exchange <piper.events.in> connected
+[Thu Apr 23 2015 10:10:43 GMT+0100 (WAT)] INFO C2G STUDIO: Connection established...listening for messages
+[Thu Apr 23 2015 10:10:43 GMT+0100 (WAT)] INFO Welcome to Slack. You are @blonker of c2gstudio
+[Thu Apr 23 2015 10:10:43 GMT+0100 (WAT)] INFO You are in: #general
+[Thu Apr 23 2015 10:10:43 GMT+0100 (WAT)] INFO As well as: 
+[Thu Apr 23 2015 10:10:43 GMT+0100 (WAT)] INFO You have 4 unread messages
+[Thu Apr 23 2015 10:10:43 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Opened
+[Thu Apr 23 2015 10:10:43 GMT+0100 (WAT)] INFO MOBILIZR: Connection established...listening for messages
+[Thu Apr 23 2015 10:10:43 GMT+0100 (WAT)] INFO Welcome to Slack. You are @blanka of Mobilizr
+[Thu Apr 23 2015 10:10:43 GMT+0100 (WAT)] INFO You are in: #general
+[Thu Apr 23 2015 10:10:43 GMT+0100 (WAT)] INFO As well as: 
+[Thu Apr 23 2015 10:10:43 GMT+0100 (WAT)] INFO You have 0 unread messages
+[Thu Apr 23 2015 10:10:43 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Opened
+[Thu Apr 23 2015 10:11:34 GMT+0100 (WAT)] INFO Piper Controller: Connecting to MQ Exchange <piper.events.in>...
+[Thu Apr 23 2015 10:11:35 GMT+0100 (WAT)] INFO CHITCHAT Handler: Connecting to MQ Exchange <piper.events.out>...
+[Thu Apr 23 2015 10:11:35 GMT+0100 (WAT)] INFO SALES Handler: Connecting to MQ Exchange <piper.events.out>...
+[Thu Apr 23 2015 10:11:35 GMT+0100 (WAT)] INFO SALES Handler: Connecting to MQ Exchange <piper.events.out>...
+[Thu Apr 23 2015 10:11:35 GMT+0100 (WAT)] ERROR Invalid Schema: ./schemas/sales_subscribers.json
+[Thu Apr 23 2015 10:11:36 GMT+0100 (WAT)] INFO Piper server listening on port 3000 in development mode
+[Thu Apr 23 2015 10:11:36 GMT+0100 (WAT)] INFO Successfully connected to: mongodb://localhost/piper
+[Thu Apr 23 2015 10:11:36 GMT+0100 (WAT)] INFO Updating registry for client mobilizr...
+[Thu Apr 23 2015 10:11:36 GMT+0100 (WAT)] INFO Updating registry for client c2gstudio...
+[Thu Apr 23 2015 10:11:36 GMT+0100 (WAT)] INFO Registered connection for client: mobilizr
+[Thu Apr 23 2015 10:11:36 GMT+0100 (WAT)] INFO Registered connection for client: c2gstudio
+[Thu Apr 23 2015 10:11:36 GMT+0100 (WAT)] INFO CHITCHAT Handler <piper.events.out>: Binding to mobilizr.chitchat...
+[Thu Apr 23 2015 10:11:36 GMT+0100 (WAT)] INFO CHITCHAT Handler <piper.events.out>: Binding to c2gstudio.chitchat...
+[Thu Apr 23 2015 10:11:36 GMT+0100 (WAT)] INFO No subscribers currently registered or active, listening for new clients...
+[Thu Apr 23 2015 10:11:36 GMT+0100 (WAT)] INFO Piper Controller: MQ Exchange <piper.events.in> connected
+[Thu Apr 23 2015 10:11:38 GMT+0100 (WAT)] INFO C2G STUDIO: Connection established...listening for messages
+[Thu Apr 23 2015 10:11:38 GMT+0100 (WAT)] INFO Welcome to Slack. You are @blonker of c2gstudio
+[Thu Apr 23 2015 10:11:38 GMT+0100 (WAT)] INFO You are in: #general
+[Thu Apr 23 2015 10:11:38 GMT+0100 (WAT)] INFO As well as: 
+[Thu Apr 23 2015 10:11:38 GMT+0100 (WAT)] INFO You have 4 unread messages
+[Thu Apr 23 2015 10:11:38 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Opened
+[Thu Apr 23 2015 10:11:38 GMT+0100 (WAT)] INFO MOBILIZR: Connection established...listening for messages
+[Thu Apr 23 2015 10:11:38 GMT+0100 (WAT)] INFO Welcome to Slack. You are @blanka of Mobilizr
+[Thu Apr 23 2015 10:11:38 GMT+0100 (WAT)] INFO You are in: #general
+[Thu Apr 23 2015 10:11:38 GMT+0100 (WAT)] INFO As well as: 
+[Thu Apr 23 2015 10:11:38 GMT+0100 (WAT)] INFO You have 0 unread messages
+[Thu Apr 23 2015 10:11:38 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Opened
+[Thu Apr 23 2015 10:12:09 GMT+0100 (WAT)] INFO Received: message kachi @kachi 1429780329.000015 "i need a cab"
+[Thu Apr 23 2015 10:12:09 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Message Received
+[Thu Apr 23 2015 10:12:09 GMT+0100 (WAT)] INFO No context: {"state":""}
+[Thu Apr 23 2015 10:12:11 GMT+0100 (WAT)] INFO RIDES Processor: Connecting to MQ Exchange <piper.events.in>...
+[Thu Apr 23 2015 10:12:11 GMT+0100 (WAT)] INFO RIDES Processor: <piper.events.in> connected
+[Thu Apr 23 2015 10:12:13 GMT+0100 (WAT)] INFO @blanka responded with "Ok. Just click here: http://bit.ly/1JfOxV2, and i'll pinpoint your current location"
+[Thu Apr 23 2015 10:12:33 GMT+0100 (WAT)] INFO Geodata: {"ref":"1429780331834","lat":6.4564441,"longt":3.5263679999999997}
+[Thu Apr 23 2015 10:12:33 GMT+0100 (WAT)] INFO UTILS: Connecting to MQ Exchange <piper.events.in>...
+[Thu Apr 23 2015 10:12:33 GMT+0100 (WAT)] INFO UTILS: <piper.events.in> connected
+[Thu Apr 23 2015 10:12:34 GMT+0100 (WAT)] INFO @blanka responded with "Thanks, I have your location 
+http://bit.ly/1PmYsIY
+"
+[Thu Apr 23 2015 10:12:34 GMT+0100 (WAT)] INFO @blanka responded with "Can I go ahead and book your ride?"
+[Thu Apr 23 2015 10:12:34 GMT+0100 (WAT)] WARN SlackConnection.onMessage: Original message changed by blanka
+[Thu Apr 23 2015 10:12:34 GMT+0100 (WAT)] WARN Message: {"id":1,"type":"message","channel":"D03SDHUUJ"}
+[Thu Apr 23 2015 10:12:34 GMT+0100 (WAT)] WARN Message.Message: {"type":"message","user":"U03SDHUTU","text":"Thanks, I have your location \n<http://bit.ly/1PmYsIY>\n","attachments":[{"from_url":"http://bit.ly/1PmYsIY","fallback":"400x400px image","image_url":"http://bit.ly/1PmYsIY","image_width":400,"image_height":400,"image_bytes":14601,"id":1}],"ts":"1429780353.000017"}
+[Thu Apr 23 2015 10:12:34 GMT+0100 (WAT)] WARN Message.Subtype: "message_changed"
+[Thu Apr 23 2015 10:12:34 GMT+0100 (WAT)] INFO Received: message kachi @blanka 1429780354.000019 "Thanks, I have your location 
+<http://bit.ly/1PmYsIY>
+"
+[Thu Apr 23 2015 10:16:21 GMT+0100 (WAT)] INFO Piper Controller: Connecting to MQ Exchange <piper.events.in>...
+[Thu Apr 23 2015 10:16:21 GMT+0100 (WAT)] INFO CHITCHAT Handler: Connecting to MQ Exchange <piper.events.out>...
+[Thu Apr 23 2015 10:16:21 GMT+0100 (WAT)] INFO SALES Handler: Connecting to MQ Exchange <piper.events.out>...
+[Thu Apr 23 2015 10:16:21 GMT+0100 (WAT)] INFO SALES Handler: Connecting to MQ Exchange <piper.events.out>...
+[Thu Apr 23 2015 10:16:21 GMT+0100 (WAT)] ERROR Invalid Schema: ./schemas/sales_subscribers.json
+[Thu Apr 23 2015 10:16:22 GMT+0100 (WAT)] INFO Piper server listening on port 3000 in development mode
+[Thu Apr 23 2015 10:16:22 GMT+0100 (WAT)] INFO Successfully connected to: mongodb://localhost/piper
+[Thu Apr 23 2015 10:16:22 GMT+0100 (WAT)] INFO Updating registry for client mobilizr...
+[Thu Apr 23 2015 10:16:22 GMT+0100 (WAT)] INFO Updating registry for client c2gstudio...
+[Thu Apr 23 2015 10:16:22 GMT+0100 (WAT)] INFO Registered connection for client: mobilizr
+[Thu Apr 23 2015 10:16:22 GMT+0100 (WAT)] INFO Registered connection for client: c2gstudio
+[Thu Apr 23 2015 10:16:22 GMT+0100 (WAT)] INFO CHITCHAT Handler <piper.events.out>: Binding to mobilizr.chitchat...
+[Thu Apr 23 2015 10:16:22 GMT+0100 (WAT)] INFO CHITCHAT Handler <piper.events.out>: Binding to c2gstudio.chitchat...
+[Thu Apr 23 2015 10:16:22 GMT+0100 (WAT)] INFO No subscribers currently registered or active, listening for new clients...
+[Thu Apr 23 2015 10:16:22 GMT+0100 (WAT)] INFO Piper Controller: MQ Exchange <piper.events.in> connected
+[Thu Apr 23 2015 10:16:25 GMT+0100 (WAT)] INFO C2G STUDIO: Connection established...listening for messages
+[Thu Apr 23 2015 10:16:25 GMT+0100 (WAT)] INFO Welcome to Slack. You are @blonker of c2gstudio
+[Thu Apr 23 2015 10:16:25 GMT+0100 (WAT)] INFO You are in: #general
+[Thu Apr 23 2015 10:16:25 GMT+0100 (WAT)] INFO As well as: 
+[Thu Apr 23 2015 10:16:25 GMT+0100 (WAT)] INFO You have 4 unread messages
+[Thu Apr 23 2015 10:16:25 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Opened
+[Thu Apr 23 2015 10:16:25 GMT+0100 (WAT)] INFO MOBILIZR: Connection established...listening for messages
+[Thu Apr 23 2015 10:16:25 GMT+0100 (WAT)] INFO Welcome to Slack. You are @blanka of Mobilizr
+[Thu Apr 23 2015 10:16:25 GMT+0100 (WAT)] INFO You are in: #general
+[Thu Apr 23 2015 10:16:25 GMT+0100 (WAT)] INFO As well as: 
+[Thu Apr 23 2015 10:16:25 GMT+0100 (WAT)] INFO You have 0 unread messages
+[Thu Apr 23 2015 10:16:25 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Opened
+[Thu Apr 23 2015 10:16:37 GMT+0100 (WAT)] INFO Piper Controller: Connecting to MQ Exchange <piper.events.in>...
+[Thu Apr 23 2015 10:16:38 GMT+0100 (WAT)] INFO CHITCHAT Handler: Connecting to MQ Exchange <piper.events.out>...
+[Thu Apr 23 2015 10:16:38 GMT+0100 (WAT)] INFO SALES Handler: Connecting to MQ Exchange <piper.events.out>...
+[Thu Apr 23 2015 10:16:38 GMT+0100 (WAT)] INFO SALES Handler: Connecting to MQ Exchange <piper.events.out>...
+[Thu Apr 23 2015 10:16:38 GMT+0100 (WAT)] ERROR Invalid Schema: ./schemas/sales_subscribers.json
+[Thu Apr 23 2015 10:16:38 GMT+0100 (WAT)] INFO Piper server listening on port 3000 in development mode
+[Thu Apr 23 2015 10:16:38 GMT+0100 (WAT)] INFO Successfully connected to: mongodb://localhost/piper
+[Thu Apr 23 2015 10:16:38 GMT+0100 (WAT)] INFO Updating registry for client mobilizr...
+[Thu Apr 23 2015 10:16:38 GMT+0100 (WAT)] INFO Updating registry for client c2gstudio...
+[Thu Apr 23 2015 10:16:38 GMT+0100 (WAT)] INFO Registered connection for client: mobilizr
+[Thu Apr 23 2015 10:16:38 GMT+0100 (WAT)] INFO Registered connection for client: c2gstudio
+[Thu Apr 23 2015 10:16:38 GMT+0100 (WAT)] INFO CHITCHAT Handler <piper.events.out>: Binding to mobilizr.chitchat...
+[Thu Apr 23 2015 10:16:38 GMT+0100 (WAT)] INFO CHITCHAT Handler <piper.events.out>: Binding to c2gstudio.chitchat...
+[Thu Apr 23 2015 10:16:38 GMT+0100 (WAT)] INFO No subscribers currently registered or active, listening for new clients...
+[Thu Apr 23 2015 10:16:38 GMT+0100 (WAT)] INFO Piper Controller: MQ Exchange <piper.events.in> connected
+[Thu Apr 23 2015 10:16:41 GMT+0100 (WAT)] INFO MOBILIZR: Connection established...listening for messages
+[Thu Apr 23 2015 10:16:41 GMT+0100 (WAT)] INFO Welcome to Slack. You are @blanka of Mobilizr
+[Thu Apr 23 2015 10:16:41 GMT+0100 (WAT)] INFO You are in: #general
+[Thu Apr 23 2015 10:16:41 GMT+0100 (WAT)] INFO As well as: 
+[Thu Apr 23 2015 10:16:41 GMT+0100 (WAT)] INFO You have 0 unread messages
+[Thu Apr 23 2015 10:16:41 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Opened
+[Thu Apr 23 2015 10:16:41 GMT+0100 (WAT)] INFO C2G STUDIO: Connection established...listening for messages
+[Thu Apr 23 2015 10:16:41 GMT+0100 (WAT)] INFO Welcome to Slack. You are @blonker of c2gstudio
+[Thu Apr 23 2015 10:16:41 GMT+0100 (WAT)] INFO You are in: #general
+[Thu Apr 23 2015 10:16:41 GMT+0100 (WAT)] INFO As well as: 
+[Thu Apr 23 2015 10:16:41 GMT+0100 (WAT)] INFO You have 4 unread messages
+[Thu Apr 23 2015 10:16:41 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Opened

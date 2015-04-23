@@ -56,9 +56,6 @@ function success(position) {
                         lat : position.coords.latitude,
                         longt : position.coords.longitude };
 
-  // send to socket
-  alert('Got here 4');
-  var socket = io();
   alert('Got here 5');
   socket.emit('geodata', returnPackage);
   alert('Got here 6');
@@ -76,11 +73,17 @@ function error(msg) {
   cl.innerHTML = "Close this window and return to your chat...";
   
 }
-
+var socket;
 if (navigator.geolocation) {
   navigator.geolocation.getCurrentPosition(success, error);
 } else {
   error('not supported');
+}
+
+window.onload = function(){
+  // send to socket
+  alert('Got here 4');
+  socket = io();
 }
 
 </script>
