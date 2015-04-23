@@ -50,7 +50,7 @@ function success(position) {
   alert('Got here 1');
   var r = document.querySelector('#ref');
   alert('Got here 2');
-  var ref = typeof r.innerHTML == 'string' ? r.innerHTML : undefined;;
+  var ref = r.innerHTML;
   alert('Got here 3');
   var returnPackage = { ref : ref,
                         lat : position.coords.latitude,
