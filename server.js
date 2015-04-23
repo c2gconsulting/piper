@@ -29,8 +29,9 @@ for (var i in services) {
 	app.use(vhost(services[i].host, require(services[i].path + '/app').app));
 }
 
-// Setup healthcheck for LBs
+// Setup healthcheck for LBs and OpsWorks
 app.all('/healthcheck', router); 
+app.all('/', router); 
 
 db.getModel('clients', function(err, model) {
 	if (err) {
@@ -39,6 +40,10 @@ db.getModel('clients', function(err, model) {
 		Client = model;
 	}	
 });
+
+router.get('/healthcheck', function(req, res) {
+	res.send('OK');
+}
 
 router.get('/healthcheck', function(req, res) {
 	Client.find({}, function (err, clients) {
