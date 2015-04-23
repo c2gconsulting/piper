@@ -4,6 +4,7 @@ var mq = require('./mq');
 var when = require('when');
 var request = require('request-promise');
 var bitlyConfig = require('../config/bitly.json');
+var defaultConfig = require('../config/default.json');
 
 var CACHE_PREFIX = 'utils:';
 var CONTEXT_TTL = 300;
@@ -47,10 +48,9 @@ exports.getUserLocationLink = function(username, clientHandle, module) {
 		var cachekey = CACHE_PREFIX + ref;
 		cache.hmset(cachekey, data);
 
-		var baseURL = 'https://www.piperlabs.com/geo';
+		var baseGeoUrl = defaultConfig.baseUrl + 'geo';
 		//var baseURL = 'http://www.example.com:3000/geo';
-		return shortenLink(baseURL + '?ref=' + ref);
-		//return baseURL + '?ref=' + ref;
+		return shortenLink(baseGeoUrl + '?ref=' + ref);
 	} else {
 		return when(false);
 	}
