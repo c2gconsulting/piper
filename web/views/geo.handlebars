@@ -47,16 +47,22 @@ function success(position) {
       title:"You are here! (at least within a "+position.coords.accuracy+" meter radius)"
   });
 
+  alert('Got here 1');
   var r = document.querySelector('#ref');
+  alert('Got here 2');
   var ref = typeof r.innerHTML == 'string' ? r.innerHTML : undefined;;
+  alert('Got here 3');
   var returnPackage = { ref : ref,
                         lat : position.coords.latitude,
                         longt : position.coords.longitude };
 
   // send to socket
+  alert('Got here 4');
   var socket = io();
+  alert('Got here 5');
   socket.emit('geodata', returnPackage);
-
+  alert('Got here 6');
+  
 
 }
 
