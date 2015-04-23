@@ -43,7 +43,7 @@ db.getModel('clients', function(err, model) {
 
 router.get('/healthcheck', function(req, res) {
 	res.send('OK');
-}
+});
 
 router.get('/healthcheck', function(req, res) {
 	Client.find({}, function (err, clients) {
