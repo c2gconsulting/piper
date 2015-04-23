@@ -9,9 +9,15 @@
       <p>Finding your location: <span id="status">checking...</span></p>
     </article>
 <script>
+var socket;
+window.onload = function(){
+  // send to socket
+  alert('Got here 4');
+  socket = io();
+  alert('Got here 4b');
+}
+
 function success(position) {
-  // send coordinates back to socket.io
-  
   
   var s = document.querySelector('#status');
   var cl = document.querySelector('#closure');
@@ -57,8 +63,14 @@ function success(position) {
                         longt : position.coords.longitude };
 
   alert('Got here 5');
+  if (!socket) {
+    alert('Got here 5b');
+    socket = io();
+    alert('Got here 5c');
+  }
+  alert('Got here 6a');
   socket.emit('geodata', returnPackage);
-  alert('Got here 6');
+  alert('Got here 6b');
   
 
 }
@@ -73,18 +85,14 @@ function error(msg) {
   cl.innerHTML = "Close this window and return to your chat...";
   
 }
-var socket;
+
 if (navigator.geolocation) {
   navigator.geolocation.getCurrentPosition(success, error);
 } else {
   error('not supported');
 }
 
-window.onload = function(){
-  // send to socket
-  alert('Got here 4');
-  socket = io();
-}
+
 
 </script>
   <footer><span id="closure">&nbsp;</span></footer>
