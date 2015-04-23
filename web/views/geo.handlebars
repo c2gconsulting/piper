@@ -12,10 +12,8 @@
 var socket;
 window.onload = function(){
   // send to socket
-  alert('Got here 4');
   socket = io();
-  alert('Got here 4b');
-
+  
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(success, error);
   } else {
@@ -59,24 +57,16 @@ function success(position) {
       title:"You are here! (at least within a "+position.coords.accuracy+" meter radius)"
   });
 
-  alert('Got here 1');
   var r = document.querySelector('#ref');
-  alert('Got here 2');
   var ref = r.innerHTML;
-  alert('Got here 3');
   var returnPackage = { ref : ref,
                         lat : position.coords.latitude,
                         longt : position.coords.longitude };
 
-  alert('Got here 5');
   if (!socket) {
-    alert('Got here 5b');
     socket = io();
-    alert('Got here 5c');
   }
-  alert('Got here 6a');
   socket.emit('geodata', returnPackage);
-  alert('Got here 6b');
   
 
 }
