@@ -2640,3 +2640,861 @@ http://bit.ly/1PmYsIY
 [Thu Apr 23 2015 12:25:11 GMT+0100 (WAT)] INFO As well as: 
 [Thu Apr 23 2015 12:25:11 GMT+0100 (WAT)] INFO You have 0 unread messages
 [Thu Apr 23 2015 12:25:11 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Opened
+[Thu Apr 23 2015 12:52:55 GMT+0100 (WAT)] INFO MOBILIZR: Connection established...listening for messages
+[Thu Apr 23 2015 12:52:55 GMT+0100 (WAT)] INFO Welcome to Slack. You are @blanka of Mobilizr
+[Thu Apr 23 2015 12:52:55 GMT+0100 (WAT)] INFO You are in: #general
+[Thu Apr 23 2015 12:52:55 GMT+0100 (WAT)] INFO As well as: 
+[Thu Apr 23 2015 12:52:55 GMT+0100 (WAT)] INFO You have 0 unread messages
+[Thu Apr 23 2015 12:52:55 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Opened
+[Thu Apr 23 2015 12:52:56 GMT+0100 (WAT)] INFO C2G STUDIO: Connection established...listening for messages
+[Thu Apr 23 2015 12:52:56 GMT+0100 (WAT)] INFO Welcome to Slack. You are @blonker of c2gstudio
+[Thu Apr 23 2015 12:52:56 GMT+0100 (WAT)] INFO You are in: #general
+[Thu Apr 23 2015 12:52:56 GMT+0100 (WAT)] INFO As well as: 
+[Thu Apr 23 2015 12:52:56 GMT+0100 (WAT)] INFO You have 4 unread messages
+[Thu Apr 23 2015 12:52:56 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Opened
+[Thu Apr 23 2015 12:58:48 GMT+0100 (WAT)] INFO Received: message kachi @kachi 1429790328.000022 "i need a cab"
+[Thu Apr 23 2015 12:58:48 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Message Received
+[Thu Apr 23 2015 12:58:50 GMT+0100 (WAT)] INFO RIDES Processor: Connecting to MQ Exchange <piper.events.in>...
+[Thu Apr 23 2015 12:58:50 GMT+0100 (WAT)] INFO RIDES Processor: <piper.events.in> connected
+[Thu Apr 23 2015 12:58:51 GMT+0100 (WAT)] INFO @blanka responded with "I still need your location. You can tell me your address or click here... http://bit.ly/1DSsCyI"
+[Thu Apr 23 2015 12:59:28 GMT+0100 (WAT)] INFO Geodata: {"ref":"1429790330221","lat":6.5243793,"longt":3.3792057}
+[Thu Apr 23 2015 12:59:28 GMT+0100 (WAT)] INFO UTILS: Connecting to MQ Exchange <piper.events.in>...
+[Thu Apr 23 2015 12:59:28 GMT+0100 (WAT)] INFO UTILS: <piper.events.in> connected
+[Thu Apr 23 2015 12:59:29 GMT+0100 (WAT)] INFO @blanka responded with "Thanks, I have your location 
+http://bit.ly/1HvAV69
+"
+[Thu Apr 23 2015 12:59:29 GMT+0100 (WAT)] INFO @blanka responded with "Can I go ahead and book your ride?"
+[Thu Apr 23 2015 12:59:29 GMT+0100 (WAT)] WARN SlackConnection.onMessage: Original message changed by blanka
+[Thu Apr 23 2015 12:59:29 GMT+0100 (WAT)] WARN Message: {"id":1,"type":"message","channel":"D03SDHUUJ"}
+[Thu Apr 23 2015 12:59:29 GMT+0100 (WAT)] WARN Message.Message: {"type":"message","user":"U03SDHUTU","text":"Thanks, I have your location \n<http://bit.ly/1HvAV69>\n","attachments":[{"from_url":"http://bit.ly/1HvAV69","fallback":"400x400px image","image_url":"http://bit.ly/1HvAV69","image_width":400,"image_height":400,"image_bytes":27466,"id":1}],"ts":"1429790369.000024"}
+[Thu Apr 23 2015 12:59:29 GMT+0100 (WAT)] WARN Message.Subtype: "message_changed"
+[Thu Apr 23 2015 12:59:29 GMT+0100 (WAT)] INFO Received: message kachi @blanka 1429790369.000026 "Thanks, I have your location 
+<http://bit.ly/1HvAV69>
+"
+[Thu Apr 23 2015 12:59:46 GMT+0100 (WAT)] INFO Received: message kachi @kachi 1429790386.000027 "thats the wrong location"
+[Thu Apr 23 2015 12:59:46 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Message Received
+[Thu Apr 23 2015 12:59:48 GMT+0100 (WAT)] INFO @blanka responded with "What do you want to know?"
+[Thu Apr 23 2015 13:00:03 GMT+0100 (WAT)] INFO Received: message kachi @kachi 1429790403.000029 "the location you have is wrong"
+[Thu Apr 23 2015 13:00:03 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Message Received
+[Thu Apr 23 2015 13:00:05 GMT+0100 (WAT)] INFO @blanka responded with "You want to know location"
+[Thu Apr 23 2015 13:03:54 GMT+0100 (WAT)] INFO Geodata: {"ref":"1429790330221","lat":6.4564433999999995,"longt":3.5263502}
+[Thu Apr 23 2015 13:03:54 GMT+0100 (WAT)] INFO UTILS: Connecting to MQ Exchange <piper.events.in>...
+[Thu Apr 23 2015 13:03:54 GMT+0100 (WAT)] INFO UTILS: <piper.events.in> connected
+[Thu Apr 23 2015 13:03:56 GMT+0100 (WAT)] INFO @blanka responded with "Thanks, I have your location 
+http://bit.ly/1HvBGfo
+"
+[Thu Apr 23 2015 13:03:56 GMT+0100 (WAT)] INFO @blanka responded with "I'm still waiting for your confirmation"
+[Thu Apr 23 2015 13:03:56 GMT+0100 (WAT)] WARN SlackConnection.onMessage: Original message changed by blanka
+[Thu Apr 23 2015 13:03:56 GMT+0100 (WAT)] WARN Message: {"id":1,"type":"message","channel":"D03SDHUUJ"}
+[Thu Apr 23 2015 13:03:56 GMT+0100 (WAT)] WARN Message.Message: {"type":"message","user":"U03SDHUTU","text":"Thanks, I have your location \n<http://bit.ly/1HvBGfo>\n","attachments":[{"from_url":"http://bit.ly/1HvBGfo","fallback":"400x400px image","image_url":"http://bit.ly/1HvBGfo","image_width":400,"image_height":400,"image_bytes":14434,"id":1}],"ts":"1429790636.000031"}
+[Thu Apr 23 2015 13:03:56 GMT+0100 (WAT)] WARN Message.Subtype: "message_changed"
+[Thu Apr 23 2015 13:03:56 GMT+0100 (WAT)] INFO Received: message kachi @blanka 1429790636.000033 "Thanks, I have your location 
+<http://bit.ly/1HvBGfo>
+"
+[Thu Apr 23 2015 13:09:32 GMT+0100 (WAT)] INFO Received: message kachi @kachi 1429790971.000034 "cancel"
+[Thu Apr 23 2015 13:09:32 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Message Received
+[Thu Apr 23 2015 13:09:33 GMT+0100 (WAT)] INFO @blanka responded with "You want to cancel the trip request?"
+[Thu Apr 23 2015 13:09:36 GMT+0100 (WAT)] INFO Received: message kachi @kachi 1429790976.000036 "yea"
+[Thu Apr 23 2015 13:09:36 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Message Received
+[Thu Apr 23 2015 13:09:37 GMT+0100 (WAT)] INFO @blanka responded with "Fine, your trip request has been cancelled"
+[Thu Apr 23 2015 13:09:41 GMT+0100 (WAT)] INFO Received: message kachi @kachi 1429790981.000038 "i need a cab"
+[Thu Apr 23 2015 13:09:41 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Message Received
+[Thu Apr 23 2015 13:09:44 GMT+0100 (WAT)] INFO @blanka responded with "Ok. Just click here: http://bit.ly/1HvCRvw, and i'll pinpoint your current location"
+[Thu Apr 23 2015 13:09:51 GMT+0100 (WAT)] INFO Geodata: {"ref":"1429790982947","lat":6.4564403,"longt":3.5264116}
+[Thu Apr 23 2015 13:09:51 GMT+0100 (WAT)] INFO UTILS: Connecting to MQ Exchange <piper.events.in>...
+[Thu Apr 23 2015 13:09:51 GMT+0100 (WAT)] INFO UTILS: <piper.events.in> connected
+[Thu Apr 23 2015 13:09:52 GMT+0100 (WAT)] INFO @blanka responded with "Thanks, I have your location 
+http://bit.ly/1DSuRCj
+"
+[Thu Apr 23 2015 13:09:52 GMT+0100 (WAT)] INFO @blanka responded with "Can I go ahead and book your ride?"
+[Thu Apr 23 2015 13:09:53 GMT+0100 (WAT)] WARN SlackConnection.onMessage: Original message changed by blanka
+[Thu Apr 23 2015 13:09:53 GMT+0100 (WAT)] WARN Message: {"id":1,"type":"message","channel":"D03SDHUUJ"}
+[Thu Apr 23 2015 13:09:53 GMT+0100 (WAT)] WARN Message.Message: {"type":"message","user":"U03SDHUTU","text":"Thanks, I have your location \n<http://bit.ly/1DSuRCj>\n","attachments":[{"from_url":"http://bit.ly/1DSuRCj","fallback":"400x400px image","image_url":"http://bit.ly/1DSuRCj","image_width":400,"image_height":400,"image_bytes":14567,"id":1}],"ts":"1429790992.000040"}
+[Thu Apr 23 2015 13:09:53 GMT+0100 (WAT)] WARN Message.Subtype: "message_changed"
+[Thu Apr 23 2015 13:09:53 GMT+0100 (WAT)] INFO Received: message kachi @blanka 1429790993.000042 "Thanks, I have your location 
+<http://bit.ly/1DSuRCj>
+"
+[Thu Apr 23 2015 13:09:59 GMT+0100 (WAT)] INFO Received: message kachi @kachi 1429790999.000043 "cancel"
+[Thu Apr 23 2015 13:09:59 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Message Received
+[Thu Apr 23 2015 13:10:01 GMT+0100 (WAT)] INFO @blanka responded with "You want to cancel the trip request?"
+[Thu Apr 23 2015 13:24:38 GMT+0100 (WAT)] INFO Piper Controller: Connecting to MQ Exchange <piper.events.in>...
+[Thu Apr 23 2015 13:24:39 GMT+0100 (WAT)] INFO CHITCHAT Handler: Connecting to MQ Exchange <piper.events.out>...
+[Thu Apr 23 2015 13:24:39 GMT+0100 (WAT)] INFO SALES Handler: Connecting to MQ Exchange <piper.events.out>...
+[Thu Apr 23 2015 13:24:39 GMT+0100 (WAT)] INFO SALES Handler: Connecting to MQ Exchange <piper.events.out>...
+[Thu Apr 23 2015 13:24:39 GMT+0100 (WAT)] DEBUG {"code":"MODULE_NOT_FOUND"}
+[Thu Apr 23 2015 13:24:39 GMT+0100 (WAT)] ERROR Invalid Schema: ./schemas/sales_subscribers.json
+[Thu Apr 23 2015 13:24:40 GMT+0100 (WAT)] INFO Piper server listening on port 3000 in development mode
+[Thu Apr 23 2015 13:24:40 GMT+0100 (WAT)] INFO Successfully connected to: mongodb://localhost/piper
+[Thu Apr 23 2015 13:24:40 GMT+0100 (WAT)] INFO Updating registry for client mobilizr...
+[Thu Apr 23 2015 13:24:40 GMT+0100 (WAT)] INFO Updating registry for client c2gstudio...
+[Thu Apr 23 2015 13:24:40 GMT+0100 (WAT)] INFO Registered connection for client: mobilizr
+[Thu Apr 23 2015 13:24:40 GMT+0100 (WAT)] INFO Registered connection for client: c2gstudio
+[Thu Apr 23 2015 13:24:40 GMT+0100 (WAT)] INFO CHITCHAT Handler <piper.events.out>: Binding to mobilizr.chitchat...
+[Thu Apr 23 2015 13:24:40 GMT+0100 (WAT)] INFO CHITCHAT Handler <piper.events.out>: Binding to c2gstudio.chitchat...
+[Thu Apr 23 2015 13:24:40 GMT+0100 (WAT)] INFO No subscribers currently registered or active, listening for new clients...
+[Thu Apr 23 2015 13:24:40 GMT+0100 (WAT)] INFO Piper Controller: MQ Exchange <piper.events.in> connected
+[Thu Apr 23 2015 13:24:43 GMT+0100 (WAT)] INFO MOBILIZR: Connection established...listening for messages
+[Thu Apr 23 2015 13:24:43 GMT+0100 (WAT)] INFO Welcome to Slack. You are @blanka of Mobilizr
+[Thu Apr 23 2015 13:24:43 GMT+0100 (WAT)] INFO You are in: #general
+[Thu Apr 23 2015 13:24:43 GMT+0100 (WAT)] INFO As well as: 
+[Thu Apr 23 2015 13:24:43 GMT+0100 (WAT)] INFO You have 0 unread messages
+[Thu Apr 23 2015 13:24:43 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Opened
+[Thu Apr 23 2015 13:24:43 GMT+0100 (WAT)] INFO C2G STUDIO: Connection established...listening for messages
+[Thu Apr 23 2015 13:24:43 GMT+0100 (WAT)] INFO Welcome to Slack. You are @blonker of c2gstudio
+[Thu Apr 23 2015 13:24:43 GMT+0100 (WAT)] INFO You are in: #general
+[Thu Apr 23 2015 13:24:43 GMT+0100 (WAT)] INFO As well as: 
+[Thu Apr 23 2015 13:24:43 GMT+0100 (WAT)] INFO You have 4 unread messages
+[Thu Apr 23 2015 13:24:43 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Opened
+[Thu Apr 23 2015 13:25:03 GMT+0100 (WAT)] INFO Piper Controller: Connecting to MQ Exchange <piper.events.in>...
+[Thu Apr 23 2015 13:25:04 GMT+0100 (WAT)] INFO CHITCHAT Handler: Connecting to MQ Exchange <piper.events.out>...
+[Thu Apr 23 2015 13:25:04 GMT+0100 (WAT)] INFO SALES Handler: Connecting to MQ Exchange <piper.events.out>...
+[Thu Apr 23 2015 13:25:04 GMT+0100 (WAT)] INFO SALES Handler: Connecting to MQ Exchange <piper.events.out>...
+[Thu Apr 23 2015 13:25:04 GMT+0100 (WAT)] DEBUG {"code":"MODULE_NOT_FOUND"}
+[Thu Apr 23 2015 13:25:04 GMT+0100 (WAT)] ERROR Invalid Schema: ./schemas/sales_subscribers.json
+[Thu Apr 23 2015 13:25:05 GMT+0100 (WAT)] INFO Piper server listening on port 3000 in development mode
+[Thu Apr 23 2015 13:25:05 GMT+0100 (WAT)] INFO Successfully connected to: mongodb://localhost/piper
+[Thu Apr 23 2015 13:25:05 GMT+0100 (WAT)] INFO Updating registry for client mobilizr...
+[Thu Apr 23 2015 13:25:05 GMT+0100 (WAT)] INFO Updating registry for client c2gstudio...
+[Thu Apr 23 2015 13:25:05 GMT+0100 (WAT)] INFO Registered connection for client: mobilizr
+[Thu Apr 23 2015 13:25:05 GMT+0100 (WAT)] INFO Registered connection for client: c2gstudio
+[Thu Apr 23 2015 13:25:05 GMT+0100 (WAT)] INFO CHITCHAT Handler <piper.events.out>: Binding to mobilizr.chitchat...
+[Thu Apr 23 2015 13:25:05 GMT+0100 (WAT)] INFO CHITCHAT Handler <piper.events.out>: Binding to c2gstudio.chitchat...
+[Thu Apr 23 2015 13:25:05 GMT+0100 (WAT)] INFO No subscribers currently registered or active, listening for new clients...
+[Thu Apr 23 2015 13:25:05 GMT+0100 (WAT)] INFO Piper Controller: MQ Exchange <piper.events.in> connected
+[Thu Apr 23 2015 13:25:07 GMT+0100 (WAT)] INFO MOBILIZR: Connection established...listening for messages
+[Thu Apr 23 2015 13:25:07 GMT+0100 (WAT)] INFO Welcome to Slack. You are @blanka of Mobilizr
+[Thu Apr 23 2015 13:25:07 GMT+0100 (WAT)] INFO You are in: #general
+[Thu Apr 23 2015 13:25:07 GMT+0100 (WAT)] INFO As well as: 
+[Thu Apr 23 2015 13:25:07 GMT+0100 (WAT)] INFO You have 0 unread messages
+[Thu Apr 23 2015 13:25:07 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Opened
+[Thu Apr 23 2015 13:25:07 GMT+0100 (WAT)] INFO C2G STUDIO: Connection established...listening for messages
+[Thu Apr 23 2015 13:25:07 GMT+0100 (WAT)] INFO Welcome to Slack. You are @blonker of c2gstudio
+[Thu Apr 23 2015 13:25:07 GMT+0100 (WAT)] INFO You are in: #general
+[Thu Apr 23 2015 13:25:07 GMT+0100 (WAT)] INFO As well as: 
+[Thu Apr 23 2015 13:25:07 GMT+0100 (WAT)] INFO You have 4 unread messages
+[Thu Apr 23 2015 13:25:07 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Opened
+[Thu Apr 23 2015 13:27:03 GMT+0100 (WAT)] INFO Piper Controller: Connecting to MQ Exchange <piper.events.in>...
+[Thu Apr 23 2015 13:27:04 GMT+0100 (WAT)] INFO CHITCHAT Handler: Connecting to MQ Exchange <piper.events.out>...
+[Thu Apr 23 2015 13:27:04 GMT+0100 (WAT)] INFO SALES Handler: Connecting to MQ Exchange <piper.events.out>...
+[Thu Apr 23 2015 13:27:04 GMT+0100 (WAT)] INFO SALES Handler: Connecting to MQ Exchange <piper.events.out>...
+[Thu Apr 23 2015 13:27:04 GMT+0100 (WAT)] DEBUG {"code":"MODULE_NOT_FOUND"}
+[Thu Apr 23 2015 13:27:04 GMT+0100 (WAT)] ERROR Invalid Schema: ./schemas/sales_subscribers.json
+[Thu Apr 23 2015 13:27:04 GMT+0100 (WAT)] INFO Piper server listening on port 3000 in development mode
+[Thu Apr 23 2015 13:27:04 GMT+0100 (WAT)] INFO Successfully connected to: mongodb://localhost/piper
+[Thu Apr 23 2015 13:27:04 GMT+0100 (WAT)] INFO Updating registry for client mobilizr...
+[Thu Apr 23 2015 13:27:04 GMT+0100 (WAT)] INFO Updating registry for client c2gstudio...
+[Thu Apr 23 2015 13:27:04 GMT+0100 (WAT)] INFO Registered connection for client: mobilizr
+[Thu Apr 23 2015 13:27:04 GMT+0100 (WAT)] INFO Registered connection for client: c2gstudio
+[Thu Apr 23 2015 13:27:04 GMT+0100 (WAT)] INFO CHITCHAT Handler <piper.events.out>: Binding to mobilizr.chitchat...
+[Thu Apr 23 2015 13:27:04 GMT+0100 (WAT)] INFO CHITCHAT Handler <piper.events.out>: Binding to c2gstudio.chitchat...
+[Thu Apr 23 2015 13:27:04 GMT+0100 (WAT)] INFO No subscribers currently registered or active, listening for new clients...
+[Thu Apr 23 2015 13:27:05 GMT+0100 (WAT)] INFO Piper Controller: MQ Exchange <piper.events.in> connected
+[Thu Apr 23 2015 13:27:08 GMT+0100 (WAT)] INFO C2G STUDIO: Connection established...listening for messages
+[Thu Apr 23 2015 13:27:08 GMT+0100 (WAT)] INFO Welcome to Slack. You are @blonker of c2gstudio
+[Thu Apr 23 2015 13:27:08 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Opened
+[Thu Apr 23 2015 13:27:08 GMT+0100 (WAT)] INFO MOBILIZR: Connection established...listening for messages
+[Thu Apr 23 2015 13:27:08 GMT+0100 (WAT)] INFO Welcome to Slack. You are @blanka of Mobilizr
+[Thu Apr 23 2015 13:27:08 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Opened
+[Thu Apr 23 2015 13:27:37 GMT+0100 (WAT)] INFO Piper Controller: Connecting to MQ Exchange <piper.events.in>...
+[Thu Apr 23 2015 13:27:38 GMT+0100 (WAT)] INFO CHITCHAT Handler: Connecting to MQ Exchange <piper.events.out>...
+[Thu Apr 23 2015 13:27:38 GMT+0100 (WAT)] INFO SALES Handler: Connecting to MQ Exchange <piper.events.out>...
+[Thu Apr 23 2015 13:27:38 GMT+0100 (WAT)] INFO SALES Handler: Connecting to MQ Exchange <piper.events.out>...
+[Thu Apr 23 2015 13:27:38 GMT+0100 (WAT)] DEBUG {"code":"MODULE_NOT_FOUND"}
+[Thu Apr 23 2015 13:27:38 GMT+0100 (WAT)] ERROR Invalid Schema: ./schemas/sales_subscribers.json
+[Thu Apr 23 2015 13:27:39 GMT+0100 (WAT)] INFO Piper server listening on port 3000 in development mode
+[Thu Apr 23 2015 13:27:39 GMT+0100 (WAT)] INFO Successfully connected to: mongodb://localhost/piper
+[Thu Apr 23 2015 13:27:39 GMT+0100 (WAT)] INFO Updating registry for client mobilizr...
+[Thu Apr 23 2015 13:27:39 GMT+0100 (WAT)] INFO Updating registry for client c2gstudio...
+[Thu Apr 23 2015 13:27:39 GMT+0100 (WAT)] INFO Registered connection for client: mobilizr
+[Thu Apr 23 2015 13:27:39 GMT+0100 (WAT)] INFO Registered connection for client: c2gstudio
+[Thu Apr 23 2015 13:27:39 GMT+0100 (WAT)] INFO CHITCHAT Handler <piper.events.out>: Binding to mobilizr.chitchat...
+[Thu Apr 23 2015 13:27:39 GMT+0100 (WAT)] INFO CHITCHAT Handler <piper.events.out>: Binding to c2gstudio.chitchat...
+[Thu Apr 23 2015 13:27:39 GMT+0100 (WAT)] INFO No subscribers currently registered or active, listening for new clients...
+[Thu Apr 23 2015 13:27:39 GMT+0100 (WAT)] INFO Piper Controller: MQ Exchange <piper.events.in> connected
+[Thu Apr 23 2015 13:27:42 GMT+0100 (WAT)] INFO C2G STUDIO: Connection established...listening for messages
+[Thu Apr 23 2015 13:27:42 GMT+0100 (WAT)] INFO Welcome to Slack. You are @blonker of c2gstudio
+[Thu Apr 23 2015 13:27:42 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Opened
+[Thu Apr 23 2015 13:27:42 GMT+0100 (WAT)] INFO MOBILIZR: Connection established...listening for messages
+[Thu Apr 23 2015 13:27:42 GMT+0100 (WAT)] INFO Welcome to Slack. You are @blanka of Mobilizr
+[Thu Apr 23 2015 13:27:42 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Opened
+[Thu Apr 23 2015 13:40:22 GMT+0100 (WAT)] INFO Piper Controller: Connecting to MQ Exchange <piper.events.in>...
+[Thu Apr 23 2015 13:40:23 GMT+0100 (WAT)] INFO CHITCHAT Handler: Connecting to MQ Exchange <piper.events.out>...
+[Thu Apr 23 2015 13:40:23 GMT+0100 (WAT)] INFO SALES Handler: Connecting to MQ Exchange <piper.events.out>...
+[Thu Apr 23 2015 13:40:23 GMT+0100 (WAT)] INFO SALES Handler: Connecting to MQ Exchange <piper.events.out>...
+[Thu Apr 23 2015 13:40:23 GMT+0100 (WAT)] DEBUG {"code":"MODULE_NOT_FOUND"}
+[Thu Apr 23 2015 13:40:23 GMT+0100 (WAT)] ERROR Invalid Schema: ./schemas/sales_subscribers.json
+[Thu Apr 23 2015 13:40:23 GMT+0100 (WAT)] INFO Piper server listening on port 3000 in development mode
+[Thu Apr 23 2015 13:40:23 GMT+0100 (WAT)] INFO Successfully connected to: mongodb://localhost/piper
+[Thu Apr 23 2015 13:40:23 GMT+0100 (WAT)] INFO Updating registry for client mobilizr...
+[Thu Apr 23 2015 13:40:23 GMT+0100 (WAT)] INFO Updating registry for client c2gstudio...
+[Thu Apr 23 2015 13:40:23 GMT+0100 (WAT)] INFO Registered connection for client: mobilizr
+[Thu Apr 23 2015 13:40:23 GMT+0100 (WAT)] INFO Registered connection for client: c2gstudio
+[Thu Apr 23 2015 13:40:23 GMT+0100 (WAT)] INFO CHITCHAT Handler <piper.events.out>: Binding to mobilizr.chitchat...
+[Thu Apr 23 2015 13:40:23 GMT+0100 (WAT)] INFO CHITCHAT Handler <piper.events.out>: Binding to c2gstudio.chitchat...
+[Thu Apr 23 2015 13:40:23 GMT+0100 (WAT)] INFO No subscribers currently registered or active, listening for new clients...
+[Thu Apr 23 2015 13:40:24 GMT+0100 (WAT)] INFO Piper Controller: MQ Exchange <piper.events.in> connected
+[Thu Apr 23 2015 13:40:27 GMT+0100 (WAT)] INFO MOBILIZR: Connection established...listening for messages
+[Thu Apr 23 2015 13:40:27 GMT+0100 (WAT)] INFO Welcome to Slack. You are @blanka of Mobilizr
+[Thu Apr 23 2015 13:40:27 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Opened
+[Thu Apr 23 2015 13:40:27 GMT+0100 (WAT)] INFO C2G STUDIO: Connection established...listening for messages
+[Thu Apr 23 2015 13:40:27 GMT+0100 (WAT)] INFO Welcome to Slack. You are @blonker of c2gstudio
+[Thu Apr 23 2015 13:40:27 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Opened
+[Thu Apr 23 2015 13:41:58 GMT+0100 (WAT)] INFO Piper Controller: Connecting to MQ Exchange <piper.events.in>...
+[Thu Apr 23 2015 13:41:59 GMT+0100 (WAT)] INFO CHITCHAT Handler: Connecting to MQ Exchange <piper.events.out>...
+[Thu Apr 23 2015 13:41:59 GMT+0100 (WAT)] INFO SALES Handler: Connecting to MQ Exchange <piper.events.out>...
+[Thu Apr 23 2015 13:41:59 GMT+0100 (WAT)] INFO SALES Handler: Connecting to MQ Exchange <piper.events.out>...
+[Thu Apr 23 2015 13:42:00 GMT+0100 (WAT)] INFO Piper server listening on port 3000 in development mode
+[Thu Apr 23 2015 13:42:00 GMT+0100 (WAT)] INFO Successfully connected to: mongodb://localhost/piper
+[Thu Apr 23 2015 13:42:00 GMT+0100 (WAT)] INFO Updating registry for client mobilizr...
+[Thu Apr 23 2015 13:42:00 GMT+0100 (WAT)] INFO Updating registry for client c2gstudio...
+[Thu Apr 23 2015 13:42:00 GMT+0100 (WAT)] INFO Registered connection for client: mobilizr
+[Thu Apr 23 2015 13:42:00 GMT+0100 (WAT)] INFO Registered connection for client: c2gstudio
+[Thu Apr 23 2015 13:42:00 GMT+0100 (WAT)] INFO CHITCHAT Handler <piper.events.out>: Binding to mobilizr.chitchat...
+[Thu Apr 23 2015 13:42:00 GMT+0100 (WAT)] INFO CHITCHAT Handler <piper.events.out>: Binding to c2gstudio.chitchat...
+[Thu Apr 23 2015 13:42:00 GMT+0100 (WAT)] INFO Piper Controller: MQ Exchange <piper.events.in> connected
+[Thu Apr 23 2015 13:42:03 GMT+0100 (WAT)] INFO C2G STUDIO: Connection established...listening for messages
+[Thu Apr 23 2015 13:42:03 GMT+0100 (WAT)] INFO Welcome to Slack. You are @blonker of c2gstudio
+[Thu Apr 23 2015 13:42:03 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Opened
+[Thu Apr 23 2015 13:42:03 GMT+0100 (WAT)] INFO MOBILIZR: Connection established...listening for messages
+[Thu Apr 23 2015 13:42:03 GMT+0100 (WAT)] INFO Welcome to Slack. You are @blanka of Mobilizr
+[Thu Apr 23 2015 13:42:03 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Opened
+[Thu Apr 23 2015 13:42:09 GMT+0100 (WAT)] INFO Piper Controller: Connecting to MQ Exchange <piper.events.in>...
+[Thu Apr 23 2015 13:42:10 GMT+0100 (WAT)] INFO CHITCHAT Handler: Connecting to MQ Exchange <piper.events.out>...
+[Thu Apr 23 2015 13:42:10 GMT+0100 (WAT)] INFO SALES Handler: Connecting to MQ Exchange <piper.events.out>...
+[Thu Apr 23 2015 13:42:10 GMT+0100 (WAT)] INFO UBER Handler: Connecting to MQ Exchange <piper.events.out>...
+[Thu Apr 23 2015 13:42:11 GMT+0100 (WAT)] INFO Piper server listening on port 3000 in development mode
+[Thu Apr 23 2015 13:42:11 GMT+0100 (WAT)] INFO Successfully connected to: mongodb://localhost/piper
+[Thu Apr 23 2015 13:42:11 GMT+0100 (WAT)] INFO Updating registry for client mobilizr...
+[Thu Apr 23 2015 13:42:11 GMT+0100 (WAT)] INFO Updating registry for client c2gstudio...
+[Thu Apr 23 2015 13:42:11 GMT+0100 (WAT)] INFO Registered connection for client: mobilizr
+[Thu Apr 23 2015 13:42:11 GMT+0100 (WAT)] INFO Registered connection for client: c2gstudio
+[Thu Apr 23 2015 13:42:11 GMT+0100 (WAT)] INFO CHITCHAT Handler <piper.events.out>: Binding to mobilizr.chitchat...
+[Thu Apr 23 2015 13:42:11 GMT+0100 (WAT)] INFO CHITCHAT Handler <piper.events.out>: Binding to c2gstudio.chitchat...
+[Thu Apr 23 2015 13:42:11 GMT+0100 (WAT)] INFO Piper Controller: MQ Exchange <piper.events.in> connected
+[Thu Apr 23 2015 13:42:13 GMT+0100 (WAT)] INFO C2G STUDIO: Connection established...listening for messages
+[Thu Apr 23 2015 13:42:13 GMT+0100 (WAT)] INFO Welcome to Slack. You are @blonker of c2gstudio
+[Thu Apr 23 2015 13:42:13 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Opened
+[Thu Apr 23 2015 13:42:13 GMT+0100 (WAT)] INFO MOBILIZR: Connection established...listening for messages
+[Thu Apr 23 2015 13:42:13 GMT+0100 (WAT)] INFO Welcome to Slack. You are @blanka of Mobilizr
+[Thu Apr 23 2015 13:42:13 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Opened
+[Thu Apr 23 2015 13:43:08 GMT+0100 (WAT)] INFO Received: message kachi @kachi 1429792988.000045 "yes"
+[Thu Apr 23 2015 13:43:08 GMT+0100 (WAT)] DEBUG IGNORE FLAG: false
+[Thu Apr 23 2015 13:43:08 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Message Received
+[Thu Apr 23 2015 13:43:08 GMT+0100 (WAT)] DEBUG Userkey: api-server:kachi@mobilizr:context
+[Thu Apr 23 2015 13:43:08 GMT+0100 (WAT)] DEBUG State for api-server:kachi@mobilizr:context: RIDES_confirm_cancellation
+[Thu Apr 23 2015 13:43:08 GMT+0100 (WAT)] DEBUG 2015-04-23T12:43:08.000Z
+[Thu Apr 23 2015 13:43:11 GMT+0100 (WAT)] DEBUG IntentBody: {"msg_id":"394176f5-c8e0-4ab8-bcdc-1798689a1833","_text":"yes","outcomes":[{"_text":"yes","intent":"default_accept","entities":{},"confidence":0.981}],"context":{"state":"RIDES_confirm_cancellation","reference_time":"2015-04-23T12:43:08.000Z"}}
+[Thu Apr 23 2015 13:43:11 GMT+0100 (WAT)] DEBUG Intent: default_accept
+[Thu Apr 23 2015 13:43:11 GMT+0100 (WAT)] DEBUG Confidence: 0.981
+[Thu Apr 23 2015 13:43:11 GMT+0100 (WAT)] DEBUG Module for intent default_accept and state RIDES_confirm_cancellation resolved to RIDES
+[Thu Apr 23 2015 13:43:11 GMT+0100 (WAT)] DEBUG Module for intent default_accept and state RIDES_confirm_cancellation resolved to RIDES
+[Thu Apr 23 2015 13:43:11 GMT+0100 (WAT)] INFO RIDES Processor: Connecting to MQ Exchange <piper.events.in>...
+[Thu Apr 23 2015 13:43:11 GMT+0100 (WAT)] DEBUG Entities: {}
+[Thu Apr 23 2015 13:43:11 GMT+0100 (WAT)] DEBUG New context for api-server:kachi@mobilizr:context: {"state":"RIDES"}
+[Thu Apr 23 2015 13:43:11 GMT+0100 (WAT)] DEBUG confirmCancellation: 0 -> true
+[Thu Apr 23 2015 13:43:11 GMT+0100 (WAT)] DEBUG Datakey: confirmCancellation, Validity Check: true
+[Thu Apr 23 2015 13:43:11 GMT+0100 (WAT)] DEBUG Predicate: 0
+[Thu Apr 23 2015 13:43:11 GMT+0100 (WAT)] DEBUG Datahash: {"handlerTodo":"rides_cancel_trip","intent":"default_accept"}
+[Thu Apr 23 2015 13:43:11 GMT+0100 (WAT)] DEBUG Body: {"msg_id":"394176f5-c8e0-4ab8-bcdc-1798689a1833","_text":"yes","outcomes":[{"_text":"yes","intent":"default_accept","entities":{},"confidence":0.981}],"context":{"state":"RIDES_confirm_cancellation","reference_time":"2015-04-23T12:43:08.000Z"},"user":{"slackId":"U02RN8W1T","name":"kachi","email":"kachi@mobilizr.net","full_name":"","is_admin":true,"avatar":"https://secure.gravatar.com/avatar/441587d4f0a03b4ce3aca5a1af3577c1.jpg?s=48&d=https%3A%2F%2Fslack.global.ssl.fastly.net%2F3654%2Fimg%2Favatars%2Fava_0012-48.png"}}
+[Thu Apr 23 2015 13:43:11 GMT+0100 (WAT)] DEBUG Indata: {"yes_no":"yes"}
+[Thu Apr 23 2015 13:43:11 GMT+0100 (WAT)] DEBUG rides:kachi@mobilizr
+[Thu Apr 23 2015 13:43:11 GMT+0100 (WAT)] DEBUG No more missing data: calling handleRequest for rides_cancel_trip
+[Thu Apr 23 2015 13:43:11 GMT+0100 (WAT)] DEBUG module: RIDES, user: kachi, client: mobilizr, message: You have no active ride requests to cancel
+[Thu Apr 23 2015 13:43:11 GMT+0100 (WAT)] INFO @blanka responded with "You have no active ride requests to cancel"
+[Thu Apr 23 2015 13:43:11 GMT+0100 (WAT)] DEBUG Message: You have no active ride requests to cancel sent to user kachi
+[Thu Apr 23 2015 13:43:11 GMT+0100 (WAT)] INFO RIDES Processor: <piper.events.in> connected
+[Thu Apr 23 2015 13:43:17 GMT+0100 (WAT)] INFO Received: message kachi @kachi 1429792996.000047 "cancel"
+[Thu Apr 23 2015 13:43:17 GMT+0100 (WAT)] DEBUG IGNORE FLAG: false
+[Thu Apr 23 2015 13:43:17 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Message Received
+[Thu Apr 23 2015 13:43:17 GMT+0100 (WAT)] DEBUG Userkey: api-server:kachi@mobilizr:context
+[Thu Apr 23 2015 13:43:17 GMT+0100 (WAT)] DEBUG State for api-server:kachi@mobilizr:context: RIDES
+[Thu Apr 23 2015 13:43:17 GMT+0100 (WAT)] DEBUG 2015-04-23T12:43:16.000Z
+[Thu Apr 23 2015 13:43:18 GMT+0100 (WAT)] DEBUG IntentBody: {"msg_id":"16f5acbb-7aa3-42cb-b263-7f68ed0b3c8a","_text":"cancel","outcomes":[{"_text":"cancel","intent":"rides_cancel_trip","entities":{},"confidence":0.932}],"context":{"state":"RIDES","reference_time":"2015-04-23T12:43:16.000Z"}}
+[Thu Apr 23 2015 13:43:18 GMT+0100 (WAT)] DEBUG Intent: rides_cancel_trip
+[Thu Apr 23 2015 13:43:18 GMT+0100 (WAT)] DEBUG Confidence: 0.932
+[Thu Apr 23 2015 13:43:18 GMT+0100 (WAT)] DEBUG Entities: {}
+[Thu Apr 23 2015 13:43:18 GMT+0100 (WAT)] DEBUG New context for api-server:kachi@mobilizr:context: {"state":"RIDES"}
+[Thu Apr 23 2015 13:43:18 GMT+0100 (WAT)] DEBUG confirmCancellation: 0 -> true
+[Thu Apr 23 2015 13:43:18 GMT+0100 (WAT)] DEBUG Datakey: confirmCancellation, Validity Check: true
+[Thu Apr 23 2015 13:43:18 GMT+0100 (WAT)] DEBUG Predicate: 0
+[Thu Apr 23 2015 13:43:18 GMT+0100 (WAT)] DEBUG Datahash: {"handlerTodo":"rides_cancel_trip","intent":"rides_cancel_trip","lvlQueries":{}}
+[Thu Apr 23 2015 13:43:18 GMT+0100 (WAT)] DEBUG Body: {"msg_id":"16f5acbb-7aa3-42cb-b263-7f68ed0b3c8a","_text":"cancel","outcomes":[{"_text":"cancel","intent":"rides_cancel_trip","entities":{},"confidence":0.932}],"context":{"state":"RIDES","reference_time":"2015-04-23T12:43:16.000Z"},"user":{"slackId":"U02RN8W1T","name":"kachi","email":"kachi@mobilizr.net","full_name":"","is_admin":true,"avatar":"https://secure.gravatar.com/avatar/441587d4f0a03b4ce3aca5a1af3577c1.jpg?s=48&d=https%3A%2F%2Fslack.global.ssl.fastly.net%2F3654%2Fimg%2Favatars%2Fava_0012-48.png"}}
+[Thu Apr 23 2015 13:43:18 GMT+0100 (WAT)] DEBUG Indata: {}
+[Thu Apr 23 2015 13:43:18 GMT+0100 (WAT)] DEBUG rides:kachi@mobilizr
+[Thu Apr 23 2015 13:43:18 GMT+0100 (WAT)] DEBUG Datahash.lvlQueries: {}
+[Thu Apr 23 2015 13:43:18 GMT+0100 (WAT)] DEBUG No more missing data: calling handleRequest for rides_cancel_trip
+[Thu Apr 23 2015 13:43:18 GMT+0100 (WAT)] DEBUG module: RIDES, user: kachi, client: mobilizr, message: You have no active ride requests to cancel
+[Thu Apr 23 2015 13:43:18 GMT+0100 (WAT)] INFO @blanka responded with "You have no active ride requests to cancel"
+[Thu Apr 23 2015 13:43:18 GMT+0100 (WAT)] DEBUG Message: You have no active ride requests to cancel sent to user kachi
+[Thu Apr 23 2015 13:43:32 GMT+0100 (WAT)] INFO Received: message kachi @kachi 1429793012.000049 "i need a cab"
+[Thu Apr 23 2015 13:43:32 GMT+0100 (WAT)] DEBUG IGNORE FLAG: false
+[Thu Apr 23 2015 13:43:32 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Message Received
+[Thu Apr 23 2015 13:43:32 GMT+0100 (WAT)] DEBUG Userkey: api-server:kachi@mobilizr:context
+[Thu Apr 23 2015 13:43:32 GMT+0100 (WAT)] DEBUG State for api-server:kachi@mobilizr:context: RIDES
+[Thu Apr 23 2015 13:43:32 GMT+0100 (WAT)] DEBUG 2015-04-23T12:43:32.000Z
+[Thu Apr 23 2015 13:43:33 GMT+0100 (WAT)] DEBUG IntentBody: {"msg_id":"58265eaf-3f47-43dc-aa22-970955291748","_text":"i need a cab","outcomes":[{"_text":"i need a cab","intent":"rides_request_trip","entities":{},"confidence":0.999}],"context":{"state":"RIDES","reference_time":"2015-04-23T12:43:32.000Z"}}
+[Thu Apr 23 2015 13:43:33 GMT+0100 (WAT)] DEBUG Intent: rides_request_trip
+[Thu Apr 23 2015 13:43:33 GMT+0100 (WAT)] DEBUG Confidence: 0.999
+[Thu Apr 23 2015 13:43:33 GMT+0100 (WAT)] DEBUG Entities: {}
+[Thu Apr 23 2015 13:43:33 GMT+0100 (WAT)] DEBUG New context for api-server:kachi@mobilizr:context: {"state":"RIDES"}
+[Thu Apr 23 2015 13:43:33 GMT+0100 (WAT)] DEBUG confirmNeed: 0 -> false
+[Thu Apr 23 2015 13:43:33 GMT+0100 (WAT)] DEBUG confirmNeed: 1 -> true
+[Thu Apr 23 2015 13:43:33 GMT+0100 (WAT)] DEBUG startLong: 0 -> false
+[Thu Apr 23 2015 13:43:33 GMT+0100 (WAT)] DEBUG startLong: 1 -> false
+[Thu Apr 23 2015 13:43:33 GMT+0100 (WAT)] DEBUG startLong: 2 -> false
+[Thu Apr 23 2015 13:43:33 GMT+0100 (WAT)] DEBUG startLong: 3 -> false
+[Thu Apr 23 2015 13:43:33 GMT+0100 (WAT)] DEBUG carrier: 0 -> false
+[Thu Apr 23 2015 13:43:33 GMT+0100 (WAT)] DEBUG carrier: 1 -> false
+[Thu Apr 23 2015 13:43:33 GMT+0100 (WAT)] DEBUG carrier: 2 -> true
+[Thu Apr 23 2015 13:43:33 GMT+0100 (WAT)] DEBUG endAddress: 0 -> false
+[Thu Apr 23 2015 13:43:33 GMT+0100 (WAT)] DEBUG endAddress: 1 -> false
+[Thu Apr 23 2015 13:43:33 GMT+0100 (WAT)] DEBUG endAddress: 2 -> true
+[Thu Apr 23 2015 13:43:33 GMT+0100 (WAT)] DEBUG departureTime: 0 -> false
+[Thu Apr 23 2015 13:43:33 GMT+0100 (WAT)] DEBUG departureTime: 1 -> false
+[Thu Apr 23 2015 13:43:33 GMT+0100 (WAT)] DEBUG departureTime: 2 -> true
+[Thu Apr 23 2015 13:43:33 GMT+0100 (WAT)] DEBUG confirmRequest: 0 -> false
+[Thu Apr 23 2015 13:43:33 GMT+0100 (WAT)] DEBUG confirmRequest: 1 -> false
+[Thu Apr 23 2015 13:43:33 GMT+0100 (WAT)] DEBUG confirmRequest: 2 -> false
+[Thu Apr 23 2015 13:43:33 GMT+0100 (WAT)] DEBUG Datakey: confirmNeed, Validity Check: true
+[Thu Apr 23 2015 13:43:33 GMT+0100 (WAT)] DEBUG Datakey: startLong, Validity Check: false
+[Thu Apr 23 2015 13:43:33 GMT+0100 (WAT)] DEBUG Datakey: carrier, Validity Check: true
+[Thu Apr 23 2015 13:43:33 GMT+0100 (WAT)] DEBUG Datakey: endAddress, Validity Check: true
+[Thu Apr 23 2015 13:43:33 GMT+0100 (WAT)] DEBUG Datakey: departureTime, Validity Check: true
+[Thu Apr 23 2015 13:43:33 GMT+0100 (WAT)] DEBUG Datakey: confirmRequest, Validity Check: false
+[Thu Apr 23 2015 13:43:33 GMT+0100 (WAT)] DEBUG Missing Keys for rides_book_trip: ["startLong","confirmRequest"]
+[Thu Apr 23 2015 13:43:33 GMT+0100 (WAT)] DEBUG Predicate: 2
+[Thu Apr 23 2015 13:43:33 GMT+0100 (WAT)] DEBUG Datahash from unfold: {"handlerTodo":"rides_book_trip","intent":"rides_request_trip","lvlQueries":{},"confirmNeed":true}
+[Thu Apr 23 2015 13:43:33 GMT+0100 (WAT)] DEBUG 1. getResponse(): data.lvlQueries[NO_START_LOCATION] -> undefined
+[Thu Apr 23 2015 13:43:33 GMT+0100 (WAT)] DEBUG 2. getResponse(): data.lvlQueries[NO_START_LOCATION] -> 0
+[Thu Apr 23 2015 13:43:33 GMT+0100 (WAT)] DEBUG 3. getResponse(): data.lvlQueries[NO_START_LOCATION] -> 0
+[Thu Apr 23 2015 13:43:35 GMT+0100 (WAT)] DEBUG Predicate: 1
+[Thu Apr 23 2015 13:43:35 GMT+0100 (WAT)] DEBUG Datahash: {"handlerTodo":"rides_book_trip","intent":"rides_request_trip","lvlQueries":{"NO_START_LOCATION":1},"confirmNeed":true,"errStartLocation":"NO_START_LOCATION"}
+[Thu Apr 23 2015 13:43:35 GMT+0100 (WAT)] DEBUG Body: {"msg_id":"58265eaf-3f47-43dc-aa22-970955291748","_text":"i need a cab","outcomes":[{"_text":"i need a cab","intent":"rides_request_trip","entities":{},"confidence":0.999}],"context":{"state":"RIDES","reference_time":"2015-04-23T12:43:32.000Z"},"user":{"slackId":"U02RN8W1T","name":"kachi","email":"kachi@mobilizr.net","full_name":"","is_admin":true,"avatar":"https://secure.gravatar.com/avatar/441587d4f0a03b4ce3aca5a1af3577c1.jpg?s=48&d=https%3A%2F%2Fslack.global.ssl.fastly.net%2F3654%2Fimg%2Favatars%2Fava_0012-48.png"}}
+[Thu Apr 23 2015 13:43:35 GMT+0100 (WAT)] DEBUG Indata: {}
+[Thu Apr 23 2015 13:43:35 GMT+0100 (WAT)] DEBUG rides:kachi@mobilizr
+[Thu Apr 23 2015 13:43:35 GMT+0100 (WAT)] DEBUG Datahash.lvlQueries: {"NO_START_LOCATION":1}
+[Thu Apr 23 2015 13:43:35 GMT+0100 (WAT)] DEBUG module: RIDES, user: kachi, client: mobilizr, message: Ok. Just click here: http://bit.ly/1DmfIXw, and i'll pinpoint your current location
+[Thu Apr 23 2015 13:43:35 GMT+0100 (WAT)] INFO @blanka responded with "Ok. Just click here: http://bit.ly/1DmfIXw, and i'll pinpoint your current location"
+[Thu Apr 23 2015 13:43:35 GMT+0100 (WAT)] DEBUG Message: Ok. Just click here: http://bit.ly/1DmfIXw, and i'll pinpoint your current location sent to user kachi
+[Thu Apr 23 2015 13:43:46 GMT+0100 (WAT)] INFO Geodata: {"ref":"1429793013744","lat":6.4564359,"longt":3.5264108}
+[Thu Apr 23 2015 13:43:46 GMT+0100 (WAT)] DEBUG Retrieved REF: 1429793013744
+[Thu Apr 23 2015 13:43:46 GMT+0100 (WAT)] DEBUG CACHEKEY: utils:1429793013744
+[Thu Apr 23 2015 13:43:46 GMT+0100 (WAT)] INFO UTILS: Connecting to MQ Exchange <piper.events.in>...
+[Thu Apr 23 2015 13:43:46 GMT+0100 (WAT)] INFO UTILS: <piper.events.in> connected
+[Thu Apr 23 2015 13:43:46 GMT+0100 (WAT)] DEBUG Done setting user geodata...
+[Thu Apr 23 2015 13:43:47 GMT+0100 (WAT)] DEBUG module: RIDES, user: kachi, client: mobilizr, message: Thanks, I have your location 
+http://bit.ly/1GlYcc6
+
+[Thu Apr 23 2015 13:43:47 GMT+0100 (WAT)] INFO @blanka responded with "Thanks, I have your location 
+http://bit.ly/1GlYcc6
+"
+[Thu Apr 23 2015 13:43:47 GMT+0100 (WAT)] DEBUG Message: Thanks, I have your location 
+http://bit.ly/1GlYcc6
+ sent to user kachi
+[Thu Apr 23 2015 13:43:47 GMT+0100 (WAT)] DEBUG Entities: {}
+[Thu Apr 23 2015 13:43:47 GMT+0100 (WAT)] DEBUG confirmNeed: 0 -> false
+[Thu Apr 23 2015 13:43:47 GMT+0100 (WAT)] DEBUG confirmNeed: 1 -> true
+[Thu Apr 23 2015 13:43:47 GMT+0100 (WAT)] DEBUG startLong: 0 -> false
+[Thu Apr 23 2015 13:43:47 GMT+0100 (WAT)] DEBUG startLong: 1 -> false
+[Thu Apr 23 2015 13:43:47 GMT+0100 (WAT)] DEBUG startLong: 2 -> true
+[Thu Apr 23 2015 13:43:47 GMT+0100 (WAT)] DEBUG startLong: 3 -> false
+[Thu Apr 23 2015 13:43:47 GMT+0100 (WAT)] DEBUG carrier: 0 -> false
+[Thu Apr 23 2015 13:43:47 GMT+0100 (WAT)] DEBUG carrier: 1 -> false
+[Thu Apr 23 2015 13:43:47 GMT+0100 (WAT)] DEBUG carrier: 2 -> true
+[Thu Apr 23 2015 13:43:47 GMT+0100 (WAT)] DEBUG endAddress: 0 -> false
+[Thu Apr 23 2015 13:43:47 GMT+0100 (WAT)] DEBUG endAddress: 1 -> false
+[Thu Apr 23 2015 13:43:47 GMT+0100 (WAT)] DEBUG endAddress: 2 -> true
+[Thu Apr 23 2015 13:43:47 GMT+0100 (WAT)] DEBUG departureTime: 0 -> false
+[Thu Apr 23 2015 13:43:47 GMT+0100 (WAT)] DEBUG departureTime: 1 -> false
+[Thu Apr 23 2015 13:43:47 GMT+0100 (WAT)] DEBUG departureTime: 2 -> true
+[Thu Apr 23 2015 13:43:47 GMT+0100 (WAT)] DEBUG confirmRequest: 0 -> false
+[Thu Apr 23 2015 13:43:47 GMT+0100 (WAT)] DEBUG confirmRequest: 1 -> false
+[Thu Apr 23 2015 13:43:47 GMT+0100 (WAT)] DEBUG confirmRequest: 2 -> false
+[Thu Apr 23 2015 13:43:47 GMT+0100 (WAT)] DEBUG Datakey: confirmNeed, Validity Check: true
+[Thu Apr 23 2015 13:43:47 GMT+0100 (WAT)] DEBUG Datakey: startLong, Validity Check: true
+[Thu Apr 23 2015 13:43:47 GMT+0100 (WAT)] DEBUG Datakey: carrier, Validity Check: true
+[Thu Apr 23 2015 13:43:47 GMT+0100 (WAT)] DEBUG Datakey: endAddress, Validity Check: true
+[Thu Apr 23 2015 13:43:47 GMT+0100 (WAT)] DEBUG Datakey: departureTime, Validity Check: true
+[Thu Apr 23 2015 13:43:47 GMT+0100 (WAT)] DEBUG Datakey: confirmRequest, Validity Check: false
+[Thu Apr 23 2015 13:43:47 GMT+0100 (WAT)] DEBUG Missing Keys for rides_book_trip: ["confirmRequest"]
+[Thu Apr 23 2015 13:43:47 GMT+0100 (WAT)] DEBUG Predicate: 1
+[Thu Apr 23 2015 13:43:47 GMT+0100 (WAT)] DEBUG Datahash from unfold: {"handlerTodo":"rides_book_trip","intent":"rides_request_trip","lvlQueries":{"NO_START_LOCATION":1},"confirmNeed":true,"errStartLocation":"NO_START_LOCATION","startLat":"6.4564359","startLong":"3.5264108"}
+[Thu Apr 23 2015 13:43:47 GMT+0100 (WAT)] DEBUG 1. getResponse(): data.lvlQueries[NO_CONFIRM_REQUEST] -> undefined
+[Thu Apr 23 2015 13:43:47 GMT+0100 (WAT)] DEBUG 2. getResponse(): data.lvlQueries[NO_CONFIRM_REQUEST] -> 0
+[Thu Apr 23 2015 13:43:47 GMT+0100 (WAT)] DEBUG 3. getResponse(): data.lvlQueries[NO_CONFIRM_REQUEST] -> 0
+[Thu Apr 23 2015 13:43:47 GMT+0100 (WAT)] DEBUG Predicate: 0
+[Thu Apr 23 2015 13:43:47 GMT+0100 (WAT)] DEBUG Datahash: {"handlerTodo":"rides_book_trip","intent":"rides_request_trip","lvlQueries":{"NO_START_LOCATION":1,"NO_CONFIRM_REQUEST":1},"confirmNeed":true,"errStartLocation":"NO_START_LOCATION","startLat":"6.4564359","startLong":"3.5264108"}
+[Thu Apr 23 2015 13:43:47 GMT+0100 (WAT)] DEBUG Body: {"context":{"state":"RIDES"},"user":{"phone":"undefined","first_name":"undefined","slackId":"U02RN8W1T","avatar":"https://secure.gravatar.com/avatar/441587d4f0a03b4ce3aca5a1af3577c1.jpg?s=48&d=https%3A%2F%2Fslack.global.ssl.fastly.net%2F3654%2Fimg%2Favatars%2Fava_0012-48.png","full_name":"","name":"kachi","is_admin":"true","last_name":"undefined","email":"kachi@mobilizr.net"}}
+[Thu Apr 23 2015 13:43:47 GMT+0100 (WAT)] DEBUG Indata: {}
+[Thu Apr 23 2015 13:43:47 GMT+0100 (WAT)] DEBUG rides:kachi@mobilizr
+[Thu Apr 23 2015 13:43:47 GMT+0100 (WAT)] DEBUG Datahash.lvlQueries: {"NO_START_LOCATION":1,"NO_CONFIRM_REQUEST":1}
+[Thu Apr 23 2015 13:43:47 GMT+0100 (WAT)] DEBUG module: RIDES, user: kachi, client: mobilizr, message: Can I go ahead and book your ride?
+[Thu Apr 23 2015 13:43:47 GMT+0100 (WAT)] INFO @blanka responded with "Can I go ahead and book your ride?"
+[Thu Apr 23 2015 13:43:47 GMT+0100 (WAT)] DEBUG Message: Can I go ahead and book your ride? sent to user kachi
+[Thu Apr 23 2015 13:43:47 GMT+0100 (WAT)] DEBUG IGNORE FLAG SET
+[Thu Apr 23 2015 13:43:47 GMT+0100 (WAT)] INFO SlackConnection.onMessage: Original message changed by blanka
+[Thu Apr 23 2015 13:43:47 GMT+0100 (WAT)] DEBUG Message: {"id":1,"type":"message","channel":"D03SDHUUJ"}
+[Thu Apr 23 2015 13:43:47 GMT+0100 (WAT)] DEBUG Message.Message: {"type":"message","user":"U03SDHUTU","text":"Thanks, I have your location \n<http://bit.ly/1GlYcc6>\n","attachments":[{"from_url":"http://bit.ly/1GlYcc6","fallback":"400x400px image","image_url":"http://bit.ly/1GlYcc6","image_width":400,"image_height":400,"image_bytes":14567,"id":1}],"ts":"1429793027.000051"}
+[Thu Apr 23 2015 13:43:47 GMT+0100 (WAT)] DEBUG Message.Subtype: "message_changed"
+[Thu Apr 23 2015 13:43:47 GMT+0100 (WAT)] INFO Received: message kachi @blanka 1429793027.000053 "Thanks, I have your location 
+<http://bit.ly/1GlYcc6>
+"
+[Thu Apr 23 2015 13:43:53 GMT+0100 (WAT)] INFO Received: message kachi @kachi 1429793032.000054 "cancel"
+[Thu Apr 23 2015 13:43:53 GMT+0100 (WAT)] DEBUG IGNORE FLAG: false
+[Thu Apr 23 2015 13:43:53 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Message Received
+[Thu Apr 23 2015 13:43:53 GMT+0100 (WAT)] DEBUG Userkey: api-server:kachi@mobilizr:context
+[Thu Apr 23 2015 13:43:53 GMT+0100 (WAT)] DEBUG State for api-server:kachi@mobilizr:context: RIDES_confirm_request
+[Thu Apr 23 2015 13:43:53 GMT+0100 (WAT)] DEBUG 2015-04-23T12:43:52.000Z
+[Thu Apr 23 2015 13:43:58 GMT+0100 (WAT)] DEBUG IntentBody: {"msg_id":"bbdeeb7e-8e0c-410c-92ac-f907f4221db0","_text":"cancel","outcomes":[{"_text":"cancel","intent":"rides_cancel_trip","entities":{},"confidence":0.932}],"context":{"state":"RIDES_confirm_request","reference_time":"2015-04-23T12:43:52.000Z"}}
+[Thu Apr 23 2015 13:43:58 GMT+0100 (WAT)] DEBUG Intent: rides_cancel_trip
+[Thu Apr 23 2015 13:43:58 GMT+0100 (WAT)] DEBUG Confidence: 0.932
+[Thu Apr 23 2015 13:43:58 GMT+0100 (WAT)] DEBUG Entities: {}
+[Thu Apr 23 2015 13:43:58 GMT+0100 (WAT)] DEBUG New context for api-server:kachi@mobilizr:context: {"state":"RIDES"}
+[Thu Apr 23 2015 13:43:58 GMT+0100 (WAT)] DEBUG confirmCancellation: 0 -> false
+[Thu Apr 23 2015 13:43:58 GMT+0100 (WAT)] DEBUG Datakey: confirmCancellation, Validity Check: false
+[Thu Apr 23 2015 13:43:58 GMT+0100 (WAT)] DEBUG Missing Keys for rides_cancel_trip: ["confirmCancellation"]
+[Thu Apr 23 2015 13:43:58 GMT+0100 (WAT)] DEBUG Predicate: 1
+[Thu Apr 23 2015 13:43:58 GMT+0100 (WAT)] DEBUG Datahash from unfold: {"handlerTodo":"rides_cancel_trip","intent":"rides_cancel_trip","lvlQueries":{"NO_START_LOCATION":1,"NO_CONFIRM_REQUEST":1},"confirmNeed":"true","errStartLocation":"NO_START_LOCATION","startLat":"6.4564359","startLong":"3.5264108"}
+[Thu Apr 23 2015 13:43:58 GMT+0100 (WAT)] DEBUG 1. getResponse(): data.lvlQueries[NO_CONFIRM_CANCEL] -> undefined
+[Thu Apr 23 2015 13:43:58 GMT+0100 (WAT)] DEBUG 2. getResponse(): data.lvlQueries[NO_CONFIRM_CANCEL] -> 0
+[Thu Apr 23 2015 13:43:58 GMT+0100 (WAT)] DEBUG 3. getResponse(): data.lvlQueries[NO_CONFIRM_CANCEL] -> 0
+[Thu Apr 23 2015 13:43:58 GMT+0100 (WAT)] DEBUG Predicate: 0
+[Thu Apr 23 2015 13:43:58 GMT+0100 (WAT)] DEBUG Datahash: {"handlerTodo":"rides_cancel_trip","intent":"rides_cancel_trip","lvlQueries":{"NO_START_LOCATION":1,"NO_CONFIRM_REQUEST":1,"NO_CONFIRM_CANCEL":1},"confirmNeed":"true","errStartLocation":"NO_START_LOCATION","startLat":"6.4564359","startLong":"3.5264108"}
+[Thu Apr 23 2015 13:43:58 GMT+0100 (WAT)] DEBUG Body: {"msg_id":"bbdeeb7e-8e0c-410c-92ac-f907f4221db0","_text":"cancel","outcomes":[{"_text":"cancel","intent":"rides_cancel_trip","entities":{},"confidence":0.932}],"context":{"state":"RIDES_confirm_request","reference_time":"2015-04-23T12:43:52.000Z"},"user":{"slackId":"U02RN8W1T","name":"kachi","email":"kachi@mobilizr.net","full_name":"","is_admin":true,"avatar":"https://secure.gravatar.com/avatar/441587d4f0a03b4ce3aca5a1af3577c1.jpg?s=48&d=https%3A%2F%2Fslack.global.ssl.fastly.net%2F3654%2Fimg%2Favatars%2Fava_0012-48.png"}}
+[Thu Apr 23 2015 13:43:58 GMT+0100 (WAT)] DEBUG Indata: {}
+[Thu Apr 23 2015 13:43:58 GMT+0100 (WAT)] DEBUG rides:kachi@mobilizr
+[Thu Apr 23 2015 13:43:58 GMT+0100 (WAT)] DEBUG Datahash.lvlQueries: {"NO_START_LOCATION":1,"NO_CONFIRM_REQUEST":1,"NO_CONFIRM_CANCEL":1}
+[Thu Apr 23 2015 13:43:58 GMT+0100 (WAT)] DEBUG module: RIDES, user: kachi, client: mobilizr, message: You want to cancel the trip request?
+[Thu Apr 23 2015 13:43:58 GMT+0100 (WAT)] INFO @blanka responded with "You want to cancel the trip request?"
+[Thu Apr 23 2015 13:43:58 GMT+0100 (WAT)] DEBUG Message: You want to cancel the trip request? sent to user kachi
+[Thu Apr 23 2015 13:45:21 GMT+0100 (WAT)] INFO Piper Controller: Connecting to MQ Exchange <piper.events.in>...
+[Thu Apr 23 2015 13:45:21 GMT+0100 (WAT)] INFO CHITCHAT Handler: Connecting to MQ Exchange <piper.events.out>...
+[Thu Apr 23 2015 13:45:21 GMT+0100 (WAT)] INFO SALES Handler: Connecting to MQ Exchange <piper.events.out>...
+[Thu Apr 23 2015 13:45:21 GMT+0100 (WAT)] INFO UBER Handler: Connecting to MQ Exchange <piper.events.out>...
+[Thu Apr 23 2015 13:45:22 GMT+0100 (WAT)] INFO Piper server listening on port 3000 in development mode
+[Thu Apr 23 2015 13:45:22 GMT+0100 (WAT)] INFO Successfully connected to: mongodb://localhost/piper
+[Thu Apr 23 2015 13:45:22 GMT+0100 (WAT)] INFO Updating registry for client mobilizr...
+[Thu Apr 23 2015 13:45:22 GMT+0100 (WAT)] INFO Updating registry for client c2gstudio...
+[Thu Apr 23 2015 13:45:22 GMT+0100 (WAT)] INFO Registered connection for client: mobilizr
+[Thu Apr 23 2015 13:45:22 GMT+0100 (WAT)] INFO Registered connection for client: c2gstudio
+[Thu Apr 23 2015 13:45:22 GMT+0100 (WAT)] INFO CHITCHAT Handler <piper.events.out>: Binding to mobilizr.chitchat...
+[Thu Apr 23 2015 13:45:22 GMT+0100 (WAT)] INFO CHITCHAT Handler <piper.events.out>: Binding to c2gstudio.chitchat...
+[Thu Apr 23 2015 13:45:22 GMT+0100 (WAT)] INFO Piper Controller: MQ Exchange <piper.events.in> connected
+[Thu Apr 23 2015 13:45:25 GMT+0100 (WAT)] INFO C2G STUDIO: Connection established...listening for messages
+[Thu Apr 23 2015 13:45:25 GMT+0100 (WAT)] INFO Welcome to Slack. You are @blonker of c2gstudio
+[Thu Apr 23 2015 13:45:25 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Opened
+[Thu Apr 23 2015 13:45:25 GMT+0100 (WAT)] INFO MOBILIZR: Connection established...listening for messages
+[Thu Apr 23 2015 13:45:25 GMT+0100 (WAT)] INFO Welcome to Slack. You are @blanka of Mobilizr
+[Thu Apr 23 2015 13:45:25 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Opened
+[Thu Apr 23 2015 13:45:36 GMT+0100 (WAT)] INFO Received: message kachi @kachi 1429793136.000056 "yes"
+[Thu Apr 23 2015 13:45:36 GMT+0100 (WAT)] DEBUG IGNORE FLAG: false
+[Thu Apr 23 2015 13:45:36 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Message Received
+[Thu Apr 23 2015 13:45:36 GMT+0100 (WAT)] DEBUG Userkey: api-server:kachi@mobilizr:context
+[Thu Apr 23 2015 13:45:36 GMT+0100 (WAT)] DEBUG State for api-server:kachi@mobilizr:context: RIDES_confirm_cancellation
+[Thu Apr 23 2015 13:45:36 GMT+0100 (WAT)] DEBUG 2015-04-23T12:45:36.000Z
+[Thu Apr 23 2015 13:45:39 GMT+0100 (WAT)] DEBUG IntentBody: {"msg_id":"fd0f48cb-154c-4ef9-ada2-282066728dd3","_text":"yes","outcomes":[{"_text":"yes","intent":"default_accept","entities":{},"confidence":0.981}],"context":{"state":"RIDES_confirm_cancellation","reference_time":"2015-04-23T12:45:36.000Z"}}
+[Thu Apr 23 2015 13:45:39 GMT+0100 (WAT)] DEBUG Intent: default_accept
+[Thu Apr 23 2015 13:45:39 GMT+0100 (WAT)] DEBUG Confidence: 0.981
+[Thu Apr 23 2015 13:45:39 GMT+0100 (WAT)] DEBUG Module for intent default_accept and state RIDES_confirm_cancellation resolved to RIDES
+[Thu Apr 23 2015 13:45:39 GMT+0100 (WAT)] DEBUG Module for intent default_accept and state RIDES_confirm_cancellation resolved to RIDES
+[Thu Apr 23 2015 13:45:39 GMT+0100 (WAT)] INFO RIDES Processor: Connecting to MQ Exchange <piper.events.in>...
+[Thu Apr 23 2015 13:45:39 GMT+0100 (WAT)] DEBUG Entities: {}
+[Thu Apr 23 2015 13:45:39 GMT+0100 (WAT)] DEBUG New context for api-server:kachi@mobilizr:context: {"state":"RIDES"}
+[Thu Apr 23 2015 13:45:39 GMT+0100 (WAT)] DEBUG confirmCancellation: 0 -> true
+[Thu Apr 23 2015 13:45:39 GMT+0100 (WAT)] DEBUG Datakey: confirmCancellation, Validity Check: true
+[Thu Apr 23 2015 13:45:39 GMT+0100 (WAT)] DEBUG Missing Keys for rides_cancel_trip: []
+[Thu Apr 23 2015 13:45:39 GMT+0100 (WAT)] DEBUG Predicate: 0
+[Thu Apr 23 2015 13:45:39 GMT+0100 (WAT)] DEBUG Datahash: {"startLong":"3.5264108","startLat":"6.4564359","errStartLocation":"NO_START_LOCATION","confirmNeed":"true","lvlQueries":{"NO_START_LOCATION":1,"NO_CONFIRM_REQUEST":1,"NO_CONFIRM_CANCEL":1},"handlerTodo":"rides_cancel_trip","intent":"default_accept","confirmCancellation":true}
+[Thu Apr 23 2015 13:45:39 GMT+0100 (WAT)] DEBUG Body: {"msg_id":"fd0f48cb-154c-4ef9-ada2-282066728dd3","_text":"yes","outcomes":[{"_text":"yes","intent":"default_accept","entities":{},"confidence":0.981}],"context":{"state":"RIDES_confirm_cancellation","reference_time":"2015-04-23T12:45:36.000Z"},"user":{"slackId":"U02RN8W1T","name":"kachi","email":"kachi@mobilizr.net","full_name":"","is_admin":true,"avatar":"https://secure.gravatar.com/avatar/441587d4f0a03b4ce3aca5a1af3577c1.jpg?s=48&d=https%3A%2F%2Fslack.global.ssl.fastly.net%2F3654%2Fimg%2Favatars%2Fava_0012-48.png"}}
+[Thu Apr 23 2015 13:45:39 GMT+0100 (WAT)] DEBUG Indata: {"yes_no":"yes"}
+[Thu Apr 23 2015 13:45:39 GMT+0100 (WAT)] DEBUG rides:kachi@mobilizr
+[Thu Apr 23 2015 13:45:39 GMT+0100 (WAT)] DEBUG Datahash.lvlQueries: {"NO_START_LOCATION":1,"NO_CONFIRM_REQUEST":1,"NO_CONFIRM_CANCEL":1}
+[Thu Apr 23 2015 13:45:39 GMT+0100 (WAT)] DEBUG No more missing data: calling handleRequest for rides_cancel_trip
+[Thu Apr 23 2015 13:45:39 GMT+0100 (WAT)] DEBUG CancelRequest: cancelling for ... {"startLong":"3.5264108","startLat":"6.4564359","errStartLocation":"NO_START_LOCATION","confirmNeed":"true","lvlQueries":"{\"NO_START_LOCATION\":1,\"NO_CONFIRM_REQUEST\":1,\"NO_CONFIRM_CANCEL\":1}","handlerTodo":"rides_cancel_trip","intent":"default_accept","confirmCancellation":true}
+[Thu Apr 23 2015 13:45:39 GMT+0100 (WAT)] DEBUG module: RIDES, user: kachi, client: mobilizr, message: Fine, your trip request has been cancelled
+[Thu Apr 23 2015 13:45:39 GMT+0100 (WAT)] INFO @blanka responded with "Fine, your trip request has been cancelled"
+[Thu Apr 23 2015 13:45:39 GMT+0100 (WAT)] DEBUG Message: Fine, your trip request has been cancelled sent to user kachi
+[Thu Apr 23 2015 13:45:39 GMT+0100 (WAT)] INFO RIDES Processor: <piper.events.in> connected
+[Thu Apr 23 2015 13:45:44 GMT+0100 (WAT)] INFO Received: message kachi @kachi 1429793143.000058 "i need a cab"
+[Thu Apr 23 2015 13:45:44 GMT+0100 (WAT)] DEBUG IGNORE FLAG: false
+[Thu Apr 23 2015 13:45:44 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Message Received
+[Thu Apr 23 2015 13:45:44 GMT+0100 (WAT)] DEBUG Userkey: api-server:kachi@mobilizr:context
+[Thu Apr 23 2015 13:45:44 GMT+0100 (WAT)] DEBUG State for api-server:kachi@mobilizr:context: RIDES
+[Thu Apr 23 2015 13:45:44 GMT+0100 (WAT)] DEBUG 2015-04-23T12:45:43.000Z
+[Thu Apr 23 2015 13:45:45 GMT+0100 (WAT)] DEBUG IntentBody: {"msg_id":"463d5d22-a852-4e68-b188-09013ea8e523","_text":"i need a cab","outcomes":[{"_text":"i need a cab","intent":"rides_request_trip","entities":{},"confidence":0.999}],"context":{"state":"RIDES","reference_time":"2015-04-23T12:45:43.000Z"}}
+[Thu Apr 23 2015 13:45:45 GMT+0100 (WAT)] DEBUG Intent: rides_request_trip
+[Thu Apr 23 2015 13:45:45 GMT+0100 (WAT)] DEBUG Confidence: 0.999
+[Thu Apr 23 2015 13:45:45 GMT+0100 (WAT)] DEBUG Entities: {}
+[Thu Apr 23 2015 13:45:45 GMT+0100 (WAT)] DEBUG New context for api-server:kachi@mobilizr:context: {"state":"RIDES"}
+[Thu Apr 23 2015 13:45:45 GMT+0100 (WAT)] DEBUG confirmNeed: 0 -> false
+[Thu Apr 23 2015 13:45:45 GMT+0100 (WAT)] DEBUG confirmNeed: 1 -> true
+[Thu Apr 23 2015 13:45:45 GMT+0100 (WAT)] DEBUG startLong: 0 -> false
+[Thu Apr 23 2015 13:45:45 GMT+0100 (WAT)] DEBUG startLong: 1 -> false
+[Thu Apr 23 2015 13:45:45 GMT+0100 (WAT)] DEBUG startLong: 2 -> false
+[Thu Apr 23 2015 13:45:45 GMT+0100 (WAT)] DEBUG startLong: 3 -> false
+[Thu Apr 23 2015 13:45:45 GMT+0100 (WAT)] DEBUG carrier: 0 -> false
+[Thu Apr 23 2015 13:45:45 GMT+0100 (WAT)] DEBUG carrier: 1 -> false
+[Thu Apr 23 2015 13:45:45 GMT+0100 (WAT)] DEBUG carrier: 2 -> true
+[Thu Apr 23 2015 13:45:45 GMT+0100 (WAT)] DEBUG endAddress: 0 -> false
+[Thu Apr 23 2015 13:45:45 GMT+0100 (WAT)] DEBUG endAddress: 1 -> false
+[Thu Apr 23 2015 13:45:45 GMT+0100 (WAT)] DEBUG endAddress: 2 -> true
+[Thu Apr 23 2015 13:45:45 GMT+0100 (WAT)] DEBUG departureTime: 0 -> false
+[Thu Apr 23 2015 13:45:45 GMT+0100 (WAT)] DEBUG departureTime: 1 -> false
+[Thu Apr 23 2015 13:45:45 GMT+0100 (WAT)] DEBUG departureTime: 2 -> true
+[Thu Apr 23 2015 13:45:45 GMT+0100 (WAT)] DEBUG confirmRequest: 0 -> false
+[Thu Apr 23 2015 13:45:45 GMT+0100 (WAT)] DEBUG confirmRequest: 1 -> false
+[Thu Apr 23 2015 13:45:45 GMT+0100 (WAT)] DEBUG confirmRequest: 2 -> false
+[Thu Apr 23 2015 13:45:45 GMT+0100 (WAT)] DEBUG Datakey: confirmNeed, Validity Check: true
+[Thu Apr 23 2015 13:45:45 GMT+0100 (WAT)] DEBUG Datakey: startLong, Validity Check: false
+[Thu Apr 23 2015 13:45:45 GMT+0100 (WAT)] DEBUG Datakey: carrier, Validity Check: true
+[Thu Apr 23 2015 13:45:45 GMT+0100 (WAT)] DEBUG Datakey: endAddress, Validity Check: true
+[Thu Apr 23 2015 13:45:45 GMT+0100 (WAT)] DEBUG Datakey: departureTime, Validity Check: true
+[Thu Apr 23 2015 13:45:45 GMT+0100 (WAT)] DEBUG Datakey: confirmRequest, Validity Check: false
+[Thu Apr 23 2015 13:45:45 GMT+0100 (WAT)] DEBUG Missing Keys for rides_book_trip: ["startLong","confirmRequest"]
+[Thu Apr 23 2015 13:45:45 GMT+0100 (WAT)] DEBUG Predicate: 2
+[Thu Apr 23 2015 13:45:45 GMT+0100 (WAT)] DEBUG Datahash from unfold: {"handlerTodo":"rides_book_trip","intent":"rides_request_trip","confirmNeed":true}
+[Thu Apr 23 2015 13:45:45 GMT+0100 (WAT)] DEBUG 1. getResponse(): data.lvlQueries[NO_START_LOCATION] -> undefined
+[Thu Apr 23 2015 13:45:45 GMT+0100 (WAT)] DEBUG 2. getResponse(): data.lvlQueries[NO_START_LOCATION] -> 0
+[Thu Apr 23 2015 13:45:45 GMT+0100 (WAT)] DEBUG 3. getResponse(): data.lvlQueries[NO_START_LOCATION] -> 0
+[Thu Apr 23 2015 13:45:46 GMT+0100 (WAT)] DEBUG Predicate: 1
+[Thu Apr 23 2015 13:45:46 GMT+0100 (WAT)] DEBUG Datahash: {"handlerTodo":"rides_book_trip","intent":"rides_request_trip","confirmNeed":true,"errStartLocation":"NO_START_LOCATION","lvlQueries":{"NO_START_LOCATION":1}}
+[Thu Apr 23 2015 13:45:46 GMT+0100 (WAT)] DEBUG Body: {"msg_id":"463d5d22-a852-4e68-b188-09013ea8e523","_text":"i need a cab","outcomes":[{"_text":"i need a cab","intent":"rides_request_trip","entities":{},"confidence":0.999}],"context":{"state":"RIDES","reference_time":"2015-04-23T12:45:43.000Z"},"user":{"slackId":"U02RN8W1T","name":"kachi","email":"kachi@mobilizr.net","full_name":"","is_admin":true,"avatar":"https://secure.gravatar.com/avatar/441587d4f0a03b4ce3aca5a1af3577c1.jpg?s=48&d=https%3A%2F%2Fslack.global.ssl.fastly.net%2F3654%2Fimg%2Favatars%2Fava_0012-48.png"}}
+[Thu Apr 23 2015 13:45:46 GMT+0100 (WAT)] DEBUG Indata: {}
+[Thu Apr 23 2015 13:45:46 GMT+0100 (WAT)] DEBUG rides:kachi@mobilizr
+[Thu Apr 23 2015 13:45:46 GMT+0100 (WAT)] DEBUG Datahash.lvlQueries: {"NO_START_LOCATION":1}
+[Thu Apr 23 2015 13:45:46 GMT+0100 (WAT)] DEBUG module: RIDES, user: kachi, client: mobilizr, message: Ok. Just click here: http://bit.ly/1GlYIXs, and i'll pinpoint your current location
+[Thu Apr 23 2015 13:45:46 GMT+0100 (WAT)] INFO @blanka responded with "Ok. Just click here: http://bit.ly/1GlYIXs, and i'll pinpoint your current location"
+[Thu Apr 23 2015 13:45:46 GMT+0100 (WAT)] DEBUG Message: Ok. Just click here: http://bit.ly/1GlYIXs, and i'll pinpoint your current location sent to user kachi
+[Thu Apr 23 2015 13:45:55 GMT+0100 (WAT)] INFO Geodata: {"ref":"1429793145544","lat":6.5243793,"longt":3.3792057}
+[Thu Apr 23 2015 13:45:55 GMT+0100 (WAT)] DEBUG Retrieved REF: 1429793145544
+[Thu Apr 23 2015 13:45:55 GMT+0100 (WAT)] DEBUG CACHEKEY: utils:1429793145544
+[Thu Apr 23 2015 13:45:55 GMT+0100 (WAT)] INFO UTILS: Connecting to MQ Exchange <piper.events.in>...
+[Thu Apr 23 2015 13:45:55 GMT+0100 (WAT)] INFO UTILS: <piper.events.in> connected
+[Thu Apr 23 2015 13:45:55 GMT+0100 (WAT)] DEBUG Done setting user geodata...
+[Thu Apr 23 2015 13:45:56 GMT+0100 (WAT)] DEBUG module: RIDES, user: kachi, client: mobilizr, message: Thanks, I have your location 
+http://bit.ly/1DmgfbS
+
+[Thu Apr 23 2015 13:45:56 GMT+0100 (WAT)] INFO @blanka responded with "Thanks, I have your location 
+http://bit.ly/1DmgfbS
+"
+[Thu Apr 23 2015 13:45:56 GMT+0100 (WAT)] DEBUG Message: Thanks, I have your location 
+http://bit.ly/1DmgfbS
+ sent to user kachi
+[Thu Apr 23 2015 13:45:56 GMT+0100 (WAT)] DEBUG Entities: {}
+[Thu Apr 23 2015 13:45:56 GMT+0100 (WAT)] DEBUG confirmNeed: 0 -> false
+[Thu Apr 23 2015 13:45:56 GMT+0100 (WAT)] DEBUG confirmNeed: 1 -> true
+[Thu Apr 23 2015 13:45:56 GMT+0100 (WAT)] DEBUG startLong: 0 -> false
+[Thu Apr 23 2015 13:45:56 GMT+0100 (WAT)] DEBUG startLong: 1 -> false
+[Thu Apr 23 2015 13:45:56 GMT+0100 (WAT)] DEBUG startLong: 2 -> true
+[Thu Apr 23 2015 13:45:56 GMT+0100 (WAT)] DEBUG startLong: 3 -> false
+[Thu Apr 23 2015 13:45:56 GMT+0100 (WAT)] DEBUG carrier: 0 -> false
+[Thu Apr 23 2015 13:45:56 GMT+0100 (WAT)] DEBUG carrier: 1 -> false
+[Thu Apr 23 2015 13:45:56 GMT+0100 (WAT)] DEBUG carrier: 2 -> true
+[Thu Apr 23 2015 13:45:56 GMT+0100 (WAT)] DEBUG endAddress: 0 -> false
+[Thu Apr 23 2015 13:45:56 GMT+0100 (WAT)] DEBUG endAddress: 1 -> false
+[Thu Apr 23 2015 13:45:56 GMT+0100 (WAT)] DEBUG endAddress: 2 -> true
+[Thu Apr 23 2015 13:45:56 GMT+0100 (WAT)] DEBUG departureTime: 0 -> false
+[Thu Apr 23 2015 13:45:56 GMT+0100 (WAT)] DEBUG departureTime: 1 -> false
+[Thu Apr 23 2015 13:45:56 GMT+0100 (WAT)] DEBUG departureTime: 2 -> true
+[Thu Apr 23 2015 13:45:56 GMT+0100 (WAT)] DEBUG confirmRequest: 0 -> false
+[Thu Apr 23 2015 13:45:56 GMT+0100 (WAT)] DEBUG confirmRequest: 1 -> false
+[Thu Apr 23 2015 13:45:56 GMT+0100 (WAT)] DEBUG confirmRequest: 2 -> false
+[Thu Apr 23 2015 13:45:56 GMT+0100 (WAT)] DEBUG Datakey: confirmNeed, Validity Check: true
+[Thu Apr 23 2015 13:45:56 GMT+0100 (WAT)] DEBUG Datakey: startLong, Validity Check: true
+[Thu Apr 23 2015 13:45:56 GMT+0100 (WAT)] DEBUG Datakey: carrier, Validity Check: true
+[Thu Apr 23 2015 13:45:56 GMT+0100 (WAT)] DEBUG Datakey: endAddress, Validity Check: true
+[Thu Apr 23 2015 13:45:56 GMT+0100 (WAT)] DEBUG Datakey: departureTime, Validity Check: true
+[Thu Apr 23 2015 13:45:56 GMT+0100 (WAT)] DEBUG Datakey: confirmRequest, Validity Check: false
+[Thu Apr 23 2015 13:45:56 GMT+0100 (WAT)] DEBUG Missing Keys for rides_book_trip: ["confirmRequest"]
+[Thu Apr 23 2015 13:45:56 GMT+0100 (WAT)] DEBUG Predicate: 1
+[Thu Apr 23 2015 13:45:56 GMT+0100 (WAT)] DEBUG Datahash from unfold: {"handlerTodo":"rides_book_trip","intent":"rides_request_trip","confirmNeed":true,"errStartLocation":"NO_START_LOCATION","lvlQueries":{"NO_START_LOCATION":1},"startLat":"6.5243793","startLong":"3.3792057"}
+[Thu Apr 23 2015 13:45:56 GMT+0100 (WAT)] DEBUG 1. getResponse(): data.lvlQueries[NO_CONFIRM_REQUEST] -> undefined
+[Thu Apr 23 2015 13:45:56 GMT+0100 (WAT)] DEBUG 2. getResponse(): data.lvlQueries[NO_CONFIRM_REQUEST] -> 0
+[Thu Apr 23 2015 13:45:56 GMT+0100 (WAT)] DEBUG 3. getResponse(): data.lvlQueries[NO_CONFIRM_REQUEST] -> 0
+[Thu Apr 23 2015 13:45:56 GMT+0100 (WAT)] DEBUG Predicate: 0
+[Thu Apr 23 2015 13:45:56 GMT+0100 (WAT)] DEBUG Datahash: {"handlerTodo":"rides_book_trip","intent":"rides_request_trip","confirmNeed":true,"errStartLocation":"NO_START_LOCATION","lvlQueries":{"NO_START_LOCATION":1,"NO_CONFIRM_REQUEST":1},"startLat":"6.5243793","startLong":"3.3792057"}
+[Thu Apr 23 2015 13:45:56 GMT+0100 (WAT)] DEBUG Body: {"context":{"state":"RIDES"},"user":{"phone":"undefined","first_name":"undefined","slackId":"U02RN8W1T","avatar":"https://secure.gravatar.com/avatar/441587d4f0a03b4ce3aca5a1af3577c1.jpg?s=48&d=https%3A%2F%2Fslack.global.ssl.fastly.net%2F3654%2Fimg%2Favatars%2Fava_0012-48.png","full_name":"","name":"kachi","is_admin":"true","last_name":"undefined","email":"kachi@mobilizr.net"}}
+[Thu Apr 23 2015 13:45:56 GMT+0100 (WAT)] DEBUG Indata: {}
+[Thu Apr 23 2015 13:45:56 GMT+0100 (WAT)] DEBUG rides:kachi@mobilizr
+[Thu Apr 23 2015 13:45:56 GMT+0100 (WAT)] DEBUG Datahash.lvlQueries: {"NO_START_LOCATION":1,"NO_CONFIRM_REQUEST":1}
+[Thu Apr 23 2015 13:45:56 GMT+0100 (WAT)] DEBUG module: RIDES, user: kachi, client: mobilizr, message: Can I go ahead and book your ride?
+[Thu Apr 23 2015 13:45:56 GMT+0100 (WAT)] INFO @blanka responded with "Can I go ahead and book your ride?"
+[Thu Apr 23 2015 13:45:56 GMT+0100 (WAT)] DEBUG Message: Can I go ahead and book your ride? sent to user kachi
+[Thu Apr 23 2015 13:45:57 GMT+0100 (WAT)] DEBUG IGNORE FLAG SET
+[Thu Apr 23 2015 13:45:57 GMT+0100 (WAT)] INFO SlackConnection.onMessage: Original message changed by blanka
+[Thu Apr 23 2015 13:45:57 GMT+0100 (WAT)] DEBUG Message: {"id":1,"type":"message","channel":"D03SDHUUJ"}
+[Thu Apr 23 2015 13:45:57 GMT+0100 (WAT)] DEBUG Message.Message: {"type":"message","user":"U03SDHUTU","text":"Thanks, I have your location \n<http://bit.ly/1DmgfbS>\n","attachments":[{"from_url":"http://bit.ly/1DmgfbS","fallback":"400x400px image","image_url":"http://bit.ly/1DmgfbS","image_width":400,"image_height":400,"image_bytes":27466,"id":1}],"ts":"1429793156.000060"}
+[Thu Apr 23 2015 13:45:57 GMT+0100 (WAT)] INFO Received: message kachi @blanka 1429793156.000062 "Thanks, I have your location 
+<http://bit.ly/1DmgfbS>
+"
+[Thu Apr 23 2015 13:45:57 GMT+0100 (WAT)] DEBUG Message.Subtype: "message_changed"
+[Thu Apr 23 2015 13:47:39 GMT+0100 (WAT)] INFO Piper Controller: Connecting to MQ Exchange <piper.events.in>...
+[Thu Apr 23 2015 13:47:40 GMT+0100 (WAT)] INFO CHITCHAT Handler: Connecting to MQ Exchange <piper.events.out>...
+[Thu Apr 23 2015 13:47:40 GMT+0100 (WAT)] INFO SALES Handler: Connecting to MQ Exchange <piper.events.out>...
+[Thu Apr 23 2015 13:47:40 GMT+0100 (WAT)] INFO UBER Handler: Connecting to MQ Exchange <piper.events.out>...
+[Thu Apr 23 2015 13:47:41 GMT+0100 (WAT)] INFO Piper server listening on port 3000 in development mode
+[Thu Apr 23 2015 13:47:41 GMT+0100 (WAT)] INFO Successfully connected to: mongodb://localhost/piper
+[Thu Apr 23 2015 13:47:41 GMT+0100 (WAT)] INFO Updating registry for client mobilizr...
+[Thu Apr 23 2015 13:47:41 GMT+0100 (WAT)] INFO Updating registry for client c2gstudio...
+[Thu Apr 23 2015 13:47:41 GMT+0100 (WAT)] INFO Registered connection for client: mobilizr
+[Thu Apr 23 2015 13:47:41 GMT+0100 (WAT)] INFO Registered connection for client: c2gstudio
+[Thu Apr 23 2015 13:47:41 GMT+0100 (WAT)] INFO CHITCHAT Handler <piper.events.out>: Binding to mobilizr.chitchat...
+[Thu Apr 23 2015 13:47:41 GMT+0100 (WAT)] INFO CHITCHAT Handler <piper.events.out>: Binding to c2gstudio.chitchat...
+[Thu Apr 23 2015 13:47:41 GMT+0100 (WAT)] INFO Piper Controller: MQ Exchange <piper.events.in> connected
+[Thu Apr 23 2015 13:47:44 GMT+0100 (WAT)] INFO C2G STUDIO: Connection established...listening for messages
+[Thu Apr 23 2015 13:47:44 GMT+0100 (WAT)] INFO Welcome to Slack. You are @blonker of c2gstudio
+[Thu Apr 23 2015 13:47:44 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Opened
+[Thu Apr 23 2015 13:47:44 GMT+0100 (WAT)] INFO MOBILIZR: Connection established...listening for messages
+[Thu Apr 23 2015 13:47:44 GMT+0100 (WAT)] INFO Welcome to Slack. You are @blanka of Mobilizr
+[Thu Apr 23 2015 13:47:44 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Opened
+[Thu Apr 23 2015 13:47:58 GMT+0100 (WAT)] INFO Piper Controller: Connecting to MQ Exchange <piper.events.in>...
+[Thu Apr 23 2015 13:47:58 GMT+0100 (WAT)] INFO CHITCHAT Handler: Connecting to MQ Exchange <piper.events.out>...
+[Thu Apr 23 2015 13:47:58 GMT+0100 (WAT)] INFO SALES Handler: Connecting to MQ Exchange <piper.events.out>...
+[Thu Apr 23 2015 13:47:58 GMT+0100 (WAT)] INFO UBER Handler: Connecting to MQ Exchange <piper.events.out>...
+[Thu Apr 23 2015 13:47:59 GMT+0100 (WAT)] INFO Piper server listening on port 3000 in development mode
+[Thu Apr 23 2015 13:47:59 GMT+0100 (WAT)] INFO Successfully connected to: mongodb://localhost/piper
+[Thu Apr 23 2015 13:47:59 GMT+0100 (WAT)] INFO Updating registry for client mobilizr...
+[Thu Apr 23 2015 13:47:59 GMT+0100 (WAT)] INFO Updating registry for client c2gstudio...
+[Thu Apr 23 2015 13:47:59 GMT+0100 (WAT)] INFO Registered connection for client: mobilizr
+[Thu Apr 23 2015 13:47:59 GMT+0100 (WAT)] INFO Registered connection for client: c2gstudio
+[Thu Apr 23 2015 13:47:59 GMT+0100 (WAT)] INFO CHITCHAT Handler <piper.events.out>: Binding to mobilizr.chitchat...
+[Thu Apr 23 2015 13:47:59 GMT+0100 (WAT)] INFO CHITCHAT Handler <piper.events.out>: Binding to c2gstudio.chitchat...
+[Thu Apr 23 2015 13:47:59 GMT+0100 (WAT)] INFO Piper Controller: MQ Exchange <piper.events.in> connected
+[Thu Apr 23 2015 13:48:02 GMT+0100 (WAT)] INFO C2G STUDIO: Connection established...listening for messages
+[Thu Apr 23 2015 13:48:02 GMT+0100 (WAT)] INFO Welcome to Slack. You are @blonker of c2gstudio
+[Thu Apr 23 2015 13:48:02 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Opened
+[Thu Apr 23 2015 13:48:02 GMT+0100 (WAT)] INFO MOBILIZR: Connection established...listening for messages
+[Thu Apr 23 2015 13:48:02 GMT+0100 (WAT)] INFO Welcome to Slack. You are @blanka of Mobilizr
+[Thu Apr 23 2015 13:48:02 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Opened
+[Thu Apr 23 2015 13:48:26 GMT+0100 (WAT)] INFO Piper Controller: Connecting to MQ Exchange <piper.events.in>...
+[Thu Apr 23 2015 13:48:27 GMT+0100 (WAT)] INFO CHITCHAT Handler: Connecting to MQ Exchange <piper.events.out>...
+[Thu Apr 23 2015 13:48:27 GMT+0100 (WAT)] INFO SALES Handler: Connecting to MQ Exchange <piper.events.out>...
+[Thu Apr 23 2015 13:48:27 GMT+0100 (WAT)] INFO UBER Handler: Connecting to MQ Exchange <piper.events.out>...
+[Thu Apr 23 2015 13:48:27 GMT+0100 (WAT)] INFO Piper server listening on port 3000 in development mode
+[Thu Apr 23 2015 13:48:27 GMT+0100 (WAT)] INFO Successfully connected to: mongodb://localhost/piper
+[Thu Apr 23 2015 13:48:27 GMT+0100 (WAT)] INFO Updating registry for client mobilizr...
+[Thu Apr 23 2015 13:48:27 GMT+0100 (WAT)] INFO Updating registry for client c2gstudio...
+[Thu Apr 23 2015 13:48:27 GMT+0100 (WAT)] INFO Registered connection for client: mobilizr
+[Thu Apr 23 2015 13:48:27 GMT+0100 (WAT)] INFO Registered connection for client: c2gstudio
+[Thu Apr 23 2015 13:48:27 GMT+0100 (WAT)] INFO CHITCHAT Handler <piper.events.out>: Binding to mobilizr.chitchat...
+[Thu Apr 23 2015 13:48:27 GMT+0100 (WAT)] INFO CHITCHAT Handler <piper.events.out>: Binding to c2gstudio.chitchat...
+[Thu Apr 23 2015 13:48:27 GMT+0100 (WAT)] INFO Piper Controller: MQ Exchange <piper.events.in> connected
+[Thu Apr 23 2015 13:48:30 GMT+0100 (WAT)] INFO C2G STUDIO: Connection established...listening for messages
+[Thu Apr 23 2015 13:48:30 GMT+0100 (WAT)] INFO Welcome to Slack. You are @blonker of c2gstudio
+[Thu Apr 23 2015 13:48:30 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Opened
+[Thu Apr 23 2015 13:48:30 GMT+0100 (WAT)] INFO MOBILIZR: Connection established...listening for messages
+[Thu Apr 23 2015 13:48:30 GMT+0100 (WAT)] INFO Welcome to Slack. You are @blanka of Mobilizr
+[Thu Apr 23 2015 13:48:30 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Opened
+[Thu Apr 23 2015 13:48:33 GMT+0100 (WAT)] INFO Piper Controller: Connecting to MQ Exchange <piper.events.in>...
+[Thu Apr 23 2015 13:48:34 GMT+0100 (WAT)] INFO CHITCHAT Handler: Connecting to MQ Exchange <piper.events.out>...
+[Thu Apr 23 2015 13:48:34 GMT+0100 (WAT)] INFO SALES Handler: Connecting to MQ Exchange <piper.events.out>...
+[Thu Apr 23 2015 13:48:34 GMT+0100 (WAT)] INFO UBER Handler: Connecting to MQ Exchange <piper.events.out>...
+[Thu Apr 23 2015 13:48:35 GMT+0100 (WAT)] INFO Piper server listening on port 3000 in development mode
+[Thu Apr 23 2015 13:48:35 GMT+0100 (WAT)] INFO Successfully connected to: mongodb://localhost/piper
+[Thu Apr 23 2015 13:48:35 GMT+0100 (WAT)] INFO Updating registry for client mobilizr...
+[Thu Apr 23 2015 13:48:35 GMT+0100 (WAT)] INFO Updating registry for client c2gstudio...
+[Thu Apr 23 2015 13:48:35 GMT+0100 (WAT)] INFO Registered connection for client: mobilizr
+[Thu Apr 23 2015 13:48:35 GMT+0100 (WAT)] INFO Registered connection for client: c2gstudio
+[Thu Apr 23 2015 13:48:35 GMT+0100 (WAT)] INFO CHITCHAT Handler <piper.events.out>: Binding to mobilizr.chitchat...
+[Thu Apr 23 2015 13:48:35 GMT+0100 (WAT)] INFO CHITCHAT Handler <piper.events.out>: Binding to c2gstudio.chitchat...
+[Thu Apr 23 2015 13:48:35 GMT+0100 (WAT)] INFO Piper Controller: MQ Exchange <piper.events.in> connected
+[Thu Apr 23 2015 13:48:37 GMT+0100 (WAT)] INFO C2G STUDIO: Connection established...listening for messages
+[Thu Apr 23 2015 13:48:37 GMT+0100 (WAT)] INFO Welcome to Slack. You are @blonker of c2gstudio
+[Thu Apr 23 2015 13:48:37 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Opened
+[Thu Apr 23 2015 13:48:37 GMT+0100 (WAT)] INFO MOBILIZR: Connection established...listening for messages
+[Thu Apr 23 2015 13:48:37 GMT+0100 (WAT)] INFO Welcome to Slack. You are @blanka of Mobilizr
+[Thu Apr 23 2015 13:48:37 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Opened
+[Thu Apr 23 2015 13:48:45 GMT+0100 (WAT)] INFO Received: message kachi @kachi 1429793325.000063 "cancel"
+[Thu Apr 23 2015 13:48:45 GMT+0100 (WAT)] DEBUG IGNORE FLAG: false
+[Thu Apr 23 2015 13:48:45 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Message Received
+[Thu Apr 23 2015 13:48:45 GMT+0100 (WAT)] DEBUG Userkey: api-server:kachi@mobilizr:context
+[Thu Apr 23 2015 13:48:45 GMT+0100 (WAT)] DEBUG State for api-server:kachi@mobilizr:context: RIDES_confirm_request
+[Thu Apr 23 2015 13:48:45 GMT+0100 (WAT)] DEBUG 2015-04-23T12:48:45.000Z
+[Thu Apr 23 2015 13:48:46 GMT+0100 (WAT)] DEBUG IntentBody: {"msg_id":"88c8afba-8a59-4421-9f53-6032c10434f5","_text":"cancel","outcomes":[{"_text":"cancel","intent":"rides_cancel_trip","entities":{},"confidence":0.932}],"context":{"state":"RIDES_confirm_request","reference_time":"2015-04-23T12:48:45.000Z"}}
+[Thu Apr 23 2015 13:48:46 GMT+0100 (WAT)] DEBUG Intent: rides_cancel_trip
+[Thu Apr 23 2015 13:48:46 GMT+0100 (WAT)] DEBUG Confidence: 0.932
+[Thu Apr 23 2015 13:48:46 GMT+0100 (WAT)] INFO RIDES Processor: Connecting to MQ Exchange <piper.events.in>...
+[Thu Apr 23 2015 13:48:46 GMT+0100 (WAT)] DEBUG Entities: {}
+[Thu Apr 23 2015 13:48:46 GMT+0100 (WAT)] DEBUG New context for api-server:kachi@mobilizr:context: {"state":"RIDES"}
+[Thu Apr 23 2015 13:48:46 GMT+0100 (WAT)] DEBUG confirmCancellation: 0 -> false
+[Thu Apr 23 2015 13:48:46 GMT+0100 (WAT)] DEBUG Datakey: confirmCancellation, Validity Check: false
+[Thu Apr 23 2015 13:48:46 GMT+0100 (WAT)] DEBUG Missing Keys for rides_cancel_trip: ["confirmCancellation"]
+[Thu Apr 23 2015 13:48:46 GMT+0100 (WAT)] DEBUG Predicate: 1
+[Thu Apr 23 2015 13:48:46 GMT+0100 (WAT)] DEBUG Datahash from unfold: {"handlerTodo":"rides_cancel_trip","intent":"rides_cancel_trip","confirmNeed":"true","errStartLocation":"NO_START_LOCATION","lvlQueries":{"NO_START_LOCATION":1,"NO_CONFIRM_REQUEST":1},"startLat":"6.5243793","startLong":"3.3792057"}
+[Thu Apr 23 2015 13:48:46 GMT+0100 (WAT)] DEBUG 1. getResponse(): data.lvlQueries[NO_CONFIRM_CANCEL] -> undefined
+[Thu Apr 23 2015 13:48:46 GMT+0100 (WAT)] DEBUG 2. getResponse(): data.lvlQueries[NO_CONFIRM_CANCEL] -> 0
+[Thu Apr 23 2015 13:48:46 GMT+0100 (WAT)] DEBUG 3. getResponse(): data.lvlQueries[NO_CONFIRM_CANCEL] -> 0
+[Thu Apr 23 2015 13:48:46 GMT+0100 (WAT)] DEBUG Predicate: 0
+[Thu Apr 23 2015 13:48:46 GMT+0100 (WAT)] DEBUG Datahash: {"handlerTodo":"rides_cancel_trip","intent":"rides_cancel_trip","confirmNeed":"true","errStartLocation":"NO_START_LOCATION","lvlQueries":{"NO_START_LOCATION":1,"NO_CONFIRM_REQUEST":1,"NO_CONFIRM_CANCEL":1},"startLat":"6.5243793","startLong":"3.3792057"}
+[Thu Apr 23 2015 13:48:46 GMT+0100 (WAT)] DEBUG Body: {"msg_id":"88c8afba-8a59-4421-9f53-6032c10434f5","_text":"cancel","outcomes":[{"_text":"cancel","intent":"rides_cancel_trip","entities":{},"confidence":0.932}],"context":{"state":"RIDES_confirm_request","reference_time":"2015-04-23T12:48:45.000Z"},"user":{"slackId":"U02RN8W1T","name":"kachi","email":"kachi@mobilizr.net","full_name":"","is_admin":true,"avatar":"https://secure.gravatar.com/avatar/441587d4f0a03b4ce3aca5a1af3577c1.jpg?s=48&d=https%3A%2F%2Fslack.global.ssl.fastly.net%2F3654%2Fimg%2Favatars%2Fava_0012-48.png"}}
+[Thu Apr 23 2015 13:48:46 GMT+0100 (WAT)] DEBUG Indata: {}
+[Thu Apr 23 2015 13:48:46 GMT+0100 (WAT)] DEBUG rides:kachi@mobilizr
+[Thu Apr 23 2015 13:48:46 GMT+0100 (WAT)] DEBUG Datahash.lvlQueries: {"NO_START_LOCATION":1,"NO_CONFIRM_REQUEST":1,"NO_CONFIRM_CANCEL":1}
+[Thu Apr 23 2015 13:48:46 GMT+0100 (WAT)] DEBUG module: RIDES, user: kachi, client: mobilizr, message: You want to cancel the trip request?
+[Thu Apr 23 2015 13:48:46 GMT+0100 (WAT)] INFO @blanka responded with "You want to cancel the trip request?"
+[Thu Apr 23 2015 13:48:46 GMT+0100 (WAT)] DEBUG Message: You want to cancel the trip request? sent to user kachi
+[Thu Apr 23 2015 13:48:46 GMT+0100 (WAT)] INFO RIDES Processor: <piper.events.in> connected
+[Thu Apr 23 2015 13:48:49 GMT+0100 (WAT)] INFO Received: message kachi @kachi 1429793329.000065 "yea"
+[Thu Apr 23 2015 13:48:49 GMT+0100 (WAT)] DEBUG IGNORE FLAG: false
+[Thu Apr 23 2015 13:48:49 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Message Received
+[Thu Apr 23 2015 13:48:49 GMT+0100 (WAT)] DEBUG Userkey: api-server:kachi@mobilizr:context
+[Thu Apr 23 2015 13:48:49 GMT+0100 (WAT)] DEBUG State for api-server:kachi@mobilizr:context: RIDES_confirm_cancellation
+[Thu Apr 23 2015 13:48:49 GMT+0100 (WAT)] DEBUG 2015-04-23T12:48:49.000Z
+[Thu Apr 23 2015 13:48:50 GMT+0100 (WAT)] DEBUG IntentBody: {"msg_id":"c6941a34-1a35-48b0-9d4f-5aea4576eb3f","_text":"yea","outcomes":[{"_text":"yea","intent":"default_accept","entities":{},"confidence":0.973}],"context":{"state":"RIDES_confirm_cancellation","reference_time":"2015-04-23T12:48:49.000Z"}}
+[Thu Apr 23 2015 13:48:50 GMT+0100 (WAT)] DEBUG Intent: default_accept
+[Thu Apr 23 2015 13:48:50 GMT+0100 (WAT)] DEBUG Confidence: 0.973
+[Thu Apr 23 2015 13:48:50 GMT+0100 (WAT)] DEBUG Module for intent default_accept and state RIDES_confirm_cancellation resolved to RIDES
+[Thu Apr 23 2015 13:48:50 GMT+0100 (WAT)] DEBUG Module for intent default_accept and state RIDES_confirm_cancellation resolved to RIDES
+[Thu Apr 23 2015 13:48:50 GMT+0100 (WAT)] DEBUG Entities: {}
+[Thu Apr 23 2015 13:48:50 GMT+0100 (WAT)] DEBUG New context for api-server:kachi@mobilizr:context: {"state":"RIDES"}
+[Thu Apr 23 2015 13:48:50 GMT+0100 (WAT)] DEBUG confirmCancellation: 0 -> true
+[Thu Apr 23 2015 13:48:50 GMT+0100 (WAT)] DEBUG Datakey: confirmCancellation, Validity Check: true
+[Thu Apr 23 2015 13:48:50 GMT+0100 (WAT)] DEBUG Missing Keys for rides_cancel_trip: []
+[Thu Apr 23 2015 13:48:50 GMT+0100 (WAT)] DEBUG Predicate: 0
+[Thu Apr 23 2015 13:48:50 GMT+0100 (WAT)] DEBUG Datahash: {"startLong":"3.3792057","startLat":"6.5243793","errStartLocation":"NO_START_LOCATION","confirmNeed":"true","lvlQueries":{"NO_START_LOCATION":1,"NO_CONFIRM_REQUEST":1,"NO_CONFIRM_CANCEL":1},"handlerTodo":"rides_cancel_trip","intent":"default_accept","confirmCancellation":true}
+[Thu Apr 23 2015 13:48:50 GMT+0100 (WAT)] DEBUG Body: {"msg_id":"c6941a34-1a35-48b0-9d4f-5aea4576eb3f","_text":"yea","outcomes":[{"_text":"yea","intent":"default_accept","entities":{},"confidence":0.973}],"context":{"state":"RIDES_confirm_cancellation","reference_time":"2015-04-23T12:48:49.000Z"},"user":{"slackId":"U02RN8W1T","name":"kachi","email":"kachi@mobilizr.net","full_name":"","is_admin":true,"avatar":"https://secure.gravatar.com/avatar/441587d4f0a03b4ce3aca5a1af3577c1.jpg?s=48&d=https%3A%2F%2Fslack.global.ssl.fastly.net%2F3654%2Fimg%2Favatars%2Fava_0012-48.png"}}
+[Thu Apr 23 2015 13:48:50 GMT+0100 (WAT)] DEBUG Indata: {"yes_no":"yes"}
+[Thu Apr 23 2015 13:48:50 GMT+0100 (WAT)] DEBUG rides:kachi@mobilizr
+[Thu Apr 23 2015 13:48:50 GMT+0100 (WAT)] DEBUG Datahash.lvlQueries: {"NO_START_LOCATION":1,"NO_CONFIRM_REQUEST":1,"NO_CONFIRM_CANCEL":1}
+[Thu Apr 23 2015 13:48:50 GMT+0100 (WAT)] DEBUG No more missing data: calling handleRequest for rides_cancel_trip
+[Thu Apr 23 2015 13:48:50 GMT+0100 (WAT)] DEBUG CancelRequest: cancelling for ... {"startLong":"3.3792057","startLat":"6.5243793","errStartLocation":"NO_START_LOCATION","confirmNeed":"true","lvlQueries":"{\"NO_START_LOCATION\":1,\"NO_CONFIRM_REQUEST\":1,\"NO_CONFIRM_CANCEL\":1}","handlerTodo":"rides_cancel_trip","intent":"default_accept","confirmCancellation":true}
+[Thu Apr 23 2015 13:48:50 GMT+0100 (WAT)] DEBUG module: RIDES, user: kachi, client: mobilizr, message: Fine, your trip request has been cancelled
+[Thu Apr 23 2015 13:48:50 GMT+0100 (WAT)] INFO @blanka responded with "Fine, your trip request has been cancelled"
+[Thu Apr 23 2015 13:48:50 GMT+0100 (WAT)] DEBUG Message: Fine, your trip request has been cancelled sent to user kachi
+[Thu Apr 23 2015 13:48:53 GMT+0100 (WAT)] INFO Received: message kachi @kachi 1429793333.000067 "i need a cab"
+[Thu Apr 23 2015 13:48:53 GMT+0100 (WAT)] DEBUG IGNORE FLAG: false
+[Thu Apr 23 2015 13:48:53 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Message Received
+[Thu Apr 23 2015 13:48:53 GMT+0100 (WAT)] DEBUG Userkey: api-server:kachi@mobilizr:context
+[Thu Apr 23 2015 13:48:53 GMT+0100 (WAT)] DEBUG State for api-server:kachi@mobilizr:context: RIDES
+[Thu Apr 23 2015 13:48:53 GMT+0100 (WAT)] DEBUG 2015-04-23T12:48:53.000Z
+[Thu Apr 23 2015 13:48:54 GMT+0100 (WAT)] DEBUG IntentBody: {"msg_id":"e2ed9423-7826-407b-a523-ecde3424fb73","_text":"i need a cab","outcomes":[{"_text":"i need a cab","intent":"rides_request_trip","entities":{},"confidence":0.999}],"context":{"state":"RIDES","reference_time":"2015-04-23T12:48:53.000Z"}}
+[Thu Apr 23 2015 13:48:54 GMT+0100 (WAT)] DEBUG Intent: rides_request_trip
+[Thu Apr 23 2015 13:48:54 GMT+0100 (WAT)] DEBUG Confidence: 0.999
+[Thu Apr 23 2015 13:48:54 GMT+0100 (WAT)] DEBUG Entities: {}
+[Thu Apr 23 2015 13:48:54 GMT+0100 (WAT)] DEBUG New context for api-server:kachi@mobilizr:context: {"state":"RIDES"}
+[Thu Apr 23 2015 13:48:54 GMT+0100 (WAT)] DEBUG confirmNeed: 0 -> false
+[Thu Apr 23 2015 13:48:54 GMT+0100 (WAT)] DEBUG confirmNeed: 1 -> true
+[Thu Apr 23 2015 13:48:54 GMT+0100 (WAT)] DEBUG startLong: 0 -> false
+[Thu Apr 23 2015 13:48:54 GMT+0100 (WAT)] DEBUG startLong: 1 -> false
+[Thu Apr 23 2015 13:48:54 GMT+0100 (WAT)] DEBUG startLong: 2 -> false
+[Thu Apr 23 2015 13:48:54 GMT+0100 (WAT)] DEBUG startLong: 3 -> false
+[Thu Apr 23 2015 13:48:54 GMT+0100 (WAT)] DEBUG carrier: 0 -> false
+[Thu Apr 23 2015 13:48:54 GMT+0100 (WAT)] DEBUG carrier: 1 -> false
+[Thu Apr 23 2015 13:48:54 GMT+0100 (WAT)] DEBUG carrier: 2 -> true
+[Thu Apr 23 2015 13:48:54 GMT+0100 (WAT)] DEBUG endAddress: 0 -> false
+[Thu Apr 23 2015 13:48:54 GMT+0100 (WAT)] DEBUG endAddress: 1 -> false
+[Thu Apr 23 2015 13:48:54 GMT+0100 (WAT)] DEBUG endAddress: 2 -> true
+[Thu Apr 23 2015 13:48:54 GMT+0100 (WAT)] DEBUG departureTime: 0 -> false
+[Thu Apr 23 2015 13:48:54 GMT+0100 (WAT)] DEBUG departureTime: 1 -> false
+[Thu Apr 23 2015 13:48:54 GMT+0100 (WAT)] DEBUG departureTime: 2 -> true
+[Thu Apr 23 2015 13:48:54 GMT+0100 (WAT)] DEBUG confirmRequest: 0 -> false
+[Thu Apr 23 2015 13:48:54 GMT+0100 (WAT)] DEBUG confirmRequest: 1 -> false
+[Thu Apr 23 2015 13:48:54 GMT+0100 (WAT)] DEBUG confirmRequest: 2 -> false
+[Thu Apr 23 2015 13:48:54 GMT+0100 (WAT)] DEBUG Datakey: confirmNeed, Validity Check: true
+[Thu Apr 23 2015 13:48:54 GMT+0100 (WAT)] DEBUG Datakey: startLong, Validity Check: false
+[Thu Apr 23 2015 13:48:54 GMT+0100 (WAT)] DEBUG Datakey: carrier, Validity Check: true
+[Thu Apr 23 2015 13:48:54 GMT+0100 (WAT)] DEBUG Datakey: endAddress, Validity Check: true
+[Thu Apr 23 2015 13:48:54 GMT+0100 (WAT)] DEBUG Datakey: departureTime, Validity Check: true
+[Thu Apr 23 2015 13:48:54 GMT+0100 (WAT)] DEBUG Datakey: confirmRequest, Validity Check: false
+[Thu Apr 23 2015 13:48:54 GMT+0100 (WAT)] DEBUG Missing Keys for rides_book_trip: ["startLong","confirmRequest"]
+[Thu Apr 23 2015 13:48:54 GMT+0100 (WAT)] DEBUG Predicate: 2
+[Thu Apr 23 2015 13:48:54 GMT+0100 (WAT)] DEBUG Datahash from unfold: {"handlerTodo":"rides_book_trip","intent":"rides_request_trip","confirmNeed":true}
+[Thu Apr 23 2015 13:48:54 GMT+0100 (WAT)] DEBUG 1. getResponse(): data.lvlQueries[NO_START_LOCATION] -> undefined
+[Thu Apr 23 2015 13:48:54 GMT+0100 (WAT)] DEBUG 2. getResponse(): data.lvlQueries[NO_START_LOCATION] -> 0
+[Thu Apr 23 2015 13:48:54 GMT+0100 (WAT)] DEBUG 3. getResponse(): data.lvlQueries[NO_START_LOCATION] -> 0
+[Thu Apr 23 2015 13:48:55 GMT+0100 (WAT)] DEBUG Predicate: 1
+[Thu Apr 23 2015 13:48:55 GMT+0100 (WAT)] DEBUG Datahash: {"handlerTodo":"rides_book_trip","intent":"rides_request_trip","confirmNeed":true,"errStartLocation":"NO_START_LOCATION","lvlQueries":{"NO_START_LOCATION":1}}
+[Thu Apr 23 2015 13:48:55 GMT+0100 (WAT)] DEBUG Body: {"msg_id":"e2ed9423-7826-407b-a523-ecde3424fb73","_text":"i need a cab","outcomes":[{"_text":"i need a cab","intent":"rides_request_trip","entities":{},"confidence":0.999}],"context":{"state":"RIDES","reference_time":"2015-04-23T12:48:53.000Z"},"user":{"slackId":"U02RN8W1T","name":"kachi","email":"kachi@mobilizr.net","full_name":"","is_admin":true,"avatar":"https://secure.gravatar.com/avatar/441587d4f0a03b4ce3aca5a1af3577c1.jpg?s=48&d=https%3A%2F%2Fslack.global.ssl.fastly.net%2F3654%2Fimg%2Favatars%2Fava_0012-48.png"}}
+[Thu Apr 23 2015 13:48:55 GMT+0100 (WAT)] DEBUG Indata: {}
+[Thu Apr 23 2015 13:48:55 GMT+0100 (WAT)] DEBUG rides:kachi@mobilizr
+[Thu Apr 23 2015 13:48:55 GMT+0100 (WAT)] DEBUG Datahash.lvlQueries: {"NO_START_LOCATION":1}
+[Thu Apr 23 2015 13:48:55 GMT+0100 (WAT)] DEBUG module: RIDES, user: kachi, client: mobilizr, message: Ok. Just click here: http://bit.ly/1GlZofj, and i'll pinpoint your current location
+[Thu Apr 23 2015 13:48:55 GMT+0100 (WAT)] INFO @blanka responded with "Ok. Just click here: http://bit.ly/1GlZofj, and i'll pinpoint your current location"
+[Thu Apr 23 2015 13:48:55 GMT+0100 (WAT)] DEBUG Message: Ok. Just click here: http://bit.ly/1GlZofj, and i'll pinpoint your current location sent to user kachi
+[Thu Apr 23 2015 13:49:05 GMT+0100 (WAT)] INFO Geodata: {"ref":"1429793334460","lat":6.456463599999999,"longt":3.5263418}
+[Thu Apr 23 2015 13:49:05 GMT+0100 (WAT)] DEBUG Retrieved REF: 1429793334460
+[Thu Apr 23 2015 13:49:05 GMT+0100 (WAT)] DEBUG CACHEKEY: utils:1429793334460
+[Thu Apr 23 2015 13:49:05 GMT+0100 (WAT)] INFO UTILS: Connecting to MQ Exchange <piper.events.in>...
+[Thu Apr 23 2015 13:49:05 GMT+0100 (WAT)] INFO UTILS: <piper.events.in> connected
+[Thu Apr 23 2015 13:49:05 GMT+0100 (WAT)] DEBUG Done setting user geodata...
+[Thu Apr 23 2015 13:49:06 GMT+0100 (WAT)] DEBUG module: RIDES, user: kachi, client: mobilizr, message: Thanks, I have your location 
+http://bit.ly/1DmgWlt
+[Thu Apr 23 2015 13:49:06 GMT+0100 (WAT)] INFO @blanka responded with "Thanks, I have your location 
+http://bit.ly/1DmgWlt"
+[Thu Apr 23 2015 13:49:06 GMT+0100 (WAT)] DEBUG Message: Thanks, I have your location 
+http://bit.ly/1DmgWlt sent to user kachi
+[Thu Apr 23 2015 13:49:06 GMT+0100 (WAT)] DEBUG Entities: {}
+[Thu Apr 23 2015 13:49:06 GMT+0100 (WAT)] DEBUG confirmNeed: 0 -> false
+[Thu Apr 23 2015 13:49:06 GMT+0100 (WAT)] DEBUG confirmNeed: 1 -> true
+[Thu Apr 23 2015 13:49:06 GMT+0100 (WAT)] DEBUG startLong: 0 -> false
+[Thu Apr 23 2015 13:49:06 GMT+0100 (WAT)] DEBUG startLong: 1 -> false
+[Thu Apr 23 2015 13:49:06 GMT+0100 (WAT)] DEBUG startLong: 2 -> true
+[Thu Apr 23 2015 13:49:06 GMT+0100 (WAT)] DEBUG startLong: 3 -> false
+[Thu Apr 23 2015 13:49:06 GMT+0100 (WAT)] DEBUG carrier: 0 -> false
+[Thu Apr 23 2015 13:49:06 GMT+0100 (WAT)] DEBUG carrier: 1 -> false
+[Thu Apr 23 2015 13:49:06 GMT+0100 (WAT)] DEBUG carrier: 2 -> true
+[Thu Apr 23 2015 13:49:06 GMT+0100 (WAT)] DEBUG endAddress: 0 -> false
+[Thu Apr 23 2015 13:49:06 GMT+0100 (WAT)] DEBUG endAddress: 1 -> false
+[Thu Apr 23 2015 13:49:06 GMT+0100 (WAT)] DEBUG endAddress: 2 -> true
+[Thu Apr 23 2015 13:49:06 GMT+0100 (WAT)] DEBUG departureTime: 0 -> false
+[Thu Apr 23 2015 13:49:06 GMT+0100 (WAT)] DEBUG departureTime: 1 -> false
+[Thu Apr 23 2015 13:49:06 GMT+0100 (WAT)] DEBUG departureTime: 2 -> true
+[Thu Apr 23 2015 13:49:06 GMT+0100 (WAT)] DEBUG confirmRequest: 0 -> false
+[Thu Apr 23 2015 13:49:06 GMT+0100 (WAT)] DEBUG confirmRequest: 1 -> false
+[Thu Apr 23 2015 13:49:06 GMT+0100 (WAT)] DEBUG confirmRequest: 2 -> false
+[Thu Apr 23 2015 13:49:06 GMT+0100 (WAT)] DEBUG Datakey: confirmNeed, Validity Check: true
+[Thu Apr 23 2015 13:49:06 GMT+0100 (WAT)] DEBUG Datakey: startLong, Validity Check: true
+[Thu Apr 23 2015 13:49:06 GMT+0100 (WAT)] DEBUG Datakey: carrier, Validity Check: true
+[Thu Apr 23 2015 13:49:06 GMT+0100 (WAT)] DEBUG Datakey: endAddress, Validity Check: true
+[Thu Apr 23 2015 13:49:06 GMT+0100 (WAT)] DEBUG Datakey: departureTime, Validity Check: true
+[Thu Apr 23 2015 13:49:06 GMT+0100 (WAT)] DEBUG Datakey: confirmRequest, Validity Check: false
+[Thu Apr 23 2015 13:49:06 GMT+0100 (WAT)] DEBUG Missing Keys for rides_book_trip: ["confirmRequest"]
+[Thu Apr 23 2015 13:49:06 GMT+0100 (WAT)] DEBUG Predicate: 1
+[Thu Apr 23 2015 13:49:06 GMT+0100 (WAT)] DEBUG Datahash from unfold: {"handlerTodo":"rides_book_trip","intent":"rides_request_trip","confirmNeed":true,"errStartLocation":"NO_START_LOCATION","lvlQueries":{"NO_START_LOCATION":1},"startLat":"6.456463599999999","startLong":"3.5263418"}
+[Thu Apr 23 2015 13:49:06 GMT+0100 (WAT)] DEBUG 1. getResponse(): data.lvlQueries[NO_CONFIRM_REQUEST] -> undefined
+[Thu Apr 23 2015 13:49:06 GMT+0100 (WAT)] DEBUG 2. getResponse(): data.lvlQueries[NO_CONFIRM_REQUEST] -> 0
+[Thu Apr 23 2015 13:49:06 GMT+0100 (WAT)] DEBUG 3. getResponse(): data.lvlQueries[NO_CONFIRM_REQUEST] -> 0
+[Thu Apr 23 2015 13:49:06 GMT+0100 (WAT)] DEBUG Predicate: 0
+[Thu Apr 23 2015 13:49:06 GMT+0100 (WAT)] DEBUG Datahash: {"handlerTodo":"rides_book_trip","intent":"rides_request_trip","confirmNeed":true,"errStartLocation":"NO_START_LOCATION","lvlQueries":{"NO_START_LOCATION":1,"NO_CONFIRM_REQUEST":1},"startLat":"6.456463599999999","startLong":"3.5263418"}
+[Thu Apr 23 2015 13:49:06 GMT+0100 (WAT)] DEBUG Body: {"context":{"state":"RIDES"},"user":{"phone":"undefined","first_name":"undefined","slackId":"U02RN8W1T","avatar":"https://secure.gravatar.com/avatar/441587d4f0a03b4ce3aca5a1af3577c1.jpg?s=48&d=https%3A%2F%2Fslack.global.ssl.fastly.net%2F3654%2Fimg%2Favatars%2Fava_0012-48.png","full_name":"","name":"kachi","is_admin":"true","last_name":"undefined","email":"kachi@mobilizr.net"}}
+[Thu Apr 23 2015 13:49:06 GMT+0100 (WAT)] DEBUG Indata: {}
+[Thu Apr 23 2015 13:49:06 GMT+0100 (WAT)] DEBUG rides:kachi@mobilizr
+[Thu Apr 23 2015 13:49:06 GMT+0100 (WAT)] DEBUG Datahash.lvlQueries: {"NO_START_LOCATION":1,"NO_CONFIRM_REQUEST":1}
+[Thu Apr 23 2015 13:49:06 GMT+0100 (WAT)] DEBUG module: RIDES, user: kachi, client: mobilizr, message: Can I go ahead and book your ride?
+[Thu Apr 23 2015 13:49:06 GMT+0100 (WAT)] INFO @blanka responded with "Can I go ahead and book your ride?"
+[Thu Apr 23 2015 13:49:06 GMT+0100 (WAT)] DEBUG Message: Can I go ahead and book your ride? sent to user kachi
+[Thu Apr 23 2015 13:49:06 GMT+0100 (WAT)] DEBUG IGNORE FLAG SET
+[Thu Apr 23 2015 13:49:06 GMT+0100 (WAT)] INFO SlackConnection.onMessage: Original message changed by blanka
+[Thu Apr 23 2015 13:49:06 GMT+0100 (WAT)] DEBUG Message: {"id":1,"type":"message","channel":"D03SDHUUJ"}
+[Thu Apr 23 2015 13:49:06 GMT+0100 (WAT)] DEBUG Message.Message: {"type":"message","user":"U03SDHUTU","text":"Thanks, I have your location \n<http://bit.ly/1DmgWlt>","attachments":[{"from_url":"http://bit.ly/1DmgWlt","fallback":"400x400px image","image_url":"http://bit.ly/1DmgWlt","image_width":400,"image_height":400,"image_bytes":14995,"id":1}],"ts":"1429793346.000069"}
+[Thu Apr 23 2015 13:49:06 GMT+0100 (WAT)] INFO Received: message kachi @blanka 1429793346.000071 "Thanks, I have your location 
+<http://bit.ly/1DmgWlt>"
+[Thu Apr 23 2015 13:49:06 GMT+0100 (WAT)] DEBUG Message.Subtype: "message_changed"
+[Thu Apr 23 2015 13:49:55 GMT+0100 (WAT)] INFO Received: message kachi @kachi 1429793395.000072 "cancel"
+[Thu Apr 23 2015 13:49:55 GMT+0100 (WAT)] DEBUG IGNORE FLAG: false
+[Thu Apr 23 2015 13:49:55 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Message Received
+[Thu Apr 23 2015 13:49:55 GMT+0100 (WAT)] DEBUG Userkey: api-server:kachi@mobilizr:context
+[Thu Apr 23 2015 13:49:55 GMT+0100 (WAT)] DEBUG State for api-server:kachi@mobilizr:context: RIDES_confirm_request
+[Thu Apr 23 2015 13:49:55 GMT+0100 (WAT)] DEBUG 2015-04-23T12:49:55.000Z
+[Thu Apr 23 2015 13:49:59 GMT+0100 (WAT)] DEBUG IntentBody: {"msg_id":"d03f0afe-bc2f-4662-a38a-0590c8773a1d","_text":"cancel","outcomes":[{"_text":"cancel","intent":"rides_cancel_trip","entities":{},"confidence":0.932}],"context":{"state":"RIDES_confirm_request","reference_time":"2015-04-23T12:49:55.000Z"}}
+[Thu Apr 23 2015 13:49:59 GMT+0100 (WAT)] DEBUG Intent: rides_cancel_trip
+[Thu Apr 23 2015 13:49:59 GMT+0100 (WAT)] DEBUG Confidence: 0.932
+[Thu Apr 23 2015 13:49:59 GMT+0100 (WAT)] DEBUG Entities: {}
+[Thu Apr 23 2015 13:49:59 GMT+0100 (WAT)] DEBUG New context for api-server:kachi@mobilizr:context: {"state":"RIDES"}
+[Thu Apr 23 2015 13:49:59 GMT+0100 (WAT)] DEBUG confirmCancellation: 0 -> false
+[Thu Apr 23 2015 13:49:59 GMT+0100 (WAT)] DEBUG Datakey: confirmCancellation, Validity Check: false
+[Thu Apr 23 2015 13:49:59 GMT+0100 (WAT)] DEBUG Missing Keys for rides_cancel_trip: ["confirmCancellation"]
+[Thu Apr 23 2015 13:49:59 GMT+0100 (WAT)] DEBUG Predicate: 1
+[Thu Apr 23 2015 13:49:59 GMT+0100 (WAT)] DEBUG Datahash from unfold: {"handlerTodo":"rides_cancel_trip","intent":"rides_cancel_trip","confirmNeed":"true","errStartLocation":"NO_START_LOCATION","lvlQueries":{"NO_START_LOCATION":1,"NO_CONFIRM_REQUEST":1},"startLat":"6.456463599999999","startLong":"3.5263418"}
+[Thu Apr 23 2015 13:49:59 GMT+0100 (WAT)] DEBUG 1. getResponse(): data.lvlQueries[NO_CONFIRM_CANCEL] -> undefined
+[Thu Apr 23 2015 13:49:59 GMT+0100 (WAT)] DEBUG 2. getResponse(): data.lvlQueries[NO_CONFIRM_CANCEL] -> 0
+[Thu Apr 23 2015 13:49:59 GMT+0100 (WAT)] DEBUG 3. getResponse(): data.lvlQueries[NO_CONFIRM_CANCEL] -> 0
+[Thu Apr 23 2015 13:49:59 GMT+0100 (WAT)] DEBUG Predicate: 0
+[Thu Apr 23 2015 13:49:59 GMT+0100 (WAT)] DEBUG Datahash: {"handlerTodo":"rides_cancel_trip","intent":"rides_cancel_trip","confirmNeed":"true","errStartLocation":"NO_START_LOCATION","lvlQueries":{"NO_START_LOCATION":1,"NO_CONFIRM_REQUEST":1,"NO_CONFIRM_CANCEL":1},"startLat":"6.456463599999999","startLong":"3.5263418"}
+[Thu Apr 23 2015 13:49:59 GMT+0100 (WAT)] DEBUG Body: {"msg_id":"d03f0afe-bc2f-4662-a38a-0590c8773a1d","_text":"cancel","outcomes":[{"_text":"cancel","intent":"rides_cancel_trip","entities":{},"confidence":0.932}],"context":{"state":"RIDES_confirm_request","reference_time":"2015-04-23T12:49:55.000Z"},"user":{"slackId":"U02RN8W1T","name":"kachi","email":"kachi@mobilizr.net","full_name":"","is_admin":true,"avatar":"https://secure.gravatar.com/avatar/441587d4f0a03b4ce3aca5a1af3577c1.jpg?s=48&d=https%3A%2F%2Fslack.global.ssl.fastly.net%2F3654%2Fimg%2Favatars%2Fava_0012-48.png"}}
+[Thu Apr 23 2015 13:49:59 GMT+0100 (WAT)] DEBUG Indata: {}
+[Thu Apr 23 2015 13:49:59 GMT+0100 (WAT)] DEBUG rides:kachi@mobilizr
+[Thu Apr 23 2015 13:49:59 GMT+0100 (WAT)] DEBUG Datahash.lvlQueries: {"NO_START_LOCATION":1,"NO_CONFIRM_REQUEST":1,"NO_CONFIRM_CANCEL":1}
+[Thu Apr 23 2015 13:49:59 GMT+0100 (WAT)] DEBUG module: RIDES, user: kachi, client: mobilizr, message: You want to cancel the trip request?
+[Thu Apr 23 2015 13:49:59 GMT+0100 (WAT)] INFO @blanka responded with "You want to cancel the trip request?"
+[Thu Apr 23 2015 13:49:59 GMT+0100 (WAT)] DEBUG Message: You want to cancel the trip request? sent to user kachi

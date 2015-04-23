@@ -26,7 +26,7 @@ var logger = new (winston.Logger)({
         }
       }),
       new winston.transports.File({ 
-      	level: 'info',
+      	level: 'debug',
         filename: logfile,
         handleExceptions: true,
         json: false,

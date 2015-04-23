@@ -21,11 +21,11 @@ var sub = mq.context.socket('SUB', {routing: 'topic'});
 var msgid = new Date().getTime();
 
 // subscribe to inbound MQ exchange
-logger.info('SALES Handler: Connecting to MQ Exchange <piper.events.out>...');
+logger.info('UBER Handler: Connecting to MQ Exchange <piper.events.out>...');
 
 /* 
  * Bind to all subscribed clients...
- */
+ 
 db.getModel('sales_subscribers', function(err, model) {
 	if (err) {
 		logger.error('Fatal error: ' + err + '. Please resolve and restart the service'); // Unable to retrieve sales_subscribers db object
@@ -63,7 +63,7 @@ var onMessage = function (id, user, client, body) {
  * @param user - user that owns this message
  * @param client - handle of the company that owns this message
  * @param body - JSON object with message to be processed by the handler
- */
+ 
  var push = function(user, client, body) {
 	data = { 'id': new Date().getTime(), 'user': user, 'client': client, 'body': body };
 	logger.info('SALES Handler: Connecting to MQ Exchange <piper.events.in>...');
@@ -116,3 +116,4 @@ var subscribeClient = function(handle) {
 		return false;
 	}
 }
+*/

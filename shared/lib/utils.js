@@ -31,7 +31,9 @@ var shortenLink = exports.shortenLink = function(longURL) {
         'method': 'get',
         'qs': {'access_token': bitlyConfig.GENERIC_ACCESS_TOKEN, 'longUrl': longURL, 'format': 'txt'}
     };
-    return request(requrl);
+    return request(requrl).then(function(linkURL){
+    	return linkURL.replace(/(\r\n|\n|\r)/gm,"");
+    });
 };
 
 

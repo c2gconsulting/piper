@@ -55,9 +55,9 @@ SlackConnection.prototype.onOpen = function() {
 	this.emit('open', this.client);
 
 	logger.info('Welcome to Slack. You are @%s of %s', this.slack.self.name, this.slack.team.name);
-	logger.info('You are in: %s', channels.join(', '));
-	logger.info('As well as: %s', groups.join(', '));
-	logger.info('You have %s unread ' + (unreads === 1 ? 'message' : 'messages'), unreads);
+	//logger.info('You are in: %s', channels.join(', '));
+	//logger.info('As well as: %s', groups.join(', '));
+	//logger.info('You have %s unread ' + (unreads === 1 ? 'message' : 'messages'), unreads);
 	logger.info('SLACK_CONNECTION: Connection Opened');
 }
 
@@ -80,10 +80,9 @@ SlackConnection.prototype.onMessage = function(message) {
 		if (ignoreFlag) logger.debug('IGNORE FLAG SET');
 		user = this.slack.getUserByID(message.message.user);
 		text = message.message.text;
-		logger.warn('SlackConnection.onMessage: Original message changed by %s', user.name);
-		logger.warn('Message: %s', JSON.stringify(message));
-		logger.warn('Message.Message: %s', JSON.stringify(message.message));
-		logger.warn('Message.Subtype: %s', JSON.stringify(message.subtype));
+		logger.info('SlackConnection.onMessage: Original message changed by %s', user.name);
+		logger.debug('Message: %s', JSON.stringify(message));
+		logger.debug('Message.Message: %s', JSON.stringify(message.message));	
 		// if (user.name === channel.name) channel.send('Hey @' + user.name + ' quit changing your messages you already sent, its very confusing');
 	}
 
@@ -93,8 +92,9 @@ SlackConnection.prototype.onMessage = function(message) {
 
 	}
 	
+	if (message.subtype) logger.debug('Message.Subtype: %s', JSON.stringify(message.subtype));
 
-	if (!message.subtype && type === 'message' && (channel.name === user.name || text.search(this.slack.self.id) > 0)) {
+	if (!message.subtype && type === 'message' && (channel.name === user.name || text.search(this.slack.self.id) > 0) && user.id !== this.slack.self.id) {
 		if (ignoreFlag) logger.debug('IGNORE FLAG SET');
 		logger.debug('IGNORE FLAG: ' + ignoreFlag);
 		

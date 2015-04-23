@@ -315,7 +315,6 @@ function Rides(data) {
 						
 						return getLocationLink(user.name, clientHandle).then(function(loclink){
 							var replink = loclink != false ? loclink : '[Oops, missing link :thumbsdown:]';
-							replink = replink.replace(/(\r\n|\n|\r)/gm,"");
 							responseText = responseText.replace("@locationlink", replink);
 							me.emit('message', Rides.MODULE, user.name, clientHandle, responseText, errorContext[data.errStartLocation]);
 							return false;
