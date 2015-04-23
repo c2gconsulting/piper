@@ -12,16 +12,7 @@
 function success(position) {
   // send coordinates back to socket.io
   
-  var r = document.querySelector('#ref');
-  var ref = typeof r.innerHTML == 'string' ? r.innerHTML : undefined;;
-  var returnPackage = { ref : ref,
-                        lat : position.coords.latitude,
-                        longt : position.coords.longitude };
-
-  // send to socket
-  var socket = io();
-  socket.emit('geodata', returnPackage);
-
+  
   var s = document.querySelector('#status');
   var cl = document.querySelector('#closure');
   if (s.className == 'success') {   
@@ -55,6 +46,18 @@ function success(position) {
       map: map, 
       title:"You are here! (at least within a "+position.coords.accuracy+" meter radius)"
   });
+
+  var r = document.querySelector('#ref');
+  var ref = typeof r.innerHTML == 'string' ? r.innerHTML : undefined;;
+  var returnPackage = { ref : ref,
+                        lat : position.coords.latitude,
+                        longt : position.coords.longitude };
+
+  // send to socket
+  var socket = io();
+  socket.emit('geodata', returnPackage);
+
+
 }
 
 function error(msg) {
