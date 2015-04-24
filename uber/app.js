@@ -3,6 +3,7 @@ var mq = require('../shared/lib/mq');
 var logger = require('../shared/lib/log');
 var uber = require('./lib/uber');
 var express = require('express');
+var exphbs = require('express-handlebars');
 var bodyParser = require('body-parser');
 var routes = require('./routes');
 var cache = require('../shared/lib/cache').getRedisClient();
@@ -14,6 +15,26 @@ var ERROR_RESPONSE_CODE = 422;
 var app = exports.app = express(); 
 app.use(bodyParser.json()); 
 app.use(bodyParser.urlencoded({ extended: true }));
+app.set('views', 'uber/views/');
+
+// Create `ExpressHandlebars` instance with a default layout.
+var hbs = exphbs.create({
+    defaultLayout: 'main',
+    layoutsDir: 'uber/views/layouts/',
+    partialsDir: 'uber/views/',
+    compilerOptions: undefined
+});
+
+// Register `hbs` as our view engine using its bound `engine()` function.
+app.engine('handlebars', hbs.engine);
+app.set('view engine', 'handlebars');
+
+// Disable etag headers on responses
+app.disable('etag');
+
+// Set /public as our static content dir
+app.use("/", express.static(__dirname + "/public/"));
+
 
 // Register routes
 app.get('/oauth', routes.auth);
