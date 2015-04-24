@@ -619,6 +619,7 @@ Rides.prototype.cancelRequest = function(username, clientHandle, data) {
 
     cache.del(userkey + ':payload');
     cache.del(userkey + ':datacheck');
+    cache.del(userkey + ':activerequest'); // for now. Change to send handler request
     data = {};
 }
 	

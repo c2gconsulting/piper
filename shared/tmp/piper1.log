@@ -12030,3 +12030,99 @@ http://bit.ly/1aXOQFj sent to user kachi
 [Fri Apr 24 2015 13:30:25 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Opened
 [Fri Apr 24 2015 13:31:38 GMT+0100 (WAT)] DEBUG CACHEKEY: uber-handler:undefined
 [Fri Apr 24 2015 13:32:37 GMT+0100 (WAT)] DEBUG CACHEKEY: uber-handler:undefined
+[Fri Apr 24 2015 13:57:32 GMT+0100 (WAT)] INFO C2G STUDIO Error: "ENOTFOUND"
+[Fri Apr 24 2015 13:57:32 GMT+0100 (WAT)] ERROR Error: "ENOTFOUND"
+[Fri Apr 24 2015 13:57:32 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Error
+[Fri Apr 24 2015 13:57:32 GMT+0100 (WAT)] INFO MOBILIZR Error: "ENOTFOUND"
+[Fri Apr 24 2015 13:57:32 GMT+0100 (WAT)] ERROR Error: "ENOTFOUND"
+[Fri Apr 24 2015 13:57:32 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Error
+[Fri Apr 24 2015 13:57:34 GMT+0100 (WAT)] INFO C2G STUDIO Error: "ENOTFOUND"
+[Fri Apr 24 2015 13:57:34 GMT+0100 (WAT)] ERROR Error: "ENOTFOUND"
+[Fri Apr 24 2015 13:57:34 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Error
+[Fri Apr 24 2015 13:57:34 GMT+0100 (WAT)] INFO MOBILIZR Error: "ENOTFOUND"
+[Fri Apr 24 2015 13:57:34 GMT+0100 (WAT)] ERROR Error: "ENOTFOUND"
+[Fri Apr 24 2015 13:57:34 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Error
+[Fri Apr 24 2015 13:57:37 GMT+0100 (WAT)] INFO C2G STUDIO Error: "ENOTFOUND"
+[Fri Apr 24 2015 13:57:37 GMT+0100 (WAT)] ERROR Error: "ENOTFOUND"
+[Fri Apr 24 2015 13:57:37 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Error
+[Fri Apr 24 2015 13:57:37 GMT+0100 (WAT)] INFO MOBILIZR Error: "ENOTFOUND"
+[Fri Apr 24 2015 13:57:37 GMT+0100 (WAT)] ERROR Error: "ENOTFOUND"
+[Fri Apr 24 2015 13:57:37 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Error
+[Fri Apr 24 2015 13:57:41 GMT+0100 (WAT)] INFO C2G STUDIO Error: "ENOTFOUND"
+[Fri Apr 24 2015 13:57:41 GMT+0100 (WAT)] ERROR Error: "ENOTFOUND"
+[Fri Apr 24 2015 13:57:41 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Error
+[Fri Apr 24 2015 13:57:41 GMT+0100 (WAT)] INFO MOBILIZR Error: "ENOTFOUND"
+[Fri Apr 24 2015 13:57:41 GMT+0100 (WAT)] ERROR Error: "ENOTFOUND"
+[Fri Apr 24 2015 13:57:41 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Error
+[Fri Apr 24 2015 13:57:46 GMT+0100 (WAT)] INFO C2G STUDIO Error: "ENOTFOUND"
+[Fri Apr 24 2015 13:57:46 GMT+0100 (WAT)] ERROR Error: "ENOTFOUND"
+[Fri Apr 24 2015 13:57:46 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Error
+[Fri Apr 24 2015 13:57:46 GMT+0100 (WAT)] INFO MOBILIZR Error: "ENOTFOUND"
+[Fri Apr 24 2015 13:57:46 GMT+0100 (WAT)] ERROR Error: "ENOTFOUND"
+[Fri Apr 24 2015 13:57:46 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Error
+[Fri Apr 24 2015 13:57:57 GMT+0100 (WAT)] INFO C2G STUDIO: Connection established...listening for messages
+[Fri Apr 24 2015 13:57:57 GMT+0100 (WAT)] INFO Welcome to Slack. You are @blonker of c2gstudio
+[Fri Apr 24 2015 13:57:57 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Opened
+[Fri Apr 24 2015 13:57:57 GMT+0100 (WAT)] INFO MOBILIZR: Connection established...listening for messages
+[Fri Apr 24 2015 13:57:57 GMT+0100 (WAT)] INFO Welcome to Slack. You are @blanka of Mobilizr
+[Fri Apr 24 2015 13:57:57 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Opened
+[Fri Apr 24 2015 14:11:08 GMT+0100 (WAT)] DEBUG CACHEKEY: uber-handler:1429880693031
+[Fri Apr 24 2015 14:19:10 GMT+0100 (WAT)] DEBUG CACHEKEY: uber-handler:1429880693031
+[Fri Apr 24 2015 14:24:03 GMT+0100 (WAT)] INFO Piper Controller: Connecting to MQ Exchange <piper.events.in>...
+[Fri Apr 24 2015 14:24:03 GMT+0100 (WAT)] INFO CHITCHAT Handler: Connecting to MQ Exchange <piper.events.out>...
+[Fri Apr 24 2015 14:24:03 GMT+0100 (WAT)] INFO SALES Handler: Connecting to MQ Exchange <piper.events.out>...
+[Fri Apr 24 2015 14:24:04 GMT+0100 (WAT)] INFO UBER Handler: Connecting to MQ Exchange <piper.events.out>...
+[Fri Apr 24 2015 14:24:04 GMT+0100 (WAT)] INFO Piper server listening on port 3000 in development mode
+[Fri Apr 24 2015 14:24:05 GMT+0100 (WAT)] INFO Successfully connected to: mongodb://localhost/piper
+[Fri Apr 24 2015 14:24:05 GMT+0100 (WAT)] INFO Updating registry for client mobilizr...
+[Fri Apr 24 2015 14:24:05 GMT+0100 (WAT)] INFO Updating registry for client c2gstudio...
+[Fri Apr 24 2015 14:24:05 GMT+0100 (WAT)] INFO Registered connection for client: mobilizr
+[Fri Apr 24 2015 14:24:05 GMT+0100 (WAT)] INFO Registered connection for client: c2gstudio
+[Fri Apr 24 2015 14:24:05 GMT+0100 (WAT)] INFO CHITCHAT Handler <piper.events.out>: Binding to mobilizr.chitchat...
+[Fri Apr 24 2015 14:24:05 GMT+0100 (WAT)] INFO CHITCHAT Handler <piper.events.out>: Binding to c2gstudio.chitchat...
+[Fri Apr 24 2015 14:24:05 GMT+0100 (WAT)] INFO Piper Controller: MQ Exchange <piper.events.in> connected
+[Fri Apr 24 2015 14:24:05 GMT+0100 (WAT)] INFO uber.routes: <piper.events.out> connected
+[Fri Apr 24 2015 14:24:05 GMT+0100 (WAT)] INFO rides.*: <piper.events.out> connected
+[Fri Apr 24 2015 14:24:08 GMT+0100 (WAT)] INFO MOBILIZR: Connection established...listening for messages
+[Fri Apr 24 2015 14:24:08 GMT+0100 (WAT)] INFO Welcome to Slack. You are @blanka of Mobilizr
+[Fri Apr 24 2015 14:24:08 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Opened
+[Fri Apr 24 2015 14:24:08 GMT+0100 (WAT)] INFO C2G STUDIO: Connection established...listening for messages
+[Fri Apr 24 2015 14:24:08 GMT+0100 (WAT)] INFO Welcome to Slack. You are @blonker of c2gstudio
+[Fri Apr 24 2015 14:24:08 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Opened
+[Fri Apr 24 2015 14:31:21 GMT+0100 (WAT)] DEBUG CACHEKEY: uber-handler:1429880693031
+[Fri Apr 24 2015 14:37:33 GMT+0100 (WAT)] INFO Piper Controller: Connecting to MQ Exchange <piper.events.in>...
+[Fri Apr 24 2015 14:37:33 GMT+0100 (WAT)] INFO CHITCHAT Handler: Connecting to MQ Exchange <piper.events.out>...
+[Fri Apr 24 2015 14:37:33 GMT+0100 (WAT)] INFO SALES Handler: Connecting to MQ Exchange <piper.events.out>...
+[Fri Apr 24 2015 14:37:34 GMT+0100 (WAT)] INFO UBER Handler: Connecting to MQ Exchange <piper.events.out>...
+[Fri Apr 24 2015 14:37:34 GMT+0100 (WAT)] INFO Piper server listening on port 3000 in development mode
+[Fri Apr 24 2015 14:37:34 GMT+0100 (WAT)] INFO Successfully connected to: mongodb://localhost/piper
+[Fri Apr 24 2015 14:37:34 GMT+0100 (WAT)] INFO Updating registry for client mobilizr...
+[Fri Apr 24 2015 14:37:34 GMT+0100 (WAT)] INFO Updating registry for client c2gstudio...
+[Fri Apr 24 2015 14:37:34 GMT+0100 (WAT)] INFO Registered connection for client: mobilizr
+[Fri Apr 24 2015 14:37:34 GMT+0100 (WAT)] INFO Registered connection for client: c2gstudio
+[Fri Apr 24 2015 14:37:34 GMT+0100 (WAT)] INFO CHITCHAT Handler <piper.events.out>: Binding to mobilizr.chitchat...
+[Fri Apr 24 2015 14:37:34 GMT+0100 (WAT)] INFO CHITCHAT Handler <piper.events.out>: Binding to c2gstudio.chitchat...
+[Fri Apr 24 2015 14:37:35 GMT+0100 (WAT)] INFO Piper Controller: MQ Exchange <piper.events.in> connected
+[Fri Apr 24 2015 14:37:35 GMT+0100 (WAT)] INFO rides.*: <piper.events.out> connected
+[Fri Apr 24 2015 14:37:35 GMT+0100 (WAT)] INFO uber.routes: <piper.events.out> connected
+[Fri Apr 24 2015 14:37:38 GMT+0100 (WAT)] INFO Piper Controller: Connecting to MQ Exchange <piper.events.in>...
+[Fri Apr 24 2015 14:37:38 GMT+0100 (WAT)] INFO CHITCHAT Handler: Connecting to MQ Exchange <piper.events.out>...
+[Fri Apr 24 2015 14:37:38 GMT+0100 (WAT)] INFO SALES Handler: Connecting to MQ Exchange <piper.events.out>...
+[Fri Apr 24 2015 14:37:39 GMT+0100 (WAT)] INFO UBER Handler: Connecting to MQ Exchange <piper.events.out>...
+[Fri Apr 24 2015 14:37:39 GMT+0100 (WAT)] INFO Piper server listening on port 3000 in development mode
+[Fri Apr 24 2015 14:37:39 GMT+0100 (WAT)] INFO Successfully connected to: mongodb://localhost/piper
+[Fri Apr 24 2015 14:37:39 GMT+0100 (WAT)] INFO Updating registry for client mobilizr...
+[Fri Apr 24 2015 14:37:39 GMT+0100 (WAT)] INFO Updating registry for client c2gstudio...
+[Fri Apr 24 2015 14:37:39 GMT+0100 (WAT)] INFO Registered connection for client: mobilizr
+[Fri Apr 24 2015 14:37:39 GMT+0100 (WAT)] INFO Registered connection for client: c2gstudio
+[Fri Apr 24 2015 14:37:39 GMT+0100 (WAT)] INFO CHITCHAT Handler <piper.events.out>: Binding to mobilizr.chitchat...
+[Fri Apr 24 2015 14:37:39 GMT+0100 (WAT)] INFO CHITCHAT Handler <piper.events.out>: Binding to c2gstudio.chitchat...
+[Fri Apr 24 2015 14:37:39 GMT+0100 (WAT)] INFO Piper Controller: MQ Exchange <piper.events.in> connected
+[Fri Apr 24 2015 14:37:39 GMT+0100 (WAT)] INFO uber.routes: <piper.events.out> connected
+[Fri Apr 24 2015 14:37:39 GMT+0100 (WAT)] INFO rides.*: <piper.events.out> connected
+[Fri Apr 24 2015 14:37:42 GMT+0100 (WAT)] INFO MOBILIZR: Connection established...listening for messages
+[Fri Apr 24 2015 14:37:42 GMT+0100 (WAT)] INFO Welcome to Slack. You are @blanka of Mobilizr
+[Fri Apr 24 2015 14:37:42 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Opened
+[Fri Apr 24 2015 14:37:43 GMT+0100 (WAT)] INFO C2G STUDIO: Connection established...listening for messages
+[Fri Apr 24 2015 14:37:43 GMT+0100 (WAT)] INFO Welcome to Slack. You are @blonker of c2gstudio
+[Fri Apr 24 2015 14:37:43 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Opened

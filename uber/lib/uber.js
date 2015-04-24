@@ -44,7 +44,7 @@ var getAuthorizeLink = function (state, responseType) {
 var getUserAccessToken = function (code) {
     var requrl = {
         url : access_token_url,
-        method : 'get',
+        method : 'post',
         qs : {
             'client_secret': UBER_SECRET,
             'client_id': UBER_CLIENT_ID,
