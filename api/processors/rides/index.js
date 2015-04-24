@@ -655,6 +655,9 @@ Rides.prototype.in = function(msgid, username, clientHandle, body) {
 					me.emit('message', Rides.MODULE, username, clientHandle, 'I need authorization to your ' + body.handler + ' account. Click here to authorize: ' + shortAuthLink);
 				});
 				break;
+			case 'auth_ack':
+				me.emit('message', Rides.MODULE, username, clientHandle, 'Thanks @' + username + '. Now hold on a minute...');
+				break;
 		}
 		
 		this.msgid = msgid;

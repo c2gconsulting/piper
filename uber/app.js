@@ -55,7 +55,6 @@ subProcessor.connect('piper.events.out', RIDES_DESC + '.*', function() {
 
 subProcessor.on('data', function(data) {
 	jsonData = JSON.parse(data);
-	logger.info('Uber HANDLER: Received data -> %s', data);
 	if (data) onProcessorEvent(jsonData.id, jsonData.user, jsonData.client, jsonData.body);
 });
 
@@ -86,6 +85,9 @@ function onProcessorEvent(id, user, client, body) {
 
 
 
+					} else {
+						// cache request till authorized
+						cacheRequestData(id, user, client, body);
 					}
 				});
 
@@ -158,19 +160,40 @@ function onProcessorEvent(id, user, client, body) {
 }
 
 function onRoutesEvent(data) {
-	if (msgid !== id) {
+	if (msgid !== data.id) {
 		switch (data.header) {
 			case 'auth':
-				// pick up active request and process
+				// send user acknowledgement
+				var body = { header : 'auth_ack' };
+				push(data.email, body);
 
+				// pick up active request and process
+				var emailCacheKey = CACHE_PREFIX + data.email;
+				cache.hget(emailCacheKey, 'request_data').then(function(requestData) {
+					if (requestData) {
+						var jsonData = JSON.parse(requestData);
+						onProcessorEvent(jsonData.id, jsonData.user, jsonData.client, jsonData.body);
+					}
+				});
 			break;
 			case 'webhook':
 				// retrieve relevant request
 				// send update to processor
 			break;
 		}	
-		msgid = id;
+		msgid = data.id;
 	}
+}
+
+function cacheRequestData(id, user, client, body) {
+	var requestData = JSON.stringify({
+				'id': id,
+				'user': user,
+				'client': client,
+				'body': body
+			});
+	var emailCacheKey = CACHE_PREFIX + user.email;
+	cache.hset(emailCacheKey, 'request_data', requestData);
 }
 
 function checkAuth(email) {
