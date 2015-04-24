@@ -36,11 +36,14 @@ module.exports = {
     logger.debug('CACHEKEY: %s', cachekey);
 
     if (code && state) {
+      logger.debug('Code: %s and State: %s', code, state);
       // get user access token
       uber.getUserAccessToken(code).then(function(data) {
+        logger.debug('Token Feedback: %s', JSON.stringify(data));
         if (data) {
           cache.hgetall(cachekey).then(function(userdata) {
             if (userdata) {
+              logger.debug('Cached ref: %s', JSON.stringify(userdata));
               // save to database
               var expiryDate = new Date();
               expiryDate.setSeconds(expiryDate.getSeconds() + data.expires_in);
