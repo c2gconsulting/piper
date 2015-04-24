@@ -23,7 +23,7 @@
     "jarvis"
   ],
   "dependencies": {
-    "body-parser": "^1.x.x",
+    "body-parser": "^1.12.3",
     "express": "^4.x.x",
     "express-handlebars": "^2.0.0",
     "log": "1.4.0",

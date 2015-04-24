@@ -24,6 +24,10 @@ cache.on("error", function (err) {
 
 var errKeys = Object.keys(errorContext);
 
+function getUserKey(username, clientHandle) {
+	return CACHE_PREFIX + username + '@' + clientHandle;
+}
+
 function Rides(data) {
 	EventEmitter.call(this);
 	this.pub = mq.context.socket('PUB', {routing: 'topic'});
@@ -257,7 +261,6 @@ function Rides(data) {
 							var state = b.context.state;
 							if (d.confirmNeed === false) return true; // exit validations if trip cancelled
 							if ((state === 'RIDES_confirm_request' && i.yes_no === 'yes') || d.confirmRequest === true || d.confirmRequest === 'true') {
-								d.rideRequested = true;
 								return d.confirmRequest = true;
 							}
 							if ((state === 'RIDES_confirm_request' && i.yes_no === 'no') || d.confirmRequest === false || d.confirmRequest === 'false')  {
@@ -373,19 +376,29 @@ function Rides(data) {
 
 					},
 		'rides_book_trip' : function(user, clientHandle, data) {
+						var userkey = getUserKey(user.name, clientHandle);
 						logger.debug('HandleRequest: handling for rides_book_trip... %s', JSON.stringify(data));
 						if (data.confirmNeed === false) {
-							if (data.rideRequested !== true && data.rideRequested !== 'true') {
-								logger.debug('HandleRequest: handling for rides_book_trip...calling cancelrequest');
-								me.cancelRequest(user.name, clientHandle, data);
-							}
+							logger.debug('HandleRequest: handling for rides_book_trip...calling cancelrequest');
+							me.cancelRequest(user.name, clientHandle, data);
 						} else {
-							if (data.rideRequested === true || data.rideRequested === 'true') {
-								// trip already active
-							} else {
-								me.emit('message', Rides.MODULE, user.name, clientHandle, 'One second, let me see...');
-								me.push(user, clientHandle, data);
-							}	
+							// check if there's an active request
+							checkActiveRequest(user.name, clientHandle).then(function(active) {
+								if (active) {
+									// ...
+								} else {
+									me.emit('message', Rides.MODULE, user.name, clientHandle, 'One second, let me see...');
+									data.header = 'request_ride';
+									me.push(user, clientHandle, data);
+									
+									// set active request in cache
+									var newRequest = {
+										timestamp : new Date().getTime(),
+										status    : 'pending'
+									};
+									cache.hmset(userkey + ':activerequest', newRequest);
+								}
+							});
 						}
 					},
 		'rides_get_info' : function(user, clientHandle, data) {
@@ -393,6 +406,18 @@ function Rides(data) {
 					}
 	};
 
+}
+
+function checkActiveRequest(username, clientHandle) {
+	var userkey = getUserKey(username, clientHandle);
+	return cache.hgetall(userkey + ':activerequest').then(function(request) {
+		if (!request) {
+			return false;
+		} else {
+			// don't poll for status, webhooks will update
+			return true;
+		}
+	});
 }
 
 Rides.prototype = Object.create(EventEmitter.prototype);
@@ -448,7 +473,7 @@ Rides.prototype.out = function(user, client, body) {
 Rides.prototype.processData = function(user, clientHandle, body, handlerTodo) {
     var me = this;
     var username = user.name;
-	var userkey = CACHE_PREFIX + username + '@' + clientHandle;
+	var userkey = getUserKey(username, clientHandle);
 	
 	var indata = extractEntities(body);
 
@@ -590,7 +615,7 @@ Rides.prototype.processData = function(user, clientHandle, body, handlerTodo) {
 Rides.prototype.cancelRequest = function(username, clientHandle, data) {
 	logger.debug('CancelRequest: cancelling for ... %s', JSON.stringify(data));
 						
-	var userkey = CACHE_PREFIX + username + '@' + clientHandle;
+	var userkey = getUserKey(username, clientHandle);
 
     cache.del(userkey + ':payload');
     cache.del(userkey + ':datacheck');
@@ -609,7 +634,7 @@ Rides.prototype.in = function(msgid, username, clientHandle, body) {
 	// check for message uniqueness
 	if (this.msgid !== msgid) {
 		switch (body.header) {
-			case 'GEO_DATA':
+			case 'geo_data':
 				setUserGeoData(username, clientHandle, body);
 				logger.debug('Done setting user geodata...');
 
@@ -623,7 +648,11 @@ Rides.prototype.in = function(msgid, username, clientHandle, body) {
 						if (user) me.processData(user, clientHandle, body, handlerTodo);
 					});
 				});
-
+				break;
+			case 'auth_link':
+				utils.shortenLink(body.authLink).then (function(shortAuthLink) {
+					me.emit('message', Rides.MODULE, username, clientHandle, 'I need authorization to your ' + body.handler + ' account. Click here to authorize: ' + shortAuthLink);
+				});
 				break;
 		}
 		
@@ -644,14 +673,14 @@ Rides.prototype.push = function(user, clientHandle, body) {
 	var me = this;
 	this.pub.connect('piper.events.out', function() {
 		logger.info('%s Processor: <piper.events.out> connected', Rides.MODULE);
-		me.pub.publish(clientHandle + '.' + Rides.MODULE.toLowerCase(), JSON.stringify(data));
+		me.pub.publish(Rides.MODULE.toLowerCase() + '.' + clientHandle, JSON.stringify(data));
 	});
 }
 
 function setUserGeoData(username, clientHandle, body) {
-	var userkey = CACHE_PREFIX + username + '@' + clientHandle;
-	var geodata = { startLat : body.lat, startLong : body.longt };
-	cache.hmset(userkey + ':payload', geodata);
+	var userkey = getUserKey(username, clientHandle);
+	cache.hset(userkey + ':payload', 'startLat', body.lat);
+	cache.hset(userkey + ':payload', 'startLong', body.longt);
 }
 
 

@@ -69,7 +69,7 @@ exports.processGeo = function(data) {
 		cache.hgetall(cachekey).then( function(userdata) {
 			if (userdata.module) {
 				var pub = mq.context.socket('PUB', {routing: 'topic'});
-				qbody = { header : 'GEO_DATA', lat : data.lat, longt : data.longt };
+				qbody = { header : 'geo_data', lat : data.lat, longt : data.longt };
 				qdata = { id : new Date().getTime(), user : userdata.user, client : userdata.client, module : userdata.module, body : qbody };
 				logger.info('UTILS: Connecting to MQ Exchange <piper.events.in>...');
 				pub.connect('piper.events.in', function() {
