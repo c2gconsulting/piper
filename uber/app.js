@@ -161,16 +161,19 @@ function onProcessorEvent(id, user, client, body) {
 
 function onRoutesEvent(data) {
 	if (msgid !== data.id) {
+		logger.debug('onRoutesEvent.data: %s', JSON.stringify(data));
 		switch (data.header) {
 			case 'auth':
 				// send user acknowledgement
 				var body = { header : 'auth_ack' };
+				logger.debug('Calling push(%s,%s)', data.email,JSON.stringify(body));
 				push(data.email, body);
 
 				// pick up active request and process
 				var emailCacheKey = CACHE_PREFIX + data.email;
 				cache.hget(emailCacheKey, 'request_data').then(function(requestData) {
 					if (requestData) {
+						logger.debug('RequestData: %s', requestData);
 						var jsonData = JSON.parse(requestData);
 						onProcessorEvent(jsonData.id, jsonData.user, jsonData.client, jsonData.body);
 					}
@@ -201,11 +204,13 @@ function checkAuth(email) {
 	var emailCacheKey = CACHE_PREFIX + email;
 	return cache.hget(emailCacheKey, 'access_token').then(function (access_token) {
 		if (access_token) {
+			logger.debug('checkAuth.access_token: %s', access_token);
 			return access_token;
 		} else {
 			return UberUser.getUserByEmail(email).then(function(doc) {
 				if (doc && doc.access_token) {
 					// user and access_token exists...check for expiry
+					logger.debug('checkAuth.access_token: %s', JSON.stringify(doc));
 					if (typeof doc.tokenExpiry == Date && new Date() < doc.tokenExpiry) {
 						cache.hset(emailCacheKey, 'access_token', doc.access_token); // update cache
 						return doc.access_token; // valid token, return
@@ -279,7 +284,7 @@ function push(email, body) {
 	// retrieve user and client by email
 	var emailCacheKey = CACHE_PREFIX + email;
 	cache.hgetall(emailCacheKey).then(function(data) {
-		
+		logger.debug('push.data: %s', JSON.stringify(data));
 		if (data.user) {
 			body.handler = 'UBER';
 			var rdata = { 'id': new Date().getTime(), 'user': data.user, 'client': data.client, module: RIDES_DESC.toUpperCase(), 'body': body };
