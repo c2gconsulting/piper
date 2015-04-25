@@ -5,7 +5,7 @@ node[:deploy].each do |appname, deployconfig|
 
   # use template .mongo.json.erb. to generate 'config/mongo.json'
   template "#{approot}/shared/config/mongo.json" do
-    source "mongo.json.erb"
+    source "#{approot}/deploy/templates/default/mongo.json.erb"
     # cookbook "ppmongodb"
 
     # set mode, group and owner of generated file
