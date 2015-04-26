@@ -602,7 +602,7 @@ Rides.prototype.processData = function(user, clientHandle, body, handlerTodo) {
 		});
 		cache.expire(userkey + ':payload', CONTEXT_TTL);
 		cache.expire(userkey + ':datacheck', CONTEXT_TTL);
-				
+		cache.expire(userkey + ':activerequest', CONTEXT_TTL);	// for now. change to end based on status	
 	});
 }
 

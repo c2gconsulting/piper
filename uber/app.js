@@ -64,7 +64,7 @@ subRoutes.connect('piper.events.out', 'uber.routes', function() {
 
 subRoutes.on('data', function(data) {
 	jsonData = JSON.parse(data);
-	if (data) onRoutesEvent(data);
+	if (data) onRoutesEvent(jsonData);
 });
 
 
