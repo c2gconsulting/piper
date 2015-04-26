@@ -12730,3 +12730,48 @@ http://bit.ly/1aXOQFj sent to user kachi
 [Sat Apr 25 2015 16:59:01 GMT+0100 (WAT)] INFO MOBILIZR: Connection established...listening for messages
 [Sat Apr 25 2015 16:59:01 GMT+0100 (WAT)] INFO Welcome to Slack. You are @blanka of Mobilizr
 [Sat Apr 25 2015 16:59:01 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Opened
+[Sun Apr 26 2015 00:34:36 GMT+0100 (WAT)] INFO C2G STUDIO: Connection established...listening for messages
+[Sun Apr 26 2015 00:34:36 GMT+0100 (WAT)] INFO Welcome to Slack. You are @blonker of c2gstudio
+[Sun Apr 26 2015 00:34:36 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Opened
+[Sun Apr 26 2015 00:34:38 GMT+0100 (WAT)] INFO MOBILIZR: Connection established...listening for messages
+[Sun Apr 26 2015 00:34:38 GMT+0100 (WAT)] INFO Welcome to Slack. You are @blanka of Mobilizr
+[Sun Apr 26 2015 00:34:38 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Opened
+[Sun Apr 26 2015 05:21:09 GMT+0100 (WAT)] INFO MOBILIZR Error: "ENOTFOUND"
+[Sun Apr 26 2015 05:21:09 GMT+0100 (WAT)] ERROR Error: "ENOTFOUND"
+[Sun Apr 26 2015 05:21:09 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Error
+[Sun Apr 26 2015 08:51:49 GMT+0100 (WAT)] INFO MOBILIZR Error: undefined
+[Sun Apr 26 2015 08:51:49 GMT+0100 (WAT)] ERROR Error: undefined
+[Sun Apr 26 2015 08:51:49 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Error
+[Sun Apr 26 2015 08:52:01 GMT+0100 (WAT)] INFO C2G STUDIO Error: "ENOTFOUND"
+[Sun Apr 26 2015 08:52:01 GMT+0100 (WAT)] ERROR Error: "ENOTFOUND"
+[Sun Apr 26 2015 08:52:01 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Error
+[Sun Apr 26 2015 08:52:01 GMT+0100 (WAT)] INFO MOBILIZR Error: "ENOTFOUND"
+[Sun Apr 26 2015 08:52:01 GMT+0100 (WAT)] ERROR Error: "ENOTFOUND"
+[Sun Apr 26 2015 08:52:01 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Error
+[Sun Apr 26 2015 08:52:06 GMT+0100 (WAT)] INFO C2G STUDIO: Connection established...listening for messages
+[Sun Apr 26 2015 08:52:06 GMT+0100 (WAT)] INFO Welcome to Slack. You are @blonker of c2gstudio
+[Sun Apr 26 2015 08:52:06 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Opened
+[Sun Apr 26 2015 08:52:08 GMT+0100 (WAT)] INFO MOBILIZR: Connection established...listening for messages
+[Sun Apr 26 2015 08:52:08 GMT+0100 (WAT)] INFO Welcome to Slack. You are @blanka of Mobilizr
+[Sun Apr 26 2015 08:52:08 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Opened
+[Sun Apr 26 2015 09:34:17 GMT+0100 (WAT)] INFO C2G STUDIO Error: "ENOTFOUND"
+[Sun Apr 26 2015 09:34:17 GMT+0100 (WAT)] ERROR Error: "ENOTFOUND"
+[Sun Apr 26 2015 09:34:17 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Error
+[Sun Apr 26 2015 09:34:18 GMT+0100 (WAT)] INFO MOBILIZR Error: "ENOTFOUND"
+[Sun Apr 26 2015 09:34:18 GMT+0100 (WAT)] ERROR Error: "ENOTFOUND"
+[Sun Apr 26 2015 09:34:18 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Error
+[Sun Apr 26 2015 09:34:19 GMT+0100 (WAT)] INFO C2G STUDIO Error: "ENOTFOUND"
+[Sun Apr 26 2015 09:34:19 GMT+0100 (WAT)] ERROR Error: "ENOTFOUND"
+[Sun Apr 26 2015 09:34:19 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Error
+[Sun Apr 26 2015 09:34:24 GMT+0100 (WAT)] INFO MOBILIZR: Connection established...listening for messages
+[Sun Apr 26 2015 09:34:24 GMT+0100 (WAT)] INFO Welcome to Slack. You are @blanka of Mobilizr
+[Sun Apr 26 2015 09:34:24 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Opened
+[Sun Apr 26 2015 09:34:25 GMT+0100 (WAT)] INFO C2G STUDIO: Connection established...listening for messages
+[Sun Apr 26 2015 09:34:25 GMT+0100 (WAT)] INFO Welcome to Slack. You are @blonker of c2gstudio
+[Sun Apr 26 2015 09:34:25 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Opened
+[Sun Apr 26 2015 10:30:45 GMT+0100 (WAT)] INFO MOBILIZR: Connection established...listening for messages
+[Sun Apr 26 2015 10:30:45 GMT+0100 (WAT)] INFO Welcome to Slack. You are @blanka of Mobilizr
+[Sun Apr 26 2015 10:30:45 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Opened
+[Sun Apr 26 2015 10:30:46 GMT+0100 (WAT)] INFO C2G STUDIO: Connection established...listening for messages
+[Sun Apr 26 2015 10:30:46 GMT+0100 (WAT)] INFO Welcome to Slack. You are @blonker of c2gstudio
+[Sun Apr 26 2015 10:30:46 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Opened
