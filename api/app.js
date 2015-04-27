@@ -1,7 +1,9 @@
-var fs = require('fs');
-var db = require('../shared/lib/db');
-var mq = require('../shared/lib/mq');
+var fs = require('fs'),
+	db = require('../shared/lib/db'),
+	mq = require('../shared/lib/mq');
+
 var express = require('express');
+
 var wit = require('../shared/lib/wit');
 var SlackConnection = require('./slackconnection');
 var User = require('../shared/models/User');
@@ -11,14 +13,13 @@ var cache = require('../shared/lib/cache').getRedisClient();
 
 var CACHE_PREFIX = 'api-server:';
 var ERROR_RESPONSE_CODE = 422;
-var CONTEXT_TTL = 900;
+var CONTEXT_TTL = 7200;
 
 var w = [];
 var processors = [];
 
 
 var app = exports.app = express(); // Create the Express application
-var port = process.env.PORT || 80; // Define environment variables
 var router = express.Router(); // Create our Express router
 var witAccessToken = process.env.WIT_ACCESS_TOKEN || witConfig.WIT_ACCESS_TOKEN; //enable local env variable settings to override global config
 
@@ -48,7 +49,7 @@ sub.connect('piper.events.in', mq.CONTROLLER_INBOUND, function() {
 
 sub.on('data', function(data) {
 	jsonData = JSON.parse(data);
-	if (data) this.in(jsonData.user, jsonData.client, jsonData.module, jsonData.body);
+	if (data) onHandlerEvent(jsonData.id, jsonData.user, jsonData.client, jsonData.module, jsonData.body);
 });
 
 
@@ -71,7 +72,11 @@ Client.find({'isActive': true }, function (err, clients) {
 	}
 });
 
-router.get('/register', function(req, res) {	
+
+/* 
+ *	Endpoints
+ */
+ router.get('/register', function(req, res) {	
 	var name = req.query.name,
 		slackHandle = req.query.handle,
 		slackToken = req.query.token,
@@ -118,9 +123,6 @@ router.get('/register', function(req, res) {
 	}
 });
 
-/* 
- *	Endpoints
- */
 router.get('/connect', function(req, res) {
 	var slackHandle = req.query.handle;
 
@@ -328,10 +330,71 @@ var onSlackEvent = function(user, client, message) {
 		outContext = {};
 
 	var userkey = CACHE_PREFIX + user.name + '@' + client.slackHandle + ':context';
+	var sukey = CACHE_PREFIX + 'slackusers';
 	logger.debug('Userkey: ' + userkey);
+	
 
-	//check if user already registered, else register
+	// Check if user registered and register
+	cache.sismember(sukey, user.slackId)
+		.then( function(value) {
+			if (value === 1) {
+				// user record exists...do nothing
+			} else {
+				// user record does not exist -> check if user exists by email
+				User.getUserByEmail(user.email)
+					.then(function(doc) {
+						if (doc) {
+							// user exists
+							User.findOneAndUpdate (
+								{ email: user.email }, 
+								{ slackProfiles   : [{
+								      id            : user.slackId
+								    , name          : user.name
+								    , clientHandle  : client.slackHandle
+								    , is_admin      : user.is_admin
+								  }]
+								},
+								{upsert: true}, function (err) {
+								if (err) {
+									logger.error('Unable to update user slack profile: ' + err);
+								} else {
+									logger.info('Slack Profile for User %s successfully created', user.email);
+									cache.sadd(sukey, user.slackId);
+								}
+							});
+						} else {
+							newUser = new User({
+								first_name      : user.first_name
+							  , last_name       : user.last_name
+							  , full_name       : user.full_name
+							  , email           : user.email
+							  , phone           : user.phone
+							  , avatar          : user.avatar 
+							  , active          : true
+							  , createdAt       : new Date()
+							  , slackProfiles   : [{
+							      id            : user.slackId
+							    , name          : user.name
+							    , clientHandle  : client.slackHandle
+							    , is_admin      : user.is_admin
+							  }]
+							});
+							newUser.save( function (err) {
+								if (err) {
+									logger.error ('Cannot register new user %s: %s', user.email, err);
+								} else {
+									logger.info('User %s successfully created', user.email);
+									cache.sadd(sukey, user.slackId);
+								}
+							});	
+						}
 
+					});
+			}
+		});
+	
+	// save user details to cache
+	cache.hmset(user.name + '@' + client.slackHandle, user);
 
 	// Retrieve user context from cache
 	cache.hget(userkey, 'state').then(function (value) {
@@ -431,20 +494,16 @@ var onSlackEvent = function(user, client, message) {
 var processMessage = function(user, client, Processor, body) {
 	if (!processors[Processor.MODULE]) {
 		//instantiate and setup processor
-		logger.warn('Calling new... ' + Processor.MODULE)
 		processors[Processor.MODULE] = new Processor();
-		logger.warn('Calling init... ' + Processor.MODULE)
 		processors[Processor.MODULE].init();
-		logger.warn('Calling onMessage... ' + Processor.MODULE)
 		processors[Processor.MODULE].on('message', onProcessorEvent);
 		processors[Processor.MODULE].on('error', onProcessorError);	
 	} 
 
-	logger.warn('Calling out... ' + Processor.MODULE)
 	processors[Processor.MODULE].out(user, client, body);
 }
 
-var onHandlerEvent = function(username, clientHandle, module, data) {
+var onHandlerEvent = function(msgid, username, clientHandle, module, data) {
 	
 	if (!processors[module]) {
 		//instantiate and setup processor
@@ -456,10 +515,10 @@ var onHandlerEvent = function(username, clientHandle, module, data) {
 			processors[Processor.MODULE].on('error', onProcessorError);	
 
 			// send request
-			processors[Processor.MODULE].in(username, clientHandle, data);
+			processors[Processor.MODULE].in(msgid, username, clientHandle, data);
 		}
 	} else {
-		processors[Processor.MODULE].in(username, clientHandle, data);
+		processors[module].in(msgid, username, clientHandle, data);
 	}
 }
 
@@ -516,6 +575,8 @@ var getModule = function(intent, state) {
 				module = state.indexOf('_') > 0 ? state.substring(0, state.indexOf('_')).toUpperCase() : state.toUpperCase();
 				if (!processorMap.processors[0][module]) module = processorMap.modules[0]['intent_not_found'];
 				logger.debug('Module for intent %s and state %s resolved to %s', intent, state, module);
+			} else {
+				module = processorMap.modules[0]['intent_not_found'];
 			}
 		}
 	} else {

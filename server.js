@@ -1,7 +1,9 @@
 var db = require('./shared/lib/db');
 var express = require('express');
+var http = require('http');
 var vhost = require('vhost');
 var logger = require('./shared/lib/log');
+var utils = require('./shared/lib/utils');
 var services = require('./servers.json').services;
 
 
@@ -27,8 +29,9 @@ for (var i in services) {
 	app.use(vhost(services[i].host, require(services[i].path + '/app').app));
 }
 
-// Setup healthcheck for LBs
+// Setup healthcheck for LBs and OpsWorks
 app.all('/healthcheck', router); 
+app.all('/', router); 
 
 db.getModel('clients', function(err, model) {
 	if (err) {
@@ -36,6 +39,10 @@ db.getModel('clients', function(err, model) {
 	} else {
 		Client = model;
 	}	
+});
+
+router.get('/', function(req, res) {
+	res.send('OK');
 });
 
 router.get('/healthcheck', function(req, res) {
@@ -56,10 +63,24 @@ router.get('/healthcheck', function(req, res) {
 
 //Start server
 var port = process.env.PORT || 80;
+/*
 app.listen( port, function() {
     logger.info( 'Piper server listening on port %d in %s mode', port, app.settings.env );
 });
+*/
 
+var server = http.createServer(app).listen(port, function() {
+  logger.info('Piper server listening on port %d in %s mode', port, app.settings.env);
+});
+
+// process socket.io
+var io = require('socket.io').listen(server);
+io.on('connection', function(socket) {
+	socket.on('geodata', function(data) {
+		logger.info('Geodata: %s', JSON.stringify(data));
+		utils.processGeo(data);
+	});
+});
 
 
 
