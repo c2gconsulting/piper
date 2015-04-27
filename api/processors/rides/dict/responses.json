@@ -21,28 +21,44 @@
 		"Can't locate you from the address so can't send a ride. The link again... @locationlink",
 		"Sorry, can't proceed without your location. Click @locationlink"
 	],
-	"NO_PREFERENCE" : [
+	"NO_STARTLOC_PREFERENCE" : [
 		"Where's your @lockeyword? Just click here: @locationlink, and i'll pinpoint your current location",
 		"Please give me your @lockeyword address, I'll remember it...or click here: @locationlink, and i'll find you",
 		"I still don't have your @lockeyword address. You can click here @locationlink so I find you",
 		"Sorry, I don't know how to get to your @lockeyword. Click @locationlink if it's where you are now"
 	],
-	"UNKNOWN_TERMINAL" : [
-		"Is that your pickup address",
+	"NO_ENDLOC_PREFERENCE" : [
+		"Where's your @lockeyword? Let me have the address",
+		"Please give me your @lockeyword address, I'll remember it",
+		"I still don't have your @lockeyword address.",
+		"Sorry, I don't know how to get to your @lockeyword. Let me have the address"
+	],
+	"SUSPECT_START_LOCATION" : [
+		"Is that your pickup address?",
 		"Is @address where you want to be picked up?",
 		"Can you please confirm that you wish to be picked up at this address",
 		"Please I need confirmation that @address is your pickup address"
 	],
+	"NO_END_LOCATION" : [
+		"Where are you going to?",
+		"I need to you to confirm your destination",
+		"I need to know where you're going to book your ride",
+		"Sorry, can't proceed without your destination"
+	],
+	"BAD_END_ADDRESS" : [
+		"I can't locate that destination address, can you correct it?",
+		"Nope, something is still not right with the destination. Can you give a correct address or a landmark I can locate",
+		"Can't locate your destination from the address so can't send a ride. You can give me any address close to it",
+		"Sorry, can't proceed without a destination"
+	],
+	"SUSPECT_END_LOCATION" : [
+		"Is that your destination address?",
+		"Is @address where you are going to?",
+		"Can you please confirm that this address is your destination",
+		"Please I need confirmation that @address is where you are headed"
+	],
 	"NO_CARRIER" : [
 		"@preferredCarrier is the cheapest option, is that fine?",
-		"./processors/travelRequest/bookFlight",
-		"./processors/general/doNothing",
-		"./processors/general/chitchat.mq",
-		"./processors/analytics/customerAnalytics",
-		"./processors/sales/index"
-	],
-	"NO_END_LOCATION" : [
-		"./processors/leaveRequest/leaveRequest.redis",
 		"./processors/travelRequest/bookFlight",
 		"./processors/general/doNothing",
 		"./processors/general/chitchat.mq",
@@ -58,7 +74,7 @@
 		"./processors/sales/index"
 	],
 	"NO_CONFIRM_REQUEST" : [
-		"Can I go ahead and book your ride?",
+		"Thanks. Can I go ahead and book your ride?",
 		"I'm still waiting for your confirmation",
 		"@username, your ride? Tell me whether to continue or not",
 		"Whenever you're ready, can't continue till you give the go ahead"

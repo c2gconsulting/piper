@@ -40,7 +40,7 @@ function Rides(data) {
 						'confirmNeed',
 						'startLong',
 						'carrier',
-						'endAddress',
+						'endLong',
 						'departureTime',
 						'confirmRequest'
 					],
@@ -69,8 +69,7 @@ function Rides(data) {
 					],
 		'confirmNeed' : [
 						function(d, b, i) {
-							if (d.rideRequested === true || d.rideRequested === 'true') return true;
-							return false;
+							return i.hasActiveRequest;
 						},
 						function(d, b, i) {
 							var state = b.context.state;
@@ -88,8 +87,7 @@ function Rides(data) {
 					],
 		'startLong' : [
 						function(d, b, i) {
-							if (d.rideRequested === true || d.rideRequested === 'true') return true;
-							return false;
+							return i.hasActiveRequest;
 						},
 						function(d, b, i) {
 							if (i.yes_no === 'no') {
@@ -101,14 +99,14 @@ function Rides(data) {
 							return false;
 						},	
 						function(d, b, i) {
-							var state = b.context.state;
 							if(d.confirmNeed === false) return true; // exit validations if trip cancelled
 							if (!d.startLong || d.startLong === 0) return false;
+							if (d.errStartLocation === 'NO_START_LOCATION') delete d.errStartLocation;
 							return true;
 						},
 						function(d, b, i) {
 							var state = b.context.state;
-							if (i.location || d.errStartLocation === 'UNKNOWN_TERMINAL') setTerminal(d, b, i);
+							if (i.location || d.errStartLocation === 'SUSPECT_START_LOCATION') setTerminal(d, b, i);
 							if (i.from) {
 								// check for location keyword
 								var lockeyword;
@@ -135,7 +133,7 @@ function Rides(data) {
 										} else {
 											// does not exist in preferences
 											logger.debug('Got to setting of errLocation...')
-											d.errStartLocation = 'NO_PREFERENCE';
+											d.errStartLocation = 'NO_STARTLOC_PREFERENCE';
 											return false;
 										}
 									});
@@ -154,7 +152,7 @@ function Rides(data) {
 											}
 										})
 										.then (function(retVal) {
-											if (retVal && state === 'RIDES_get_preference') {
+											if (retVal && state === 'RIDES_get_startloc_preference') {
 												if (d.fromLocKeyword && d.fromLocKeyword != false) {
 													// set preference
 													User.findOneAndUpdate (
@@ -168,13 +166,11 @@ function Rides(data) {
 														if (err) {
 															logger.error('Unable to update user preferences: ' + err);
 														} else {
-															if (d.errStartLocation === 'NO_PREFERENCE') delete d.errStartLocation;
+															if (d.errStartLocation === 'NO_STARTLOC_PREFERENCE') delete d.errStartLocation;
 															delete d.fromLocKeyword;
 															logger.info('User Preferences for User %s successfully created', b.user.email);
 														}
 													});
-
-													
 												}
 											}
 											return retVal;
@@ -183,13 +179,36 @@ function Rides(data) {
 							} else {
 								return false;
 							}
+						},
+						function(d, b, i) {
+							if (i.geoFrom) {
+								if (d.fromLocKeyword && d.fromLocKeyword != false) {
+									// set preference
+									User.findOneAndUpdate (
+										{ email: b.user.email }, 
+										{ preferences   : [{
+										      pKey            : d.fromLocKeyword + '_address'
+										    , pValue          : i.geoFrom
+										  }]
+										},
+										{upsert: true}, function (err) {
+										if (err) {
+											logger.error('Unable to update user preferences: ' + err);
+										} else {
+											if (d.errStartLocation === 'NO_STARTLOC_PREFERENCE') delete d.errStartLocation;
+											delete d.fromLocKeyword;
+											logger.info('User Preferences for User %s successfully created', b.user.email);
+										}
+									});
+								}
+							}
+							return false;
 						}
 							
 					],
 		'carrier' 	: [
 						function(d, b, i) {
-							if (d.rideRequested === true || d.rideRequested === 'true') return true;
-							return false;
+							return i.hasActiveRequest;
 						},
 						function(d, b, i) {
 							if (i.yes_no === 'no') {
@@ -205,29 +224,106 @@ function Rides(data) {
 							return true;
 						}
 					],
-		'endAddress': [
+		'endLong': [
 						function(d, b, i) {
-							if (d.rideRequested === true || d.rideRequested === 'true') return true;
-							return false;
+							return i.hasActiveRequest;
 						},
 						function(d, b, i) {
 							if (i.yes_no === 'no') {
-								d.cancelFlagEA = true; // if a 'no', assume cancellation by default. if the 'no' is expected by any subsequent validation, it should clear flag
+								d.cancelFlagEL = true; // if a 'no', assume cancellation by default. if the 'no' is expected by any subsequent validation, it should clear flag
 							} else {
-								if (d.cancelFlagEA) delete d.cancelFlagEA;
+								if (d.cancelFlagEL) delete d.cancelFlagEL;
 								if (d.errEndAddress === 'CONFIRM_REQUEST_CANCEL') delete d.errEndAddress;
 							}
 							return false;
 						},
 						function(d, b, i) {
 							if(d.confirmNeed === false) return true; // exit validations if trip cancelled
+							if (!d.endLong || d.endLong === 0) return false;
 							return true;
+						},
+						function(d, b, i) {
+							var state = b.context.state;
+							if (d.errEndLocation === 'SUSPECT_END_LOCATION') setTerminal(d, b, i);
+							if (i.to) {
+								// check for location keyword
+								var lockeyword;
+								if (lockeyword = getLocationKeyword(i.to)) {
+									// if keyword, check if preferences set
+									d.toLocKeyword = lockeyword;
+									return User.getUserPreference(b.user.email, lockeyword + '_address').then (function(doc) {
+										logger.debug('Got to then of getUserPreference...')
+											
+										if (doc) {
+											i.to = doc.pValue;
+											return getLocationByAddress(i.to).then (function (location) {
+												if (location) {
+													d.endLong = location.longt;
+													d.endLat = location.lat;
+													delete d.currLocation;
+													if (d.errEndLocation === 'BAD_END_ADDRESS') delete data.errEndLocation;
+													return true;
+												} else {
+													d.errEndLocation = 'BAD_END_ADDRESS';
+													return false;
+												}
+											});
+										} else {
+											// does not exist in preferences
+											logger.debug('Got to setting of errEndLocation...')
+											d.errEndLocation = 'NO_ENDLOC_PREFERENCE';
+											return false;
+										}
+									});
+								} else {
+									return getLocationByAddress(i.to)
+										.then (function (location) {
+											if (location) {
+												d.endLong = location.longt;
+												d.endLat = location.lat;
+												delete d.currLocation;
+												if (d.errEndLocation === 'BAD_END_ADDRESS') delete data.errEndLocation;
+												return true;
+											} else {
+												d.errEndLocation = 'BAD_END_ADDRESS';
+												return false;
+											}
+										})
+										.then (function(retVal) {
+											if (retVal && state === 'RIDES_get_endloc_preference') {
+												if (d.toLocKeyword && d.toLocKeyword != false) {
+													// set preference
+													User.findOneAndUpdate (
+														{ email: b.user.email }, 
+														{ preferences   : [{
+														      pKey            : d.toLocKeyword + '_address'
+														    , pValue          : i.to
+														  }]
+														},
+														{upsert: true}, function (err) {
+														if (err) {
+															logger.error('Unable to update user preferences: ' + err);
+														} else {
+															if (d.errEndLocation === 'NO_ENDLOC_PREFERENCE') delete d.errEndLocation;
+															delete d.toLocKeyword;
+															logger.info('User Preferences for User %s successfully updated', b.user.email);
+														}
+													});
+
+													
+												}
+											}
+											return retVal;
+										});
+								}	
+							} else {
+								return false;
+							}
 						}
 					],
 		'departureTime': [
 						function(d, b, i) {
-							if (d.rideRequested === true || d.rideRequested === 'true') return true;
-							return false;
+							return i.hasActiveRequest;
 						},
 						function(d, b, i) {
 							if (i.yes_no === 'no') {
@@ -245,8 +341,7 @@ function Rides(data) {
 					],
 		'confirmRequest' : [
 						function(d, b, i) {
-							if (d.rideRequested === true || d.rideRequested === 'true') return true;
-							return false;
+							return i.hasActiveRequest;
 						},
 						function(d, b, i) {
 							if (i.yes_no === 'no') {
@@ -303,6 +398,7 @@ function Rides(data) {
 						return false;
 					},	
 		'startLong' : function(user, clientHandle, data) {
+						if (data.errStartLocation === "CONFIRM_REQUEST_CANCEL") delete errStartLocation;
 						if (data.cancelFlagSL === true) {
 							data.errStartLocation = "CONFIRM_REQUEST_CANCEL";
 							delete data.cancelFlagSL;
@@ -334,8 +430,23 @@ function Rides(data) {
 						} 
 						return false;
 					},
-		'endAddress': function(user, clientHandle, data) {
-						return true;
+		'endLong': function(user, clientHandle, data) {
+						if (data.errEndLocation === "CONFIRM_REQUEST_CANCEL") delete errEndLocation;
+						if (data.cancelFlagEL === true) {
+							data.errEndLocation = "CONFIRM_REQUEST_CANCEL";
+							delete data.cancelFlagEL;
+						} else if (!data.errEndLocation || errKeys.indexOf(data.errEndLocation) < 0) {
+							data.errEndLocation = 'NO_END_LOCATION'; 
+						}
+
+						var responseText = getResponse(data, data.errEndLocation);
+
+						responseText = responseText.replace("@lockeyword", data.toLocKeyword);
+						responseText = responseText.replace("@username", user.name);
+						responseText = responseText.replace("@address", data.tempLocation);
+						
+						me.emit('message', Rides.MODULE, user.name, clientHandle, responseText, errorContext[data.errEndLocation]);
+						return false;
 					},
 		'departureTime' : function(user, clientHandle, data) {
 						return true;
@@ -476,6 +587,7 @@ Rides.prototype.processData = function(user, clientHandle, body, handlerTodo) {
 	var userkey = getUserKey(username, clientHandle);
 	
 	var indata = extractEntities(body);
+	indata.hasActiveRequest = checkActiveRequest(username, clientHandle);
 
 	if (body.outcomes) {
 		if (body.outcomes[0].intent === 'default_accept') indata.yes_no = 'yes';
@@ -645,8 +757,18 @@ Rides.prototype.in = function(msgid, username, clientHandle, body) {
 					//refresh dialog
 					cache.hgetall(username + '@' + clientHandle).then(function(user){
 						var handlerTodo = 'rides_book_trip';
-						var body = { context: { state : Rides.MODULE }};
-						if (user) me.processData(user, clientHandle, body, handlerTodo);
+						var rbody = { context: { state : Rides.MODULE }};
+						getAddressByCoords(body.lat, body.longt).then (function(address) {
+							if (address) {
+								// fill in address on body
+								rbody.outcomes = [{ 'entities': { 
+															'geofrom': [{"value": address}] 
+														}
+												 }];
+							}
+							if (user) me.processData(user, clientHandle, rbody, handlerTodo);
+						});
+						
 					});
 				});
 				break;
@@ -690,7 +812,7 @@ function setUserGeoData(username, clientHandle, body) {
 
 function extractEntities(body) {
 	var indata = {};
-	var entitites = {};
+	var entities = {};
 	if (body.outcomes) entities = body.outcomes[0].entities;
 	var eKeys = Object.keys(entities);
 
@@ -709,6 +831,18 @@ function getLocationByAddress(address) {
 		//logger.info('Geo data: ' + JSON.stringify(data));
 		if (data.status === 'OK' && data.results[0].geometry.location.lng) {
 			return {longt : data.results[0].geometry.location.lng, lat : data.results[0].geometry.location.lat };
+		} else {
+			return false;
+		}
+	});
+	// return when({longt : 1, lat: 1});
+}
+
+function getAddressByCoords(lat, lng) {
+	return geo.getReverseCode(lat, lng).then(function(data){
+		//logger.info('Geo data: ' + JSON.stringify(data));
+		if (data.status === 'OK' && data.results[0].formatted_address) {
+			return data.results[0].formatted_address;
 		} else {
 			return false;
 		}
@@ -756,13 +890,43 @@ function setTerminal(d, b, i) {
 	var state = b.context.state;
 	switch (state) {
 		case 'RIDES_get_start_location':
-			i.from = i.location;
-			d.currLocation = START_LOC; 
+			if (!i.from) {
+				i.from = i.location;
+				d.currLocation = START_LOC; 
+			} else if (!i.to) {
+				i.to = i.location;
+				d.currLocation = END_LOC; 
+			}
+			terminalSet = true;
+			break;
+		case 'RIDES_get_startloc_preference':
+			if (!i.from) {
+				i.from = i.location;
+				d.currLocation = START_LOC; 
+			} else if (!i.to) {
+				i.to = i.location;
+				d.currLocation = END_LOC; 
+			}
 			terminalSet = true;
 			break;
 		case 'RIDES_get_end_location':
-			i.to = i.location;
-			d.currLocation = END_LOC; 
+			if (!i.to) {
+				i.to = i.location;
+				d.currLocation = END_LOC; 
+			} else if (!i.from) {
+				i.from = i.location;
+				d.currLocation = START_LOC;
+			}
+			terminalSet = true;
+			break;
+		case 'RIDES_get_endloc_preference':
+			if (!i.to) {
+				i.to = i.location;
+				d.currLocation = END_LOC; 
+			} else if (!i.from) {
+				i.from = i.location;
+				d.currLocation = START_LOC;
+			}
 			terminalSet = true;
 			break;
 		case 'RIDES_confirm_start_location':
@@ -771,7 +935,7 @@ function setTerminal(d, b, i) {
 				logger.debug('Got here 2');
 				i.from = d.tempLocation;
 				d.currLocation = START_LOC;
-				if (d.errStartLocation === 'UNKNOWN_TERMINAL') delete d.errStartLocation;
+				if (d.errStartLocation === 'SUSPECT_START_LOCATION') delete d.errStartLocation;
 				delete d.tempLocation;
 				terminalSet = true;
 			}
@@ -780,9 +944,29 @@ function setTerminal(d, b, i) {
 				d.currLocation = END_LOC;
 				delete d.tempLocation;
 				terminalSet = true;
-				if (d.errStartLocation === 'UNKNOWN_TERMINAL') delete d.errStartLocation;
+				if (d.errStartLocation === 'SUSPECT_START_LOCATION') delete d.errStartLocation;
 				if (d.cancelFlagSL) delete d.cancelFlagSL;
-				if (d.errStartLocation === 'CONFIRM_REQUEST_CANCEL') delete d.errStartLocation;
+				if (d.cancelFlagEL) delete d.cancelFlagEL;
+			}
+			break;
+		case 'RIDES_confirm_end_location':
+			logger.debug('Got here 1');
+			if (i.yes_no === 'yes') {
+				logger.debug('Got here 2');
+				i.to = d.tempLocation;
+				d.currLocation = START_LOC;
+				if (d.errEndLocation === 'SUSPECT_END_LOCATION') delete d.errEndLocation;
+				delete d.tempLocation;
+				terminalSet = true;
+			}
+			if (i.yes_no === 'no') {
+				i.from = d.tempLocation;
+				d.currLocation = END_LOC;
+				delete d.tempLocation;
+				terminalSet = true;
+				if (d.errEndLocation === 'SUSPECT_END_LOCATION') delete d.errEndLocation;
+				if (d.cancelFlagSL) delete d.cancelFlagSL;
+				if (d.cancelFlagEL) delete d.cancelFlagEL;
 			}
 			break;
 	}
@@ -813,11 +997,18 @@ function setTerminal(d, b, i) {
 		}
 	}
 
-
+	// Check for outstanding item and extract suspicions
 	if (!terminalSet) {
-		d.errStartLocation = 'UNKNOWN_TERMINAL';
+		if (d.startLong && d.startLong != 0 && (!d.endLong || d.endLong == 0)) {
+			//Suspect End Location
+			d.errEndLocation = 'SUSPECT_END_LOCATION';
+		} else {
+			// Suspect Start Location
+			d.errStartLocation = 'SUSPECT_START_LOCATION';
+		}
 		d.tempLocation = i.location;
 	}
+
 
 }
 

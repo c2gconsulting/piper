@@ -6,9 +6,11 @@ var utils = require('../../../../shared/lib/utils');
 
 exports.getGeoStaticMapLink = function(lat,longt) {
     var latlongt = lat + ',' + longt;
-    var rand = Math.floor((Math.random() * 50) + 1); // random suffix to force unfurling
-    return utils.shortenLink('https://maps.googleapis.com/maps/api/staticmap?center=' + latlongt + '&zoom=16&size=400x400&markers=color:red%7Clabel:X%7C' + latlongt + '&r=' + rand);
+    //var rand = Math.floor((Math.random() * 50) + 1); // random suffix to force unfurling
+    return utils.shortenLink('https://maps.googleapis.com/maps/api/staticmap?center=' + latlongt + '&zoom=16&size=400x400&markers=color:red%7Clabel:A%7C' + latlongt);
 }
+
+https://maps.googleapis.com/maps/api/geocode/json?latlng=40.714224,-73.961452&key=API_KEY
 
 var getCode = function(address) {
     var body;
@@ -16,6 +18,22 @@ var getCode = function(address) {
         'url': 'https://maps.googleapis.com/maps/api/geocode/json?',
         'method': 'get',
         'qs': {'address': address, 'key': key}
+    };
+    return request(requrl).then(function(data) {
+        try {
+            return JSON.parse(data);
+        } catch (e) {
+            return data;
+        }
+     });
+};
+
+var getReverseCode = function(lat, lng) {
+    var latlng = lat + ',' + lng;
+    var requrl = {
+        'url': 'https://maps.googleapis.com/maps/api/geocode/json?',
+        'method': 'get',
+        'qs': {'latlng': latlng, 'result_type': 'street_address', 'key': key}
     };
     return request(requrl).then(function(data) {
         try {
@@ -103,6 +121,7 @@ var routeMapper = function(arr){
 };
 
 module.exports.getCode = getCode;
+module.exports.getReverseCode = getReverseCode;
 module.exports.getNearby = getNearby;
 module.exports.getRoutes = getRoutes;
 module.exports.routeMapper = routeMapper;
