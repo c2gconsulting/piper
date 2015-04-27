@@ -11,6 +11,7 @@
 	"modules" : [
 		{
 			"rides_request_price_estimate" : "RIDES",
+			"rides_info_query" : "RIDES",
 			"rides_request_eta" : "RIDES",
 			"rides_go_out" : "RIDES",
 			"rides_request_trip" : "RIDES",

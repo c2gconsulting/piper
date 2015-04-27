@@ -17,8 +17,8 @@ var schema = new mongoose.Schema({
     , is_admin      : String
   }]
   , preferences     : [{
-      homeAddress   : String
-    , officeAddress : String
+      pKey   : String
+    , pValue : String
   }]
 });
 
@@ -65,6 +65,33 @@ schema.statics.getUserBySlackNameAndClient = function(name, client, callback) {
       return;
     } 
     promise.complete(doc);
+  });
+ 
+  return promise;
+
+}
+
+schema.statics.getUserPreference = function(email, prefKey, callback) {
+  var promise = new mongoose.Promise;
+  if(callback) promise.addBack(callback);
+
+  User.findOne({ 'email' : email, 'preferences.pKey' : prefKey }).exec( function(err, doc) {
+    if (err) {
+      promise.error(err);
+      return;
+    } 
+    if (doc) {
+      var prefs = doc.preferences;
+      var thePref;
+      prefs.forEach(function(pref) {
+        if (pref.pKey === prefKey) {
+          thePref = pref;
+        }
+      });
+      promise.complete(thePref);
+    } else {
+      promise.complete(doc);
+    }  
   });
  
   return promise;

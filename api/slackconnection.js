@@ -55,9 +55,9 @@ SlackConnection.prototype.onOpen = function() {
 	this.emit('open', this.client);
 
 	logger.info('Welcome to Slack. You are @%s of %s', this.slack.self.name, this.slack.team.name);
-	logger.info('You are in: %s', channels.join(', '));
-	logger.info('As well as: %s', groups.join(', '));
-	logger.info('You have %s unread ' + (unreads === 1 ? 'message' : 'messages'), unreads);
+	//logger.info('You are in: %s', channels.join(', '));
+	//logger.info('As well as: %s', groups.join(', '));
+	//logger.info('You have %s unread ' + (unreads === 1 ? 'message' : 'messages'), unreads);
 	logger.info('SLACK_CONNECTION: Connection Opened');
 }
 
@@ -77,10 +77,13 @@ SlackConnection.prototype.onMessage = function(message) {
 		ignoreFlag = true;
 	
 	if (message.subtype === "message_changed") {
+		if (ignoreFlag) logger.debug('IGNORE FLAG SET');
 		user = this.slack.getUserByID(message.message.user);
 		text = message.message.text;
-		logger.warn('SlackConnection.onMessage: Original message changed by %s', user.name);
-		if (user.name === channel.name) channel.send('Hey @' + user.id + ' quit changing your messages you already sent, its very confusing');
+		logger.info('SlackConnection.onMessage: Original message changed by %s', user.name);
+		logger.debug('Message: %s', JSON.stringify(message));
+		logger.debug('Message.Message: %s', JSON.stringify(message.message));	
+		// if (user.name === channel.name) channel.send('Hey @' + user.name + ' quit changing your messages you already sent, its very confusing');
 	}
 
 	try{
@@ -89,16 +92,22 @@ SlackConnection.prototype.onMessage = function(message) {
 
 	}
 	
+	if (message.subtype) logger.debug('Message.Subtype: %s', JSON.stringify(message.subtype));
 
-	if (!ignoreFlag && type === 'message' && (channel.name === user.name || text.search(this.slack.self.id) > 0)) {
+	if (!message.subtype && type === 'message' && (channel.name === user.name || text.search(this.slack.self.id) > 0) && user.id !== this.slack.self.id) {
+		if (ignoreFlag) logger.debug('IGNORE FLAG SET');
+		logger.debug('IGNORE FLAG: ' + ignoreFlag);
+		
 		logger.info('SLACK_CONNECTION: Message Received');
 
-		var piperUser = { 'name' : user.name,
+		var piperUser = { 'slackId' : user.id,
+						  'name' : user.name,
 						  'email' : user.profile.email,
 						  'first_name' : user.profile.first_name,
 						  'last_name' : user.profile.last_name,
 						  'full_name' : user.profile.real_name,
 						  'phone' : user.profile.phone,
+						  'is_admin' : user.is_admin,
 						  'avatar' : user.profile.image_48 };
 
 		var chatMessage = { 'text' : text,

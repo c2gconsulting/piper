@@ -1,118 +1,301 @@
-var db = require('../shared/lib/db');
+var UberUser = require('../shared/models/UberUser');
 var mq = require('../shared/lib/mq');
 var logger = require('../shared/lib/log');
+var uber = require('./lib/uber');
 var express = require('express');
+var exphbs = require('express-handlebars');
+var bodyParser = require('body-parser');
+var routes = require('./routes');
 var cache = require('../shared/lib/cache').getRedisClient();
-var CACHE_PREFIX = 'piper-sales-handler:';
+var CACHE_PREFIX = 'uber-handler:';
+var RIDES_DESC = 'rides';
 var ERROR_RESPONSE_CODE = 422;
-
-// Uber details
-var UBER_CLIENT_ID = "wTO4c5RIwLi_gjwN1tw79JY4_1W2Im1w";
-var UBER_SERVER_TOKEN = "56IrLXS0bglH4WT695YKkXIpaojpHmfoTgn3qE83";
-var UBER_SECRET = "oKXU97Mj_5Po9udA666Tl-wfUt93-u0oPAbk8_NS";
 
 // Create the Express application
 var app = exports.app = express(); 
-var router = express.Router(); // Create our Express router
-app.use('/', router);
+app.use(bodyParser.json()); 
+app.use(bodyParser.urlencoded({ extended: true }));
+app.set('views', 'uber/views/');
+
+// Create `ExpressHandlebars` instance with a default layout.
+var hbs = exphbs.create({
+    defaultLayout: 'main',
+    layoutsDir: 'uber/views/layouts/',
+    partialsDir: 'uber/views/',
+    compilerOptions: undefined
+});
+
+// Register `hbs` as our view engine using its bound `engine()` function.
+app.engine('handlebars', hbs.engine);
+app.set('view engine', 'handlebars');
+
+// Disable etag headers on responses
+app.disable('etag');
+
+// Set /public as our static content dir
+app.use("/", express.static(__dirname + "/public/"));
+
+
+// Register routes
+app.get('/oauth', routes.auth);
+app.get('/hooks', routes.hooks);
+app.get('/surge', routes.surge);
+
 
 var pub = mq.context.socket('PUB', {routing: 'topic'});
-var sub = mq.context.socket('SUB', {routing: 'topic'});
+var subProcessor = mq.context.socket('SUB', {routing: 'topic'});
+var subRoutes = mq.context.socket('SUB', {routing: 'topic'});
 var msgid = new Date().getTime();
 
 // subscribe to inbound MQ exchange
-logger.info('SALES Handler: Connecting to MQ Exchange <piper.events.out>...');
-
-/* 
- * Bind to all subscribed clients...
- */
-db.getModel('sales_subscribers', function(err, model) {
-	if (err) {
-		logger.error('Fatal error: ' + err + '. Please resolve and restart the service'); // Unable to retrieve sales_subscribers db object
-	} else {
-		SalesSubscriber = model;
-	}	
+logger.info('UBER Handler: Connecting to MQ Exchange <piper.events.out>...');
+subProcessor.connect('piper.events.out', RIDES_DESC + '.*', function() {
+	logger.info('%s.*: <piper.events.out> connected', RIDES_DESC);
 });
 
-SalesSubscriber.find({}, function (err, subscribers) {
-	if (!err && subscribers && subscribers.length > 0){
-		for (var i in subscribers) {
-			logger.info('SALES Handler <piper.events.out>: Binding to %s.sales...', subscribers[i].handle);
-			sub.connect('piper.events.out', subscribers[i].handle + '.sales');
-		}
-	} else {
-		logger.info('No subscribers currently registered or active, listening for new clients...');
-	}
-});
-
-sub.on('data', function(data) {
+subProcessor.on('data', function(data) {
 	jsonData = JSON.parse(data);
-	if (data) onMessage(jsonData.id, jsonData.user, jsonData.client, jsonData.body);
+	if (data) onProcessorEvent(jsonData.id, jsonData.user, jsonData.client, jsonData.body);
 });
 
-var onMessage = function (id, user, client, body) {
+subRoutes.connect('piper.events.out', 'uber.routes', function() {
+	logger.info('uber.routes: <piper.events.out> connected');
+});
+
+subRoutes.on('data', function(data) {
+	jsonData = JSON.parse(data);
+	if (data) onRoutesEvent(jsonData);
+});
+
+
+function onProcessorEvent(id, user, client, body) {
+	logger.info('Uber Handler.onProcessorEvent for data %s', JSON.stringify(body));
 	if (msgid !== id) {
-		// ...
-		push(user, client, { 'text': text });	
+		// update usermail cache
+		var emailCacheKey = CACHE_PREFIX + user.email;
+		var userclient = {user: user.name, client: client};
+		cache.hmset(emailCacheKey, userclient);
+
+		switch (body.header) {
+			case 'request_ride':
+				checkAuth(user.email).then(function(access_token) {
+					if (access_token) {
+
+
+
+
+
+					} else {
+						// cache request till authorized
+						cacheRequestData(id, user, client, body);
+					}
+				});
+
+			break;
+			case 'get_time_estimate':
+
+
+			break;
+			case 'get_price_estimate':
+
+			break;
+			case 'get_request_details':
+				checkAuth(user.email).then(function(access_token) {
+					if (access_token) {
+
+
+
+
+
+					}
+				});
+			break;
+			case 'get_user_activity':
+				checkAuth(user.email).then(function(access_token) {
+					if (access_token) {
+
+
+
+
+
+					}
+				});
+			break;
+			case 'get_request_map':
+				checkAuth(user.email).then(function(access_token) {
+					if (access_token) {
+
+
+
+
+
+					}
+				});
+			break;
+			case 'get_request_receipt':
+				checkAuth(user.email).then(function(access_token) {
+					if (access_token) {
+
+
+
+
+
+					}
+				});
+			break;
+			case 'cancel_request':
+				checkAuth(user.email).then(function(access_token) {
+					if (access_token) {
+
+
+
+
+
+					}
+				});
+			break;
+		}
 		msgid = id;
 	}
 }
 
-/**
- * Push a message to the message exchange for a handler to pick up
- * @param user - user that owns this message
- * @param client - handle of the company that owns this message
- * @param body - JSON object with message to be processed by the handler
- */
- var push = function(user, client, body) {
-	data = { 'id': new Date().getTime(), 'user': user, 'client': client, 'body': body };
-	logger.info('SALES Handler: Connecting to MQ Exchange <piper.events.in>...');
-	pub.connect('piper.events.in', function() {
-		logger.info('SALES Handler:  MQ Exchange <piper.events.in> connected');
-		pub.publish('sales', JSON.stringify(data));
+function onRoutesEvent(data) {
+	if (msgid !== data.id) {
+		logger.debug('onRoutesEvent.data: %s', JSON.stringify(data));
+		switch (data.header) {
+			case 'auth':
+				// send user acknowledgement
+				var body = { header : 'auth_ack' };
+				logger.debug('Calling push(%s,%s)', data.email,JSON.stringify(body));
+				push(data.email, body);
+
+				// pick up active request and process
+				var emailCacheKey = CACHE_PREFIX + data.email;
+				cache.hget(emailCacheKey, 'request_data').then(function(requestData) {
+					if (requestData) {
+						logger.debug('RequestData: %s', requestData);
+						var jsonData = JSON.parse(requestData);
+						onProcessorEvent(jsonData.id, jsonData.user, jsonData.client, jsonData.body);
+					}
+				});
+			break;
+			case 'webhook':
+				// retrieve relevant request
+				// send update to processor
+			break;
+		}	
+		msgid = data.id;
+	}
+}
+
+function cacheRequestData(id, user, client, body) {
+	var requestData = JSON.stringify({
+				'id': id,
+				'user': user,
+				'client': client,
+				'body': body
+			});
+	var emailCacheKey = CACHE_PREFIX + user.email;
+	cache.hset(emailCacheKey, 'request_data', requestData);
+}
+
+function checkAuth(email) {
+	// check cache for access token
+	var emailCacheKey = CACHE_PREFIX + email;
+	return cache.hget(emailCacheKey, 'access_token').then(function (access_token) {
+		if (access_token) {
+			logger.debug('checkAuth.access_token: %s', access_token);
+			return access_token;
+		} else {
+			return UberUser.getUserByEmail(email).then(function(doc) {
+				if (doc && doc.access_token) {
+					// user and access_token exists...check for expiry
+					logger.debug('checkAuth.access_token: %s', JSON.stringify(doc));
+					if (typeof doc.tokenExpiry == Date && new Date() < doc.tokenExpiry) {
+						cache.hset(emailCacheKey, 'access_token', doc.access_token); // update cache
+						return doc.access_token; // valid token, return
+					} else {
+						return refreshAuth(email, doc.refresh_token);
+					}
+				} else {
+					// no_auth
+					requestAuth(email);
+					return false;
+				}
+			});
+		}
 	});
 }
 
-router.get('/subscribe', function(req, res) {	
-	var handle = req.query.handle;
+function requestAuth(email) {
+	var ref = new Date().getTime(); // generate unique ref and persist along with user details in cache
+	var data = { email  : email }; 	// cache ref with user email
+	var cachekey = CACHE_PREFIX + ref;
+	cache.hmset(cachekey, data);
 
-	if (handle) {
-		if (subscribeClient(handle)){
-			res.end('Client ' + handle + ' successfully subscribed and activated');
-		} else {
-			res.statusCode = ERROR_RESPONSE_CODE;
-			res.end('Unable to subscribe client ' + handle);
-		}
-	} else {
-		res.statusCode = ERROR_RESPONSE_CODE;
-		res.end ('Missing parameter for handle');
-	}
-});
+	var authLink = uber.getAuthorizeLink(ref);
 
-var subscribeClient = function(handle) {
-	try {
-		// Check if client already registered
-		SalesSubscriber.findOne({ handle:handle }, function (err, newClient) {
-			if (!err && newClient) {
-				// client already exists - exit
-				logger.info('Client ' + handle + ' already subscribed');
-			} else {
-				var ss = new SalesSubscriber({ 'handle': handle, 'createdAt': new Date() });
-				ss.save(function(err) {
-					if (err) {
-						logger.error('Cannot subscribe new client: ' + err);
-					} else {
-						logger.info('Client successfully subscribed, firing up MQ listener...');
-						sub.connect('piper.events.out', handle + '.sales', function() {
-							logger.info('SALES Handler <piper.events.out>: Bound to %s.sales', handle);
-						});
-					}
-				});
-			}
-		});
-		return true;
-	} catch (e) {
-		logger.error('Unable to subscribe new client: ' + e);
-		return false;
-	}
+	// push to processor
+	var body = { header : 'auth_link', authLink : authLink };
+	push(email, body);
+
 }
+
+function refreshAuth(email, refreshToken) {
+	var emailCacheKey = CACHE_PREFIX + email;
+	return uber.refreshUserToken (refreshToken).then(function(data) {
+		if (!data.access_token) {
+			return false;
+		} else {
+			var expiryDate = new Date();
+	        expiryDate.setSeconds(expiryDate.getSeconds() + data.expires_in);
+
+	        UberUser.findOneAndUpdate (
+	            { email: email }, 
+	            { email: email, 
+	              access_token: data.access_token,
+	              refresh_token: data.refresh_token, 
+	              token_scope: data.scope,
+	              expiry: expiryDate
+	            },
+	            {upsert: true}, function (err) {
+	            if (err) {
+	              logger.error('Unable to update uber user profile: ' + err);
+	            } else {
+	              logger.info('Uber Profile for User %s successfully updated', email);
+	            }
+	        });
+	        cache.hset(emailCacheKey, 'access_token', data.access_token); // update cache
+	        return data.access_token;
+		}
+	});	
+
+}
+
+
+
+
+/**
+ * Push a message to the message exchange for a processor to pick up via the controller
+ * @param email - email of user that owns this message
+ * @param body - JSON object with message for the processor
+ */
+function push(email, body) {
+	// retrieve user and client by email
+	var emailCacheKey = CACHE_PREFIX + email;
+	cache.hgetall(emailCacheKey).then(function(data) {
+		logger.debug('push.data: %s', JSON.stringify(data));
+		if (data.user) {
+			body.handler = 'UBER';
+			var rdata = { 'id': new Date().getTime(), 'user': data.user, 'client': data.client, module: RIDES_DESC.toUpperCase(), 'body': body };
+			logger.info('Uber Handler: Connecting to MQ Exchange <piper.events.in>...');
+			pub.connect('piper.events.in', function() {
+				logger.info('Uber Handler:  MQ Exchange <piper.events.in> connected');
+				pub.publish(mq.CONTROLLER_INBOUND, JSON.stringify(rdata));
+			});
+		}
+	});
+}
+
+
+
