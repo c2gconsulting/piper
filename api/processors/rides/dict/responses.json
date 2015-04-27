@@ -74,10 +74,10 @@
 		"./processors/sales/index"
 	],
 	"NO_CONFIRM_REQUEST" : [
-		"Thanks. Can I go ahead and book your ride?",
-		"I'm still waiting for your confirmation",
-		"@username, your ride? Tell me whether to continue or not",
-		"Whenever you're ready, can't continue till you give the go ahead"
+		"Thanks. The nearest @product_name will get here in @eta mins. Can I go ahead and book your ride?",
+		"An @product_name can get here in @eta mins. I still need confirmation",
+		"@username, your @product_name? Tell me whether to continue or not. ETA is @eta mins",
+		"Whenever you're ready, can't continue till you give the go ahead. ETA: @eta mins"
 	],
 	"CONFIRM_REQUEST_CANCEL" : [
 		"So do you want to cancel the trip request?",

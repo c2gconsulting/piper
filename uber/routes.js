@@ -90,6 +90,50 @@ module.exports = {
 
   surge: function(req, res) {
     // process surge confirmation follow up
+  },
+
+  products: function(req, res) {
+    var lat = req.query.lat;
+    var lng = req.query.lng;
+    uber.getProducts(lat,lng)
+      .then(function(data) {
+        logger.debug('Products: %s', JSON.stringify(data));
+        if (data) res.json(data);
+      })
+      .catch(function(data) {
+        logger.error('Cannot process request: %s', JSON.stringify(data));
+        if (data) res.json(data);
+      });
+  },
+  timeEstimates: function(req, res) {
+    var lat = req.query.lat;
+    var lng = req.query.lng;
+    var productId = req.query.product_id
+    uber.getTimeEstimates(lat,lng, productId)
+      .then(function(data) {
+        logger.debug('Time Estimates: %s', JSON.stringify(data));
+        if (data) res.json(data);
+      })
+      .catch(function(data) {
+          logger.error('Cannot process request: %s', JSON.stringify(data));
+          if (data) res.json(data);
+      });
+  },
+  priceEstimates: function(req, res) {
+    var slat = req.query.slat;
+    var slng = req.query.slng;
+    var elat = req.query.elat;
+    var elng = req.query.elng;
+    uber.getPriceEstimates(slat,slng,elat,elng)
+      .then(function(data) {
+        logger.debug('Price Estimates: %s', JSON.stringify(data));
+        if (data) res.json(data);
+      })
+      .catch(function(data) {
+            logger.error('Cannot process request: %s', JSON.stringify(data));
+            if (data) res.json(data);
+      });
   }
+
 
 }

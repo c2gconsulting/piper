@@ -1,6 +1,7 @@
 var UberUser = require('../shared/models/UberUser');
 var mq = require('../shared/lib/mq');
 var logger = require('../shared/lib/log');
+var defaultConfig = require('../shared/config/default.json');
 var uber = require('./lib/uber');
 var express = require('express');
 var exphbs = require('express-handlebars');
@@ -40,6 +41,9 @@ app.use("/", express.static(__dirname + "/public/"));
 app.get('/oauth', routes.auth);
 app.get('/hooks', routes.hooks);
 app.get('/surge', routes.surge);
+app.get('/v1/products', routes.products);
+app.get('/v1/estimates/time', routes.timeEstimates);
+app.get('/v1/estimates/price', routes.priceEstimates);
 
 
 var pub = mq.context.socket('PUB', {routing: 'topic'});
@@ -77,6 +81,23 @@ function onProcessorEvent(id, user, client, body) {
 		cache.hmset(emailCacheKey, userclient);
 
 		switch (body.header) {
+			case 'get_endpoint_base':
+				logger.debug('get_endpoint_base...');
+				var rbody = { header: 'endpoint_base', endpoint: defaultConfig.protocol + '://uber.' + defaultConfig.domain };
+				push(user.email, rbody);		
+				break;
+			case 'get_products':
+				if (body.startLat && body.startLong) {
+					uber.getProducts(body.startLat, body.startLong).then(function(products) {
+						var rbody = { header: 'products' };
+						rbody.products = products;
+						push(user.email, rbody);
+					});
+				} else {
+					var rbody = { header: 'insufficient_data', endpoint: 'products' };
+					push(user.email, rbody);
+				}
+				break;
 			case 'request_ride':
 				checkAuth(user.email).then(function(access_token) {
 					if (access_token) {
@@ -91,14 +112,14 @@ function onProcessorEvent(id, user, client, body) {
 					}
 				});
 
-			break;
+				break;
 			case 'get_time_estimate':
 
 
-			break;
+				break;
 			case 'get_price_estimate':
 
-			break;
+				break;
 			case 'get_request_details':
 				checkAuth(user.email).then(function(access_token) {
 					if (access_token) {
@@ -109,7 +130,7 @@ function onProcessorEvent(id, user, client, body) {
 
 					}
 				});
-			break;
+				break;
 			case 'get_user_activity':
 				checkAuth(user.email).then(function(access_token) {
 					if (access_token) {
@@ -120,7 +141,7 @@ function onProcessorEvent(id, user, client, body) {
 
 					}
 				});
-			break;
+				break;
 			case 'get_request_map':
 				checkAuth(user.email).then(function(access_token) {
 					if (access_token) {
@@ -131,7 +152,7 @@ function onProcessorEvent(id, user, client, body) {
 
 					}
 				});
-			break;
+				break;
 			case 'get_request_receipt':
 				checkAuth(user.email).then(function(access_token) {
 					if (access_token) {
@@ -142,7 +163,7 @@ function onProcessorEvent(id, user, client, body) {
 
 					}
 				});
-			break;
+				break;
 			case 'cancel_request':
 				checkAuth(user.email).then(function(access_token) {
 					if (access_token) {
@@ -153,7 +174,7 @@ function onProcessorEvent(id, user, client, body) {
 
 					}
 				});
-			break;
+				break;
 		}
 		msgid = id;
 	}

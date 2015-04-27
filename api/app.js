@@ -13,7 +13,7 @@ var cache = require('../shared/lib/cache').getRedisClient();
 
 var CACHE_PREFIX = 'api-server:';
 var ERROR_RESPONSE_CODE = 422;
-var CONTEXT_TTL = 7200;
+var CONTEXT_TTL = 1800;
 
 var w = [];
 var processors = [];
