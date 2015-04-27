@@ -13,6 +13,7 @@ var betap = require('../api/processors/travelRequest/betaProc');
 var ttl_time = require('../api/processors/travelRequest/settings');
 //require geocode js
 var geocode = require('./geocode');
+var when = require('when');
 
 // Create the Express application
 var app = exports.app = express();
@@ -127,15 +128,24 @@ router.get('/subscribe', function(req, res) {
 // get geocode
 router.get('/getcode', function(req, res){
     var address = req.query.address;
-    geocode.getCode(address, function(data) {
-      res.end(data);
-   });
+    geocode.getCode(address).then(function(x){res.end(x)});
 });
+
+
 router.get('/nearby', function(req, res) {
     var address = req.query.address;
-    geocode.getNearby(address, function(data){
-        res.end(data);
+    geocode.getNearby(address)
+        .then(function(d){
+        res.end(JSON.stringify(d));
     })
+});
+
+router.get('/getroutes', function(req, res){
+   var src = req.query.source, dst = req.query.destination;
+    geocode.getRoutes(src, dst)
+        .then(function(x) {
+            res.end(JSON.stringify(x));
+        });
 });
 var subscribeClient = function(handle) {
     try {
