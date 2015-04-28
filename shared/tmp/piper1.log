@@ -23957,3 +23957,9 @@ http://bit.ly/1z7NlzM sent to user kachi
 [Tue Apr 28 2015 01:30:33 GMT+0100 (WAT)] DEBUG module: RIDES, user: kachi, client: mobilizr, message: Where are you going to?
 [Tue Apr 28 2015 01:30:33 GMT+0100 (WAT)] INFO @blanka responded with "Where are you going to?"
 [Tue Apr 28 2015 01:30:33 GMT+0100 (WAT)] DEBUG Message: Where are you going to? sent to user kachi
+[Tue Apr 28 2015 01:37:29 GMT+0100 (WAT)] INFO MOBILIZR: Connection established...listening for messages
+[Tue Apr 28 2015 01:37:29 GMT+0100 (WAT)] INFO Welcome to Slack. You are @blanka of Mobilizr
+[Tue Apr 28 2015 01:37:29 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Opened
+[Tue Apr 28 2015 01:37:29 GMT+0100 (WAT)] INFO C2G STUDIO: Connection established...listening for messages
+[Tue Apr 28 2015 01:37:29 GMT+0100 (WAT)] INFO Welcome to Slack. You are @blonker of c2gstudio
+[Tue Apr 28 2015 01:37:29 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Opened
