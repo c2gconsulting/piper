@@ -125,7 +125,7 @@ function Rides(data) {
 													d.startLong = location.longt;
 													d.startLat = location.lat;
 													delete d.currLocation;
-													if (d.errStartLocation === 'BAD_START_ADDRESS') delete data.errStartLocation;
+													if (d.errStartLocation === 'BAD_START_ADDRESS') delete d.errStartLocation;
 													return true;
 												} else {
 													d.errStartLocation = 'BAD_START_ADDRESS';
@@ -146,7 +146,7 @@ function Rides(data) {
 												d.startLong = location.longt;
 												d.startLat = location.lat;
 												delete d.currLocation;
-												if (d.errStartLocation === 'BAD_START_ADDRESS') delete data.errStartLocation;
+												if (d.errStartLocation === 'BAD_START_ADDRESS') delete d.errStartLocation;
 												return true;
 											} else {
 												d.errStartLocation = 'BAD_START_ADDRESS';
@@ -348,7 +348,7 @@ function Rides(data) {
 									if (prod) {
 										var jProducts = JSON.parse(prod);
 										if (jProducts.products.length > 0) {
-											d.products = prod;
+											d.products = true;
 											d.productId = jProducts.products[0].product_id;
 											d.productName = jProducts.products[0].display_name;
 											if (d.carrier) {
@@ -360,7 +360,13 @@ function Rides(data) {
 													}
 													return true;
 												});
-											} else if (d.unCarrier) {
+												if (d.productName.toLowerCase() !== d.carrier.toLowerCase()) {
+													d.noPreferred = true;
+												} else {
+													delete d.noPreferred;
+												}
+											} 
+											if (d.unCarrier && d.noPreferred) {
 												jProducts.products.every(function(product) {
 													if (product.display_name.toLowerCase() !== d.unCarrier.toLowerCase()) {
 														d.productId = product.product_id;
@@ -389,12 +395,31 @@ function Rides(data) {
 							}
 						},
 						function(d, b, i) {
+							var retVal = false;
+							if(i.carrier && i.yes_no !== 'no') {
+								d.carrier = i.carrier;
+								if (d.unCarrier && (d.unCarrier.toLowerCase() === d.carrier.toLowerCase())) delete d.unCarrier;
+							}
+							return retVal;
+						},
+						function(d, b, i) {
+							var retVal = false;
+							if(i.carrier && i.yes_no === 'no') {
+								d.unCarrier = i.carrier;
+								if (d.carrier && (d.unCarrier.toLowerCase() === d.carrier.toLowerCase())) delete d.carrier;
+							}
+							return retVal;
+						},
+						function(d, b, i) {
 							if(d.products) {
 								logger.debug('Going for time...');
 								return getTimeEstimateAll(b.user.name, b.clientHandle, d).then(function(etas) {
 									if (etas) {
 										var jEtas = JSON.parse(etas);
 										var oldProductId = d.productId;
+										logger.debug('OldProductId: %s', oldProductId);
+										logger.debug('NewProductId: %s', d.productId);
+										logger.debug('Datahash Val: %s', JSON.stringify(d));
 										if (jEtas.times.length > 0) {
 											d.productId = jEtas.times[0].product_id;
 											d.productName = jEtas.times[0].display_name;
@@ -409,11 +434,15 @@ function Rides(data) {
 														return true;
 													});
 													if (d.productName.toLowerCase() !== d.carrier.toLowerCase()) {
+														logger.debug('***************************************** prefVal: GOT HERE 1');
+														logger.debug('OldProductId: %s', oldProductId);
+														logger.debug('NewProductId: %s', d.productId);
 														d.noPreferred = true;
 													} else {
 														delete d.noPreferred;
 													}
-												} else if (d.unCarrier) {
+												} 
+												if (d.unCarrier && d.noPreferred) {
 													jEtas.times.every(function(product) {
 														if (product.display_name.toLowerCase() !== d.unCarrier.toLowerCase()) {
 															d.productId = product.product_id;
@@ -423,6 +452,38 @@ function Rides(data) {
 														return true;
 													});
 													if (d.productName.toLowerCase() === d.unCarrier.toLowerCase()) {
+														logger.debug('***************************************** prefVal: GOT HERE 2');
+														d.onlyUnPreferred = true;
+													} else {
+														delete d.onlyUnPreferred;
+													}
+												}
+											} else {
+												if (i.carrier && i.yes_no !== 'no') {
+													jEtas.times.every(function(product) {
+														if (product.display_name.toLowerCase() === i.carrier.toLowerCase()) {
+															d.productId = product.product_id;
+															d.productName = product.display_name;
+															return false;
+														}
+														return true;
+													});
+													if (d.productName.toLowerCase() !== i.carrier.toLowerCase()) {
+														logger.debug('****************Strange, got here');
+														d.noPreferred = true;
+													} else {
+														delete d.noPreferred;
+													}
+												} else if (i.carrier && i.yes_no === 'no') {
+													jEtas.times.every(function(product) {
+														if (product.display_name.toLowerCase() !== i.carrier.toLowerCase()) {
+															d.productId = product.product_id;
+															d.productName = product.display_name;
+															return false;
+														}
+														return true;
+													});
+													if (d.productName.toLowerCase() === i.carrier.toLowerCase()) {
 														d.onlyUnPreferred = true;
 													} else {
 														delete d.onlyUnPreferred;
@@ -438,59 +499,6 @@ function Rides(data) {
 							} else {
 								return false;
 							}
-						},
-						function(d, b, i) {
-							var retVal = false;
-							if(i.carrier && i.yes_no !== 'no') {
-								d.carrier = i.carrier;
-								if (d.unCarrier && (d.unCarrier.toLowerCase() === d.carrier.toLowerCase())) delete d.unCarrier;
-								
-								// set productId to preference if products available
-								if (d.products) {
-									var jProducts = JSON.parse(d.products);
-									jProducts.products.every(function(product) {
-										if (product.display_name.toLowerCase() === d.carrier.toLowerCase()) {
-											d.productId = product.product_id;
-											d.productName = product.display_name;
-											retVal = true;
-											return false;
-										}
-										return true;
-									});
-									if (d.productName.toLowerCase() !== d.carrier.toLowerCase()) {
-										d.noPreferred = true;
-									} else {
-										delete d.noPreferred;
-									}
-								}
-							}
-							return retVal;
-						},
-						function(d, b, i) {
-							var retVal = false;
-							if(i.carrier && i.yes_no === 'no') {
-								d.unCarrier = i.carrier;
-								if (d.carrier && (d.unCarrier.toLowerCase() === d.carrier.toLowerCase())) delete d.carrier;
-								// set productId to exclude anti-preference if products available
-								if (d.products) {
-									var jProducts = JSON.parse(d.products);
-									jProducts.products.every(function(product) {
-										if (product.display_name.toLowerCase() !== d.unCarrier.toLowerCase()) {
-											d.productId = product.product_id;
-											d.productName = product.display_name;
-											retVal = true;
-											return false;
-										}
-										return true;
-									});
-									if (d.productName.toLowerCase() === d.unCarrier.toLowerCase()) {
-										d.onlyUnPreferred = true;
-									} else {
-										delete d.onlyUnPreferred;
-									}
-								}
-							}
-							return retVal;
 						},
 						function(d, b, i) {
 							if (d.productId) return true;
@@ -626,13 +634,15 @@ function Rides(data) {
 										var responseText = getResponse(data, data.errConfirmRequest).replace("@username", user.name);
 										var etaSecs = jEtas.times[0].estimate;
 										var etaMins = Math.round(etaSecs / 60);
-										responseText = responseText.replace("@eta", etaMins);
+										var etaText = etaMins === 1 ? (etaMins + ' min') : (etaMins + ' mins');
+										responseText = responseText.replace("@eta", etaText);
 										responseText = responseText.replace("@product_name", data.productName);
 
 										var prefixText = '';
 										if (data.noPreferred && data.carrier) {
 											prefixText = 'No ' + data.carrier + ' available... ';
 											delete data.noPreferred;
+											logger.debug('################ data.noPreferred: %s', data.noPreferred);
 										}
 
 										if (data.onlyUnPreferred && data.unCarrier) {
@@ -1179,7 +1189,7 @@ function getLocationKeyword(location) {
 		logger.debug('keywordList: %s', keywordList);
 		keywordList.forEach(function(keyword) {
 			logger.debug('location.search(%s): %s', keyword, location.search(keyword));
-			if (location.search(keyword) > -1 && location.length < keyword.length + 3) {
+			if (location.search(keyword) > -1 && location.length < keyword.length + 4) {
 				reqkey = lkKey;
 			}
 		});

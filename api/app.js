@@ -439,23 +439,23 @@ var onSlackEvent = function(user, client, message) {
 
 				// Check confidence level
 
-				var intentChanged = false;
+				var retainState = false;
 				if (intentBody.outcomes[0]['confidence'] < witConfig.MIN_CONFIDENCE) {
 					intent = 'no_intent';
-					intentChanged = true; // don't change state if intent changed
+					retainState = true; // don't change state if intent changed
 					logger.info('Low confidence, changing intent to intent_not_found');
 				}
-
-				//console.log("Updated Intent: " + intent);
+				
 				logger.debug("Confidence: " + intentBody.outcomes[0]['confidence']);
-
+				if (intent === 'chitchat') retainState = true; // also retain state if chitchat to allow better recovery
+				
 				// Create new UserContext and update
 				outContext = {
 						 state : '' 
 					};
 					
 				// Save to cache
-				if (!intentChanged) {
+				if (!retainState) {
 					cache.hset(userkey, 'state', getModule(intent, inContext.state)); // update state to reflect new module
 				} else {
 					cache.hset(userkey, 'state', inContext.state); // retain original state -> allows user to proceed with conversation with the old state

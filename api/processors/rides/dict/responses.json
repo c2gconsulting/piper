@@ -40,8 +40,8 @@
 		"Please I need confirmation that @address is your pickup address"
 	],
 	"NO_END_LOCATION" : [
-		"Where are you going to?",
-		"I need to you to confirm your destination",
+		"Where are you going?",
+		"I need to you to confirm your destination, I need an address",
 		"I need to know where you're going to book your ride",
 		"Sorry, can't proceed without your destination"
 	],
@@ -74,15 +74,15 @@
 		"./processors/sales/index"
 	],
 	"NO_CONFIRM_REQUEST" : [
-		"Thanks. The nearest @product_name will get there in @eta mins. Can I go ahead and book your ride?",
-		"An @product_name can get there in @eta mins. I still need confirmation",
-		"@username, your @product_name? Tell me whether to continue or not. ETA is @eta mins",
-		"Whenever you're ready, can't continue till you give the go ahead. ETA: @eta mins"
+		"The nearest @product_name will get there in @eta. Can I go ahead and book your ride?",
+		"An @product_name can get there in @eta. I still need confirmation",
+		"@username, i have your @product_name. Tell me whether to continue or not. ETA is @eta",
+		"Whenever you're ready I'll send for the @product_name, can't continue till you give the go ahead. ETA: @eta"
 	],
 	"NO_RIDE_ETA" : [
-		"Can't get an ETA for any ride at the moment, do I go ahead and make the booking?",
+		"Can't get an ETA for any ride at the moment, do I just go ahead and attempt the booking?",
 		"Still no ETA but we can attempt a booking. Should I proceed?",
-		"Let me know if to proceed with a booking"
+		"Let me know if to proceed with a booking. No ETAs confirmed though"
 	],
 	"CONFIRM_REQUEST_CANCEL" : [
 		"So do you want to cancel the trip request?",
