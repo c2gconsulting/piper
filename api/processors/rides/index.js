@@ -224,6 +224,7 @@ function Rides(data) {
 						function(d, b, i) {
 							if(d.confirmNeed === false) return true; // exit validations if trip cancelled
 							if (!d.endLong || d.endLong === 0) return false;
+							if (d.errEndLocation === 'NO_END_LOCATION') delete d.errEndLocation;
 							return true;
 						},
 						function(d, b, i) {
@@ -245,7 +246,7 @@ function Rides(data) {
 													d.endLong = location.longt;
 													d.endLat = location.lat;
 													delete d.currLocation;
-													if (d.errEndLocation === 'BAD_END_ADDRESS') delete data.errEndLocation;
+													if (d.errEndLocation === 'BAD_END_ADDRESS') delete d.errEndLocation;
 													return true;
 												} else {
 													d.errEndLocation = 'BAD_END_ADDRESS';
@@ -266,7 +267,7 @@ function Rides(data) {
 												d.endLong = location.longt;
 												d.endLat = location.lat;
 												delete d.currLocation;
-												if (d.errEndLocation === 'BAD_END_ADDRESS') delete data.errEndLocation;
+												if (d.errEndLocation === 'BAD_END_ADDRESS') delete d.errEndLocation;
 												return true;
 											} else {
 												d.errEndLocation = 'BAD_END_ADDRESS';
@@ -346,32 +347,96 @@ function Rides(data) {
 								return getProducts(b.user.name, b.clientHandle, d).then(function(prod) {
 									if (prod) {
 										var jProducts = JSON.parse(prod);
-										d.productId = jProducts.products[0].product_id;
-										d.productName = jProducts.products[0].display_name;
-										if (d.carrier) {
-											jProducts.products.every(function(product) {
-												if (product.display_name.toLowerCase() === d.carrier.toLowerCase()) {
-													d.productId = product.product_id;
-													d.productName = product.display_name;
-													return false;
+										if (jProducts.products.length > 0) {
+											d.products = prod;
+											d.productId = jProducts.products[0].product_id;
+											d.productName = jProducts.products[0].display_name;
+											if (d.carrier) {
+												jProducts.products.every(function(product) {
+													if (product.display_name.toLowerCase() === d.carrier.toLowerCase()) {
+														d.productId = product.product_id;
+														d.productName = product.display_name;
+														return false;
+													}
+													return true;
+												});
+											} else if (d.unCarrier) {
+												jProducts.products.every(function(product) {
+													if (product.display_name.toLowerCase() !== d.unCarrier.toLowerCase()) {
+														d.productId = product.product_id;
+														d.productName = product.display_name;
+														return false;
+													}
+													return true;
+												});
+												if (d.productName.toLowerCase() === d.unCarrier.toLowerCase()) {
+													d.onlyUnPreferred = true;
+												} else {
+													delete d.onlyUnPreferred;
 												}
-												return true;
-											});
-										} else if (d.unCarrier) {
-											jProducts.products.every(function(product) {
-												if (product.display_name.toLowerCase() !== d.unCarrier.toLowerCase()) {
-													d.productId = product.product_id;
-													d.productName = product.display_name;
-													return false;
+											}
+											return true;
+										} else {
+											d.errProductId = 'NO_PRODUCTS_AVAILABLE';
+											return false;
+										}
+									} else {
+										return false;
+									}
+								});
+							} else {
+								return false;
+							}
+						},
+						function(d, b, i) {
+							if(d.products) {
+								logger.debug('Going for time...');
+								return getTimeEstimateAll(b.user.name, b.clientHandle, d).then(function(etas) {
+									if (etas) {
+										var jEtas = JSON.parse(etas);
+										var oldProductId = d.productId;
+										if (jEtas.times.length > 0) {
+											d.productId = jEtas.times[0].product_id;
+											d.productName = jEtas.times[0].display_name;
+											if (oldProductId !== d.productId) {
+												if (d.carrier) {
+													jEtas.times.every(function(product) {
+														if (product.display_name.toLowerCase() === d.carrier.toLowerCase()) {
+															d.productId = product.product_id;
+															d.productName = product.display_name;
+															return false;
+														}
+														return true;
+													});
+													if (d.productName.toLowerCase() !== d.carrier.toLowerCase()) {
+														d.noPreferred = true;
+													} else {
+														delete d.noPreferred;
+													}
+												} else if (d.unCarrier) {
+													jEtas.times.every(function(product) {
+														if (product.display_name.toLowerCase() !== d.unCarrier.toLowerCase()) {
+															d.productId = product.product_id;
+															d.productName = product.display_name;
+															return false;
+														}
+														return true;
+													});
+													if (d.productName.toLowerCase() === d.unCarrier.toLowerCase()) {
+														d.onlyUnPreferred = true;
+													} else {
+														delete d.onlyUnPreferred;
+													}
 												}
-												return true;
-											});
+											}
 										}
 										return true;
 									} else {
 										return false;
 									}
 								});
+							} else {
+								return false;
 							}
 						},
 						function(d, b, i) {
@@ -392,6 +457,11 @@ function Rides(data) {
 										}
 										return true;
 									});
+									if (d.productName.toLowerCase() !== d.carrier.toLowerCase()) {
+										d.noPreferred = true;
+									} else {
+										delete d.noPreferred;
+									}
 								}
 							}
 							return retVal;
@@ -413,9 +483,18 @@ function Rides(data) {
 										}
 										return true;
 									});
+									if (d.productName.toLowerCase() === d.unCarrier.toLowerCase()) {
+										d.onlyUnPreferred = true;
+									} else {
+										delete d.onlyUnPreferred;
+									}
 								}
 							}
 							return retVal;
+						},
+						function(d, b, i) {
+							if (d.productId) return true;
+							return false;
 						}
 					],
 		'confirmRequest' : [
@@ -499,14 +578,13 @@ function Rides(data) {
 						});
 					},
 		'productId' : function(user, clientHandle, data) {
-						if (data.preferredProduct) {
-							if (!data.lvlProductQueries || isNaN(data.lvlProductQueries)) data.lvlProductQueries = 0;
-							while (!responses.carrier[data.lvlProductQueries] && data.lvlProductQueries > 0) data.lvlProductQueries--;
-							var responseText = responses.carrier[data.lvlProductQueries] ? responses.carrier[data.lvlProductQueries].replace("@preferredProduct", data.preferredProduct) : "I'm a bit confused..."; 
-							data.lvlProductQueries++;
+						if (!data.errProductId || errKeys.indexOf(data.errProductId) < 0) return true; 
+						var responseText = getResponse(data, data.errProductId);
+						responseText = responseText.replace("@username", user.name);
 						
-							me.emit('message', Rides.MODULE, user.name, clientHandle, responseText, Rides.MODULE + "_confirm_product");
-						} 
+						me.emit('message', Rides.MODULE, user.name, clientHandle, responseText, errorContext[data.errProductId]);
+						if (data.errProductId === 'NO_PRODUCTS_AVAILABLE') data.cancelFlag = true; // fatal error, cancel
+						delete data.errProductId;
 						return false;
 					},
 		'endLong': function(user, clientHandle, data) {
@@ -538,19 +616,39 @@ function Rides(data) {
 						if (!data.errConfirmRequest || errKeys.indexOf(data.errConfirmRequest) < 0) {
 							data.errConfirmRequest = 'NO_CONFIRM_REQUEST'; 
 						}
-						var responseText = getResponse(data, data.errConfirmRequest).replace("@username", user.name);
 						
 						// get ETA
 						if (data.productId) {
 							return getTimeEstimate(user.name, clientHandle, data).then(function (etas) {
 								if (etas) {
 									jEtas = JSON.parse(etas);
-									var etaSecs = jEtas.times[0].estimate;
-									var etaMins = Math.round(etaSecs / 60);
-									responseText = responseText.replace("@eta", etaMins);
-									responseText = responseText.replace("@product_name", data.productName);
-									me.emit('message', Rides.MODULE, user.name, clientHandle, responseText, errorContext[data.errConfirmRequest]);
-									delete data.errConfirmRequest;
+									if (jEtas.times.length > 0) {
+										var responseText = getResponse(data, data.errConfirmRequest).replace("@username", user.name);
+										var etaSecs = jEtas.times[0].estimate;
+										var etaMins = Math.round(etaSecs / 60);
+										responseText = responseText.replace("@eta", etaMins);
+										responseText = responseText.replace("@product_name", data.productName);
+
+										var prefixText = '';
+										if (data.noPreferred && data.carrier) {
+											prefixText = 'No ' + data.carrier + ' available... ';
+											delete data.noPreferred;
+										}
+
+										if (data.onlyUnPreferred && data.unCarrier) {
+											prefixText += 'Only the ' + data.unCarrier + ' available at the moment. ';
+											delete data.onlyUnPreferred;
+										}
+
+										responseText = prefixText + responseText;
+										me.emit('message', Rides.MODULE, user.name, clientHandle, responseText, errorContext[data.errConfirmRequest]);
+										delete data.errConfirmRequest;
+									
+									} else {
+										// no available rides
+										var responseText = getResponse(data, 'NO_RIDE_ETA');
+										me.emit('message', Rides.MODULE, user.name, clientHandle, responseText, errorContext['NO_RIDE_ETA']);
+									}
 									return false;
 								} else {
 									return true;
@@ -675,6 +773,26 @@ function getTimeEstimate(username, clientHandle, data) {
 		        }
 		    };
 		    if (data.productId) requrl.qs.product_id = data.productId;    
+		    return request(requrl);
+		} else {
+			return false;
+		}
+	});
+}
+
+function getTimeEstimateAll(username, clientHandle, data) {
+	return getHandlerEndpoint(username, clientHandle).then (function (endpoint) {
+		if (endpoint) {
+			logger.debug('getTimeEstimateAll->endpoint: %s', endpoint);
+			var resource = '/v1/estimates/time' ;
+		    var requrl = {
+		        url : endpoint + resource,
+		        method : 'get',
+		        qs : {
+		            'lat': data.startLat,
+		            'lng' : data.startLong
+		        }
+		    };
 		    return request(requrl);
 		} else {
 			return false;
@@ -876,6 +994,8 @@ Rides.prototype.processData = function(user, clientHandle, body, handlerTodo) {
 								logger.debug('No more missing data: calling handleRequest for %s', handlerTodo);
 								me.handleRequest[handlerTodo](user, clientHandle, datahash);
 
+							} else {
+								if (datahash.cancelFlag) me.cancelRequest(user.name, clientHandle, datahash);
 							}
 						});
 					});
@@ -1012,7 +1132,7 @@ function extractEntities(body) {
 
 function getLocationByAddress(address) {
 	return geo.getCode(address).then(function(data){
-		//logger.info('Geo data: ' + JSON.stringify(data));
+		logger.info('Geo data: ' + JSON.stringify(data));
 		if (data.status === 'OK' && data.results[0].geometry.location.lng) {
 			return {longt : data.results[0].geometry.location.lng, lat : data.results[0].geometry.location.lat };
 		} else {
@@ -1059,7 +1179,7 @@ function getLocationKeyword(location) {
 		logger.debug('keywordList: %s', keywordList);
 		keywordList.forEach(function(keyword) {
 			logger.debug('location.search(%s): %s', keyword, location.search(keyword));
-			if (location.search(keyword) > -1) {
+			if (location.search(keyword) > -1 && location.length < keyword.length + 3) {
 				reqkey = lkKey;
 			}
 		});

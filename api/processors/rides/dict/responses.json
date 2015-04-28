@@ -79,10 +79,19 @@
 		"@username, your @product_name? Tell me whether to continue or not. ETA is @eta mins",
 		"Whenever you're ready, can't continue till you give the go ahead. ETA: @eta mins"
 	],
+	"NO_RIDE_ETA" : [
+		"Can't get an ETA for any ride at the moment, do I go ahead and make the booking?",
+		"Still no ETA but we can attempt a booking. Should I proceed?",
+		"Let me know if to proceed with a booking"
+	],
 	"CONFIRM_REQUEST_CANCEL" : [
 		"So do you want to cancel the trip request?",
 		"Are you saying I shouldn't call the cab anymore?",
 		"@username Just let me know if you need me to cancel this ride"
+	],
+	"NO_PRODUCTS_AVAILABLE" : [
+		"Sorry no service available in your location",
+		"Need to cancel, there's no ride service available at your location"
 	],
 	"CANCEL_REQUEST_CANCEL" : [
 		"Fine so we proceed with the booking?",

@@ -441,7 +441,7 @@ var onSlackEvent = function(user, client, message) {
 
 				var intentChanged = false;
 				if (intentBody.outcomes[0]['confidence'] < witConfig.MIN_CONFIDENCE) {
-					intent = 'intent_not_found';
+					intent = 'no_intent';
 					intentChanged = true; // don't change state if intent changed
 					logger.info('Low confidence, changing intent to intent_not_found');
 				}
