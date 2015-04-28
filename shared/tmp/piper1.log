@@ -23701,3 +23701,259 @@ http://bit.ly/1Ev1589 sent to user kachi
 [Mon Apr 27 2015 17:04:42 GMT+0100 (WAT)] DEBUG module: RIDES, user: kachi, client: mobilizr, message: Fine, your trip request has been cancelled
 [Mon Apr 27 2015 17:04:42 GMT+0100 (WAT)] INFO @blanka responded with "Fine, your trip request has been cancelled"
 [Mon Apr 27 2015 17:04:42 GMT+0100 (WAT)] DEBUG Message: Fine, your trip request has been cancelled sent to user kachi
+[Mon Apr 27 2015 18:06:17 GMT+0100 (WAT)] INFO C2G STUDIO: Connection established...listening for messages
+[Mon Apr 27 2015 18:06:17 GMT+0100 (WAT)] INFO Welcome to Slack. You are @blonker of c2gstudio
+[Mon Apr 27 2015 18:06:17 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Opened
+[Mon Apr 27 2015 18:06:17 GMT+0100 (WAT)] INFO MOBILIZR: Connection established...listening for messages
+[Mon Apr 27 2015 18:06:17 GMT+0100 (WAT)] INFO Welcome to Slack. You are @blanka of Mobilizr
+[Mon Apr 27 2015 18:06:17 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Opened
+[Mon Apr 27 2015 18:17:27 GMT+0100 (WAT)] INFO MOBILIZR: Connection established...listening for messages
+[Mon Apr 27 2015 18:17:27 GMT+0100 (WAT)] INFO Welcome to Slack. You are @blanka of Mobilizr
+[Mon Apr 27 2015 18:17:27 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Opened
+[Mon Apr 27 2015 18:17:38 GMT+0100 (WAT)] INFO C2G STUDIO: Connection established...listening for messages
+[Mon Apr 27 2015 18:17:38 GMT+0100 (WAT)] INFO Welcome to Slack. You are @blonker of c2gstudio
+[Mon Apr 27 2015 18:17:38 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Opened
+[Mon Apr 27 2015 18:22:14 GMT+0100 (WAT)] INFO MOBILIZR Error: "ENOTFOUND"
+[Mon Apr 27 2015 18:22:14 GMT+0100 (WAT)] ERROR Error: "ENOTFOUND"
+[Mon Apr 27 2015 18:22:14 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Error
+[Mon Apr 27 2015 18:22:14 GMT+0100 (WAT)] INFO C2G STUDIO Error: "ENOTFOUND"
+[Mon Apr 27 2015 18:22:14 GMT+0100 (WAT)] ERROR Error: "ENOTFOUND"
+[Mon Apr 27 2015 18:22:14 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Error
+[Mon Apr 27 2015 18:22:46 GMT+0100 (WAT)] INFO MOBILIZR Error: "ENOTFOUND"
+[Mon Apr 27 2015 18:22:46 GMT+0100 (WAT)] ERROR Error: "ENOTFOUND"
+[Mon Apr 27 2015 18:22:46 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Error
+[Mon Apr 27 2015 18:22:46 GMT+0100 (WAT)] INFO C2G STUDIO Error: "ENOTFOUND"
+[Mon Apr 27 2015 18:22:46 GMT+0100 (WAT)] ERROR Error: "ENOTFOUND"
+[Mon Apr 27 2015 18:22:46 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Error
+[Mon Apr 27 2015 18:23:19 GMT+0100 (WAT)] INFO MOBILIZR Error: "ENOTFOUND"
+[Mon Apr 27 2015 18:23:19 GMT+0100 (WAT)] ERROR Error: "ENOTFOUND"
+[Mon Apr 27 2015 18:23:19 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Error
+[Mon Apr 27 2015 18:23:19 GMT+0100 (WAT)] INFO C2G STUDIO Error: "ENOTFOUND"
+[Mon Apr 27 2015 18:23:19 GMT+0100 (WAT)] ERROR Error: "ENOTFOUND"
+[Mon Apr 27 2015 18:23:19 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Error
+[Mon Apr 27 2015 18:23:45 GMT+0100 (WAT)] INFO MOBILIZR: Connection established...listening for messages
+[Mon Apr 27 2015 18:23:45 GMT+0100 (WAT)] INFO Welcome to Slack. You are @blanka of Mobilizr
+[Mon Apr 27 2015 18:23:45 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Opened
+[Mon Apr 27 2015 18:23:45 GMT+0100 (WAT)] INFO C2G STUDIO: Connection established...listening for messages
+[Mon Apr 27 2015 18:23:45 GMT+0100 (WAT)] INFO Welcome to Slack. You are @blonker of c2gstudio
+[Mon Apr 27 2015 18:23:45 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Opened
+[Mon Apr 27 2015 18:25:35 GMT+0100 (WAT)] INFO MOBILIZR Error: "ENOTFOUND"
+[Mon Apr 27 2015 18:25:35 GMT+0100 (WAT)] ERROR Error: "ENOTFOUND"
+[Mon Apr 27 2015 18:25:35 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Error
+[Mon Apr 27 2015 18:25:35 GMT+0100 (WAT)] INFO C2G STUDIO Error: "ENOTFOUND"
+[Mon Apr 27 2015 18:25:35 GMT+0100 (WAT)] ERROR Error: "ENOTFOUND"
+[Mon Apr 27 2015 18:25:35 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Error
+[Mon Apr 27 2015 18:26:07 GMT+0100 (WAT)] INFO C2G STUDIO Error: "ENOTFOUND"
+[Mon Apr 27 2015 18:26:07 GMT+0100 (WAT)] ERROR Error: "ENOTFOUND"
+[Mon Apr 27 2015 18:26:07 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Error
+[Mon Apr 27 2015 18:26:07 GMT+0100 (WAT)] INFO MOBILIZR Error: "ENOTFOUND"
+[Mon Apr 27 2015 18:26:07 GMT+0100 (WAT)] ERROR Error: "ENOTFOUND"
+[Mon Apr 27 2015 18:26:07 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Error
+[Mon Apr 27 2015 18:26:40 GMT+0100 (WAT)] INFO C2G STUDIO Error: "ENOTFOUND"
+[Mon Apr 27 2015 18:26:40 GMT+0100 (WAT)] ERROR Error: "ENOTFOUND"
+[Mon Apr 27 2015 18:26:40 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Error
+[Mon Apr 27 2015 18:26:40 GMT+0100 (WAT)] INFO MOBILIZR Error: "ENOTFOUND"
+[Mon Apr 27 2015 18:26:40 GMT+0100 (WAT)] ERROR Error: "ENOTFOUND"
+[Mon Apr 27 2015 18:26:40 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Error
+[Mon Apr 27 2015 18:27:14 GMT+0100 (WAT)] INFO MOBILIZR Error: "ENOTFOUND"
+[Mon Apr 27 2015 18:27:14 GMT+0100 (WAT)] ERROR Error: "ENOTFOUND"
+[Mon Apr 27 2015 18:27:14 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Error
+[Mon Apr 27 2015 18:27:14 GMT+0100 (WAT)] INFO C2G STUDIO Error: "ENOTFOUND"
+[Mon Apr 27 2015 18:27:14 GMT+0100 (WAT)] ERROR Error: "ENOTFOUND"
+[Mon Apr 27 2015 18:27:14 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Error
+[Mon Apr 27 2015 18:27:49 GMT+0100 (WAT)] INFO C2G STUDIO Error: "ENOTFOUND"
+[Mon Apr 27 2015 18:27:49 GMT+0100 (WAT)] ERROR Error: "ENOTFOUND"
+[Mon Apr 27 2015 18:27:49 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Error
+[Mon Apr 27 2015 18:27:49 GMT+0100 (WAT)] INFO MOBILIZR Error: "ENOTFOUND"
+[Mon Apr 27 2015 18:27:49 GMT+0100 (WAT)] ERROR Error: "ENOTFOUND"
+[Mon Apr 27 2015 18:27:49 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Error
+[Mon Apr 27 2015 18:28:25 GMT+0100 (WAT)] INFO C2G STUDIO Error: "ENOTFOUND"
+[Mon Apr 27 2015 18:28:25 GMT+0100 (WAT)] ERROR Error: "ENOTFOUND"
+[Mon Apr 27 2015 18:28:25 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Error
+[Mon Apr 27 2015 18:28:25 GMT+0100 (WAT)] INFO MOBILIZR Error: "ENOTFOUND"
+[Mon Apr 27 2015 18:28:25 GMT+0100 (WAT)] ERROR Error: "ENOTFOUND"
+[Mon Apr 27 2015 18:28:25 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Error
+[Mon Apr 27 2015 18:29:02 GMT+0100 (WAT)] INFO C2G STUDIO Error: "ENOTFOUND"
+[Mon Apr 27 2015 18:29:02 GMT+0100 (WAT)] ERROR Error: "ENOTFOUND"
+[Mon Apr 27 2015 18:29:02 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Error
+[Mon Apr 27 2015 18:29:02 GMT+0100 (WAT)] INFO MOBILIZR Error: "ENOTFOUND"
+[Mon Apr 27 2015 18:29:02 GMT+0100 (WAT)] ERROR Error: "ENOTFOUND"
+[Mon Apr 27 2015 18:29:02 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Error
+[Mon Apr 27 2015 18:29:41 GMT+0100 (WAT)] INFO MOBILIZR Error: "ENOTFOUND"
+[Mon Apr 27 2015 18:29:41 GMT+0100 (WAT)] ERROR Error: "ENOTFOUND"
+[Mon Apr 27 2015 18:29:41 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Error
+[Mon Apr 27 2015 18:29:41 GMT+0100 (WAT)] INFO C2G STUDIO Error: "ENOTFOUND"
+[Mon Apr 27 2015 18:29:41 GMT+0100 (WAT)] ERROR Error: "ENOTFOUND"
+[Mon Apr 27 2015 18:29:41 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Error
+[Mon Apr 27 2015 18:30:20 GMT+0100 (WAT)] INFO MOBILIZR Error: "ENOTFOUND"
+[Mon Apr 27 2015 18:30:20 GMT+0100 (WAT)] ERROR Error: "ENOTFOUND"
+[Mon Apr 27 2015 18:30:20 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Error
+[Mon Apr 27 2015 18:30:20 GMT+0100 (WAT)] INFO C2G STUDIO Error: "ENOTFOUND"
+[Mon Apr 27 2015 18:30:20 GMT+0100 (WAT)] ERROR Error: "ENOTFOUND"
+[Mon Apr 27 2015 18:30:20 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Error
+[Mon Apr 27 2015 18:31:00 GMT+0100 (WAT)] INFO MOBILIZR Error: "ENOTFOUND"
+[Mon Apr 27 2015 18:31:00 GMT+0100 (WAT)] ERROR Error: "ENOTFOUND"
+[Mon Apr 27 2015 18:31:00 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Error
+[Mon Apr 27 2015 18:31:00 GMT+0100 (WAT)] INFO C2G STUDIO Error: "ENOTFOUND"
+[Mon Apr 27 2015 18:31:00 GMT+0100 (WAT)] ERROR Error: "ENOTFOUND"
+[Mon Apr 27 2015 18:31:00 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Error
+[Mon Apr 27 2015 18:31:41 GMT+0100 (WAT)] INFO MOBILIZR Error: "ENOTFOUND"
+[Mon Apr 27 2015 18:31:41 GMT+0100 (WAT)] ERROR Error: "ENOTFOUND"
+[Mon Apr 27 2015 18:31:41 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Error
+[Mon Apr 27 2015 18:31:41 GMT+0100 (WAT)] INFO C2G STUDIO Error: "ENOTFOUND"
+[Mon Apr 27 2015 18:31:41 GMT+0100 (WAT)] ERROR Error: "ENOTFOUND"
+[Mon Apr 27 2015 18:31:41 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Error
+[Mon Apr 27 2015 18:32:05 GMT+0100 (WAT)] INFO MOBILIZR: Connection established...listening for messages
+[Mon Apr 27 2015 18:32:05 GMT+0100 (WAT)] INFO Welcome to Slack. You are @blanka of Mobilizr
+[Mon Apr 27 2015 18:32:05 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Opened
+[Mon Apr 27 2015 18:32:05 GMT+0100 (WAT)] INFO C2G STUDIO: Connection established...listening for messages
+[Mon Apr 27 2015 18:32:05 GMT+0100 (WAT)] INFO Welcome to Slack. You are @blonker of c2gstudio
+[Mon Apr 27 2015 18:32:05 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Opened
+[Mon Apr 27 2015 22:18:18 GMT+0100 (WAT)] INFO C2G STUDIO Error: "ENOTFOUND"
+[Mon Apr 27 2015 22:18:18 GMT+0100 (WAT)] ERROR Error: "ENOTFOUND"
+[Mon Apr 27 2015 22:18:18 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Error
+[Mon Apr 27 2015 22:18:18 GMT+0100 (WAT)] INFO MOBILIZR Error: "ENOTFOUND"
+[Mon Apr 27 2015 22:18:18 GMT+0100 (WAT)] ERROR Error: "ENOTFOUND"
+[Mon Apr 27 2015 22:18:18 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Error
+[Mon Apr 27 2015 22:18:28 GMT+0100 (WAT)] INFO MOBILIZR: Connection established...listening for messages
+[Mon Apr 27 2015 22:18:28 GMT+0100 (WAT)] INFO Welcome to Slack. You are @blanka of Mobilizr
+[Mon Apr 27 2015 22:18:28 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Opened
+[Mon Apr 27 2015 22:18:28 GMT+0100 (WAT)] INFO C2G STUDIO: Connection established...listening for messages
+[Mon Apr 27 2015 22:18:28 GMT+0100 (WAT)] INFO Welcome to Slack. You are @blonker of c2gstudio
+[Mon Apr 27 2015 22:18:28 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Opened
+[Tue Apr 28 2015 01:26:41 GMT+0100 (WAT)] INFO Piper Controller: Connecting to MQ Exchange <piper.events.in>...
+[Tue Apr 28 2015 01:26:42 GMT+0100 (WAT)] INFO CHITCHAT Handler: Connecting to MQ Exchange <piper.events.out>...
+[Tue Apr 28 2015 01:26:42 GMT+0100 (WAT)] INFO SALES Handler: Connecting to MQ Exchange <piper.events.out>...
+[Tue Apr 28 2015 01:26:43 GMT+0100 (WAT)] INFO UBER Handler: Connecting to MQ Exchange <piper.events.out>...
+[Tue Apr 28 2015 01:26:43 GMT+0100 (WAT)] INFO Piper server listening on port 3000 in development mode
+[Tue Apr 28 2015 01:26:43 GMT+0100 (WAT)] INFO Successfully connected to: mongodb://localhost/piper
+[Tue Apr 28 2015 01:26:43 GMT+0100 (WAT)] INFO Updating registry for client mobilizr...
+[Tue Apr 28 2015 01:26:43 GMT+0100 (WAT)] INFO Updating registry for client c2gstudio...
+[Tue Apr 28 2015 01:26:43 GMT+0100 (WAT)] INFO Registered connection for client: mobilizr
+[Tue Apr 28 2015 01:26:43 GMT+0100 (WAT)] INFO Registered connection for client: c2gstudio
+[Tue Apr 28 2015 01:26:43 GMT+0100 (WAT)] INFO CHITCHAT Handler <piper.events.out>: Binding to mobilizr.chitchat...
+[Tue Apr 28 2015 01:26:43 GMT+0100 (WAT)] INFO CHITCHAT Handler <piper.events.out>: Binding to c2gstudio.chitchat...
+[Tue Apr 28 2015 01:26:45 GMT+0100 (WAT)] INFO Piper Controller: MQ Exchange <piper.events.in> connected
+[Tue Apr 28 2015 01:26:45 GMT+0100 (WAT)] INFO uber.routes: <piper.events.out> connected
+[Tue Apr 28 2015 01:26:45 GMT+0100 (WAT)] INFO rides.*: <piper.events.out> connected
+[Tue Apr 28 2015 01:26:49 GMT+0100 (WAT)] INFO MOBILIZR: Connection established...listening for messages
+[Tue Apr 28 2015 01:26:49 GMT+0100 (WAT)] INFO Welcome to Slack. You are @blanka of Mobilizr
+[Tue Apr 28 2015 01:26:49 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Opened
+[Tue Apr 28 2015 01:26:49 GMT+0100 (WAT)] INFO C2G STUDIO: Connection established...listening for messages
+[Tue Apr 28 2015 01:26:49 GMT+0100 (WAT)] INFO Welcome to Slack. You are @blonker of c2gstudio
+[Tue Apr 28 2015 01:26:49 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Opened
+[Tue Apr 28 2015 01:29:31 GMT+0100 (WAT)] INFO Received: message kachi @kachi 1430180971.000002 "i need a cab"
+[Tue Apr 28 2015 01:29:31 GMT+0100 (WAT)] DEBUG IGNORE FLAG: false
+[Tue Apr 28 2015 01:29:31 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Message Received
+[Tue Apr 28 2015 01:29:31 GMT+0100 (WAT)] DEBUG Userkey: api-server:kachi@mobilizr:context
+[Tue Apr 28 2015 01:29:31 GMT+0100 (WAT)] INFO No context: {"state":""}
+[Tue Apr 28 2015 01:29:31 GMT+0100 (WAT)] DEBUG 2015-04-28T00:29:31.000Z
+[Tue Apr 28 2015 01:29:33 GMT+0100 (WAT)] DEBUG IntentBody: {"msg_id":"e5eff1c4-ee9d-481e-b9a4-16d057b4f496","_text":"i need a cab","outcomes":[{"_text":"i need a cab","intent":"rides_request_trip","entities":{},"confidence":0.999}],"context":{"state":"","reference_time":"2015-04-28T00:29:31.000Z"}}
+[Tue Apr 28 2015 01:29:33 GMT+0100 (WAT)] DEBUG Intent: rides_request_trip
+[Tue Apr 28 2015 01:29:33 GMT+0100 (WAT)] DEBUG Confidence: 0.999
+[Tue Apr 28 2015 01:29:33 GMT+0100 (WAT)] INFO RIDES Processor: Connecting to MQ Exchange <piper.events.in>...
+[Tue Apr 28 2015 01:29:33 GMT+0100 (WAT)] DEBUG Entities: {}
+[Tue Apr 28 2015 01:29:33 GMT+0100 (WAT)] DEBUG New context for api-server:kachi@mobilizr:context: {"state":"RIDES"}
+[Tue Apr 28 2015 01:29:33 GMT+0100 (WAT)] DEBUG confirmNeed: 0 -> false
+[Tue Apr 28 2015 01:29:33 GMT+0100 (WAT)] DEBUG confirmNeed: 1 -> true
+[Tue Apr 28 2015 01:29:33 GMT+0100 (WAT)] DEBUG startLong: 0 -> false
+[Tue Apr 28 2015 01:29:33 GMT+0100 (WAT)] DEBUG startLong: 1 -> false
+[Tue Apr 28 2015 01:29:33 GMT+0100 (WAT)] DEBUG startLong: 2 -> false
+[Tue Apr 28 2015 01:29:33 GMT+0100 (WAT)] DEBUG startLong: 3 -> false
+[Tue Apr 28 2015 01:29:33 GMT+0100 (WAT)] DEBUG endLong: 0 -> false
+[Tue Apr 28 2015 01:29:33 GMT+0100 (WAT)] DEBUG endLong: 1 -> false
+[Tue Apr 28 2015 01:29:33 GMT+0100 (WAT)] DEBUG endLong: 2 -> false
+[Tue Apr 28 2015 01:29:33 GMT+0100 (WAT)] DEBUG departureTime: 0 -> false
+[Tue Apr 28 2015 01:29:33 GMT+0100 (WAT)] DEBUG departureTime: 1 -> true
+[Tue Apr 28 2015 01:29:33 GMT+0100 (WAT)] DEBUG productId: 0 -> false
+[Tue Apr 28 2015 01:29:33 GMT+0100 (WAT)] DEBUG productId: 1 -> false
+[Tue Apr 28 2015 01:29:33 GMT+0100 (WAT)] DEBUG productId: 2 -> undefined
+[Tue Apr 28 2015 01:29:33 GMT+0100 (WAT)] DEBUG productId: 3 -> false
+[Tue Apr 28 2015 01:29:33 GMT+0100 (WAT)] DEBUG productId: 4 -> false
+[Tue Apr 28 2015 01:29:33 GMT+0100 (WAT)] DEBUG confirmRequest: 0 -> false
+[Tue Apr 28 2015 01:29:33 GMT+0100 (WAT)] DEBUG confirmRequest: 1 -> false
+[Tue Apr 28 2015 01:29:33 GMT+0100 (WAT)] DEBUG Datakey: confirmNeed, Validity Check: true
+[Tue Apr 28 2015 01:29:33 GMT+0100 (WAT)] DEBUG Datakey: startLong, Validity Check: false
+[Tue Apr 28 2015 01:29:33 GMT+0100 (WAT)] DEBUG Datakey: endLong, Validity Check: false
+[Tue Apr 28 2015 01:29:33 GMT+0100 (WAT)] DEBUG Datakey: departureTime, Validity Check: true
+[Tue Apr 28 2015 01:29:33 GMT+0100 (WAT)] DEBUG Datakey: productId, Validity Check: false
+[Tue Apr 28 2015 01:29:33 GMT+0100 (WAT)] DEBUG Datakey: confirmRequest, Validity Check: false
+[Tue Apr 28 2015 01:29:33 GMT+0100 (WAT)] DEBUG Missing Keys for rides_book_trip: ["startLong","endLong","productId","confirmRequest"]
+[Tue Apr 28 2015 01:29:33 GMT+0100 (WAT)] DEBUG Predicate: 4
+[Tue Apr 28 2015 01:29:33 GMT+0100 (WAT)] DEBUG Datahash from unfold: {"handlerTodo":"rides_book_trip","intent":"rides_request_trip","confirmNeed":true}
+[Tue Apr 28 2015 01:29:33 GMT+0100 (WAT)] DEBUG 1. getResponse(): data.lvlQueries[NO_START_LOCATION] -> undefined
+[Tue Apr 28 2015 01:29:33 GMT+0100 (WAT)] DEBUG 2. getResponse(): data.lvlQueries[NO_START_LOCATION] -> 0
+[Tue Apr 28 2015 01:29:33 GMT+0100 (WAT)] DEBUG 3. getResponse(): data.lvlQueries[NO_START_LOCATION] -> 0
+[Tue Apr 28 2015 01:29:33 GMT+0100 (WAT)] INFO RIDES Processor: <piper.events.in> connected
+[Tue Apr 28 2015 01:29:34 GMT+0100 (WAT)] DEBUG Predicate: 3
+[Tue Apr 28 2015 01:29:34 GMT+0100 (WAT)] DEBUG Datahash: {"handlerTodo":"rides_book_trip","intent":"rides_request_trip","confirmNeed":true,"errStartLocation":"NO_START_LOCATION","lvlQueries":{"NO_START_LOCATION":1}}
+[Tue Apr 28 2015 01:29:34 GMT+0100 (WAT)] DEBUG Body: {"msg_id":"e5eff1c4-ee9d-481e-b9a4-16d057b4f496","_text":"i need a cab","outcomes":[{"_text":"i need a cab","intent":"rides_request_trip","entities":{},"confidence":0.999}],"context":{"state":"","reference_time":"2015-04-28T00:29:31.000Z"},"user":{"slackId":"U02RN8W1T","name":"kachi","email":"kachi@mobilizr.net","first_name":"http://d1a3f4spazzrp4.cloudfront.net/car-types/mono/mono-black.png","last_name":"https://login.uber.com/oauth/authorize?response_type=code&client_id=wTO4c5RIwLi_gjwN1tw79JY4_1W2Im1w","full_name":"http://d1a3f4spazzrp4.cloudfront.net/car-types/mono/mono-black.png https://login.uber.com/oauth/authorize?response_type=code&client_id=wTO4c5RIwLi_gjwN1tw79JY4_1W2Im1w","is_admin":true,"avatar":"https://secure.gravatar.com/avatar/441587d4f0a03b4ce3aca5a1af3577c1.jpg?s=48&d=https%3A%2F%2Fslack.global.ssl.fastly.net%2F3654%2Fimg%2Favatars%2Fava_0012-48.png"},"clientHandle":"mobilizr"}
+[Tue Apr 28 2015 01:29:34 GMT+0100 (WAT)] DEBUG Indata: {"hasActiveRequest":{"_handler":{"handler":{"value":false},"resolved":true}}}
+[Tue Apr 28 2015 01:29:34 GMT+0100 (WAT)] DEBUG rides:kachi@mobilizr
+[Tue Apr 28 2015 01:29:34 GMT+0100 (WAT)] DEBUG Datahash.lvlQueries: {"NO_START_LOCATION":1}
+[Tue Apr 28 2015 01:29:34 GMT+0100 (WAT)] DEBUG module: RIDES, user: kachi, client: mobilizr, message: Ok. Just click here: http://bit.ly/1b7YUeV, and i'll pinpoint your current location
+[Tue Apr 28 2015 01:29:34 GMT+0100 (WAT)] INFO @blanka responded with "Ok. Just click here: http://bit.ly/1b7YUeV, and i'll pinpoint your current location"
+[Tue Apr 28 2015 01:29:34 GMT+0100 (WAT)] DEBUG Message: Ok. Just click here: http://bit.ly/1b7YUeV, and i'll pinpoint your current location sent to user kachi
+[Tue Apr 28 2015 01:30:29 GMT+0100 (WAT)] INFO Geodata: {"ref":"1430180973507","lat":6.4564512,"longt":3.5263883}
+[Tue Apr 28 2015 01:30:29 GMT+0100 (WAT)] DEBUG Retrieved REF: 1430180973507
+[Tue Apr 28 2015 01:30:29 GMT+0100 (WAT)] DEBUG CACHEKEY: utils:1430180973507
+[Tue Apr 28 2015 01:30:29 GMT+0100 (WAT)] INFO UTILS: Connecting to MQ Exchange <piper.events.in>...
+[Tue Apr 28 2015 01:30:29 GMT+0100 (WAT)] INFO UTILS: <piper.events.in> connected
+[Tue Apr 28 2015 01:30:29 GMT+0100 (WAT)] DEBUG Done setting user geodata...
+[Tue Apr 28 2015 01:30:30 GMT+0100 (WAT)] DEBUG module: RIDES, user: kachi, client: mobilizr, message: Thanks, I have your location 
+http://bit.ly/1z7NlzM
+[Tue Apr 28 2015 01:30:30 GMT+0100 (WAT)] INFO @blanka responded with "Thanks, I have your location 
+http://bit.ly/1z7NlzM"
+[Tue Apr 28 2015 01:30:30 GMT+0100 (WAT)] DEBUG Message: Thanks, I have your location 
+http://bit.ly/1z7NlzM sent to user kachi
+[Tue Apr 28 2015 01:30:31 GMT+0100 (WAT)] DEBUG IGNORE FLAG SET
+[Tue Apr 28 2015 01:30:31 GMT+0100 (WAT)] INFO SlackConnection.onMessage: Original message changed by blanka
+[Tue Apr 28 2015 01:30:31 GMT+0100 (WAT)] DEBUG Message: {"id":1,"type":"message","channel":"D03SDHUUJ"}
+[Tue Apr 28 2015 01:30:31 GMT+0100 (WAT)] DEBUG Message.Message: {"type":"message","user":"U03SDHUTU","text":"Thanks, I have your location \n<http://bit.ly/1z7NlzM>","attachments":[{"from_url":"http://bit.ly/1z7NlzM","fallback":"400x400px image","image_url":"http://bit.ly/1z7NlzM","image_width":400,"image_height":400,"image_bytes":14518,"id":1}],"ts":"1430181030.000004"}
+[Tue Apr 28 2015 01:30:31 GMT+0100 (WAT)] INFO Received: message kachi @blanka 1430181031.000005 "Thanks, I have your location 
+<http://bit.ly/1z7NlzM>"
+[Tue Apr 28 2015 01:30:31 GMT+0100 (WAT)] DEBUG Message.Subtype: "message_changed"
+[Tue Apr 28 2015 01:30:31 GMT+0100 (WAT)] DEBUG Address: false
+[Tue Apr 28 2015 01:30:31 GMT+0100 (WAT)] DEBUG Entities: {}
+[Tue Apr 28 2015 01:30:31 GMT+0100 (WAT)] DEBUG Going for products...
+[Tue Apr 28 2015 01:30:31 GMT+0100 (WAT)] DEBUG confirmNeed: 0 -> false
+[Tue Apr 28 2015 01:30:31 GMT+0100 (WAT)] DEBUG confirmNeed: 1 -> true
+[Tue Apr 28 2015 01:30:31 GMT+0100 (WAT)] DEBUG startLong: 0 -> false
+[Tue Apr 28 2015 01:30:31 GMT+0100 (WAT)] DEBUG startLong: 1 -> true
+[Tue Apr 28 2015 01:30:31 GMT+0100 (WAT)] DEBUG startLong: 2 -> false
+[Tue Apr 28 2015 01:30:31 GMT+0100 (WAT)] DEBUG startLong: 3 -> false
+[Tue Apr 28 2015 01:30:31 GMT+0100 (WAT)] DEBUG endLong: 0 -> false
+[Tue Apr 28 2015 01:30:31 GMT+0100 (WAT)] DEBUG endLong: 1 -> false
+[Tue Apr 28 2015 01:30:31 GMT+0100 (WAT)] DEBUG endLong: 2 -> false
+[Tue Apr 28 2015 01:30:31 GMT+0100 (WAT)] DEBUG departureTime: 0 -> false
+[Tue Apr 28 2015 01:30:31 GMT+0100 (WAT)] DEBUG departureTime: 1 -> true
+[Tue Apr 28 2015 01:30:31 GMT+0100 (WAT)] DEBUG productId: 0 -> false
+[Tue Apr 28 2015 01:30:31 GMT+0100 (WAT)] DEBUG productId: 1 -> false
+[Tue Apr 28 2015 01:30:31 GMT+0100 (WAT)] DEBUG productId: 3 -> false
+[Tue Apr 28 2015 01:30:31 GMT+0100 (WAT)] DEBUG productId: 4 -> false
+[Tue Apr 28 2015 01:30:31 GMT+0100 (WAT)] DEBUG confirmRequest: 0 -> false
+[Tue Apr 28 2015 01:30:31 GMT+0100 (WAT)] DEBUG confirmRequest: 1 -> false
+[Tue Apr 28 2015 01:30:31 GMT+0100 (WAT)] DEBUG getProducts->endpoint: http://uber.example.com:3000
+[Tue Apr 28 2015 01:30:33 GMT+0100 (WAT)] DEBUG Products: {"products":[{"capacity":4,"product_id":"21141cb0-76f7-4638-b26a-3122f27ce90a","price_details":{"service_fees":[],"cost_per_minute":10,"distance_unit":"km","minimum":500,"cost_per_distance":110,"base":500,"cancellation_fee":1000,"currency_code":"NGN"},"image":"http://d1a3f4spazzrp4.cloudfront.net/car-types/mono/mono-uberx.png","display_name":"uberX","description":"The Low-Cost Uber"},{"capacity":4,"product_id":"f1462af9-8e3f-4079-b7c2-a17877d81805","price_details":{"service_fees":[],"cost_per_minute":15,"distance_unit":"km","minimum":800,"cost_per_distance":155,"base":500,"cancellation_fee":1000,"currency_code":"NGN"},"image":"http://d1a3f4spazzrp4.cloudfront.net/car-types/mono/mono-black.png","display_name":"UberBLACK","description":"The Original Uber"}]}
+[Tue Apr 28 2015 01:30:33 GMT+0100 (WAT)] DEBUG productId: 2 -> true
+[Tue Apr 28 2015 01:30:33 GMT+0100 (WAT)] DEBUG Datakey: confirmNeed, Validity Check: true
+[Tue Apr 28 2015 01:30:33 GMT+0100 (WAT)] DEBUG Datakey: startLong, Validity Check: true
+[Tue Apr 28 2015 01:30:33 GMT+0100 (WAT)] DEBUG Datakey: endLong, Validity Check: false
+[Tue Apr 28 2015 01:30:33 GMT+0100 (WAT)] DEBUG Datakey: departureTime, Validity Check: true
+[Tue Apr 28 2015 01:30:33 GMT+0100 (WAT)] DEBUG Datakey: productId, Validity Check: true
+[Tue Apr 28 2015 01:30:33 GMT+0100 (WAT)] DEBUG Datakey: confirmRequest, Validity Check: false
+[Tue Apr 28 2015 01:30:33 GMT+0100 (WAT)] DEBUG Missing Keys for rides_book_trip: ["endLong","confirmRequest"]
+[Tue Apr 28 2015 01:30:33 GMT+0100 (WAT)] DEBUG Predicate: 2
+[Tue Apr 28 2015 01:30:33 GMT+0100 (WAT)] DEBUG Datahash from unfold: {"handlerTodo":"rides_book_trip","intent":"rides_request_trip","confirmNeed":true,"lvlQueries":{"NO_START_LOCATION":1},"startLat":"6.4564512","startLong":"3.5263883","productId":"21141cb0-76f7-4638-b26a-3122f27ce90a","productName":"uberX"}
+[Tue Apr 28 2015 01:30:33 GMT+0100 (WAT)] DEBUG 1. getResponse(): data.lvlQueries[NO_END_LOCATION] -> undefined
+[Tue Apr 28 2015 01:30:33 GMT+0100 (WAT)] DEBUG 2. getResponse(): data.lvlQueries[NO_END_LOCATION] -> 0
+[Tue Apr 28 2015 01:30:33 GMT+0100 (WAT)] DEBUG 3. getResponse(): data.lvlQueries[NO_END_LOCATION] -> 0
+[Tue Apr 28 2015 01:30:33 GMT+0100 (WAT)] DEBUG Predicate: 1
+[Tue Apr 28 2015 01:30:33 GMT+0100 (WAT)] DEBUG Datahash: {"handlerTodo":"rides_book_trip","intent":"rides_request_trip","confirmNeed":true,"lvlQueries":{"NO_START_LOCATION":1,"NO_END_LOCATION":1},"startLat":"6.4564512","startLong":"3.5263883","productId":"21141cb0-76f7-4638-b26a-3122f27ce90a","productName":"uberX","errEndLocation":"NO_END_LOCATION"}
+[Tue Apr 28 2015 01:30:33 GMT+0100 (WAT)] DEBUG Body: {"context":{"state":"RIDES"},"user":{"phone":"undefined","first_name":"http://d1a3f4spazzrp4.cloudfront.net/car-types/mono/mono-black.png","slackId":"U02RN8W1T","avatar":"https://secure.gravatar.com/avatar/441587d4f0a03b4ce3aca5a1af3577c1.jpg?s=48&d=https%3A%2F%2Fslack.global.ssl.fastly.net%2F3654%2Fimg%2Favatars%2Fava_0012-48.png","full_name":"http://d1a3f4spazzrp4.cloudfront.net/car-types/mono/mono-black.png https://login.uber.com/oauth/authorize?response_type=code&client_id=wTO4c5RIwLi_gjwN1tw79JY4_1W2Im1w","name":"kachi","is_admin":"true","last_name":"https://login.uber.com/oauth/authorize?response_type=code&client_id=wTO4c5RIwLi_gjwN1tw79JY4_1W2Im1w","email":"kachi@mobilizr.net"},"clientHandle":"mobilizr"}
+[Tue Apr 28 2015 01:30:33 GMT+0100 (WAT)] DEBUG Indata: {"hasActiveRequest":{"_handler":{"handler":{"value":false},"resolved":true}}}
+[Tue Apr 28 2015 01:30:33 GMT+0100 (WAT)] DEBUG rides:kachi@mobilizr
+[Tue Apr 28 2015 01:30:33 GMT+0100 (WAT)] DEBUG Datahash.lvlQueries: {"NO_START_LOCATION":1,"NO_END_LOCATION":1}
+[Tue Apr 28 2015 01:30:33 GMT+0100 (WAT)] DEBUG module: RIDES, user: kachi, client: mobilizr, message: Where are you going to?
+[Tue Apr 28 2015 01:30:33 GMT+0100 (WAT)] INFO @blanka responded with "Where are you going to?"
+[Tue Apr 28 2015 01:30:33 GMT+0100 (WAT)] DEBUG Message: Where are you going to? sent to user kachi

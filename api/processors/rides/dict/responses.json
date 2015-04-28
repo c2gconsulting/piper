@@ -74,8 +74,8 @@
 		"./processors/sales/index"
 	],
 	"NO_CONFIRM_REQUEST" : [
-		"Thanks. The nearest @product_name will get here in @eta mins. Can I go ahead and book your ride?",
-		"An @product_name can get here in @eta mins. I still need confirmation",
+		"Thanks. The nearest @product_name will get there in @eta mins. Can I go ahead and book your ride?",
+		"An @product_name can get there in @eta mins. I still need confirmation",
 		"@username, your @product_name? Tell me whether to continue or not. ETA is @eta mins",
 		"Whenever you're ready, can't continue till you give the go ahead. ETA: @eta mins"
 	],

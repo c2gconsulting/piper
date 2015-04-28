@@ -84,7 +84,8 @@ module.exports = {
       });
 
     }
-    res.render('thankyou');
+    //res.render('thankyou');
+    res.redirect('slack://open');
     
   },
 
