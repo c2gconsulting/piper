@@ -697,6 +697,12 @@ function Rides(data) {
 						if (data.confirmNeed === false) {
 							logger.debug('HandleRequest: handling for rides_book_trip...calling cancelrequest');
 							me.cancelRequest(user.name, clientHandle, data);
+							getActiveRequest(user.name, clientHandle).then(function(activeRequest) {
+								if (activeRequest) {
+									var rbody = { header: 'cancel_request', requestId: activeRequest.request_id };
+									me.push(user, clientHandle, rbody);
+								}
+							});
 						} else {
 							// check if there's an active request
 							checkActiveRequest(user.name, clientHandle).then(function(active) {
@@ -734,6 +740,32 @@ function checkActiveRequest(username, clientHandle) {
 			return true;
 		}
 	});
+}
+
+function getActiveRequest(username, clientHandle) {
+	var userkey = getUserKey(username, clientHandle);
+	return cache.hgetall(userkey + ':activerequest');
+}
+
+function deleteActiveRequest(username, clientHandle) {
+	var userkey = getUserKey(username, clientHandle);
+	cache.del(userkey + ':activerequest');
+}
+
+function cacheActiveRequest(username, clientHandle, data) {
+	var userkey = getUserKey(username, clientHandle);
+
+	var activeRequest = {
+		request_id : data.request_id,
+		status : data.status,
+		eta    : data.eta
+	};
+	if (data.vehicle) activeRequest.vehicle = JSON.stringify(data.vehicle);
+	if (data.driver) activeRequest.driver = JSON.stringify(data.driver);
+	if (data.location) activeRequest.location = JSON.stringify(data.location);
+	if (data.href) activeRequest.href = data.href;
+
+	cache.hmset(userkey + ':activerequest', activeRequest);
 }
 
 
@@ -1014,7 +1046,7 @@ Rides.prototype.processData = function(user, clientHandle, body, handlerTodo) {
 		});
 		cache.expire(userkey + ':payload', CONTEXT_TTL);
 		cache.expire(userkey + ':datacheck', CONTEXT_TTL);
-		cache.expire(userkey + ':activerequest', CONTEXT_TTL);	// for now. change to end based on status	
+		//cache.expire(userkey + ':activerequest', CONTEXT_TTL);	// for now. change to end based on status	
 	});
 }
 
@@ -1031,7 +1063,7 @@ Rides.prototype.cancelRequest = function(username, clientHandle, data) {
 
     cache.del(userkey + ':payload');
     cache.del(userkey + ':datacheck');
-    cache.del(userkey + ':activerequest'); // for now. Change to send handler request
+    //cache.del(userkey + ':activerequest'); // for now. Change to send handler request
     data = {};
 }
 	
@@ -1073,23 +1105,61 @@ Rides.prototype.in = function(msgid, username, clientHandle, body) {
 					me.emit('message', Rides.MODULE, username, clientHandle, 'I need authorization to your ' + body.handler + ' account. Click here to authorize: ' + shortAuthLink);
 				});
 				break;
+			case 'request_response':
+				
+				me.emit('message', Rides.MODULE, username, clientHandle, 'Thanks @' + username + '. Now hold on a minute...');
+				break;
 			case 'auth_ack':
 				me.emit('message', Rides.MODULE, username, clientHandle, 'Thanks @' + username + '. Now hold on a minute...');
 				break;
-			/*
-			case 'products':
-				cache.hgetall(username + '@' + clientHandle).then(function(user){
-					var handlerTodo = 'rides_book_trip';
-					var rbody = { context: { state : Rides.MODULE }};
-					logger.debug('Products: %s', JSON.stringify(body.products));
-					rbody.outcomes = [{ 'entities': { 'products': [{"value": JSON.stringify(body.products)}] }}];
-					if (user) me.processData(user, clientHandle, rbody, handlerTodo);	
-				});
-				break;*/
 			case 'endpoint_base':
 				cache.hset(userkey + ':handler', 'endpoint_base', body.endpoint);
 				cache.expire(userkey + ':handler', ONE_DAY_TTL);
 				break;
+			case 'request_response' || 'request_details':
+				cacheActiveRequest(username, clientHandle, body);
+				switch (body.status) {
+					case 'processing':
+						me.emit('message', Rides.MODULE, username, clientHandle, 'Looking for an available driver...');
+						break;
+					case 'accepted':
+						me.emit('message', Rides.MODULE, username, clientHandle, 'Your ride is on its way...');
+						if (body.driver) {
+							me.emit('message', Rides.MODULE, username, clientHandle, 'Your driver ' + body.driver.name + ' (rated ' + body.driver.rating +') will be there in ' + body.eta + ' minutes');
+							if (body.driver.picture_url != null) me.emit('message', Rides.MODULE, username, clientHandle, body.driver.picture_url);
+							if (body.vehicle) me.emit('message', Rides.MODULE, username, clientHandle, 'Driving a ' + body.vehicle.make + ' ' + body.vehicle.model + ', registration ' + body.vehicle.license_plate);
+							if (body.href) me.emit('message', Rides.MODULE, username, clientHandle, body.href);
+						} 
+						break;
+					case 'arriving':
+						me.emit('message', Rides.MODULE, username, clientHandle, "Your ride has arrived");
+						if (body.href) me.emit('message', Rides.MODULE, username, clientHandle, body.href);
+						break;
+					case 'no_drivers_available':
+						me.emit('message', Rides.MODULE, username, clientHandle, "Sorry, no drivers available");
+						me.cancelRequest(username, clientHandle, {});
+						deleteActiveRequest(username, clientHandle);
+						break;
+					case 'in_progress':
+						break;
+					case 'driver_canceled':
+						me.emit('message', Rides.MODULE, username, clientHandle, "Sorry, the driver canceled...");
+						me.cancelRequest(username, clientHandle, {});
+						deleteActiveRequest(username, clientHandle);
+						break;
+					case 'rider_canceled':
+						me.emit('message', Rides.MODULE, username, clientHandle, "Your ride has been canceled");
+						me.cancelRequest(username, clientHandle, {});
+						deleteActiveRequest(username, clientHandle);
+						break;
+					case 'completed':
+						me.cancelRequest(username, clientHandle, {});
+						deleteActiveRequest(username, clientHandle);
+						break;
+				}
+				
+				break;
+			
 		}
 		
 		this.msgid = msgid;

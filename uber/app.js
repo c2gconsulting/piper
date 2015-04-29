@@ -11,6 +11,7 @@ var cache = require('../shared/lib/cache').getRedisClient();
 var CACHE_PREFIX = 'uber-handler:';
 var RIDES_DESC = 'rides';
 var ERROR_RESPONSE_CODE = 422;
+var prod = false;
 
 // Create the Express application
 var app = exports.app = express(); 
@@ -101,11 +102,17 @@ function onProcessorEvent(id, user, client, body) {
 			case 'request_ride':
 				checkAuth(user.email).then(function(access_token) {
 					if (access_token) {
-
-
-
-
-
+						uber.rideRequest(access_token, body.productId, body.startLat, body.startLong, body.endLat, body.endLong, prod
+							).then(function(response) {
+								var rbody = response;
+								rbody.header = 'request_response';
+								push(user.email, rbody);
+								cache.hset(CACHE_PREFIX + 'requests', response.request_id, user.email); // cache for lookup
+							}).catch(function(error) {
+								// handle errors:
+								//  - 422
+								//  - 409
+							});
 					} else {
 						// cache request till authorized
 						cacheRequestData(id, user, client, body);
@@ -113,21 +120,28 @@ function onProcessorEvent(id, user, client, body) {
 				});
 
 				break;
-			case 'get_time_estimate':
-
-
-				break;
-			case 'get_price_estimate':
-
-				break;
 			case 'get_request_details':
 				checkAuth(user.email).then(function(access_token) {
 					if (access_token) {
-
-
-
-
-
+						uber.getRequestDetails(access_token, body.requestId, prod
+							).then(function(response) {
+								var rbody = response;
+								rbody.header = 'request_details';
+								uber.getRequestMap(access_token, body.requestId, prod
+									).then(function(resp) {
+										if (resp) {
+											rbody.href = resp.href;
+										}
+										push(user.email, rbody);
+									});
+								if (response.status && (response.status === 'no_drivers_available')) {
+									cache.hdel(CACHE_PREFIX + 'requests', body.requestId);
+								}
+							}).catch(function(error) {
+								// handle errors:
+								//  - 422
+								//  - 409
+							});
 					}
 				});
 				break;
@@ -145,33 +159,49 @@ function onProcessorEvent(id, user, client, body) {
 			case 'get_request_map':
 				checkAuth(user.email).then(function(access_token) {
 					if (access_token) {
-
-
-
-
-
+						uber.getRequestMap(access_token, body.requestId, prod
+							).then(function(response) {
+								var rbody = response;
+								rbody.header = 'request_map';
+								push(user.email, rbody);
+							}).catch(function(error) {
+								// handle errors:
+								//  - 422
+								//  - 409
+							});
 					}
 				});
 				break;
 			case 'get_request_receipt':
 				checkAuth(user.email).then(function(access_token) {
 					if (access_token) {
-
-
-
-
-
+						uber.getRequestReceipt(access_token, body.requestId, prod
+							).then(function(response) {
+								var rbody = response;
+								rbody.header = 'request_receipt';
+								push(user.email, rbody);
+								if (response) cache.hdel(CACHE_PREFIX + 'requests', body.requestId);
+							}).catch(function(error) {
+								// handle errors:
+								//  - 422
+								//  - 409
+							});
 					}
 				});
 				break;
 			case 'cancel_request':
 				checkAuth(user.email).then(function(access_token) {
 					if (access_token) {
-
-
-
-
-
+						uber.cancelRequest(access_token, body.requestId, prod
+							).then(function(response) {
+								var rbody = { header: 'request_cancel' };
+								push(user.email, rbody);
+								cache.hdel(CACHE_PREFIX + 'requests', body.requestId);
+							}).catch(function(error) {
+								// handle errors:
+								//  - 422
+								//  - 409
+							});
 					}
 				});
 				break;
@@ -202,6 +232,44 @@ function onRoutesEvent(data) {
 			break;
 			case 'webhook':
 				// retrieve relevant request
+				switch (data.event_type) {
+					case 'requests.status_changed':
+						cache.hget(CACHE_PREFIX + 'requests', data.meta.resource_id).then(function (email) {
+							if (email) {	
+								// pick up active request and process
+								var emailCacheKey = CACHE_PREFIX + email;
+								cache.hgetall(emailCacheKey).then(function(userData) {
+									if (userData) {
+										logger.debug('UserData: %s', userData);
+										var jsonData = JSON.parse(userData);
+										jUser = { name: jsonData.user, email: data.email };
+										var rbody = { header: 'get_request_details', requestId: data.meta.resource_id };
+										onProcessorEvent(data.id, jUser, jsonData.client, rbody);
+									}
+								});
+							}
+						});
+						break;
+					case 'requests.receipt.status_changed':
+						cache.hget(CACHE_PREFIX + 'requests', data.meta.resource_id).then(function (email) {
+							if (email) {	
+								// pick up active request and process
+								var emailCacheKey = CACHE_PREFIX + email;
+								cache.hgetall(emailCacheKey).then(function(userData) {
+									if (userData) {
+										logger.debug('UserData: %s', userData);
+										var jsonData = JSON.parse(userData);
+										jUser = { name: jsonData.user, email: data.email };
+										var rbody = { header: 'get_request_receipt', requestId: data.meta.resource_id };
+										onProcessorEvent(data.id, jUser, jsonData.client, rbody);
+									}
+								});
+							}
+						});
+						break;
+				}
+				
+
 				// send update to processor
 			break;
 		}	

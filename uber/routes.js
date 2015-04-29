@@ -100,8 +100,7 @@ module.exports = {
       .then(function(data) {
         logger.debug('Products: %s', JSON.stringify(data));
         if (data) res.json(data);
-      })
-      .catch(function(data) {
+      }).catch(function(data) {
         logger.error('Cannot process request: %s', JSON.stringify(data));
         if (data) res.json(data);
       });
@@ -110,12 +109,11 @@ module.exports = {
     var lat = req.query.lat;
     var lng = req.query.lng;
     var productId = req.query.product_id
-    uber.getTimeEstimates(lat,lng, productId)
-      .then(function(data) {
+    uber.getTimeEstimates(lat,lng, productId
+      ).then(function(data) {
         logger.debug('Time Estimates: %s', JSON.stringify(data));
         if (data) res.json(data);
-      })
-      .catch(function(data) {
+      }).catch(function(data) {
           logger.error('Cannot process request: %s', JSON.stringify(data));
           if (data) res.json(data);
       });
@@ -129,8 +127,7 @@ module.exports = {
       .then(function(data) {
         logger.debug('Price Estimates: %s', JSON.stringify(data));
         if (data) res.json(data);
-      })
-      .catch(function(data) {
+      }).catch(function(data) {
             logger.error('Cannot process request: %s', JSON.stringify(data));
             if (data) res.json(data);
       });
