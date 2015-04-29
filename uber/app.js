@@ -105,6 +105,7 @@ function onProcessorEvent(id, user, client, body) {
 						logger.debug('Requesting ride...');
 						uber.rideRequest(access_token, body.productId, body.startLat, body.startLong, body.endLat, body.endLong, prod
 							).then(function(response) {
+								logger.debug('rideRequest->RESPONSE: %s', JSON.stringify(response));
 								var rbody = response;
 								rbody.header = 'request_response';
 								push(user.email, rbody);
@@ -127,6 +128,7 @@ function onProcessorEvent(id, user, client, body) {
 					if (access_token) {
 						uber.getRequestDetails(access_token, body.requestId, prod
 							).then(function(response) {
+								logger.debug('getRequestDetails->RESPONSE: %s', JSON.stringify(response));
 								var rbody = response;
 								rbody.header = 'request_details';
 								uber.getRequestMap(access_token, body.requestId, prod
@@ -143,6 +145,7 @@ function onProcessorEvent(id, user, client, body) {
 								// handle errors:
 								//  - 422
 								//  - 409
+								logger.error('Request Details Error: %s', JSON.stringify(error));
 							});
 					}
 				});
@@ -163,6 +166,7 @@ function onProcessorEvent(id, user, client, body) {
 					if (access_token) {
 						uber.getRequestMap(access_token, body.requestId, prod
 							).then(function(response) {
+								logger.debug('getRequestMap->RESPONSE: %s', JSON.stringify(response));
 								var rbody = response;
 								rbody.header = 'request_map';
 								push(user.email, rbody);
@@ -170,6 +174,7 @@ function onProcessorEvent(id, user, client, body) {
 								// handle errors:
 								//  - 422
 								//  - 409
+								logger.error('Get Request Map Error: %s', JSON.stringify(error));
 							});
 					}
 				});
@@ -180,6 +185,7 @@ function onProcessorEvent(id, user, client, body) {
 						cache.hdel(CACHE_PREFIX + 'requests', body.requestId);
 						uber.getRequestReceipt(access_token, body.requestId, prod
 							).then(function(response) {
+								logger.debug('getRequestReceipt->RESPONSE: %s', JSON.stringify(response));
 								var rbody = response;
 								rbody.header = 'request_receipt';
 								push(user.email, rbody);
@@ -187,6 +193,7 @@ function onProcessorEvent(id, user, client, body) {
 								// handle errors:
 								//  - 422
 								//  - 409
+								logger.error('Get Request Receipt Error: %s', JSON.stringify(error));
 							});
 					}
 				});
@@ -375,7 +382,7 @@ function push(email, body) {
 	// retrieve user and client by email
 	var emailCacheKey = CACHE_PREFIX + email;
 	cache.hgetall(emailCacheKey).then(function(data) {
-		logger.debug('push.data: %s', JSON.stringify(data));
+		logger.debug('push.body: %s', JSON.stringify(body));
 		if (data.user) {
 			body.handler = 'UBER';
 			var rdata = { 'id': new Date().getTime(), 'user': data.user, 'client': data.client, module: RIDES_DESC.toUpperCase(), 'body': body };
