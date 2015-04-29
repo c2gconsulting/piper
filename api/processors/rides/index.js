@@ -1126,9 +1126,8 @@ Rides.prototype.in = function(msgid, username, clientHandle, body) {
 					case 'accepted':
 						me.emit('message', Rides.MODULE, username, clientHandle, 'Your ride is on its way...');
 						if (body.driver) {
-							me.emit('message', Rides.MODULE, username, clientHandle, 'Your driver ' + body.driver.name + ' (rated ' + body.driver.rating +') will be there in ' + body.eta + ' minutes');
+							me.emit('message', Rides.MODULE, username, clientHandle, body.driver.name + ' (' + body.driver.rating +' stars) will be there in ' + body.eta + ' minutes in a ' + body.vehicle.make + ' ' + body.vehicle.model + ', registration ' + body.vehicle.license_plate);
 							if (body.driver.picture_url != null) me.emit('message', Rides.MODULE, username, clientHandle, body.driver.picture_url);
-							if (body.vehicle) me.emit('message', Rides.MODULE, username, clientHandle, 'Driving a ' + body.vehicle.make + ' ' + body.vehicle.model + ', registration ' + body.vehicle.license_plate);
 							if (body.href) me.emit('message', Rides.MODULE, username, clientHandle, body.href);
 						} 
 						break;
