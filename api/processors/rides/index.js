@@ -680,6 +680,13 @@ function Rides(data) {
 		'rides_cancel_trip' : function(user, clientHandle, data) {
 						if (data.confirmCancellation === true) {
 							me.cancelRequest(user.name, clientHandle, data);
+							getActiveRequest(user.name, clientHandle).then(function(activeRequest) {
+								if (activeRequest) {
+									var rbody = { header: 'cancel_request', requestId: activeRequest.request_id };
+									me.push(user, clientHandle, rbody);
+								}
+								deleteActiveRequest(user.name, clientHandle);
+							});
 							me.emit('message', Rides.MODULE, user.name, clientHandle, 'Fine, your trip request has been cancelled');
 						} else {
 							me.emit('message', Rides.MODULE, user.name, clientHandle, "You have no active ride requests to cancel");
@@ -697,13 +704,8 @@ function Rides(data) {
 						if (data.confirmNeed === false) {
 							logger.debug('HandleRequest: handling for rides_book_trip...calling cancelrequest');
 							me.cancelRequest(user.name, clientHandle, data);
-							getActiveRequest(user.name, clientHandle).then(function(activeRequest) {
-								if (activeRequest) {
-									var rbody = { header: 'cancel_request', requestId: activeRequest.request_id };
-									me.push(user, clientHandle, rbody);
-								}
-							});
-							deleteActiveRequest(user.name, clientHandle);
+
+
 						} else {
 							// check if there's an active request
 							checkActiveRequest(user.name, clientHandle).then(function(active) {
