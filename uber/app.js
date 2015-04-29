@@ -177,12 +177,12 @@ function onProcessorEvent(id, user, client, body) {
 			case 'get_request_receipt':
 				checkAuth(user.email).then(function(access_token) {
 					if (access_token) {
+						cache.hdel(CACHE_PREFIX + 'requests', body.requestId);
 						uber.getRequestReceipt(access_token, body.requestId, prod
 							).then(function(response) {
 								var rbody = response;
 								rbody.header = 'request_receipt';
 								push(user.email, rbody);
-								if (response) cache.hdel(CACHE_PREFIX + 'requests', body.requestId);
 							}).catch(function(error) {
 								// handle errors:
 								//  - 422
