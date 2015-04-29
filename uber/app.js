@@ -102,6 +102,7 @@ function onProcessorEvent(id, user, client, body) {
 			case 'request_ride':
 				checkAuth(user.email).then(function(access_token) {
 					if (access_token) {
+						logger.debug('Requesting ride...');
 						uber.rideRequest(access_token, body.productId, body.startLat, body.startLong, body.endLat, body.endLong, prod
 							).then(function(response) {
 								var rbody = response;
@@ -112,6 +113,7 @@ function onProcessorEvent(id, user, client, body) {
 								// handle errors:
 								//  - 422
 								//  - 409
+								logger.error('Ride Request Error: %s', JSON.stringify(error));
 							});
 					} else {
 						// cache request till authorized
