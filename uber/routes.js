@@ -67,6 +67,7 @@ module.exports = {
               //update cache
               var emailCacheKey = CACHE_PREFIX + userdata.email;
               cache.hset(emailCacheKey, 'access_token', data.access_token); // save to cache
+              cache.expire(emailCacheKey, data.expires_in);
 
               // notify handler_main 
               var pub = mq.context.socket('PUB', {routing: 'topic'});

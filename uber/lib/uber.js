@@ -15,6 +15,8 @@ var base_url = exports.base_url = "https://api.uber.com",
     login_url = exports.login_url = "https://login.uber.com",
     redirect_uri = exports.redirect_uri = "https://uber.piperlabs.com/oauth";
 
+var scope = 'profile request request_receipt history';
+
 var getBearerHeaders = function (bearer_token, others) {
     return _.extend(others || {}, {
         'Authorization': 'Bearer ' + bearer_token
@@ -34,7 +36,7 @@ var getTokenHeaders = function () {
  */
 var getAuthorizeLink = function (state, responseType) {
     if (!responseType) responseType = 'code';
-    return authorize_url + '?response_type=' + responseType + '&client_id=' + UBER_CLIENT_ID + '&state=' + state; 
+    return authorize_url + '?response_type=' + responseType + '&client_id=' + UBER_CLIENT_ID + '&state=' + state + '&scope=' + scope; 
 };
 
 /**
@@ -245,7 +247,7 @@ var getUserActivity = function (bearer_token, offset, limit) {
  * @param startlng Longitude component of start location
  * @param endlat Latitude component of end location
  * @param endlng Longitude component of end location
- * @param prod Boolean to indicate if production or sandbox endpoints
+ * @param prod Boolean to indicate if production or sandbox endpoints (true=production)
  * @param surgeConfirmationId Surge confirmation id (optional)
  */
 var rideRequest = function (bearer_token, productId, startlat, startlng, endlat, endlng, prod, surgeConfirmationId) {
