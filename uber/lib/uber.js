@@ -19,6 +19,12 @@ var scope = 'profile request history';
 
 var getBearerHeaders = function (bearer_token, others) {
     return _.extend(others || {}, {
+        'Authorization': 'Bearer ' + bearer_token
+    });
+};
+
+var getBearerHeadersJSON = function (bearer_token, others) {
+    return _.extend(others || {}, {
         'Authorization': 'Bearer ' + bearer_token,
         'Content-Type': 'application/json'
     });
@@ -257,14 +263,14 @@ var rideRequest = function (bearer_token, productId, startlat, startlng, endlat,
     var requrl = {
         url : root_url + resource,
         method : 'post',
-        qs : {
+        json : {
             'product_id': productId,
             'start_latitude': startlat,
             'start_longitude' : startlng,
             'end_latitude': endlat,
             'end_longitude' : endlng
         },
-        headers: getBearerHeaders(bearer_token)
+        headers: getBearerHeadersJSON(bearer_token)
     };
     if (surgeConfirmationId) requrl.qs.surge_confirmation_id = surgeConfirmationId;
     
