@@ -17,6 +17,7 @@ module.exports = {
     // retrieve message from uber
     // process and set on message queue
     var qbody = req.body;
+    logger.debug('================> Hook: $s', JSON.stringify(qbody));
 
     // notify handler_main 
     var pub = mq.context.socket('PUB', {routing: 'topic'});

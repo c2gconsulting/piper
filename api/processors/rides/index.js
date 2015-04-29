@@ -703,6 +703,7 @@ function Rides(data) {
 									me.push(user, clientHandle, rbody);
 								}
 							});
+							deleteActiveRequest(user.name, clientHandle);
 						} else {
 							// check if there's an active request
 							checkActiveRequest(user.name, clientHandle).then(function(active) {
@@ -1116,7 +1117,7 @@ Rides.prototype.in = function(msgid, username, clientHandle, body) {
 				cacheActiveRequest(username, clientHandle, body);
 				switch (body.status) {
 					case 'processing':
-						me.emit('message', Rides.MODULE, username, clientHandle, 'Looking for an available driver...');
+						me.emit('message', Rides.MODULE, username, clientHandle, 'Waiting for a driver\'s confirmation...');
 						break;
 					case 'accepted':
 						me.emit('message', Rides.MODULE, username, clientHandle, 'Your ride is on its way...');

@@ -210,6 +210,7 @@ function onProcessorEvent(id, user, client, body) {
 								// handle errors:
 								//  - 422
 								//  - 409
+								logger.error('Cancel Error: %s', JSON.stringify(error));
 							});
 					}
 				});
