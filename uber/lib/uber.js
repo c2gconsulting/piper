@@ -19,7 +19,8 @@ var scope = 'profile request history';
 
 var getBearerHeaders = function (bearer_token, others) {
     return _.extend(others || {}, {
-        'Authorization': 'Bearer ' + bearer_token
+        'Authorization': 'Bearer ' + bearer_token,
+        'Content-Type': 'application/json'
     });
 };
 

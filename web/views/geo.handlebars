@@ -84,7 +84,9 @@ function error(msg) {
   s.className = 'fail';
   
   cl.innerHTML = "Close this window and return to your chat...";
-  window.location.href = 'slack://open';
+  if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+    window.location.href = 'slack://open';
+  }
 }
 
 
