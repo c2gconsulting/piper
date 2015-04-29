@@ -27,7 +27,7 @@ module.exports = {
       logger.info('UBER_ROUTES_HOOKS: <piper.events.out> connected');
       pub.publish('uber.routes', JSON.stringify(qdata));
     });
-
+    //res.render('thankyou');
   },
 
   auth: function(req, res) {

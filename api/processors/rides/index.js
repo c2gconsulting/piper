@@ -58,15 +58,17 @@ function Rides(data) {
 		'confirmCancellation' : [
 						function(d, b, i) {
 							var state = b.context.state;
-							if (d.confirmNeed !== true && d.confirmNeed !== 'true') return true; // no need to cancel, no active trip
-							if ((state === 'RIDES_confirm_cancellation' && i.yes_no === 'yes') || d.confirmCancellation === true) return d.confirmCancellation = true;
-							if (state === 'RIDES_confirm_cancellation' && d.intent === 'rides_cancel_trip') return d.confirmCancellation = true;
-							if ((state === 'RIDES_confirm_cancellation' && i.yes_no === 'no') || d.confirmCancellation === false)  {
-								d.confirmCancellation = false;
-								d.errConfirmCancellation = 'CANCEL_REQUEST_CANCEL';
+							return i.hasActiveRequest.then(function (requestActive) {
+								if (d.confirmNeed !== true && d.confirmNeed !== 'true' && !requestActive) return true; // no need to cancel, no active trip
+								if ((state === 'RIDES_confirm_cancellation' && i.yes_no === 'yes') || d.confirmCancellation === true) return d.confirmCancellation = true;
+								if (state === 'RIDES_confirm_cancellation' && d.intent === 'rides_cancel_trip') return d.confirmCancellation = true;
+								if ((state === 'RIDES_confirm_cancellation' && i.yes_no === 'no') || d.confirmCancellation === false)  {
+									d.confirmCancellation = false;
+									d.errConfirmCancellation = 'CANCEL_REQUEST_CANCEL';
+									return false;
+								}
 								return false;
-							}
-							return false;
+							});
 						}
 					],
 		'confirmNeed' : [
