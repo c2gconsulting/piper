@@ -417,11 +417,22 @@ var onSlackEvent = function(user, client, message) {
 		
 		// Interprete inbound message -> wit
 		var intentBody;
+		var processorMap = require('./processors/map.json');
+				
+
 		wit.captureTextIntent(witAccessToken, message.text, inContext, function(error,feedback) {
 			if (error) {
 				var response = JSON.stringify(feedback);
-				logger.error('Error retrieving intent from wit.ai: '+ JSON.stringify(error));
+				logger.error('ALARM! -> Error retrieving intent from wit.ai: '+ JSON.stringify(error));
 				logger.debug('Feedback: ' + JSON.stringify(feedback));
+				
+				cache.hset(userkey, 'state', inContext.state); // retain context in cache
+				cache.expire(userkey, CONTEXT_TTL);
+				
+				var Processor = require(processorMap.processors[0][getModule('intent_not_found')]);
+				processMessage(user, client, Processor, { _text: message.text });
+				logger.debug('WIT error, defaulting to ' + getModule('intent_not_found'));
+				
 				
 				// Reply
 				//channel.send(response);
@@ -432,7 +443,6 @@ var onSlackEvent = function(user, client, message) {
 				logger.debug('IntentBody: %s', JSON.stringify(intentBody));
 
 				// Retrieve processor
-				var processorMap = require('./processors/map.json');
 				var intent = intentBody.outcomes[0]['intent'];
 
 				logger.debug("Intent: " + intent);
