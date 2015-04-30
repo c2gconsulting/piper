@@ -239,12 +239,12 @@ function onRoutesEvent(data) {
 						onProcessorEvent(jsonData.id, jsonData.user, jsonData.client, jsonData.body);
 					}
 				});
-			break;
+				break;
 			case 'webhook':
 				// retrieve relevant request
-				switch (data.event_type) {
+				switch (data.body.event_type) {
 					case 'requests.status_changed':
-						cache.hget(CACHE_PREFIX + 'requests', data.meta.resource_id).then(function (email) {
+						cache.hget(CACHE_PREFIX + 'requests', data.body.meta.resource_id).then(function (email) {
 							if (email) {	
 								// pick up active request and process
 								var emailCacheKey = CACHE_PREFIX + email;
@@ -252,8 +252,8 @@ function onRoutesEvent(data) {
 									if (userData) {
 										logger.debug('UserData: %s', userData);
 										var jsonData = JSON.parse(userData);
-										jUser = { name: jsonData.user, email: data.email };
-										var rbody = { header: 'get_request_details', requestId: data.meta.resource_id };
+										jUser = { name: jsonData.user, email: email };
+										var rbody = { header: 'get_request_details', requestId: data.body.meta.resource_id };
 										onProcessorEvent(data.id, jUser, jsonData.client, rbody);
 									}
 								});
@@ -261,7 +261,7 @@ function onRoutesEvent(data) {
 						});
 						break;
 					case 'requests.receipt.status_changed':
-						cache.hget(CACHE_PREFIX + 'requests', data.meta.resource_id).then(function (email) {
+						cache.hget(CACHE_PREFIX + 'requests', data.body.meta.resource_id).then(function (email) {
 							if (email) {	
 								// pick up active request and process
 								var emailCacheKey = CACHE_PREFIX + email;
@@ -269,8 +269,8 @@ function onRoutesEvent(data) {
 									if (userData) {
 										logger.debug('UserData: %s', userData);
 										var jsonData = JSON.parse(userData);
-										jUser = { name: jsonData.user, email: data.email };
-										var rbody = { header: 'get_request_receipt', requestId: data.meta.resource_id };
+										jUser = { name: jsonData.user, email: email };
+										var rbody = { header: 'get_request_receipt', requestId: data.body.meta.resource_id };
 										onProcessorEvent(data.id, jUser, jsonData.client, rbody);
 									}
 								});
@@ -278,10 +278,8 @@ function onRoutesEvent(data) {
 						});
 						break;
 				}
-				
-
 				// send update to processor
-			break;
+				break;
 		}	
 		msgid = data.id;
 	}
