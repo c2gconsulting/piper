@@ -1,4 +1,4 @@
-curl -X "PUT" "https://sandbox-api.uber.com/v1/sandbox/requests/73c49480-ea0e-4c99-9838-1bd8de335ab9" \
+curl -X "PUT" "https://sandbox-api.uber.com/v1/sandbox/requests/3f1ffed4-eb60-46ec-ac29-84af707747d6" \
   -H "Authorization: Bearer 9aJHLf6f4eIZv3Jmm9dhiZxLOR2XX0" \
   -H "Content-Type: application/json" \
-  -d "{\"status\":\"accepted\"}"
+  -d "{\"status\":\"arriving\"}"

@@ -284,6 +284,38 @@ var rideRequest = function (bearer_token, productId, startlat, startlng, endlat,
 
 };
 
+/**
+ * getRequestEstimate Allows a ride to be estimated given the desired product, start, and end locations.  
+ * @param bearer_token OAuth 2.0 bearer token with the request scope
+ * @param startlat Latitude component of start location
+ * @param startlng Longitude component of start location
+ * @param endlat Latitude component of end location
+ * @param endlng Longitude component of end location
+ */
+var getRequestEstimate = function (bearer_token, productId, startlat, startlng, endlat, endlng) {
+    var resource = '/v1/requests/estimate' ;
+    var requrl = {
+        url : base_url + resource,
+        method : 'post',
+        json : {
+            'product_id': productId,
+            'start_latitude': startlat,
+            'start_longitude' : startlng,
+            'end_latitude': endlat,
+            'end_longitude' : endlng
+        },
+        headers: getBearerHeadersJSON(bearer_token)
+    };
+    
+    return request(requrl).then(function(data) {
+        try {
+            return JSON.parse(data);
+        } catch (e) {
+            return data;
+        }
+     });
+
+};
 
 /**
  * getRequestDetails Gets the real time status of an ongoing trip that was created using the Ride Request endpoint.
@@ -388,6 +420,7 @@ module.exports.getPriceEstimates = getPriceEstimates;
 module.exports.getTimeEstimates = getTimeEstimates;
 module.exports.getUserActivity = getUserActivity;
 module.exports.rideRequest = rideRequest;
+module.exports.getRequestEstimate = getRequestEstimate;
 module.exports.getRequestDetails = getRequestDetails;
 module.exports.cancelRequest = cancelRequest;
 module.exports.getRequestMap = getRequestMap;

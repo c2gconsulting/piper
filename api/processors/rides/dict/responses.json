@@ -74,10 +74,10 @@
 		"./processors/sales/index"
 	],
 	"NO_CONFIRM_REQUEST" : [
-		"The nearest @product_name will get there in @eta. Can I go ahead and book your ride?",
-		"An @product_name can get there in @eta. I still need confirmation",
-		"@username, i have your @product_name. Tell me whether to continue or not. ETA is @eta",
-		"Whenever you're ready I'll send for the @product_name, can't continue till you give the go ahead. ETA: @eta"
+		"The nearest @product_name will get there in @eta @price. Can I go ahead and book your ride?",
+		"An @product_name can get there in @eta @price. I still need confirmation",
+		"@username, i have your @product_name @price. Tell me whether to continue or not. ETA is @eta",
+		"Whenever you're ready I'll send for the @product_name, can't continue till you give the go ahead. ETA: @eta @price"
 	],
 	"NO_RIDE_ETA" : [
 		"Can't get an ETA for any ride at the moment, do I just go ahead and attempt the booking?",

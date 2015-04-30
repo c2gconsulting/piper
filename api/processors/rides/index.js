@@ -633,28 +633,39 @@ function Rides(data) {
 								if (etas) {
 									jEtas = JSON.parse(etas);
 									if (jEtas.times.length > 0) {
-										var responseText = getResponse(data, data.errConfirmRequest).replace("@username", user.name);
-										var etaSecs = jEtas.times[0].estimate;
-										var etaMins = Math.round(etaSecs / 60);
-										var etaText = etaMins === 1 ? (etaMins + ' min') : (etaMins + ' mins');
-										responseText = responseText.replace("@eta", etaText);
-										responseText = responseText.replace("@product_name", data.productName);
+										return getPriceEstimate(user.name, clientHandle, data).then(function (prices) {
+											jPrices = JSON.parse(prices);
+											
+											// price text
+											var priceText = '';
+											if (jPrices.prices.length > 0) priceText = 'for ' + jPrices.prices[0].estimate;
+											
+											// eta text
+											var etaSecs = jEtas.times[0].estimate;
+											var etaMins = Math.round(etaSecs / 60);
+											var etaText = etaMins === 1 ? (etaMins + ' min') : (etaMins + ' mins');
+											
+											var responseText = getResponse(data, data.errConfirmRequest).replace("@username", user.name);
+											responseText = responseText.replace("@eta", etaText);
+											responseText = responseText.replace("@product_name", data.productName);
+											responseText = responseText.replace("@price", priceText);
 
-										var prefixText = '';
-										if (data.noPreferred && data.carrier) {
-											prefixText = 'No ' + data.carrier + ' available... ';
-											delete data.noPreferred;
-											logger.debug('################ data.noPreferred: %s', data.noPreferred);
-										}
+											var prefixText = '';
+											if (data.noPreferred && data.carrier) {
+												prefixText = 'No ' + data.carrier + ' available... ';
+												delete data.noPreferred;
+												logger.debug('################ data.noPreferred: %s', data.noPreferred);
+											}
 
-										if (data.onlyUnPreferred && data.unCarrier) {
-											prefixText += 'Only the ' + data.unCarrier + ' available at the moment. ';
-											delete data.onlyUnPreferred;
-										}
+											if (data.onlyUnPreferred && data.unCarrier) {
+												prefixText += 'Only the ' + data.unCarrier + ' available at the moment. ';
+												delete data.onlyUnPreferred;
+											}
 
-										responseText = prefixText + responseText;
-										me.emit('message', Rides.MODULE, user.name, clientHandle, responseText, errorContext[data.errConfirmRequest]);
-										delete data.errConfirmRequest;
+											responseText = prefixText + responseText;
+											me.emit('message', Rides.MODULE, user.name, clientHandle, responseText, errorContext[data.errConfirmRequest]);
+											delete data.errConfirmRequest;
+										});
 									
 									} else {
 										// no available rides
@@ -820,6 +831,29 @@ function getTimeEstimate(username, clientHandle, data) {
 		        }
 		    };
 		    if (data.productId) requrl.qs.product_id = data.productId;    
+		    return request(requrl);
+		} else {
+			return false;
+		}
+	});
+}
+
+function getPriceEstimate(username, clientHandle, data) {
+	return getHandlerEndpoint(username, clientHandle).then (function (endpoint) {
+		if (endpoint) {
+			logger.debug('getPriceEstimate->endpoint: %s', endpoint);
+			var resource = '/v1/estimates/price' ;
+		    var requrl = {
+		        url : endpoint + resource,
+		        method : 'get',
+		        qs : {
+		            'product_id': data.productId,
+		            'slat': data.startLat,
+		            'slng' : data.startLong,
+		            'elat': data.endLat,
+		            'elng' : data.endLong
+		        }
+		    };
 		    return request(requrl);
 		} else {
 			return false;
