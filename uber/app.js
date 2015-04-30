@@ -40,7 +40,7 @@ app.use("/", express.static(__dirname + "/public/"));
 
 // Register routes
 app.get('/oauth', routes.auth);
-app.get('/hooks', routes.hooks);
+app.post('/hooks', routes.hooks);
 app.get('/surge', routes.surge);
 app.get('/v1/products', routes.products);
 app.get('/v1/estimates/time', routes.timeEstimates);
