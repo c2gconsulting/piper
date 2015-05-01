@@ -250,11 +250,10 @@ function onRoutesEvent(data) {
 								var emailCacheKey = CACHE_PREFIX + email;
 								cache.hgetall(emailCacheKey).then(function(userData) {
 									if (userData) {
-										logger.debug('UserData: %s', userData);
-										var jsonData = JSON.parse(userData);
-										jUser = { name: jsonData.user, email: email };
+										logger.debug('UserData: ' + userData);
+										var jUser = { name: userData.user, email: email };
 										var rbody = { header: 'get_request_details', requestId: data.body.meta.resource_id };
-										onProcessorEvent(data.id, jUser, jsonData.client, rbody);
+										onProcessorEvent(data.id, jUser, userData.client, rbody);
 									}
 								});
 							}
@@ -267,11 +266,10 @@ function onRoutesEvent(data) {
 								var emailCacheKey = CACHE_PREFIX + email;
 								cache.hgetall(emailCacheKey).then(function(userData) {
 									if (userData) {
-										logger.debug('UserData: %s', userData);
-										var jsonData = JSON.parse(userData);
-										jUser = { name: jsonData.user, email: email };
+										logger.debug('UserData: ' + userData);
+										var jUser = { name: userData.user, email: email };
 										var rbody = { header: 'get_request_receipt', requestId: data.body.meta.resource_id };
-										onProcessorEvent(data.id, jUser, jsonData.client, rbody);
+										onProcessorEvent(data.id, jUser, userData.client, rbody);
 									}
 								});
 							}
