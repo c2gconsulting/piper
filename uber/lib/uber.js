@@ -1,6 +1,7 @@
 var request = require('request-promise');
 var when = require('when');
 var _ = require('underscore');
+var utils = require('../../shared/lib/utils');
 
 // AUTH details
 var UBER_CLIENT_ID = "wTO4c5RIwLi_gjwN1tw79JY4_1W2Im1w";
@@ -15,7 +16,7 @@ var base_url = exports.base_url = "https://api.uber.com",
     login_url = exports.login_url = "https://login.uber.com",
     redirect_uri = exports.redirect_uri = "https://uber.piperlabs.com/oauth";
 
-var uber_map_image = 'https://j.mp/vublack';
+var uber_map_image = 'http://j.mp/vublack';
 
 var scope = 'profile request history';
 
@@ -47,6 +48,21 @@ var getAuthorizeLink = function (state, responseType) {
     if (!responseType) responseType = 'code';
     return authorize_url + '?response_type=' + responseType + '&client_id=' + UBER_CLIENT_ID + '&state=' + state + '&scope=' + scope; 
 };
+
+/**
+ * getDriverMap Returns a link to a google map image with driver location. 
+ * @param clat Map center latitude (user location)
+ * @param clng Map center longitude (user location)
+ * @param dlat Driver latitude
+ * @param dlng Driver longitude
+ */
+var getDriverMap = function(clat,clng,dlat,dlng) {
+    var clatlongt = clat + ',' + clng;
+    var dlatlongt = dlat + ',' + dlng;
+    return utils.shortenLink('http://maps.googleapis.com/maps/api/staticmap?center=' + clatlongt + '&size=400x400&markers=icon:' + uber_map_image + '|' + dlatlongt);
+}
+
+
 
 /**
  * getUserAccessToken Retrieve access token for user authorization code. 

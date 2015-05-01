@@ -10,7 +10,11 @@ exports.getGeoStaticMapLink = function(lat,longt) {
     return utils.shortenLink('https://maps.googleapis.com/maps/api/staticmap?center=' + latlongt + '&zoom=16&size=400x400&markers=color:red%7Clabel:A%7C' + latlongt);
 }
 
-https://maps.googleapis.com/maps/api/geocode/json?latlng=40.714224,-73.961452&key=API_KEY
+exports.getGeoStaticMapLink = function(lat,longt) {
+    var latlongt = lat + ',' + longt;
+    //var rand = Math.floor((Math.random() * 50) + 1); // random suffix to force unfurling
+    return utils.shortenLink('https://maps.googleapis.com/maps/api/staticmap?center=' + latlongt + '&zoom=16&size=400x400&markers=color:red%7Clabel:A%7C' + latlongt);
+}
 
 var getCode = function(address) {
     var body;

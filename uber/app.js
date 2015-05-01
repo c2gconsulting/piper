@@ -133,13 +133,24 @@ function onProcessorEvent(id, user, client, body) {
 								logger.debug('getRequestDetails->RESPONSE: %s', JSON.stringify(response));
 								var rbody = response;
 								rbody.header = 'request_details';
-								uber.getRequestMap(access_token, body.requestId, prod
-									).then(function(resp) {
-										if (resp) {
-											rbody.href = resp.href;
+								if (response.location && response.location.latitude) {
+									cache.hgetall(emailCacheKey).then(function(userData) {
+										if (userData && userData.request_data) {
+											var reqData = JSON.parse(userData.request_data);
+											var clat = reqData.startLat, 
+												clng = reqData.startLong;
+											uber.getDriverMap(clat, clng, response.location.latitude, response.location.longitude
+												).then(function(link) {
+													rbody.href = link;
+													push(user.email, rbody);
+												});
+										} else {
+											push (user.email,rbody);
 										}
-										push(user.email, rbody);
-									});
+									});									
+								} else {
+									push (user.email,rbody);
+								}
 								if (response.status && (response.status === 'no_drivers_available')) {
 									cache.hdel(CACHE_PREFIX + 'requests', body.requestId);
 								}
@@ -162,13 +173,24 @@ function onProcessorEvent(id, user, client, body) {
 								logger.debug('getRequestDetails_hook->RESPONSE: %s', JSON.stringify(response));
 								var rbody = response;
 								rbody.header = 'request_details_hook';
-								uber.getRequestMap(access_token, body.requestId, prod
-									).then(function(resp) {
-										if (resp) {
-											rbody.href = resp.href;
+								if (response.location && response.location.latitude) {
+									cache.hgetall(emailCacheKey).then(function(userData) {
+										if (userData && userData.request_data) {
+											var reqData = JSON.parse(userData.request_data);
+											var clat = reqData.startLat, 
+												clng = reqData.startLong;
+											uber.getDriverMap(clat, clng, response.location.latitude, response.location.longitude
+												).then(function(link) {
+													rbody.href = link;
+													push(user.email, rbody);
+												});
+										} else {
+											push (user.email,rbody);
 										}
-										push(user.email, rbody);
-									});
+									});									
+								} else {
+									push (user.email,rbody);
+								}
 								if (response.status && (response.status === 'no_drivers_available')) {
 									cache.hdel(CACHE_PREFIX + 'requests', body.requestId);
 								}
