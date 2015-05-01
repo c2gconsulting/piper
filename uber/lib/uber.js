@@ -431,6 +431,7 @@ var getRequestReceipt = function (bearer_token, requestId, prod) {
 };
 
 module.exports.getAuthorizeLink = getAuthorizeLink;
+module.exports.getDriverMap = getDriverMap;
 module.exports.getUserAccessToken = getUserAccessToken;
 module.exports.getProducts = getProducts;
 module.exports.getProductDetails = getProductDetails;
