@@ -1180,9 +1180,9 @@ Rides.prototype.processRequestUpdate = function(username, clientHandle, body) {
 		case 'accepted':
 			me.emit('message', Rides.MODULE, username, clientHandle, 'Your ride is on its way...');
 			if (body.driver) {
+				if (body.href) me.emit('message', Rides.MODULE, username, clientHandle, body.href);
 				me.emit('message', Rides.MODULE, username, clientHandle, body.driver.name + ' (' + body.driver.rating +' stars) will be there in ' + body.eta + ' minutes in a ' + body.vehicle.make + ' ' + body.vehicle.model + ', registration ' + body.vehicle.license_plate);
 				if (body.driver.picture_url != null) me.emit('message', Rides.MODULE, username, clientHandle, body.driver.picture_url);
-				if (body.href) me.emit('message', Rides.MODULE, username, clientHandle, body.href);
 				me.emit('message', Rides.MODULE, username, clientHandle, 'You can reach him on ' + body.driver.phone_number);
 			} 
 			break;
