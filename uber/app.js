@@ -124,8 +124,10 @@ function onProcessorEvent(id, user, client, body) {
 
 				break;
 			case 'get_request_details':
+				logger.debug('get_request_details loading...');
 				checkAuth(user.email).then(function(access_token) {
 					if (access_token) {
+						logger.debug('get_request_details->access_token: %s', access_token);
 						uber.getRequestDetails(access_token, body.requestId, prod
 							).then(function(response) {
 								logger.debug('getRequestDetails->RESPONSE: %s', JSON.stringify(response));
@@ -250,7 +252,7 @@ function onRoutesEvent(data) {
 								var emailCacheKey = CACHE_PREFIX + email;
 								cache.hgetall(emailCacheKey).then(function(userData) {
 									if (userData) {
-										logger.debug('UserData: ' + userData);
+										logger.debug('UserData: ' + JSON.stringify(userData));
 										var jUser = { name: userData.user, email: email };
 										var rbody = { header: 'get_request_details', requestId: data.body.meta.resource_id };
 										onProcessorEvent(data.id, jUser, userData.client, rbody);
