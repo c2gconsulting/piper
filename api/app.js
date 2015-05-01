@@ -514,7 +514,7 @@ var processMessage = function(user, client, Processor, body) {
 }
 
 var onHandlerEvent = function(msgid, username, clientHandle, module, data) {
-	
+	logger.debug('onHandlerEvent-> msgid: %s, username: %s, clientHandle: %s, module: %s, data: %s', msgid, username, clientHandle, module, JSON.stringify(data));
 	if (!processors[module]) {
 		//instantiate and setup processor
 		var Processor = getProcessor(module);
