@@ -907,6 +907,7 @@ Rides.prototype.init = function(){
  * @param body - JSON object with request details
  */
 Rides.prototype.out = function(user, client, body) {
+	var me = this;
 	var handlerTodo = '';
 
 	checkActiveRequest(user.name, client.slackHandle).then(function(activeRequest) {
@@ -928,7 +929,7 @@ Rides.prototype.out = function(user, client, body) {
 			handlerTodo = 'rides_book_trip';
 		}  
 	            
-	    this.processData(user, client.slackHandle, body, handlerTodo);
+	    me.processData(user, client.slackHandle, body, handlerTodo);
 	});
 	
 	
