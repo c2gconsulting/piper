@@ -177,6 +177,7 @@ function onProcessorEvent(id, user, client, body) {
 									cache.hgetall(emailCacheKey).then(function(userData) {
 										if (userData && userData.request_data) {
 											var reqData = JSON.parse(userData.request_data);
+											logger.debug('reqData: %s', JSON.stringify(reqData));
 											var clat = reqData.startLat, 
 												clng = reqData.startLong;
 											uber.getDriverMap(clat, clng, response.location.latitude, response.location.longitude
