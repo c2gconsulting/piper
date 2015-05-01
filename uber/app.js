@@ -152,6 +152,35 @@ function onProcessorEvent(id, user, client, body) {
 					}
 				});
 				break;
+			case 'get_request_details_hook':
+				logger.debug('get_request_details hook loading...');
+				checkAuth(user.email).then(function(access_token) {
+					if (access_token) {
+						logger.debug('get_request_details_hook->access_token: %s', access_token);
+						uber.getRequestDetails(access_token, body.requestId, prod
+							).then(function(response) {
+								logger.debug('getRequestDetails_hook->RESPONSE: %s', JSON.stringify(response));
+								var rbody = response;
+								rbody.header = 'request_details_hook';
+								uber.getRequestMap(access_token, body.requestId, prod
+									).then(function(resp) {
+										if (resp) {
+											rbody.href = resp.href;
+										}
+										push(user.email, rbody);
+									});
+								if (response.status && (response.status === 'no_drivers_available')) {
+									cache.hdel(CACHE_PREFIX + 'requests', body.requestId);
+								}
+							}).catch(function(error) {
+								// handle errors:
+								//  - 422
+								//  - 409
+								logger.error('Request Details Hook Error: %s', JSON.stringify(error));
+							});
+					}
+				});
+				break;
 			case 'get_user_activity':
 				checkAuth(user.email).then(function(access_token) {
 					if (access_token) {
@@ -254,7 +283,7 @@ function onRoutesEvent(data) {
 									if (userData) {
 										logger.debug('UserData: ' + JSON.stringify(userData));
 										var jUser = { name: userData.user, email: email };
-										var rbody = { header: 'get_request_details', requestId: data.body.meta.resource_id };
+										var rbody = { header: 'get_request_details_hook', requestId: data.body.meta.resource_id };
 										onProcessorEvent(new Date().getTime(), jUser, userData.client, rbody);
 									}
 								});

@@ -1151,51 +1151,52 @@ Rides.prototype.in = function(msgid, username, clientHandle, body) {
 				cache.hset(userkey + ':handler', 'endpoint_base', body.endpoint);
 				cache.expire(userkey + ':handler', ONE_DAY_TTL);
 				break;
-			case 'request_response' || 'request_details':
-				cacheActiveRequest(username, clientHandle, body);
-				switch (body.status) {
-					case 'processing':
-						me.emit('message', Rides.MODULE, username, clientHandle, 'Waiting for a driver\'s confirmation...');
-						break;
-					case 'accepted':
-						me.emit('message', Rides.MODULE, username, clientHandle, 'Your ride is on its way...');
-						if (body.driver) {
-							me.emit('message', Rides.MODULE, username, clientHandle, body.driver.name + ' (' + body.driver.rating +' stars) will be there in ' + body.eta + ' minutes in a ' + body.vehicle.make + ' ' + body.vehicle.model + ', registration ' + body.vehicle.license_plate);
-							if (body.driver.picture_url != null) me.emit('message', Rides.MODULE, username, clientHandle, body.driver.picture_url);
-							if (body.href) me.emit('message', Rides.MODULE, username, clientHandle, body.href);
-						} 
-						break;
-					case 'arriving':
-						me.emit('message', Rides.MODULE, username, clientHandle, "Your ride has arrived");
-						if (body.href) me.emit('message', Rides.MODULE, username, clientHandle, body.href);
-						break;
-					case 'no_drivers_available':
-						me.emit('message', Rides.MODULE, username, clientHandle, "Sorry, no drivers available");
-						me.cancelRequest(username, clientHandle, {});
-						deleteActiveRequest(username, clientHandle);
-						break;
-					case 'in_progress':
-						break;
-					case 'driver_canceled':
-						me.emit('message', Rides.MODULE, username, clientHandle, "Sorry, the driver canceled...");
-						me.cancelRequest(username, clientHandle, {});
-						deleteActiveRequest(username, clientHandle);
-						break;
-					case 'rider_canceled':
-						me.emit('message', Rides.MODULE, username, clientHandle, "Your ride has been canceled");
-						me.cancelRequest(username, clientHandle, {});
-						deleteActiveRequest(username, clientHandle);
-						break;
-					case 'completed':
-						me.cancelRequest(username, clientHandle, {});
-						deleteActiveRequest(username, clientHandle);
-						break;
-				}
-				
-				break;
-			
+			case 'request_response' || 'request_details' || 'request_details_hook':
+				getActiveRequest(username, clientHandle).then(function(activeRequest) {
+					if (activeRequest && !(activeRequest.status === body.status && body.header === 'request_details_hook')) {
+						cacheActiveRequest(username, clientHandle, body);
+						switch (body.status) {
+							case 'processing':
+								me.emit('message', Rides.MODULE, username, clientHandle, 'Waiting for a driver\'s confirmation...');
+								break;
+							case 'accepted':
+								me.emit('message', Rides.MODULE, username, clientHandle, 'Your ride is on its way...');
+								if (body.driver) {
+									me.emit('message', Rides.MODULE, username, clientHandle, body.driver.name + ' (' + body.driver.rating +' stars) will be there in ' + body.eta + ' minutes in a ' + body.vehicle.make + ' ' + body.vehicle.model + ', registration ' + body.vehicle.license_plate);
+									if (body.driver.picture_url != null) me.emit('message', Rides.MODULE, username, clientHandle, body.driver.picture_url);
+									if (body.href) me.emit('message', Rides.MODULE, username, clientHandle, body.href);
+								} 
+								break;
+							case 'arriving':
+								me.emit('message', Rides.MODULE, username, clientHandle, "Your ride has arrived");
+								if (body.href) me.emit('message', Rides.MODULE, username, clientHandle, body.href);
+								break;
+							case 'no_drivers_available':
+								me.emit('message', Rides.MODULE, username, clientHandle, "Sorry, no drivers available");
+								me.cancelRequest(username, clientHandle, {});
+								deleteActiveRequest(username, clientHandle);
+								break;
+							case 'in_progress':
+								break;
+							case 'driver_canceled':
+								me.emit('message', Rides.MODULE, username, clientHandle, "Sorry, the driver canceled...");
+								me.cancelRequest(username, clientHandle, {});
+								deleteActiveRequest(username, clientHandle);
+								break;
+							case 'rider_canceled':
+								me.emit('message', Rides.MODULE, username, clientHandle, "Your ride has been canceled");
+								me.cancelRequest(username, clientHandle, {});
+								deleteActiveRequest(username, clientHandle);
+								break;
+							case 'completed':
+								me.cancelRequest(username, clientHandle, {});
+								deleteActiveRequest(username, clientHandle);
+								break;
+						}
+					}
+				});
+				break;	
 		}
-		
 		this.msgid = msgid;
 	}
 		
