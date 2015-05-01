@@ -238,7 +238,7 @@ function onRoutesEvent(data) {
 					if (requestData) {
 						logger.debug('RequestData: %s', requestData);
 						var jsonData = JSON.parse(requestData);
-						onProcessorEvent(jsonData.id, jsonData.user, jsonData.client, jsonData.body);
+						onProcessorEvent(new Date().getTime(), jsonData.user, jsonData.client, jsonData.body);
 					}
 				});
 				break;
@@ -255,7 +255,7 @@ function onRoutesEvent(data) {
 										logger.debug('UserData: ' + JSON.stringify(userData));
 										var jUser = { name: userData.user, email: email };
 										var rbody = { header: 'get_request_details', requestId: data.body.meta.resource_id };
-										onProcessorEvent(data.id, jUser, userData.client, rbody);
+										onProcessorEvent(new Date().getTime(), jUser, userData.client, rbody);
 									}
 								});
 							}
@@ -271,7 +271,7 @@ function onRoutesEvent(data) {
 										logger.debug('UserData: ' + userData);
 										var jUser = { name: userData.user, email: email };
 										var rbody = { header: 'get_request_receipt', requestId: data.body.meta.resource_id };
-										onProcessorEvent(data.id, jUser, userData.client, rbody);
+										onProcessorEvent(new Date().getTime(), jUser, userData.client, rbody);
 									}
 								});
 							}
