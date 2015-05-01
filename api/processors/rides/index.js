@@ -1152,15 +1152,15 @@ Rides.prototype.in = function(msgid, username, clientHandle, body) {
 				cache.expire(userkey + ':handler', ONE_DAY_TTL);
 				break;
 			case 'request_response':
-				processRequestUpdate(username, clientHandle, body);	
+				me.processRequestUpdate(username, clientHandle, body);	
 				break;	
 			case 'request_details':
-				processRequestUpdate(username, clientHandle, body);	
+				me.processRequestUpdate(username, clientHandle, body);	
 				break;	
 			case 'request_details_hook':
 				getActiveRequest(username, clientHandle).then(function(activeRequest) {
 					if (activeRequest && !(activeRequest.status === body.status && body.header === 'request_details_hook')) {
-						processRequestUpdate(username, clientHandle, body);
+						me.processRequestUpdate(username, clientHandle, body);
 					}
 				});
 				break;	
@@ -1170,7 +1170,8 @@ Rides.prototype.in = function(msgid, username, clientHandle, body) {
 		
 }
 
-function processRequestUpdate(username, clientHandle, body) {
+Rides.prototype.processRequestUpdate = function(username, clientHandle, body) {
+	var me = this;
 	cacheActiveRequest(username, clientHandle, body);
 	switch (body.status) {
 		case 'processing':
