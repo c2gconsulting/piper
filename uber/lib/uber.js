@@ -15,6 +15,8 @@ var base_url = exports.base_url = "https://api.uber.com",
     login_url = exports.login_url = "https://login.uber.com",
     redirect_uri = exports.redirect_uri = "https://uber.piperlabs.com/oauth";
 
+var uber_map_image = 'https://j.mp/vublack';
+
 var scope = 'profile request history';
 
 var getBearerHeaders = function (bearer_token, others) {
