@@ -415,6 +415,7 @@ function push(email, body) {
 			body.handler = 'UBER';
 			var rdata = { 'id': new Date().getTime(), 'user': data.user, 'client': data.client, module: RIDES_DESC.toUpperCase(), 'body': body };
 			logger.info('Uber Handler: Connecting to MQ Exchange <piper.events.in>...');
+			logger.debug('push.rdata: %s', JSON.stringify(rdata));
 			pub.connect('piper.events.in', function() {
 				logger.info('Uber Handler:  MQ Exchange <piper.events.in> connected');
 				pub.publish(mq.CONTROLLER_INBOUND, JSON.stringify(rdata));
