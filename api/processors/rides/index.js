@@ -909,20 +909,29 @@ Rides.prototype.init = function(){
 Rides.prototype.out = function(user, client, body) {
 	var handlerTodo = '';
 
+	checkActiveRequest(user.name, client.slackHandle).then(function(activeRequest) {
+		if (body.outcomes[0].intent === 'rides_cancel_trip' || body.outcomes[0].intent === 'default_cancel_request') {
+			handlerTodo = 'rides_cancel_trip';
+		} else if (body.context.state === 'RIDES_confirm_cancellation' && body.outcomes[0].intent !== 'rides_request_trip') {
+			handlerTodo = 'rides_cancel_trip';
+		} else if (activeRequest && body.outcomes[0].intent === 'default_reject') {
+			handlerTodo = 'rides_cancel_trip';
+		} else if (activeRequest) {
+			handlerTodo = 'rides_get_info';
+		} else if (body.outcomes[0].intent === 'rides_request_price_estimate' || body.context.state === 'RIDES_request_price_estimate') {
+			handlerTodo = 'rides_request_price_estimate';
+		} else if (body.outcomes[0].intent === 'rides_request_eta' || body.context.state === 'RIDES_request_eta') {
+			handlerTodo = 'rides_request_eta';
+		} else if (body.outcomes[0].intent === 'rides_info_query' || body.context.state === 'RIDES_info_query' ) {
+			handlerTodo = 'rides_get_info';
+		} else {
+			handlerTodo = 'rides_book_trip';
+		}  
+	            
+	    this.processData(user, client.slackHandle, body, handlerTodo);
+	});
 	
-	if (body.outcomes[0].intent === 'rides_cancel_trip' || body.outcomes[0].intent === 'default_cancel_request' || (body.context.state === 'RIDES_confirm_cancellation' && body.outcomes[0].intent !== 'rides_request_trip')) {
-		handlerTodo = 'rides_cancel_trip';
-	} else if (body.outcomes[0].intent === 'rides_request_price_estimate' || body.context.state === 'RIDES_request_price_estimate') {
-		handlerTodo = 'rides_request_price_estimate';
-	} else if (body.outcomes[0].intent === 'rides_request_eta' || body.context.state === 'RIDES_request_eta') {
-		handlerTodo = 'rides_request_eta';
-	} else if (body.outcomes[0].intent === 'rides_info_query' || body.context.state === 'RIDES_info_query' ) {
-		handlerTodo = 'rides_get_info';
-	} else {
-		handlerTodo = 'rides_book_trip';
-	}  
-            
-    this.processData(user, client.slackHandle, body, handlerTodo);
+	
 
 }
 
