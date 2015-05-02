@@ -479,3 +479,885 @@
 [Sat May 02 2015 18:15:15 GMT+0100 (WAT)] INFO MOBILIZR: Connection established...listening for messages
 [Sat May 02 2015 18:15:15 GMT+0100 (WAT)] INFO Welcome to Slack. You are @blanka of Mobilizr
 [Sat May 02 2015 18:15:15 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Opened
+[Sat May 02 2015 18:38:09 GMT+0100 (WAT)] INFO Received: message kachi @kachi 1430588289.000002 "cancel"
+[Sat May 02 2015 18:38:09 GMT+0100 (WAT)] DEBUG IGNORE FLAG: false
+[Sat May 02 2015 18:38:09 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Message Received
+[Sat May 02 2015 18:38:09 GMT+0100 (WAT)] DEBUG Userkey: api-server:kachi@mobilizr:context
+[Sat May 02 2015 18:38:09 GMT+0100 (WAT)] INFO No context: {"state":""}
+[Sat May 02 2015 18:38:09 GMT+0100 (WAT)] DEBUG 2015-05-02T17:38:09.000Z
+[Sat May 02 2015 18:38:11 GMT+0100 (WAT)] DEBUG IntentBody: {"msg_id":"288355db-318c-46ac-9360-f4dfc0abfa20","_text":"cancel","outcomes":[{"_text":"cancel","intent":"rides_cancel_trip","entities":{},"confidence":0.967}],"context":{"state":"","reference_time":"2015-05-02T17:38:09.000Z"}}
+[Sat May 02 2015 18:38:11 GMT+0100 (WAT)] DEBUG Intent: rides_cancel_trip
+[Sat May 02 2015 18:38:11 GMT+0100 (WAT)] DEBUG Confidence: 0.967
+[Sat May 02 2015 18:38:11 GMT+0100 (WAT)] INFO RIDES Processor: Connecting to MQ Exchange <piper.events.in>...
+[Sat May 02 2015 18:38:11 GMT+0100 (WAT)] DEBUG New context for api-server:kachi@mobilizr:context: {"state":"RIDES"}
+[Sat May 02 2015 18:38:11 GMT+0100 (WAT)] DEBUG Entities: {}
+[Sat May 02 2015 18:38:11 GMT+0100 (WAT)] INFO RIDES Processor: Connecting to MQ Exchange <piper.events.out>...
+[Sat May 02 2015 18:38:11 GMT+0100 (WAT)] DEBUG confirmCancellation: 0 -> false
+[Sat May 02 2015 18:38:11 GMT+0100 (WAT)] DEBUG Datakey: confirmCancellation, Validity Check: false
+[Sat May 02 2015 18:38:11 GMT+0100 (WAT)] INFO RIDES Processor: <piper.events.out> connected
+[Sat May 02 2015 18:38:11 GMT+0100 (WAT)] DEBUG Missing Keys for rides_cancel_trip: ["confirmCancellation"]
+[Sat May 02 2015 18:38:11 GMT+0100 (WAT)] DEBUG Predicate: 1
+[Sat May 02 2015 18:38:11 GMT+0100 (WAT)] DEBUG Datahash from unfold: {"handlerTodo":"rides_cancel_trip","intent":"rides_cancel_trip"}
+[Sat May 02 2015 18:38:11 GMT+0100 (WAT)] DEBUG 1. getResponse(): data.lvlQueries[NO_CONFIRM_CANCEL] -> undefined
+[Sat May 02 2015 18:38:11 GMT+0100 (WAT)] DEBUG 2. getResponse(): data.lvlQueries[NO_CONFIRM_CANCEL] -> 0
+[Sat May 02 2015 18:38:11 GMT+0100 (WAT)] DEBUG 3. getResponse(): data.lvlQueries[NO_CONFIRM_CANCEL] -> 0
+[Sat May 02 2015 18:38:11 GMT+0100 (WAT)] DEBUG Predicate: 0
+[Sat May 02 2015 18:38:11 GMT+0100 (WAT)] DEBUG Datahash: {"handlerTodo":"rides_cancel_trip","intent":"rides_cancel_trip","lvlQueries":{"NO_CONFIRM_CANCEL":1}}
+[Sat May 02 2015 18:38:11 GMT+0100 (WAT)] DEBUG Body: {"msg_id":"288355db-318c-46ac-9360-f4dfc0abfa20","_text":"cancel","outcomes":[{"_text":"cancel","intent":"rides_cancel_trip","entities":{},"confidence":0.967}],"context":{"state":"","reference_time":"2015-05-02T17:38:09.000Z"},"user":{"slackId":"U02RN8W1T","name":"kachi","email":"kachi@mobilizr.net","first_name":"http://d1a3f4spazzrp4.cloudfront.net/car-types/mono/mono-black.png","last_name":"https://login.uber.com/oauth/authorize?response_type=code&client_id=wTO4c5RIwLi_gjwN1tw79JY4_1W2Im1w","full_name":"http://d1a3f4spazzrp4.cloudfront.net/car-types/mono/mono-black.png https://login.uber.com/oauth/authorize?response_type=code&client_id=wTO4c5RIwLi_gjwN1tw79JY4_1W2Im1w","is_admin":true,"avatar":"https://secure.gravatar.com/avatar/441587d4f0a03b4ce3aca5a1af3577c1.jpg?s=48&d=https%3A%2F%2Fslack.global.ssl.fastly.net%2F3654%2Fimg%2Favatars%2Fava_0012-48.png"},"clientHandle":"mobilizr"}
+[Sat May 02 2015 18:38:11 GMT+0100 (WAT)] DEBUG Indata: {"hasActiveRequest":{"_handler":{"handler":{"value":true},"resolved":true}}}
+[Sat May 02 2015 18:38:11 GMT+0100 (WAT)] DEBUG rides:kachi@mobilizr
+[Sat May 02 2015 18:38:11 GMT+0100 (WAT)] DEBUG Datahash.lvlQueries: {"NO_CONFIRM_CANCEL":1}
+[Sat May 02 2015 18:38:11 GMT+0100 (WAT)] DEBUG module: RIDES, user: kachi, client: mobilizr, message: You want to cancel the trip request?
+[Sat May 02 2015 18:38:11 GMT+0100 (WAT)] INFO @blanka responded with "You want to cancel the trip request?"
+[Sat May 02 2015 18:38:11 GMT+0100 (WAT)] DEBUG Message: You want to cancel the trip request? sent to user kachi
+[Sat May 02 2015 18:38:11 GMT+0100 (WAT)] INFO Uber Handler.onProcessorEvent for data {"header":"get_endpoint_base"}
+[Sat May 02 2015 18:38:11 GMT+0100 (WAT)] DEBUG get_endpoint_base...
+[Sat May 02 2015 18:38:11 GMT+0100 (WAT)] DEBUG push.body: {"header":"endpoint_base","endpoint":"http://uber.example.com:3000"}
+[Sat May 02 2015 18:38:11 GMT+0100 (WAT)] INFO Uber Handler: Connecting to MQ Exchange <piper.events.in>...
+[Sat May 02 2015 18:38:11 GMT+0100 (WAT)] DEBUG push.rdata: {"id":1430588291419,"user":"kachi","client":"mobilizr","module":"RIDES","body":{"header":"endpoint_base","endpoint":"http://uber.example.com:3000","handler":"UBER"}}
+[Sat May 02 2015 18:38:11 GMT+0100 (WAT)] INFO Uber Handler:  MQ Exchange <piper.events.in> connected
+[Sat May 02 2015 18:38:11 GMT+0100 (WAT)] INFO RIDES Processor: <piper.events.in> connected
+[Sat May 02 2015 18:38:11 GMT+0100 (WAT)] DEBUG onHandlerEvent-> msgid: 1430588291419, username: kachi, clientHandle: mobilizr, module: RIDES, data: {"header":"endpoint_base","endpoint":"http://uber.example.com:3000","handler":"UBER"}
+[Sat May 02 2015 18:38:15 GMT+0100 (WAT)] INFO Received: message kachi @kachi 1430588294.000004 "yea"
+[Sat May 02 2015 18:38:15 GMT+0100 (WAT)] DEBUG IGNORE FLAG: false
+[Sat May 02 2015 18:38:15 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Message Received
+[Sat May 02 2015 18:38:15 GMT+0100 (WAT)] DEBUG Userkey: api-server:kachi@mobilizr:context
+[Sat May 02 2015 18:38:15 GMT+0100 (WAT)] DEBUG State for api-server:kachi@mobilizr:context: RIDES_confirm_cancellation
+[Sat May 02 2015 18:38:15 GMT+0100 (WAT)] DEBUG 2015-05-02T17:38:14.000Z
+[Sat May 02 2015 18:38:16 GMT+0100 (WAT)] DEBUG IntentBody: {"msg_id":"8d2d70af-7590-4a18-9bc4-6993c08abe90","_text":"yea","outcomes":[{"_text":"yea","intent":"default_accept","entities":{},"confidence":0.979}],"context":{"state":"RIDES_confirm_cancellation","reference_time":"2015-05-02T17:38:14.000Z"}}
+[Sat May 02 2015 18:38:16 GMT+0100 (WAT)] DEBUG Intent: default_accept
+[Sat May 02 2015 18:38:16 GMT+0100 (WAT)] DEBUG Confidence: 0.979
+[Sat May 02 2015 18:38:16 GMT+0100 (WAT)] DEBUG Module for intent default_accept and state RIDES_confirm_cancellation resolved to RIDES
+[Sat May 02 2015 18:38:16 GMT+0100 (WAT)] DEBUG Module for intent default_accept and state RIDES_confirm_cancellation resolved to RIDES
+[Sat May 02 2015 18:38:16 GMT+0100 (WAT)] DEBUG New context for api-server:kachi@mobilizr:context: {"state":"RIDES"}
+[Sat May 02 2015 18:38:16 GMT+0100 (WAT)] DEBUG Entities: {}
+[Sat May 02 2015 18:38:16 GMT+0100 (WAT)] DEBUG confirmCancellation: 0 -> true
+[Sat May 02 2015 18:38:16 GMT+0100 (WAT)] DEBUG Datakey: confirmCancellation, Validity Check: true
+[Sat May 02 2015 18:38:16 GMT+0100 (WAT)] DEBUG Predicate: 0
+[Sat May 02 2015 18:38:16 GMT+0100 (WAT)] DEBUG Datahash: {"handlerTodo":"rides_cancel_trip","intent":"default_accept","lvlQueries":{"NO_CONFIRM_CANCEL":1},"confirmCancellation":true}
+[Sat May 02 2015 18:38:16 GMT+0100 (WAT)] DEBUG Body: {"msg_id":"8d2d70af-7590-4a18-9bc4-6993c08abe90","_text":"yea","outcomes":[{"_text":"yea","intent":"default_accept","entities":{},"confidence":0.979}],"context":{"state":"RIDES_confirm_cancellation","reference_time":"2015-05-02T17:38:14.000Z"},"user":{"slackId":"U02RN8W1T","name":"kachi","email":"kachi@mobilizr.net","first_name":"http://d1a3f4spazzrp4.cloudfront.net/car-types/mono/mono-black.png","last_name":"https://login.uber.com/oauth/authorize?response_type=code&client_id=wTO4c5RIwLi_gjwN1tw79JY4_1W2Im1w","full_name":"http://d1a3f4spazzrp4.cloudfront.net/car-types/mono/mono-black.png https://login.uber.com/oauth/authorize?response_type=code&client_id=wTO4c5RIwLi_gjwN1tw79JY4_1W2Im1w","is_admin":true,"avatar":"https://secure.gravatar.com/avatar/441587d4f0a03b4ce3aca5a1af3577c1.jpg?s=48&d=https%3A%2F%2Fslack.global.ssl.fastly.net%2F3654%2Fimg%2Favatars%2Fava_0012-48.png"},"clientHandle":"mobilizr"}
+[Sat May 02 2015 18:38:16 GMT+0100 (WAT)] DEBUG Indata: {"hasActiveRequest":{"_handler":{"handler":{"value":true},"resolved":true}},"yes_no":"yes"}
+[Sat May 02 2015 18:38:16 GMT+0100 (WAT)] DEBUG rides:kachi@mobilizr
+[Sat May 02 2015 18:38:16 GMT+0100 (WAT)] DEBUG Datahash.lvlQueries: {"NO_CONFIRM_CANCEL":1}
+[Sat May 02 2015 18:38:16 GMT+0100 (WAT)] DEBUG No more missing data: calling handleRequest for rides_cancel_trip
+[Sat May 02 2015 18:38:16 GMT+0100 (WAT)] DEBUG CancelRequest: cancelling for ... {"handlerTodo":"rides_cancel_trip","intent":"default_accept","lvlQueries":"{\"NO_CONFIRM_CANCEL\":1}","confirmCancellation":true}
+[Sat May 02 2015 18:38:16 GMT+0100 (WAT)] INFO RIDES Processor: Connecting to MQ Exchange <piper.events.out>...
+[Sat May 02 2015 18:38:16 GMT+0100 (WAT)] DEBUG module: RIDES, user: kachi, client: mobilizr, message: Fine, your trip request has been cancelled
+[Sat May 02 2015 18:38:16 GMT+0100 (WAT)] INFO @blanka responded with "Fine, your trip request has been cancelled"
+[Sat May 02 2015 18:38:16 GMT+0100 (WAT)] DEBUG Message: Fine, your trip request has been cancelled sent to user kachi
+[Sat May 02 2015 18:38:16 GMT+0100 (WAT)] INFO RIDES Processor: <piper.events.out> connected
+[Sat May 02 2015 18:38:16 GMT+0100 (WAT)] INFO Uber Handler.onProcessorEvent for data {"header":"cancel_request"}
+[Sat May 02 2015 18:38:16 GMT+0100 (WAT)] INFO Uber Handler.onProcessorEvent for data {"header":"cancel_request"}
+[Sat May 02 2015 18:38:16 GMT+0100 (WAT)] DEBUG checkAuth.access_token: Bhmk7LXQLhQPRWScOfaHkUJsVN9vVT
+[Sat May 02 2015 18:38:17 GMT+0100 (WAT)] ERROR Cancel Error: {"name":"StatusCodeError","statusCode":401,"message":"401 - {\"message\":\"Invalid OAuth 2.0 credentials provided.\",\"code\":\"unauthorized\"}","error":"{\"message\":\"Invalid OAuth 2.0 credentials provided.\",\"code\":\"unauthorized\"}","options":{"headers":{"Authorization":"Bearer Bhmk7LXQLhQPRWScOfaHkUJsVN9vVT","content-length":0},"method":"DELETE","url":"https://api.uber.com/v1/requests/undefined","tunnel":false,"simple":true,"resolveWithFullResponse":false},"response":{"statusCode":401,"body":"{\"message\":\"Invalid OAuth 2.0 credentials provided.\",\"code\":\"unauthorized\"}","headers":{"server":"nginx","date":"Sat, 02 May 2015 17:38:17 GMT","content-type":"application/json","content-length":"75","connection":"keep-alive","x-uber-app":"uberex-nonsandbox","strict-transport-security":"max-age=31536000; includeSubDomains; preload","x-xss-protection":"1; mode=block"},"request":{"uri":{"protocol":"https:","slashes":true,"auth":null,"host":"api.uber.com","port":443,"hostname":"api.uber.com","hash":null,"search":null,"query":null,"pathname":"/v1/requests/undefined","path":"/v1/requests/undefined","href":"https://api.uber.com/v1/requests/undefined"},"method":"delete","headers":{"Authorization":"Bearer Bhmk7LXQLhQPRWScOfaHkUJsVN9vVT","content-length":0}}}}
+[Sat May 02 2015 18:38:22 GMT+0100 (WAT)] INFO Received: message kachi @kachi 1430588301.000006 "i need a cab to the office"
+[Sat May 02 2015 18:38:22 GMT+0100 (WAT)] DEBUG IGNORE FLAG: false
+[Sat May 02 2015 18:38:22 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Message Received
+[Sat May 02 2015 18:38:22 GMT+0100 (WAT)] DEBUG Userkey: api-server:kachi@mobilizr:context
+[Sat May 02 2015 18:38:22 GMT+0100 (WAT)] DEBUG State for api-server:kachi@mobilizr:context: RIDES
+[Sat May 02 2015 18:38:22 GMT+0100 (WAT)] DEBUG 2015-05-02T17:38:21.000Z
+[Sat May 02 2015 18:38:23 GMT+0100 (WAT)] DEBUG IntentBody: {"msg_id":"29cb883c-da6a-48fa-9f89-85a4f80faffe","_text":"i need a cab to the office","outcomes":[{"_text":"i need a cab to the office","intent":"rides_request_trip","entities":{"to":[{"suggested":true,"value":"to the office","type":"value"}]},"confidence":1}],"context":{"state":"RIDES","reference_time":"2015-05-02T17:38:21.000Z"}}
+[Sat May 02 2015 18:38:23 GMT+0100 (WAT)] DEBUG Intent: rides_request_trip
+[Sat May 02 2015 18:38:23 GMT+0100 (WAT)] DEBUG Confidence: 1
+[Sat May 02 2015 18:38:23 GMT+0100 (WAT)] DEBUG New context for api-server:kachi@mobilizr:context: {"state":"RIDES"}
+[Sat May 02 2015 18:38:23 GMT+0100 (WAT)] DEBUG Entities: {"to":[{"suggested":true,"value":"to the office","type":"value"}]}
+[Sat May 02 2015 18:38:23 GMT+0100 (WAT)] DEBUG lkKeys: %s
+	["home","office"]
+[Sat May 02 2015 18:38:23 GMT+0100 (WAT)] DEBUG keywordList: %s
+	["home","house","crib","hood","my address"]
+[Sat May 02 2015 18:38:23 GMT+0100 (WAT)] DEBUG location.search(home): -1
+[Sat May 02 2015 18:38:23 GMT+0100 (WAT)] DEBUG location.search(house): -1
+[Sat May 02 2015 18:38:23 GMT+0100 (WAT)] DEBUG location.search(crib): -1
+[Sat May 02 2015 18:38:23 GMT+0100 (WAT)] DEBUG location.search(hood): -1
+[Sat May 02 2015 18:38:23 GMT+0100 (WAT)] DEBUG location.search(my address): -1
+[Sat May 02 2015 18:38:23 GMT+0100 (WAT)] DEBUG keywordList: %s
+	["office","work","workplace","place of business","place of work","bureau","the office"]
+[Sat May 02 2015 18:38:23 GMT+0100 (WAT)] DEBUG location.search(office): 7
+[Sat May 02 2015 18:38:23 GMT+0100 (WAT)] DEBUG location.search(work): -1
+[Sat May 02 2015 18:38:23 GMT+0100 (WAT)] DEBUG location.search(workplace): -1
+[Sat May 02 2015 18:38:23 GMT+0100 (WAT)] DEBUG location.search(place of business): -1
+[Sat May 02 2015 18:38:23 GMT+0100 (WAT)] DEBUG location.search(place of work): -1
+[Sat May 02 2015 18:38:23 GMT+0100 (WAT)] DEBUG location.search(bureau): -1
+[Sat May 02 2015 18:38:23 GMT+0100 (WAT)] DEBUG location.search(the office): 3
+[Sat May 02 2015 18:38:23 GMT+0100 (WAT)] DEBUG confirmNeed: 0 -> false
+[Sat May 02 2015 18:38:23 GMT+0100 (WAT)] DEBUG confirmNeed: 1 -> true
+[Sat May 02 2015 18:38:23 GMT+0100 (WAT)] DEBUG startLong: 0 -> false
+[Sat May 02 2015 18:38:23 GMT+0100 (WAT)] DEBUG startLong: 1 -> false
+[Sat May 02 2015 18:38:23 GMT+0100 (WAT)] DEBUG startLong: 2 -> false
+[Sat May 02 2015 18:38:23 GMT+0100 (WAT)] DEBUG startLong: 3 -> false
+[Sat May 02 2015 18:38:23 GMT+0100 (WAT)] DEBUG endLong: 0 -> false
+[Sat May 02 2015 18:38:23 GMT+0100 (WAT)] DEBUG endLong: 1 -> false
+[Sat May 02 2015 18:38:23 GMT+0100 (WAT)] DEBUG departureTime: 0 -> false
+[Sat May 02 2015 18:38:23 GMT+0100 (WAT)] DEBUG departureTime: 1 -> true
+[Sat May 02 2015 18:38:23 GMT+0100 (WAT)] DEBUG productId: 0 -> false
+[Sat May 02 2015 18:38:23 GMT+0100 (WAT)] DEBUG productId: 1 -> false
+[Sat May 02 2015 18:38:23 GMT+0100 (WAT)] DEBUG productId: 2 -> false
+[Sat May 02 2015 18:38:23 GMT+0100 (WAT)] DEBUG productId: 3 -> false
+[Sat May 02 2015 18:38:23 GMT+0100 (WAT)] DEBUG productId: 4 -> false
+[Sat May 02 2015 18:38:23 GMT+0100 (WAT)] DEBUG productId: 5 -> false
+[Sat May 02 2015 18:38:23 GMT+0100 (WAT)] DEBUG productId: 6 -> false
+[Sat May 02 2015 18:38:23 GMT+0100 (WAT)] DEBUG confirmRequest: 0 -> false
+[Sat May 02 2015 18:38:23 GMT+0100 (WAT)] DEBUG confirmRequest: 1 -> false
+[Sat May 02 2015 18:38:23 GMT+0100 (WAT)] DEBUG Got to then of getUserPreference...
+[Sat May 02 2015 18:38:24 GMT+0100 (WAT)] INFO Geo data: {"results":[{"address_components":[{"long_name":"Etim Inyang Crescent","short_name":"Etim Inyang Cres","types":["route"]},{"long_name":"Eti-Osa","short_name":"Eti-Osa","types":["sublocality_level_1","sublocality","political"]},{"long_name":"Lagos","short_name":"Lagos","types":["colloquial_area","locality","political"]},{"long_name":"Lagos","short_name":"Lagos","types":["administrative_area_level_1","political"]},{"long_name":"Nigeria","short_name":"NG","types":["country","political"]}],"formatted_address":"Etim Inyang Crescent, Lagos, Nigeria","geometry":{"bounds":{"northeast":{"lat":6.433278,"lng":3.4395313},"southwest":{"lat":6.4320812,"lng":3.4337308}},"location":{"lat":6.4331551,"lng":3.4365724},"location_type":"GEOMETRIC_CENTER","viewport":{"northeast":{"lat":6.434028580291502,"lng":3.4395313},"southwest":{"lat":6.431330619708498,"lng":3.4337308}}},"partial_match":true,"place_id":"ChIJ6eBtzyP1OxARBosrrPDU44k","types":["route"]}],"status":"OK"}
+[Sat May 02 2015 18:38:24 GMT+0100 (WAT)] DEBUG endLong: 2 -> true
+[Sat May 02 2015 18:38:24 GMT+0100 (WAT)] DEBUG Datakey: confirmNeed, Validity Check: true
+[Sat May 02 2015 18:38:24 GMT+0100 (WAT)] DEBUG Datakey: startLong, Validity Check: false
+[Sat May 02 2015 18:38:24 GMT+0100 (WAT)] DEBUG Datakey: endLong, Validity Check: true
+[Sat May 02 2015 18:38:24 GMT+0100 (WAT)] DEBUG Datakey: departureTime, Validity Check: true
+[Sat May 02 2015 18:38:24 GMT+0100 (WAT)] DEBUG Datakey: productId, Validity Check: false
+[Sat May 02 2015 18:38:24 GMT+0100 (WAT)] DEBUG Datakey: confirmRequest, Validity Check: false
+[Sat May 02 2015 18:38:24 GMT+0100 (WAT)] DEBUG Missing Keys for rides_book_trip: ["startLong","productId","confirmRequest"]
+[Sat May 02 2015 18:38:24 GMT+0100 (WAT)] DEBUG Predicate: 3
+[Sat May 02 2015 18:38:24 GMT+0100 (WAT)] DEBUG Datahash from unfold: {"handlerTodo":"rides_book_trip","intent":"rides_request_trip","confirmNeed":true,"toLocKeyword":"office","endLong":3.4365724,"endLat":6.4331551}
+[Sat May 02 2015 18:38:24 GMT+0100 (WAT)] DEBUG 1. getResponse(): data.lvlQueries[NO_START_LOCATION] -> undefined
+[Sat May 02 2015 18:38:24 GMT+0100 (WAT)] DEBUG 2. getResponse(): data.lvlQueries[NO_START_LOCATION] -> 0
+[Sat May 02 2015 18:38:24 GMT+0100 (WAT)] DEBUG 3. getResponse(): data.lvlQueries[NO_START_LOCATION] -> 0
+[Sat May 02 2015 18:38:27 GMT+0100 (WAT)] DEBUG Predicate: 2
+[Sat May 02 2015 18:38:27 GMT+0100 (WAT)] DEBUG Datahash: {"handlerTodo":"rides_book_trip","intent":"rides_request_trip","confirmNeed":true,"toLocKeyword":"office","endLong":3.4365724,"endLat":6.4331551,"errStartLocation":"NO_START_LOCATION","lvlQueries":{"NO_START_LOCATION":1}}
+[Sat May 02 2015 18:38:27 GMT+0100 (WAT)] DEBUG Body: {"msg_id":"29cb883c-da6a-48fa-9f89-85a4f80faffe","_text":"i need a cab to the office","outcomes":[{"_text":"i need a cab to the office","intent":"rides_request_trip","entities":{"to":[{"suggested":true,"value":"to the office","type":"value"}]},"confidence":1}],"context":{"state":"RIDES","reference_time":"2015-05-02T17:38:21.000Z"},"user":{"slackId":"U02RN8W1T","name":"kachi","email":"kachi@mobilizr.net","first_name":"http://d1a3f4spazzrp4.cloudfront.net/car-types/mono/mono-black.png","last_name":"https://login.uber.com/oauth/authorize?response_type=code&client_id=wTO4c5RIwLi_gjwN1tw79JY4_1W2Im1w","full_name":"http://d1a3f4spazzrp4.cloudfront.net/car-types/mono/mono-black.png https://login.uber.com/oauth/authorize?response_type=code&client_id=wTO4c5RIwLi_gjwN1tw79JY4_1W2Im1w","is_admin":true,"avatar":"https://secure.gravatar.com/avatar/441587d4f0a03b4ce3aca5a1af3577c1.jpg?s=48&d=https%3A%2F%2Fslack.global.ssl.fastly.net%2F3654%2Fimg%2Favatars%2Fava_0012-48.png"},"clientHandle":"mobilizr"}
+[Sat May 02 2015 18:38:27 GMT+0100 (WAT)] DEBUG Indata: {"to":"259 etim inyang crescent","hasActiveRequest":{"_handler":{"handler":{"value":false},"resolved":true}}}
+[Sat May 02 2015 18:38:27 GMT+0100 (WAT)] DEBUG rides:kachi@mobilizr
+[Sat May 02 2015 18:38:27 GMT+0100 (WAT)] DEBUG Datahash.lvlQueries: {"NO_START_LOCATION":1}
+[Sat May 02 2015 18:38:27 GMT+0100 (WAT)] DEBUG module: RIDES, user: kachi, client: mobilizr, message: Ok. Just click here: http://bit.ly/1bOsRkI, and i'll pinpoint your current location
+[Sat May 02 2015 18:38:27 GMT+0100 (WAT)] INFO @blanka responded with "Ok. Just click here: http://bit.ly/1bOsRkI, and i'll pinpoint your current location"
+[Sat May 02 2015 18:38:27 GMT+0100 (WAT)] DEBUG Message: Ok. Just click here: http://bit.ly/1bOsRkI, and i'll pinpoint your current location sent to user kachi
+[Sat May 02 2015 18:38:34 GMT+0100 (WAT)] INFO Received: message kachi @kachi 1430588313.000008 "i’m at westminster abbey"
+[Sat May 02 2015 18:38:34 GMT+0100 (WAT)] DEBUG IGNORE FLAG: false
+[Sat May 02 2015 18:38:34 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Message Received
+[Sat May 02 2015 18:38:34 GMT+0100 (WAT)] DEBUG Userkey: api-server:kachi@mobilizr:context
+[Sat May 02 2015 18:38:34 GMT+0100 (WAT)] DEBUG State for api-server:kachi@mobilizr:context: RIDES_get_start_location
+[Sat May 02 2015 18:38:34 GMT+0100 (WAT)] DEBUG 2015-05-02T17:38:33.000Z
+[Sat May 02 2015 18:38:35 GMT+0100 (WAT)] DEBUG IntentBody: {"msg_id":"6ff18042-3367-4b59-8956-ca1460e320d8","_text":"i’m at westminster abbey","outcomes":[{"_text":"i’m at westminster abbey","intent":"default_give_info","entities":{"location":[{"suggested":true,"value":"westminster abbey","type":"value"}]},"confidence":0.987}],"context":{"state":"RIDES_get_start_location","reference_time":"2015-05-02T17:38:33.000Z"}}
+[Sat May 02 2015 18:38:35 GMT+0100 (WAT)] DEBUG Intent: default_give_info
+[Sat May 02 2015 18:38:35 GMT+0100 (WAT)] DEBUG Confidence: 0.987
+[Sat May 02 2015 18:38:35 GMT+0100 (WAT)] DEBUG Module for intent default_give_info and state RIDES_get_start_location resolved to RIDES
+[Sat May 02 2015 18:38:35 GMT+0100 (WAT)] DEBUG Module for intent default_give_info and state RIDES_get_start_location resolved to RIDES
+[Sat May 02 2015 18:38:35 GMT+0100 (WAT)] DEBUG New context for api-server:kachi@mobilizr:context: {"state":"RIDES"}
+[Sat May 02 2015 18:38:35 GMT+0100 (WAT)] DEBUG Entities: {"location":[{"suggested":true,"value":"westminster abbey","type":"value"}]}
+[Sat May 02 2015 18:38:35 GMT+0100 (WAT)] DEBUG lkKeys: %s
+	["home","office"]
+[Sat May 02 2015 18:38:35 GMT+0100 (WAT)] DEBUG keywordList: %s
+	["home","house","crib","hood","my address"]
+[Sat May 02 2015 18:38:35 GMT+0100 (WAT)] DEBUG location.search(home): -1
+[Sat May 02 2015 18:38:35 GMT+0100 (WAT)] DEBUG location.search(house): -1
+[Sat May 02 2015 18:38:35 GMT+0100 (WAT)] DEBUG location.search(crib): -1
+[Sat May 02 2015 18:38:35 GMT+0100 (WAT)] DEBUG location.search(hood): -1
+[Sat May 02 2015 18:38:35 GMT+0100 (WAT)] DEBUG location.search(my address): -1
+[Sat May 02 2015 18:38:35 GMT+0100 (WAT)] DEBUG keywordList: %s
+	["office","work","workplace","place of business","place of work","bureau","the office"]
+[Sat May 02 2015 18:38:35 GMT+0100 (WAT)] DEBUG location.search(office): -1
+[Sat May 02 2015 18:38:35 GMT+0100 (WAT)] DEBUG location.search(work): -1
+[Sat May 02 2015 18:38:35 GMT+0100 (WAT)] DEBUG location.search(workplace): -1
+[Sat May 02 2015 18:38:35 GMT+0100 (WAT)] DEBUG location.search(place of business): -1
+[Sat May 02 2015 18:38:35 GMT+0100 (WAT)] DEBUG location.search(place of work): -1
+[Sat May 02 2015 18:38:35 GMT+0100 (WAT)] DEBUG location.search(bureau): -1
+[Sat May 02 2015 18:38:35 GMT+0100 (WAT)] DEBUG location.search(the office): -1
+[Sat May 02 2015 18:38:35 GMT+0100 (WAT)] DEBUG confirmNeed: 0 -> false
+[Sat May 02 2015 18:38:35 GMT+0100 (WAT)] DEBUG confirmNeed: 1 -> true
+[Sat May 02 2015 18:38:35 GMT+0100 (WAT)] DEBUG startLong: 0 -> false
+[Sat May 02 2015 18:38:35 GMT+0100 (WAT)] DEBUG startLong: 1 -> false
+[Sat May 02 2015 18:38:35 GMT+0100 (WAT)] DEBUG startLong: 3 -> false
+[Sat May 02 2015 18:38:35 GMT+0100 (WAT)] DEBUG endLong: 0 -> false
+[Sat May 02 2015 18:38:35 GMT+0100 (WAT)] DEBUG endLong: 1 -> true
+[Sat May 02 2015 18:38:35 GMT+0100 (WAT)] DEBUG endLong: 2 -> false
+[Sat May 02 2015 18:38:35 GMT+0100 (WAT)] DEBUG departureTime: 0 -> false
+[Sat May 02 2015 18:38:35 GMT+0100 (WAT)] DEBUG departureTime: 1 -> true
+[Sat May 02 2015 18:38:35 GMT+0100 (WAT)] DEBUG productId: 0 -> false
+[Sat May 02 2015 18:38:35 GMT+0100 (WAT)] DEBUG productId: 1 -> false
+[Sat May 02 2015 18:38:35 GMT+0100 (WAT)] DEBUG productId: 2 -> false
+[Sat May 02 2015 18:38:35 GMT+0100 (WAT)] DEBUG productId: 3 -> false
+[Sat May 02 2015 18:38:35 GMT+0100 (WAT)] DEBUG productId: 4 -> false
+[Sat May 02 2015 18:38:35 GMT+0100 (WAT)] DEBUG productId: 5 -> false
+[Sat May 02 2015 18:38:35 GMT+0100 (WAT)] DEBUG productId: 6 -> false
+[Sat May 02 2015 18:38:35 GMT+0100 (WAT)] DEBUG confirmRequest: 0 -> false
+[Sat May 02 2015 18:38:35 GMT+0100 (WAT)] DEBUG confirmRequest: 1 -> false
+[Sat May 02 2015 18:38:36 GMT+0100 (WAT)] INFO Geo data: {"results":[{"address_components":[{"long_name":"Westminster Abbey","short_name":"Westminster Abbey","types":["point_of_interest","establishment"]},{"long_name":"20","short_name":"20","types":["street_number"]},{"long_name":"Deans Yd","short_name":"Deans Yd","types":["route"]},{"long_name":"Westminster","short_name":"Westminster","types":["neighborhood","political"]},{"long_name":"London","short_name":"London","types":["locality","political"]},{"long_name":"London","short_name":"London","types":["postal_town"]},{"long_name":"Greater London","short_name":"Gt Lon","types":["administrative_area_level_2","political"]},{"long_name":"United Kingdom","short_name":"GB","types":["country","political"]},{"long_name":"SW1P 3PA","short_name":"SW1P 3PA","types":["postal_code"]}],"formatted_address":"Westminster Abbey, 20 Deans Yd, Westminster, London SW1P 3PA, UK","geometry":{"location":{"lat":51.4992921,"lng":-0.1273097},"location_type":"APPROXIMATE","viewport":{"northeast":{"lat":51.5006410802915,"lng":-0.125960719708498},"southwest":{"lat":51.4979431197085,"lng":-0.128658680291502}}},"place_id":"ChIJLzVDusQEdkgRelObBaL_jto","types":["church","place_of_worship","point_of_interest","establishment"]}],"status":"OK"}
+[Sat May 02 2015 18:38:36 GMT+0100 (WAT)] DEBUG startLong: 2 -> true
+[Sat May 02 2015 18:38:36 GMT+0100 (WAT)] DEBUG Datakey: confirmNeed, Validity Check: true
+[Sat May 02 2015 18:38:36 GMT+0100 (WAT)] DEBUG Datakey: startLong, Validity Check: true
+[Sat May 02 2015 18:38:36 GMT+0100 (WAT)] DEBUG Datakey: endLong, Validity Check: true
+[Sat May 02 2015 18:38:36 GMT+0100 (WAT)] DEBUG Datakey: departureTime, Validity Check: true
+[Sat May 02 2015 18:38:36 GMT+0100 (WAT)] DEBUG Datakey: productId, Validity Check: false
+[Sat May 02 2015 18:38:36 GMT+0100 (WAT)] DEBUG Datakey: confirmRequest, Validity Check: false
+[Sat May 02 2015 18:38:36 GMT+0100 (WAT)] DEBUG Missing Keys for rides_book_trip: ["productId","confirmRequest"]
+[Sat May 02 2015 18:38:36 GMT+0100 (WAT)] DEBUG Predicate: 2
+[Sat May 02 2015 18:38:36 GMT+0100 (WAT)] DEBUG Datahash from unfold: {"handlerTodo":"rides_book_trip","intent":"default_give_info","confirmNeed":true,"toLocKeyword":"office","endLong":"3.4365724","endLat":"6.4331551","errStartLocation":"NO_START_LOCATION","lvlQueries":{"NO_START_LOCATION":1},"startLong":-0.1273097,"startLat":51.4992921}
+[Sat May 02 2015 18:38:36 GMT+0100 (WAT)] DEBUG Predicate: 1
+[Sat May 02 2015 18:38:36 GMT+0100 (WAT)] DEBUG Datahash from unfold: {"handlerTodo":"rides_book_trip","intent":"default_give_info","confirmNeed":true,"toLocKeyword":"office","endLong":"3.4365724","endLat":"6.4331551","errStartLocation":"NO_START_LOCATION","lvlQueries":{"NO_START_LOCATION":1},"startLong":-0.1273097,"startLat":51.4992921}
+[Sat May 02 2015 18:38:36 GMT+0100 (WAT)] DEBUG Predicate: 0
+[Sat May 02 2015 18:38:36 GMT+0100 (WAT)] DEBUG Datahash: {"handlerTodo":"rides_book_trip","intent":"default_give_info","confirmNeed":true,"toLocKeyword":"office","endLong":"3.4365724","endLat":"6.4331551","errStartLocation":"NO_START_LOCATION","lvlQueries":{"NO_START_LOCATION":1},"startLong":-0.1273097,"startLat":51.4992921,"errConfirmRequest":"NO_CONFIRM_REQUEST"}
+[Sat May 02 2015 18:38:36 GMT+0100 (WAT)] DEBUG Body: {"msg_id":"6ff18042-3367-4b59-8956-ca1460e320d8","_text":"i’m at westminster abbey","outcomes":[{"_text":"i’m at westminster abbey","intent":"default_give_info","entities":{"location":[{"suggested":true,"value":"westminster abbey","type":"value"}]},"confidence":0.987}],"context":{"state":"RIDES_get_start_location","reference_time":"2015-05-02T17:38:33.000Z"},"user":{"slackId":"U02RN8W1T","name":"kachi","email":"kachi@mobilizr.net","first_name":"http://d1a3f4spazzrp4.cloudfront.net/car-types/mono/mono-black.png","last_name":"https://login.uber.com/oauth/authorize?response_type=code&client_id=wTO4c5RIwLi_gjwN1tw79JY4_1W2Im1w","full_name":"http://d1a3f4spazzrp4.cloudfront.net/car-types/mono/mono-black.png https://login.uber.com/oauth/authorize?response_type=code&client_id=wTO4c5RIwLi_gjwN1tw79JY4_1W2Im1w","is_admin":true,"avatar":"https://secure.gravatar.com/avatar/441587d4f0a03b4ce3aca5a1af3577c1.jpg?s=48&d=https%3A%2F%2Fslack.global.ssl.fastly.net%2F3654%2Fimg%2Favatars%2Fava_0012-48.png"},"clientHandle":"mobilizr"}
+[Sat May 02 2015 18:38:36 GMT+0100 (WAT)] DEBUG Indata: {"location":"westminster abbey","hasActiveRequest":{"_handler":{"handler":{"value":false},"resolved":true}},"from":"westminster abbey"}
+[Sat May 02 2015 18:38:36 GMT+0100 (WAT)] DEBUG rides:kachi@mobilizr
+[Sat May 02 2015 18:38:36 GMT+0100 (WAT)] DEBUG Datahash.lvlQueries: {"NO_START_LOCATION":1}
+[Sat May 02 2015 18:41:49 GMT+0100 (WAT)] INFO Received: message kachi @kachi 1430588509.000009 "there?"
+[Sat May 02 2015 18:41:49 GMT+0100 (WAT)] DEBUG IGNORE FLAG: false
+[Sat May 02 2015 18:41:49 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Message Received
+[Sat May 02 2015 18:41:49 GMT+0100 (WAT)] DEBUG Userkey: api-server:kachi@mobilizr:context
+[Sat May 02 2015 18:41:49 GMT+0100 (WAT)] DEBUG State for api-server:kachi@mobilizr:context: RIDES
+[Sat May 02 2015 18:41:49 GMT+0100 (WAT)] DEBUG 2015-05-02T17:41:49.000Z
+[Sat May 02 2015 18:41:51 GMT+0100 (WAT)] DEBUG IntentBody: {"msg_id":"267be863-48c6-412c-ac71-e9790d6505ca","_text":"there?","outcomes":[{"_text":"there?","intent":"default_prompt","entities":{},"confidence":0.924}],"context":{"state":"RIDES","reference_time":"2015-05-02T17:41:49.000Z"}}
+[Sat May 02 2015 18:41:51 GMT+0100 (WAT)] DEBUG Intent: default_prompt
+[Sat May 02 2015 18:41:51 GMT+0100 (WAT)] DEBUG Confidence: 0.924
+[Sat May 02 2015 18:41:51 GMT+0100 (WAT)] DEBUG Module for intent default_prompt and state RIDES resolved to RIDES
+[Sat May 02 2015 18:41:51 GMT+0100 (WAT)] DEBUG Module for intent default_prompt and state RIDES resolved to RIDES
+[Sat May 02 2015 18:41:51 GMT+0100 (WAT)] DEBUG New context for api-server:kachi@mobilizr:context: {"state":"RIDES"}
+[Sat May 02 2015 18:41:51 GMT+0100 (WAT)] DEBUG Entities: {}
+[Sat May 02 2015 18:41:51 GMT+0100 (WAT)] DEBUG Going for products...
+[Sat May 02 2015 18:41:51 GMT+0100 (WAT)] DEBUG confirmNeed: 0 -> false
+[Sat May 02 2015 18:41:51 GMT+0100 (WAT)] DEBUG confirmNeed: 1 -> true
+[Sat May 02 2015 18:41:51 GMT+0100 (WAT)] DEBUG startLong: 0 -> false
+[Sat May 02 2015 18:41:51 GMT+0100 (WAT)] DEBUG startLong: 1 -> true
+[Sat May 02 2015 18:41:51 GMT+0100 (WAT)] DEBUG startLong: 2 -> false
+[Sat May 02 2015 18:41:51 GMT+0100 (WAT)] DEBUG startLong: 3 -> false
+[Sat May 02 2015 18:41:51 GMT+0100 (WAT)] DEBUG endLong: 0 -> false
+[Sat May 02 2015 18:41:51 GMT+0100 (WAT)] DEBUG endLong: 1 -> true
+[Sat May 02 2015 18:41:51 GMT+0100 (WAT)] DEBUG endLong: 2 -> false
+[Sat May 02 2015 18:41:51 GMT+0100 (WAT)] DEBUG departureTime: 0 -> false
+[Sat May 02 2015 18:41:51 GMT+0100 (WAT)] DEBUG departureTime: 1 -> true
+[Sat May 02 2015 18:41:51 GMT+0100 (WAT)] DEBUG productId: 0 -> false
+[Sat May 02 2015 18:41:51 GMT+0100 (WAT)] DEBUG productId: 1 -> false
+[Sat May 02 2015 18:41:51 GMT+0100 (WAT)] DEBUG productId: 3 -> false
+[Sat May 02 2015 18:41:51 GMT+0100 (WAT)] DEBUG productId: 4 -> false
+[Sat May 02 2015 18:41:51 GMT+0100 (WAT)] DEBUG productId: 5 -> false
+[Sat May 02 2015 18:41:51 GMT+0100 (WAT)] DEBUG productId: 6 -> false
+[Sat May 02 2015 18:41:51 GMT+0100 (WAT)] DEBUG confirmRequest: 0 -> false
+[Sat May 02 2015 18:41:51 GMT+0100 (WAT)] DEBUG confirmRequest: 1 -> false
+[Sat May 02 2015 18:41:51 GMT+0100 (WAT)] DEBUG getProducts->endpoint: http://uber.example.com:3000
+[Sat May 02 2015 18:41:53 GMT+0100 (WAT)] DEBUG Products: {"products":[{"capacity":4,"product_id":"3cb90303-3869-4701-a8fd-92efba468a94","price_details":{"service_fees":[],"cost_per_minute":0.15,"distance_unit":"mile","minimum":5,"cost_per_distance":1.25,"base":2.5,"cancellation_fee":5,"currency_code":"GBP"},"image":"http://d1a3f4spazzrp4.cloudfront.net/car-types/mono/mono-uberx.png","display_name":"uberX","description":"Cheap, fast & reliable"},{"capacity":6,"product_id":"d9b19d17-f013-4b98-9b3f-cf5a9e91d2aa","price_details":{"service_fees":[],"cost_per_minute":0.15,"distance_unit":"mile","minimum":7,"cost_per_distance":2.1,"base":3.5,"cancellation_fee":7,"currency_code":"GBP"},"image":"http://d1a3f4spazzrp4.cloudfront.net/car-types/mono/mono-uberxl.png","display_name":"uberXL","description":"Spacious, Convenient Comfort"},{"capacity":4,"product_id":"34a6cad0-0629-4ca0-ae68-ed0cea7695ca","price_details":{"service_fees":[],"cost_per_minute":0.3,"distance_unit":"mile","minimum":10,"cost_per_distance":2.4,"base":4,"cancellation_fee":7,"currency_code":"GBP"},"image":"http://d1a3f4spazzrp4.cloudfront.net/car-types/mono/mono-black.png","display_name":"UberEXEC","description":"Discreet executive quality"},{"capacity":4,"product_id":"ea52c793-1ad7-4c46-96b3-b1836b8cd0f9","price_details":{"service_fees":[],"cost_per_minute":0.55,"distance_unit":"mile","minimum":14,"cost_per_distance":3.55,"base":5,"cancellation_fee":10,"currency_code":"GBP"},"image":"http://d1a3f4spazzrp4.cloudfront.net/car-types/mono/mono-lux.png","display_name":"UberLUX","description":"Ultimate luxury & style"},{"capacity":5,"product_id":"6a6629df-3400-4e4b-8742-ebd79bf4ef99","price_details":null,"image":"http://d1a3f4spazzrp4.cloudfront.net/car-types/mono/mono-blacktaxi2.png","display_name":"UberTAXI","description":"Iconic, Knowledgeable & Versatile"}]}
+[Sat May 02 2015 18:41:53 GMT+0100 (WAT)] DEBUG productId: 2 -> true
+[Sat May 02 2015 18:41:53 GMT+0100 (WAT)] DEBUG Datakey: confirmNeed, Validity Check: true
+[Sat May 02 2015 18:41:53 GMT+0100 (WAT)] DEBUG Datakey: startLong, Validity Check: true
+[Sat May 02 2015 18:41:53 GMT+0100 (WAT)] DEBUG Datakey: endLong, Validity Check: true
+[Sat May 02 2015 18:41:53 GMT+0100 (WAT)] DEBUG Datakey: departureTime, Validity Check: true
+[Sat May 02 2015 18:41:53 GMT+0100 (WAT)] DEBUG Datakey: productId, Validity Check: true
+[Sat May 02 2015 18:41:53 GMT+0100 (WAT)] DEBUG Datakey: confirmRequest, Validity Check: false
+[Sat May 02 2015 18:41:53 GMT+0100 (WAT)] DEBUG Missing Keys for rides_book_trip: ["confirmRequest"]
+[Sat May 02 2015 18:41:53 GMT+0100 (WAT)] DEBUG Predicate: 1
+[Sat May 02 2015 18:41:53 GMT+0100 (WAT)] DEBUG Datahash from unfold: {"handlerTodo":"rides_book_trip","intent":"default_prompt","confirmNeed":true,"toLocKeyword":"office","endLong":"3.4365724","endLat":"6.4331551","lvlQueries":{"NO_START_LOCATION":1},"startLong":"-0.1273097","startLat":"51.4992921","errConfirmRequest":"NO_CONFIRM_REQUEST","products":true,"productId":"3cb90303-3869-4701-a8fd-92efba468a94","productName":"uberX"}
+[Sat May 02 2015 18:41:53 GMT+0100 (WAT)] DEBUG getTimeEstimate->endpoint: http://uber.example.com:3000
+[Sat May 02 2015 18:41:54 GMT+0100 (WAT)] DEBUG Time Estimates: {"times":[{"localized_display_name":"uberX","estimate":202,"display_name":"uberX","product_id":"3cb90303-3869-4701-a8fd-92efba468a94"},{"localized_display_name":"uberXL","estimate":202,"display_name":"uberXL","product_id":"d9b19d17-f013-4b98-9b3f-cf5a9e91d2aa"},{"localized_display_name":"UberEXEC","estimate":337,"display_name":"UberEXEC","product_id":"34a6cad0-0629-4ca0-ae68-ed0cea7695ca"},{"localized_display_name":"UberLUX","estimate":515,"display_name":"UberLUX","product_id":"ea52c793-1ad7-4c46-96b3-b1836b8cd0f9"},{"localized_display_name":"UberTAXI","estimate":520,"display_name":"UberTAXI","product_id":"6a6629df-3400-4e4b-8742-ebd79bf4ef99"}]}
+[Sat May 02 2015 18:41:54 GMT+0100 (WAT)] DEBUG getPriceEstimate->endpoint: http://uber.example.com:3000
+[Sat May 02 2015 18:41:56 GMT+0100 (WAT)] ERROR Cannot process request: {"name":"StatusCodeError","statusCode":422,"message":"422 - {\"fields\":{\"start_longitude\":\"Distance between two points exceeds 100 miles\",\"end_longitude\":\"Distance between two points exceeds 100 miles\",\"start_latitude\":\"Distance between two points exceeds 100 miles\",\"end_latitude\":\"Distance between two points exceeds 100 miles\"},\"message\":\"Distance between two points exceeds 100 miles\",\"code\":\"distance_exceeded\"}","error":"{\"fields\":{\"start_longitude\":\"Distance between two points exceeds 100 miles\",\"end_longitude\":\"Distance between two points exceeds 100 miles\",\"start_latitude\":\"Distance between two points exceeds 100 miles\",\"end_latitude\":\"Distance between two points exceeds 100 miles\"},\"message\":\"Distance between two points exceeds 100 miles\",\"code\":\"distance_exceeded\"}","options":{"headers":{"Authorization":"Token 56IrLXS0bglH4WT695YKkXIpaojpHmfoTgn3qE83","content-length":0},"qs":{"start_latitude":"51.4992921","start_longitude":"-0.1273097","end_latitude":"6.4331551","end_longitude":"3.4365724"},"method":"GET","url":"https://api.uber.com/v1/estimates/price","tunnel":false,"simple":true,"resolveWithFullResponse":false},"response":{"statusCode":422,"body":"{\"fields\":{\"start_longitude\":\"Distance between two points exceeds 100 miles\",\"end_longitude\":\"Distance between two points exceeds 100 miles\",\"start_latitude\":\"Distance between two points exceeds 100 miles\",\"end_latitude\":\"Distance between two points exceeds 100 miles\"},\"message\":\"Distance between two points exceeds 100 miles\",\"code\":\"distance_exceeded\"}","headers":{"server":"nginx","date":"Sat, 02 May 2015 17:41:55 GMT","content-type":"application/json","content-length":"355","connection":"keep-alive","x-uber-app":"uberex-nonsandbox","strict-transport-security":"max-age=31536000; includeSubDomains; preload","x-xss-protection":"1; mode=block"},"request":{"uri":{"protocol":"https:","slashes":true,"auth":null,"host":"api.uber.com","port":null,"hostname":"api.uber.com","hash":null,"search":"?start_latitude=51.4992921&start_longitude=-0.1273097&end_latitude=6.4331551&end_longitude=3.4365724","query":"start_latitude=51.4992921&start_longitude=-0.1273097&end_latitude=6.4331551&end_longitude=3.4365724","pathname":"/v1/estimates/price","path":"/v1/estimates/price?start_latitude=51.4992921&start_longitude=-0.1273097&end_latitude=6.4331551&end_longitude=3.4365724","href":"https://api.uber.com/v1/estimates/price?start_latitude=51.4992921&start_longitude=-0.1273097&end_latitude=6.4331551&end_longitude=3.4365724"},"method":"get","headers":{"Authorization":"Token 56IrLXS0bglH4WT695YKkXIpaojpHmfoTgn3qE83","content-length":0}}}}
+[Sat May 02 2015 18:41:56 GMT+0100 (WAT)] ERROR uncaughtException: Cannot read property 'length' of undefined
+	{"date":"Sat May 02 2015 18:41:56 GMT+0100 (WAT)","process":{"pid":41739,"uid":502,"gid":20,"cwd":"/Users/cizukanne/Development/workspace/piper","execPath":"/usr/local/bin/node","version":"v0.10.35","argv":["node","/Users/cizukanne/Development/workspace/piper/server","server.js"],"memoryUsage":{"rss":151711744,"heapTotal":129379328,"heapUsed":91620776}},"os":{"loadavg":[1.60791015625,1.9462890625,1.935546875],"uptime":1644585},"trace":[{"column":30,"file":"/Users/cizukanne/Development/workspace/piper/api/processors/rides/index.js","function":null,"line":650,"method":null,"native":false},{"column":30,"file":"/Users/cizukanne/Development/workspace/piper/node_modules/when/lib/makePromise.js","function":"tryCatchReject","line":845,"method":null,"native":false},{"column":4,"file":"/Users/cizukanne/Development/workspace/piper/node_modules/when/lib/makePromise.js","function":"runContinuation1","line":804,"method":null,"native":false},{"column":4,"file":"/Users/cizukanne/Development/workspace/piper/node_modules/when/lib/makePromise.js","function":"Fulfilled.when","line":592,"method":"when","native":false},{"column":13,"file":"/Users/cizukanne/Development/workspace/piper/node_modules/when/lib/makePromise.js","function":"Thenable.Pending.run","line":483,"method":"Pending.run","native":false},{"column":19,"file":"/Users/cizukanne/Development/workspace/piper/node_modules/when/lib/Scheduler.js","function":"Scheduler._drain","line":62,"method":"_drain","native":false},{"column":9,"file":"/Users/cizukanne/Development/workspace/piper/node_modules/when/lib/Scheduler.js","function":"Scheduler.drain","line":27,"method":"drain","native":false},{"column":13,"file":"node.js","function":"process._tickCallback","line":442,"method":"_tickCallback","native":false}],"stack":["TypeError: Cannot read property 'length' of undefined","    at /Users/cizukanne/Development/workspace/piper/api/processors/rides/index.js:650:30","    at tryCatchReject (/Users/cizukanne/Development/workspace/piper/node_modules/when/lib/makePromise.js:845:30)","    at runContinuation1 (/Users/cizukanne/Development/workspace/piper/node_modules/when/lib/makePromise.js:804:4)","    at Fulfilled.when (/Users/cizukanne/Development/workspace/piper/node_modules/when/lib/makePromise.js:592:4)","    at Thenable.Pending.run (/Users/cizukanne/Development/workspace/piper/node_modules/when/lib/makePromise.js:483:13)","    at Scheduler._drain (/Users/cizukanne/Development/workspace/piper/node_modules/when/lib/Scheduler.js:62:19)","    at Scheduler.drain (/Users/cizukanne/Development/workspace/piper/node_modules/when/lib/Scheduler.js:27:9)","    at process._tickCallback (node.js:442:13)"]}
+[Sat May 02 2015 18:42:58 GMT+0100 (WAT)] INFO Piper Controller: Connecting to MQ Exchange <piper.events.in>...
+[Sat May 02 2015 18:42:59 GMT+0100 (WAT)] INFO CHITCHAT Handler: Connecting to MQ Exchange <piper.events.out>...
+[Sat May 02 2015 18:42:59 GMT+0100 (WAT)] INFO SALES Handler: Connecting to MQ Exchange <piper.events.out>...
+[Sat May 02 2015 18:42:59 GMT+0100 (WAT)] INFO UBER Handler: Connecting to MQ Exchange <piper.events.out>...
+[Sat May 02 2015 18:43:00 GMT+0100 (WAT)] INFO Piper server listening on port 3000 in development mode
+[Sat May 02 2015 18:43:00 GMT+0100 (WAT)] INFO Successfully connected to: mongodb://localhost/piper
+[Sat May 02 2015 18:43:00 GMT+0100 (WAT)] INFO Updating registry for client mobilizr...
+[Sat May 02 2015 18:43:00 GMT+0100 (WAT)] INFO Updating registry for client c2gstudio...
+[Sat May 02 2015 18:43:00 GMT+0100 (WAT)] INFO Registered connection for client: mobilizr
+[Sat May 02 2015 18:43:00 GMT+0100 (WAT)] INFO Registered connection for client: c2gstudio
+[Sat May 02 2015 18:43:00 GMT+0100 (WAT)] INFO CHITCHAT Handler <piper.events.out>: Binding to mobilizr.chitchat...
+[Sat May 02 2015 18:43:00 GMT+0100 (WAT)] INFO CHITCHAT Handler <piper.events.out>: Binding to c2gstudio.chitchat...
+[Sat May 02 2015 18:43:00 GMT+0100 (WAT)] INFO Piper Controller: MQ Exchange <piper.events.in> connected
+[Sat May 02 2015 18:43:00 GMT+0100 (WAT)] INFO rides.*: <piper.events.out> connected
+[Sat May 02 2015 18:43:01 GMT+0100 (WAT)] INFO uber.routes: <piper.events.out> connected
+[Sat May 02 2015 18:43:04 GMT+0100 (WAT)] INFO C2G STUDIO: Connection established...listening for messages
+[Sat May 02 2015 18:43:04 GMT+0100 (WAT)] INFO Welcome to Slack. You are @blonker of c2gstudio
+[Sat May 02 2015 18:43:04 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Opened
+[Sat May 02 2015 18:43:04 GMT+0100 (WAT)] INFO MOBILIZR: Connection established...listening for messages
+[Sat May 02 2015 18:43:04 GMT+0100 (WAT)] INFO Welcome to Slack. You are @blanka of Mobilizr
+[Sat May 02 2015 18:43:04 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Opened
+[Sat May 02 2015 18:46:13 GMT+0100 (WAT)] INFO Received: message kachi @kachi 1430588773.000010 "there?"
+[Sat May 02 2015 18:46:13 GMT+0100 (WAT)] DEBUG IGNORE FLAG: false
+[Sat May 02 2015 18:46:13 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Message Received
+[Sat May 02 2015 18:46:13 GMT+0100 (WAT)] DEBUG Userkey: api-server:kachi@mobilizr:context
+[Sat May 02 2015 18:46:13 GMT+0100 (WAT)] DEBUG State for api-server:kachi@mobilizr:context: RIDES
+[Sat May 02 2015 18:46:13 GMT+0100 (WAT)] DEBUG 2015-05-02T17:46:13.000Z
+[Sat May 02 2015 18:46:15 GMT+0100 (WAT)] DEBUG IntentBody: {"msg_id":"d9323ddf-7813-48db-b475-fdb80f18e757","_text":"there?","outcomes":[{"_text":"there?","intent":"default_prompt","entities":{},"confidence":0.924}],"context":{"state":"RIDES","reference_time":"2015-05-02T17:46:13.000Z"}}
+[Sat May 02 2015 18:46:15 GMT+0100 (WAT)] DEBUG Intent: default_prompt
+[Sat May 02 2015 18:46:15 GMT+0100 (WAT)] DEBUG Confidence: 0.924
+[Sat May 02 2015 18:46:15 GMT+0100 (WAT)] DEBUG Module for intent default_prompt and state RIDES resolved to RIDES
+[Sat May 02 2015 18:46:15 GMT+0100 (WAT)] DEBUG Module for intent default_prompt and state RIDES resolved to RIDES
+[Sat May 02 2015 18:46:15 GMT+0100 (WAT)] INFO RIDES Processor: Connecting to MQ Exchange <piper.events.in>...
+[Sat May 02 2015 18:46:15 GMT+0100 (WAT)] DEBUG New context for api-server:kachi@mobilizr:context: {"state":"RIDES"}
+[Sat May 02 2015 18:46:15 GMT+0100 (WAT)] DEBUG Entities: {}
+[Sat May 02 2015 18:46:15 GMT+0100 (WAT)] DEBUG Going for products...
+[Sat May 02 2015 18:46:15 GMT+0100 (WAT)] DEBUG confirmNeed: 0 -> false
+[Sat May 02 2015 18:46:15 GMT+0100 (WAT)] DEBUG confirmNeed: 1 -> true
+[Sat May 02 2015 18:46:15 GMT+0100 (WAT)] DEBUG startLong: 0 -> false
+[Sat May 02 2015 18:46:15 GMT+0100 (WAT)] DEBUG startLong: 1 -> true
+[Sat May 02 2015 18:46:15 GMT+0100 (WAT)] DEBUG startLong: 2 -> false
+[Sat May 02 2015 18:46:15 GMT+0100 (WAT)] DEBUG startLong: 3 -> false
+[Sat May 02 2015 18:46:15 GMT+0100 (WAT)] DEBUG endLong: 0 -> false
+[Sat May 02 2015 18:46:15 GMT+0100 (WAT)] DEBUG endLong: 1 -> true
+[Sat May 02 2015 18:46:15 GMT+0100 (WAT)] DEBUG endLong: 2 -> false
+[Sat May 02 2015 18:46:15 GMT+0100 (WAT)] DEBUG departureTime: 0 -> false
+[Sat May 02 2015 18:46:15 GMT+0100 (WAT)] DEBUG departureTime: 1 -> true
+[Sat May 02 2015 18:46:15 GMT+0100 (WAT)] DEBUG productId: 0 -> false
+[Sat May 02 2015 18:46:15 GMT+0100 (WAT)] DEBUG productId: 1 -> false
+[Sat May 02 2015 18:46:15 GMT+0100 (WAT)] DEBUG productId: 3 -> false
+[Sat May 02 2015 18:46:15 GMT+0100 (WAT)] DEBUG productId: 4 -> false
+[Sat May 02 2015 18:46:15 GMT+0100 (WAT)] DEBUG productId: 5 -> false
+[Sat May 02 2015 18:46:15 GMT+0100 (WAT)] DEBUG productId: 6 -> false
+[Sat May 02 2015 18:46:15 GMT+0100 (WAT)] DEBUG confirmRequest: 0 -> false
+[Sat May 02 2015 18:46:15 GMT+0100 (WAT)] DEBUG confirmRequest: 1 -> false
+[Sat May 02 2015 18:46:15 GMT+0100 (WAT)] DEBUG getProducts->endpoint: http://uber.example.com:3000
+[Sat May 02 2015 18:46:15 GMT+0100 (WAT)] INFO RIDES Processor: <piper.events.in> connected
+[Sat May 02 2015 18:46:17 GMT+0100 (WAT)] DEBUG Products: {"products":[{"capacity":4,"product_id":"3cb90303-3869-4701-a8fd-92efba468a94","price_details":{"service_fees":[],"cost_per_minute":0.15,"distance_unit":"mile","minimum":5,"cost_per_distance":1.25,"base":2.5,"cancellation_fee":5,"currency_code":"GBP"},"image":"http://d1a3f4spazzrp4.cloudfront.net/car-types/mono/mono-uberx.png","display_name":"uberX","description":"Cheap, fast & reliable"},{"capacity":6,"product_id":"d9b19d17-f013-4b98-9b3f-cf5a9e91d2aa","price_details":{"service_fees":[],"cost_per_minute":0.15,"distance_unit":"mile","minimum":7,"cost_per_distance":2.1,"base":3.5,"cancellation_fee":7,"currency_code":"GBP"},"image":"http://d1a3f4spazzrp4.cloudfront.net/car-types/mono/mono-uberxl.png","display_name":"uberXL","description":"Spacious, Convenient Comfort"},{"capacity":4,"product_id":"34a6cad0-0629-4ca0-ae68-ed0cea7695ca","price_details":{"service_fees":[],"cost_per_minute":0.3,"distance_unit":"mile","minimum":10,"cost_per_distance":2.4,"base":4,"cancellation_fee":7,"currency_code":"GBP"},"image":"http://d1a3f4spazzrp4.cloudfront.net/car-types/mono/mono-black.png","display_name":"UberEXEC","description":"Discreet executive quality"},{"capacity":4,"product_id":"ea52c793-1ad7-4c46-96b3-b1836b8cd0f9","price_details":{"service_fees":[],"cost_per_minute":0.55,"distance_unit":"mile","minimum":14,"cost_per_distance":3.55,"base":5,"cancellation_fee":10,"currency_code":"GBP"},"image":"http://d1a3f4spazzrp4.cloudfront.net/car-types/mono/mono-lux.png","display_name":"UberLUX","description":"Ultimate luxury & style"},{"capacity":5,"product_id":"6a6629df-3400-4e4b-8742-ebd79bf4ef99","price_details":null,"image":"http://d1a3f4spazzrp4.cloudfront.net/car-types/mono/mono-blacktaxi2.png","display_name":"UberTAXI","description":"Iconic, Knowledgeable & Versatile"}]}
+[Sat May 02 2015 18:46:17 GMT+0100 (WAT)] DEBUG productId: 2 -> true
+[Sat May 02 2015 18:46:17 GMT+0100 (WAT)] DEBUG Datakey: confirmNeed, Validity Check: true
+[Sat May 02 2015 18:46:17 GMT+0100 (WAT)] DEBUG Datakey: startLong, Validity Check: true
+[Sat May 02 2015 18:46:17 GMT+0100 (WAT)] DEBUG Datakey: endLong, Validity Check: true
+[Sat May 02 2015 18:46:17 GMT+0100 (WAT)] DEBUG Datakey: departureTime, Validity Check: true
+[Sat May 02 2015 18:46:17 GMT+0100 (WAT)] DEBUG Datakey: productId, Validity Check: true
+[Sat May 02 2015 18:46:17 GMT+0100 (WAT)] DEBUG Datakey: confirmRequest, Validity Check: false
+[Sat May 02 2015 18:46:17 GMT+0100 (WAT)] DEBUG Missing Keys for rides_book_trip: ["confirmRequest"]
+[Sat May 02 2015 18:46:17 GMT+0100 (WAT)] DEBUG Predicate: 1
+[Sat May 02 2015 18:46:17 GMT+0100 (WAT)] DEBUG Datahash from unfold: {"handlerTodo":"rides_book_trip","intent":"default_prompt","confirmNeed":true,"toLocKeyword":"office","endLong":"3.4365724","endLat":"6.4331551","lvlQueries":{"NO_START_LOCATION":1},"startLong":"-0.1273097","startLat":"51.4992921","errConfirmRequest":"NO_CONFIRM_REQUEST","products":true,"productId":"3cb90303-3869-4701-a8fd-92efba468a94","productName":"uberX"}
+[Sat May 02 2015 18:46:17 GMT+0100 (WAT)] DEBUG getTimeEstimate->endpoint: http://uber.example.com:3000
+[Sat May 02 2015 18:46:19 GMT+0100 (WAT)] DEBUG Time Estimates: {"times":[{"localized_display_name":"uberX","estimate":274,"display_name":"uberX","product_id":"3cb90303-3869-4701-a8fd-92efba468a94"},{"localized_display_name":"uberXL","estimate":416,"display_name":"uberXL","product_id":"d9b19d17-f013-4b98-9b3f-cf5a9e91d2aa"},{"localized_display_name":"UberEXEC","estimate":234,"display_name":"UberEXEC","product_id":"34a6cad0-0629-4ca0-ae68-ed0cea7695ca"},{"localized_display_name":"UberLUX","estimate":339,"display_name":"UberLUX","product_id":"ea52c793-1ad7-4c46-96b3-b1836b8cd0f9"},{"localized_display_name":"UberTAXI","estimate":682,"display_name":"UberTAXI","product_id":"6a6629df-3400-4e4b-8742-ebd79bf4ef99"}]}
+[Sat May 02 2015 18:46:19 GMT+0100 (WAT)] DEBUG getPriceEstimate->endpoint: http://uber.example.com:3000
+[Sat May 02 2015 18:46:20 GMT+0100 (WAT)] ERROR Cannot process request: {"name":"StatusCodeError","statusCode":422,"message":"422 - {\"fields\":{\"start_longitude\":\"Distance between two points exceeds 100 miles\",\"end_longitude\":\"Distance between two points exceeds 100 miles\",\"start_latitude\":\"Distance between two points exceeds 100 miles\",\"end_latitude\":\"Distance between two points exceeds 100 miles\"},\"message\":\"Distance between two points exceeds 100 miles\",\"code\":\"distance_exceeded\"}","error":"{\"fields\":{\"start_longitude\":\"Distance between two points exceeds 100 miles\",\"end_longitude\":\"Distance between two points exceeds 100 miles\",\"start_latitude\":\"Distance between two points exceeds 100 miles\",\"end_latitude\":\"Distance between two points exceeds 100 miles\"},\"message\":\"Distance between two points exceeds 100 miles\",\"code\":\"distance_exceeded\"}","options":{"headers":{"Authorization":"Token 56IrLXS0bglH4WT695YKkXIpaojpHmfoTgn3qE83","content-length":0},"qs":{"start_latitude":"51.4992921","start_longitude":"-0.1273097","end_latitude":"6.4331551","end_longitude":"3.4365724"},"method":"GET","url":"https://api.uber.com/v1/estimates/price","tunnel":false,"simple":true,"resolveWithFullResponse":false},"response":{"statusCode":422,"body":"{\"fields\":{\"start_longitude\":\"Distance between two points exceeds 100 miles\",\"end_longitude\":\"Distance between two points exceeds 100 miles\",\"start_latitude\":\"Distance between two points exceeds 100 miles\",\"end_latitude\":\"Distance between two points exceeds 100 miles\"},\"message\":\"Distance between two points exceeds 100 miles\",\"code\":\"distance_exceeded\"}","headers":{"server":"nginx","date":"Sat, 02 May 2015 17:46:20 GMT","content-type":"application/json","content-length":"355","connection":"keep-alive","x-uber-app":"uberex-nonsandbox","strict-transport-security":"max-age=31536000; includeSubDomains; preload","x-xss-protection":"1; mode=block"},"request":{"uri":{"protocol":"https:","slashes":true,"auth":null,"host":"api.uber.com","port":null,"hostname":"api.uber.com","hash":null,"search":"?start_latitude=51.4992921&start_longitude=-0.1273097&end_latitude=6.4331551&end_longitude=3.4365724","query":"start_latitude=51.4992921&start_longitude=-0.1273097&end_latitude=6.4331551&end_longitude=3.4365724","pathname":"/v1/estimates/price","path":"/v1/estimates/price?start_latitude=51.4992921&start_longitude=-0.1273097&end_latitude=6.4331551&end_longitude=3.4365724","href":"https://api.uber.com/v1/estimates/price?start_latitude=51.4992921&start_longitude=-0.1273097&end_latitude=6.4331551&end_longitude=3.4365724"},"method":"get","headers":{"Authorization":"Token 56IrLXS0bglH4WT695YKkXIpaojpHmfoTgn3qE83","content-length":0}}}}
+[Sat May 02 2015 18:46:20 GMT+0100 (WAT)] DEBUG 1. getResponse(): data.lvlQueries[NO_CONFIRM_REQUEST] -> undefined
+[Sat May 02 2015 18:46:20 GMT+0100 (WAT)] DEBUG 2. getResponse(): data.lvlQueries[NO_CONFIRM_REQUEST] -> 0
+[Sat May 02 2015 18:46:20 GMT+0100 (WAT)] DEBUG 3. getResponse(): data.lvlQueries[NO_CONFIRM_REQUEST] -> 0
+[Sat May 02 2015 18:46:20 GMT+0100 (WAT)] DEBUG Predicate: 0
+[Sat May 02 2015 18:46:20 GMT+0100 (WAT)] DEBUG Datahash: {"handlerTodo":"rides_book_trip","intent":"default_prompt","confirmNeed":true,"toLocKeyword":"office","endLong":"3.4365724","endLat":"6.4331551","lvlQueries":{"NO_START_LOCATION":1,"NO_CONFIRM_REQUEST":1},"startLong":"-0.1273097","startLat":"51.4992921","products":true,"productId":"3cb90303-3869-4701-a8fd-92efba468a94","productName":"uberX"}
+[Sat May 02 2015 18:46:20 GMT+0100 (WAT)] DEBUG Body: {"msg_id":"d9323ddf-7813-48db-b475-fdb80f18e757","_text":"there?","outcomes":[{"_text":"there?","intent":"default_prompt","entities":{},"confidence":0.924}],"context":{"state":"RIDES","reference_time":"2015-05-02T17:46:13.000Z"},"user":{"slackId":"U02RN8W1T","name":"kachi","email":"kachi@mobilizr.net","first_name":"http://d1a3f4spazzrp4.cloudfront.net/car-types/mono/mono-black.png","last_name":"https://login.uber.com/oauth/authorize?response_type=code&client_id=wTO4c5RIwLi_gjwN1tw79JY4_1W2Im1w","full_name":"http://d1a3f4spazzrp4.cloudfront.net/car-types/mono/mono-black.png https://login.uber.com/oauth/authorize?response_type=code&client_id=wTO4c5RIwLi_gjwN1tw79JY4_1W2Im1w","is_admin":true,"avatar":"https://secure.gravatar.com/avatar/441587d4f0a03b4ce3aca5a1af3577c1.jpg?s=48&d=https%3A%2F%2Fslack.global.ssl.fastly.net%2F3654%2Fimg%2Favatars%2Fava_0012-48.png"},"clientHandle":"mobilizr"}
+[Sat May 02 2015 18:46:20 GMT+0100 (WAT)] DEBUG Indata: {"hasActiveRequest":{"_handler":{"handler":{"value":false},"resolved":true}}}
+[Sat May 02 2015 18:46:20 GMT+0100 (WAT)] DEBUG rides:kachi@mobilizr
+[Sat May 02 2015 18:46:20 GMT+0100 (WAT)] DEBUG Datahash.lvlQueries: {"NO_START_LOCATION":1,"NO_CONFIRM_REQUEST":1}
+[Sat May 02 2015 18:46:20 GMT+0100 (WAT)] DEBUG module: RIDES, user: kachi, client: mobilizr, message: The nearest uberX will get there in 5 mins . Can I go ahead and book your ride?
+[Sat May 02 2015 18:46:20 GMT+0100 (WAT)] INFO @blanka responded with "The nearest uberX will get there in 5 mins . Can I go ahead and book your ride?"
+[Sat May 02 2015 18:46:20 GMT+0100 (WAT)] DEBUG Message: The nearest uberX will get there in 5 mins . Can I go ahead and book your ride? sent to user kachi
+[Sat May 02 2015 18:47:16 GMT+0100 (WAT)] INFO Received: message kachi @kachi 1430588835.000012 "cancel"
+[Sat May 02 2015 18:47:16 GMT+0100 (WAT)] DEBUG IGNORE FLAG: false
+[Sat May 02 2015 18:47:16 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Message Received
+[Sat May 02 2015 18:47:16 GMT+0100 (WAT)] DEBUG Userkey: api-server:kachi@mobilizr:context
+[Sat May 02 2015 18:47:16 GMT+0100 (WAT)] DEBUG State for api-server:kachi@mobilizr:context: RIDES_confirm_request
+[Sat May 02 2015 18:47:16 GMT+0100 (WAT)] DEBUG 2015-05-02T17:47:15.000Z
+[Sat May 02 2015 18:47:17 GMT+0100 (WAT)] DEBUG IntentBody: {"msg_id":"94ca144c-f6cc-4cf9-964b-8c54e3cef23b","_text":"cancel","outcomes":[{"_text":"cancel","intent":"rides_cancel_trip","entities":{},"confidence":0.967}],"context":{"state":"RIDES_confirm_request","reference_time":"2015-05-02T17:47:15.000Z"}}
+[Sat May 02 2015 18:47:17 GMT+0100 (WAT)] DEBUG Intent: rides_cancel_trip
+[Sat May 02 2015 18:47:17 GMT+0100 (WAT)] DEBUG Confidence: 0.967
+[Sat May 02 2015 18:47:17 GMT+0100 (WAT)] DEBUG New context for api-server:kachi@mobilizr:context: {"state":"RIDES"}
+[Sat May 02 2015 18:47:17 GMT+0100 (WAT)] DEBUG Entities: {}
+[Sat May 02 2015 18:47:17 GMT+0100 (WAT)] DEBUG confirmCancellation: 0 -> false
+[Sat May 02 2015 18:47:17 GMT+0100 (WAT)] DEBUG Datakey: confirmCancellation, Validity Check: false
+[Sat May 02 2015 18:47:17 GMT+0100 (WAT)] DEBUG Missing Keys for rides_cancel_trip: ["confirmCancellation"]
+[Sat May 02 2015 18:47:17 GMT+0100 (WAT)] DEBUG Predicate: 1
+[Sat May 02 2015 18:47:17 GMT+0100 (WAT)] DEBUG Datahash from unfold: {"handlerTodo":"rides_cancel_trip","intent":"rides_cancel_trip","confirmNeed":"true","toLocKeyword":"office","endLong":"3.4365724","endLat":"6.4331551","errStartLocation":"NO_START_LOCATION","lvlQueries":{"NO_START_LOCATION":1,"NO_CONFIRM_REQUEST":1},"startLong":"-0.1273097","startLat":"51.4992921","errConfirmRequest":"NO_CONFIRM_REQUEST","products":"true","productId":"3cb90303-3869-4701-a8fd-92efba468a94","productName":"uberX"}
+[Sat May 02 2015 18:47:17 GMT+0100 (WAT)] DEBUG 1. getResponse(): data.lvlQueries[NO_CONFIRM_CANCEL] -> undefined
+[Sat May 02 2015 18:47:17 GMT+0100 (WAT)] DEBUG 2. getResponse(): data.lvlQueries[NO_CONFIRM_CANCEL] -> 0
+[Sat May 02 2015 18:47:17 GMT+0100 (WAT)] DEBUG 3. getResponse(): data.lvlQueries[NO_CONFIRM_CANCEL] -> 0
+[Sat May 02 2015 18:47:17 GMT+0100 (WAT)] DEBUG Predicate: 0
+[Sat May 02 2015 18:47:17 GMT+0100 (WAT)] DEBUG Datahash: {"handlerTodo":"rides_cancel_trip","intent":"rides_cancel_trip","confirmNeed":"true","toLocKeyword":"office","endLong":"3.4365724","endLat":"6.4331551","errStartLocation":"NO_START_LOCATION","lvlQueries":{"NO_START_LOCATION":1,"NO_CONFIRM_REQUEST":1,"NO_CONFIRM_CANCEL":1},"startLong":"-0.1273097","startLat":"51.4992921","errConfirmRequest":"NO_CONFIRM_REQUEST","products":"true","productId":"3cb90303-3869-4701-a8fd-92efba468a94","productName":"uberX"}
+[Sat May 02 2015 18:47:17 GMT+0100 (WAT)] DEBUG Body: {"msg_id":"94ca144c-f6cc-4cf9-964b-8c54e3cef23b","_text":"cancel","outcomes":[{"_text":"cancel","intent":"rides_cancel_trip","entities":{},"confidence":0.967}],"context":{"state":"RIDES_confirm_request","reference_time":"2015-05-02T17:47:15.000Z"},"user":{"slackId":"U02RN8W1T","name":"kachi","email":"kachi@mobilizr.net","first_name":"http://d1a3f4spazzrp4.cloudfront.net/car-types/mono/mono-black.png","last_name":"https://login.uber.com/oauth/authorize?response_type=code&client_id=wTO4c5RIwLi_gjwN1tw79JY4_1W2Im1w","full_name":"http://d1a3f4spazzrp4.cloudfront.net/car-types/mono/mono-black.png https://login.uber.com/oauth/authorize?response_type=code&client_id=wTO4c5RIwLi_gjwN1tw79JY4_1W2Im1w","is_admin":true,"avatar":"https://secure.gravatar.com/avatar/441587d4f0a03b4ce3aca5a1af3577c1.jpg?s=48&d=https%3A%2F%2Fslack.global.ssl.fastly.net%2F3654%2Fimg%2Favatars%2Fava_0012-48.png"},"clientHandle":"mobilizr"}
+[Sat May 02 2015 18:47:17 GMT+0100 (WAT)] DEBUG Indata: {"hasActiveRequest":{"_handler":{"handler":{"value":false},"resolved":true}}}
+[Sat May 02 2015 18:47:17 GMT+0100 (WAT)] DEBUG rides:kachi@mobilizr
+[Sat May 02 2015 18:47:17 GMT+0100 (WAT)] DEBUG Datahash.lvlQueries: {"NO_START_LOCATION":1,"NO_CONFIRM_REQUEST":1,"NO_CONFIRM_CANCEL":1}
+[Sat May 02 2015 18:47:17 GMT+0100 (WAT)] DEBUG module: RIDES, user: kachi, client: mobilizr, message: You want to cancel the trip request?
+[Sat May 02 2015 18:47:17 GMT+0100 (WAT)] INFO @blanka responded with "You want to cancel the trip request?"
+[Sat May 02 2015 18:47:17 GMT+0100 (WAT)] DEBUG Message: You want to cancel the trip request? sent to user kachi
+[Sat May 02 2015 18:47:21 GMT+0100 (WAT)] INFO Received: message kachi @kachi 1430588841.000014 "yea"
+[Sat May 02 2015 18:47:21 GMT+0100 (WAT)] DEBUG IGNORE FLAG: false
+[Sat May 02 2015 18:47:21 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Message Received
+[Sat May 02 2015 18:47:21 GMT+0100 (WAT)] DEBUG Userkey: api-server:kachi@mobilizr:context
+[Sat May 02 2015 18:47:21 GMT+0100 (WAT)] DEBUG State for api-server:kachi@mobilizr:context: RIDES_confirm_cancellation
+[Sat May 02 2015 18:47:21 GMT+0100 (WAT)] DEBUG 2015-05-02T17:47:21.000Z
+[Sat May 02 2015 18:47:22 GMT+0100 (WAT)] DEBUG IntentBody: {"msg_id":"aa4601c2-149a-4191-808a-345e08d1561a","_text":"yea","outcomes":[{"_text":"yea","intent":"default_accept","entities":{},"confidence":0.979}],"context":{"state":"RIDES_confirm_cancellation","reference_time":"2015-05-02T17:47:21.000Z"}}
+[Sat May 02 2015 18:47:22 GMT+0100 (WAT)] DEBUG Intent: default_accept
+[Sat May 02 2015 18:47:22 GMT+0100 (WAT)] DEBUG Confidence: 0.979
+[Sat May 02 2015 18:47:22 GMT+0100 (WAT)] DEBUG Module for intent default_accept and state RIDES_confirm_cancellation resolved to RIDES
+[Sat May 02 2015 18:47:22 GMT+0100 (WAT)] DEBUG Module for intent default_accept and state RIDES_confirm_cancellation resolved to RIDES
+[Sat May 02 2015 18:47:22 GMT+0100 (WAT)] DEBUG New context for api-server:kachi@mobilizr:context: {"state":"RIDES"}
+[Sat May 02 2015 18:47:22 GMT+0100 (WAT)] DEBUG Entities: {}
+[Sat May 02 2015 18:47:22 GMT+0100 (WAT)] DEBUG confirmCancellation: 0 -> true
+[Sat May 02 2015 18:47:22 GMT+0100 (WAT)] DEBUG Datakey: confirmCancellation, Validity Check: true
+[Sat May 02 2015 18:47:22 GMT+0100 (WAT)] DEBUG Missing Keys for rides_cancel_trip: []
+[Sat May 02 2015 18:47:22 GMT+0100 (WAT)] DEBUG Predicate: 0
+[Sat May 02 2015 18:47:22 GMT+0100 (WAT)] DEBUG Datahash: {"startLat":"51.4992921","confirmNeed":"true","intent":"default_accept","handlerTodo":"rides_cancel_trip","products":"true","endLong":"3.4365724","productId":"3cb90303-3869-4701-a8fd-92efba468a94","productName":"uberX","errStartLocation":"NO_START_LOCATION","startLong":"-0.1273097","errConfirmRequest":"NO_CONFIRM_REQUEST","lvlQueries":{"NO_START_LOCATION":1,"NO_CONFIRM_REQUEST":1,"NO_CONFIRM_CANCEL":1},"toLocKeyword":"office","endLat":"6.4331551","confirmCancellation":true}
+[Sat May 02 2015 18:47:22 GMT+0100 (WAT)] DEBUG Body: {"msg_id":"aa4601c2-149a-4191-808a-345e08d1561a","_text":"yea","outcomes":[{"_text":"yea","intent":"default_accept","entities":{},"confidence":0.979}],"context":{"state":"RIDES_confirm_cancellation","reference_time":"2015-05-02T17:47:21.000Z"},"user":{"slackId":"U02RN8W1T","name":"kachi","email":"kachi@mobilizr.net","first_name":"http://d1a3f4spazzrp4.cloudfront.net/car-types/mono/mono-black.png","last_name":"https://login.uber.com/oauth/authorize?response_type=code&client_id=wTO4c5RIwLi_gjwN1tw79JY4_1W2Im1w","full_name":"http://d1a3f4spazzrp4.cloudfront.net/car-types/mono/mono-black.png https://login.uber.com/oauth/authorize?response_type=code&client_id=wTO4c5RIwLi_gjwN1tw79JY4_1W2Im1w","is_admin":true,"avatar":"https://secure.gravatar.com/avatar/441587d4f0a03b4ce3aca5a1af3577c1.jpg?s=48&d=https%3A%2F%2Fslack.global.ssl.fastly.net%2F3654%2Fimg%2Favatars%2Fava_0012-48.png"},"clientHandle":"mobilizr"}
+[Sat May 02 2015 18:47:22 GMT+0100 (WAT)] DEBUG Indata: {"hasActiveRequest":{"_handler":{"handler":{"value":false},"resolved":true}},"yes_no":"yes"}
+[Sat May 02 2015 18:47:22 GMT+0100 (WAT)] DEBUG rides:kachi@mobilizr
+[Sat May 02 2015 18:47:22 GMT+0100 (WAT)] DEBUG Datahash.lvlQueries: {"NO_START_LOCATION":1,"NO_CONFIRM_REQUEST":1,"NO_CONFIRM_CANCEL":1}
+[Sat May 02 2015 18:47:22 GMT+0100 (WAT)] DEBUG No more missing data: calling handleRequest for rides_cancel_trip
+[Sat May 02 2015 18:47:22 GMT+0100 (WAT)] DEBUG CancelRequest: cancelling for ... {"startLat":"51.4992921","confirmNeed":"true","intent":"default_accept","handlerTodo":"rides_cancel_trip","products":"true","endLong":"3.4365724","productId":"3cb90303-3869-4701-a8fd-92efba468a94","productName":"uberX","errStartLocation":"NO_START_LOCATION","startLong":"-0.1273097","errConfirmRequest":"NO_CONFIRM_REQUEST","lvlQueries":"{\"NO_START_LOCATION\":1,\"NO_CONFIRM_REQUEST\":1,\"NO_CONFIRM_CANCEL\":1}","toLocKeyword":"office","endLat":"6.4331551","confirmCancellation":true}
+[Sat May 02 2015 18:47:22 GMT+0100 (WAT)] DEBUG module: RIDES, user: kachi, client: mobilizr, message: Fine, your trip request has been cancelled
+[Sat May 02 2015 18:47:22 GMT+0100 (WAT)] INFO @blanka responded with "Fine, your trip request has been cancelled"
+[Sat May 02 2015 18:47:22 GMT+0100 (WAT)] DEBUG Message: Fine, your trip request has been cancelled sent to user kachi
+[Sat May 02 2015 18:47:27 GMT+0100 (WAT)] INFO Received: message kachi @kachi 1430588847.000016 "i need a cab to the office"
+[Sat May 02 2015 18:47:27 GMT+0100 (WAT)] DEBUG IGNORE FLAG: false
+[Sat May 02 2015 18:47:27 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Message Received
+[Sat May 02 2015 18:47:27 GMT+0100 (WAT)] DEBUG Userkey: api-server:kachi@mobilizr:context
+[Sat May 02 2015 18:47:27 GMT+0100 (WAT)] DEBUG State for api-server:kachi@mobilizr:context: RIDES
+[Sat May 02 2015 18:47:27 GMT+0100 (WAT)] DEBUG 2015-05-02T17:47:27.000Z
+[Sat May 02 2015 18:47:29 GMT+0100 (WAT)] DEBUG IntentBody: {"msg_id":"95ff9b1c-7c36-40e1-b519-51d8be8c3855","_text":"i need a cab to the office","outcomes":[{"_text":"i need a cab to the office","intent":"rides_request_trip","entities":{"to":[{"suggested":true,"value":"to the office","type":"value"}]},"confidence":1}],"context":{"state":"RIDES","reference_time":"2015-05-02T17:47:27.000Z"}}
+[Sat May 02 2015 18:47:29 GMT+0100 (WAT)] DEBUG Intent: rides_request_trip
+[Sat May 02 2015 18:47:29 GMT+0100 (WAT)] DEBUG Confidence: 1
+[Sat May 02 2015 18:47:29 GMT+0100 (WAT)] DEBUG New context for api-server:kachi@mobilizr:context: {"state":"RIDES"}
+[Sat May 02 2015 18:47:29 GMT+0100 (WAT)] DEBUG Entities: {"to":[{"suggested":true,"value":"to the office","type":"value"}]}
+[Sat May 02 2015 18:47:29 GMT+0100 (WAT)] DEBUG lkKeys: %s
+	["home","office"]
+[Sat May 02 2015 18:47:29 GMT+0100 (WAT)] DEBUG keywordList: %s
+	["home","house","crib","hood","my address"]
+[Sat May 02 2015 18:47:29 GMT+0100 (WAT)] DEBUG location.search(home): -1
+[Sat May 02 2015 18:47:29 GMT+0100 (WAT)] DEBUG location.search(house): -1
+[Sat May 02 2015 18:47:29 GMT+0100 (WAT)] DEBUG location.search(crib): -1
+[Sat May 02 2015 18:47:29 GMT+0100 (WAT)] DEBUG location.search(hood): -1
+[Sat May 02 2015 18:47:29 GMT+0100 (WAT)] DEBUG location.search(my address): -1
+[Sat May 02 2015 18:47:29 GMT+0100 (WAT)] DEBUG keywordList: %s
+	["office","work","workplace","place of business","place of work","bureau","the office"]
+[Sat May 02 2015 18:47:29 GMT+0100 (WAT)] DEBUG location.search(office): 7
+[Sat May 02 2015 18:47:29 GMT+0100 (WAT)] DEBUG location.search(work): -1
+[Sat May 02 2015 18:47:29 GMT+0100 (WAT)] DEBUG location.search(workplace): -1
+[Sat May 02 2015 18:47:29 GMT+0100 (WAT)] DEBUG location.search(place of business): -1
+[Sat May 02 2015 18:47:29 GMT+0100 (WAT)] DEBUG location.search(place of work): -1
+[Sat May 02 2015 18:47:29 GMT+0100 (WAT)] DEBUG location.search(bureau): -1
+[Sat May 02 2015 18:47:29 GMT+0100 (WAT)] DEBUG location.search(the office): 3
+[Sat May 02 2015 18:47:29 GMT+0100 (WAT)] DEBUG confirmNeed: 0 -> false
+[Sat May 02 2015 18:47:29 GMT+0100 (WAT)] DEBUG confirmNeed: 1 -> true
+[Sat May 02 2015 18:47:29 GMT+0100 (WAT)] DEBUG startLong: 0 -> false
+[Sat May 02 2015 18:47:29 GMT+0100 (WAT)] DEBUG startLong: 1 -> false
+[Sat May 02 2015 18:47:29 GMT+0100 (WAT)] DEBUG startLong: 2 -> false
+[Sat May 02 2015 18:47:29 GMT+0100 (WAT)] DEBUG startLong: 3 -> false
+[Sat May 02 2015 18:47:29 GMT+0100 (WAT)] DEBUG endLong: 0 -> false
+[Sat May 02 2015 18:47:29 GMT+0100 (WAT)] DEBUG endLong: 1 -> false
+[Sat May 02 2015 18:47:29 GMT+0100 (WAT)] DEBUG departureTime: 0 -> false
+[Sat May 02 2015 18:47:29 GMT+0100 (WAT)] DEBUG departureTime: 1 -> true
+[Sat May 02 2015 18:47:29 GMT+0100 (WAT)] DEBUG productId: 0 -> false
+[Sat May 02 2015 18:47:29 GMT+0100 (WAT)] DEBUG productId: 1 -> false
+[Sat May 02 2015 18:47:29 GMT+0100 (WAT)] DEBUG productId: 2 -> false
+[Sat May 02 2015 18:47:29 GMT+0100 (WAT)] DEBUG productId: 3 -> false
+[Sat May 02 2015 18:47:29 GMT+0100 (WAT)] DEBUG productId: 4 -> false
+[Sat May 02 2015 18:47:29 GMT+0100 (WAT)] DEBUG productId: 5 -> false
+[Sat May 02 2015 18:47:29 GMT+0100 (WAT)] DEBUG productId: 6 -> false
+[Sat May 02 2015 18:47:29 GMT+0100 (WAT)] DEBUG confirmRequest: 0 -> false
+[Sat May 02 2015 18:47:29 GMT+0100 (WAT)] DEBUG confirmRequest: 1 -> false
+[Sat May 02 2015 18:47:29 GMT+0100 (WAT)] DEBUG Got to then of getUserPreference...
+[Sat May 02 2015 18:47:30 GMT+0100 (WAT)] INFO Geo data: {"results":[{"address_components":[{"long_name":"Etim Inyang Crescent","short_name":"Etim Inyang Cres","types":["route"]},{"long_name":"Eti-Osa","short_name":"Eti-Osa","types":["sublocality_level_1","sublocality","political"]},{"long_name":"Lagos","short_name":"Lagos","types":["colloquial_area","locality","political"]},{"long_name":"Lagos","short_name":"Lagos","types":["administrative_area_level_1","political"]},{"long_name":"Nigeria","short_name":"NG","types":["country","political"]}],"formatted_address":"Etim Inyang Crescent, Lagos, Nigeria","geometry":{"bounds":{"northeast":{"lat":6.433278,"lng":3.4395313},"southwest":{"lat":6.4320812,"lng":3.4337308}},"location":{"lat":6.4331551,"lng":3.4365724},"location_type":"GEOMETRIC_CENTER","viewport":{"northeast":{"lat":6.434028580291502,"lng":3.4395313},"southwest":{"lat":6.431330619708498,"lng":3.4337308}}},"partial_match":true,"place_id":"ChIJ6eBtzyP1OxARBosrrPDU44k","types":["route"]}],"status":"OK"}
+[Sat May 02 2015 18:47:30 GMT+0100 (WAT)] DEBUG endLong: 2 -> true
+[Sat May 02 2015 18:47:30 GMT+0100 (WAT)] DEBUG Datakey: confirmNeed, Validity Check: true
+[Sat May 02 2015 18:47:30 GMT+0100 (WAT)] DEBUG Datakey: startLong, Validity Check: false
+[Sat May 02 2015 18:47:30 GMT+0100 (WAT)] DEBUG Datakey: endLong, Validity Check: true
+[Sat May 02 2015 18:47:30 GMT+0100 (WAT)] DEBUG Datakey: departureTime, Validity Check: true
+[Sat May 02 2015 18:47:30 GMT+0100 (WAT)] DEBUG Datakey: productId, Validity Check: false
+[Sat May 02 2015 18:47:30 GMT+0100 (WAT)] DEBUG Datakey: confirmRequest, Validity Check: false
+[Sat May 02 2015 18:47:30 GMT+0100 (WAT)] DEBUG Missing Keys for rides_book_trip: ["startLong","productId","confirmRequest"]
+[Sat May 02 2015 18:47:30 GMT+0100 (WAT)] DEBUG Predicate: 3
+[Sat May 02 2015 18:47:30 GMT+0100 (WAT)] DEBUG Datahash from unfold: {"handlerTodo":"rides_book_trip","intent":"rides_request_trip","confirmNeed":true,"toLocKeyword":"office","endLong":3.4365724,"endLat":6.4331551}
+[Sat May 02 2015 18:47:30 GMT+0100 (WAT)] DEBUG 1. getResponse(): data.lvlQueries[NO_START_LOCATION] -> undefined
+[Sat May 02 2015 18:47:30 GMT+0100 (WAT)] DEBUG 2. getResponse(): data.lvlQueries[NO_START_LOCATION] -> 0
+[Sat May 02 2015 18:47:30 GMT+0100 (WAT)] DEBUG 3. getResponse(): data.lvlQueries[NO_START_LOCATION] -> 0
+[Sat May 02 2015 18:47:31 GMT+0100 (WAT)] DEBUG Predicate: 2
+[Sat May 02 2015 18:47:31 GMT+0100 (WAT)] DEBUG Datahash: {"handlerTodo":"rides_book_trip","intent":"rides_request_trip","confirmNeed":true,"toLocKeyword":"office","endLong":3.4365724,"endLat":6.4331551,"errStartLocation":"NO_START_LOCATION","lvlQueries":{"NO_START_LOCATION":1}}
+[Sat May 02 2015 18:47:31 GMT+0100 (WAT)] DEBUG Body: {"msg_id":"95ff9b1c-7c36-40e1-b519-51d8be8c3855","_text":"i need a cab to the office","outcomes":[{"_text":"i need a cab to the office","intent":"rides_request_trip","entities":{"to":[{"suggested":true,"value":"to the office","type":"value"}]},"confidence":1}],"context":{"state":"RIDES","reference_time":"2015-05-02T17:47:27.000Z"},"user":{"slackId":"U02RN8W1T","name":"kachi","email":"kachi@mobilizr.net","first_name":"http://d1a3f4spazzrp4.cloudfront.net/car-types/mono/mono-black.png","last_name":"https://login.uber.com/oauth/authorize?response_type=code&client_id=wTO4c5RIwLi_gjwN1tw79JY4_1W2Im1w","full_name":"http://d1a3f4spazzrp4.cloudfront.net/car-types/mono/mono-black.png https://login.uber.com/oauth/authorize?response_type=code&client_id=wTO4c5RIwLi_gjwN1tw79JY4_1W2Im1w","is_admin":true,"avatar":"https://secure.gravatar.com/avatar/441587d4f0a03b4ce3aca5a1af3577c1.jpg?s=48&d=https%3A%2F%2Fslack.global.ssl.fastly.net%2F3654%2Fimg%2Favatars%2Fava_0012-48.png"},"clientHandle":"mobilizr"}
+[Sat May 02 2015 18:47:31 GMT+0100 (WAT)] DEBUG Indata: {"to":"259 etim inyang crescent","hasActiveRequest":{"_handler":{"handler":{"value":false},"resolved":true}}}
+[Sat May 02 2015 18:47:31 GMT+0100 (WAT)] DEBUG rides:kachi@mobilizr
+[Sat May 02 2015 18:47:31 GMT+0100 (WAT)] DEBUG Datahash.lvlQueries: {"NO_START_LOCATION":1}
+[Sat May 02 2015 18:47:31 GMT+0100 (WAT)] DEBUG module: RIDES, user: kachi, client: mobilizr, message: Ok. Just click here: http://bit.ly/1zDqSuU, and i'll pinpoint your current location
+[Sat May 02 2015 18:47:31 GMT+0100 (WAT)] INFO @blanka responded with "Ok. Just click here: http://bit.ly/1zDqSuU, and i'll pinpoint your current location"
+[Sat May 02 2015 18:47:31 GMT+0100 (WAT)] DEBUG Message: Ok. Just click here: http://bit.ly/1zDqSuU, and i'll pinpoint your current location sent to user kachi
+[Sat May 02 2015 18:49:00 GMT+0100 (WAT)] INFO Piper Controller: Connecting to MQ Exchange <piper.events.in>...
+[Sat May 02 2015 18:49:01 GMT+0100 (WAT)] INFO CHITCHAT Handler: Connecting to MQ Exchange <piper.events.out>...
+[Sat May 02 2015 18:49:01 GMT+0100 (WAT)] INFO SALES Handler: Connecting to MQ Exchange <piper.events.out>...
+[Sat May 02 2015 18:49:01 GMT+0100 (WAT)] INFO UBER Handler: Connecting to MQ Exchange <piper.events.out>...
+[Sat May 02 2015 18:49:01 GMT+0100 (WAT)] INFO Piper server listening on port 3000 in development mode
+[Sat May 02 2015 18:49:01 GMT+0100 (WAT)] INFO Successfully connected to: mongodb://localhost/piper
+[Sat May 02 2015 18:49:01 GMT+0100 (WAT)] INFO Updating registry for client mobilizr...
+[Sat May 02 2015 18:49:01 GMT+0100 (WAT)] INFO Updating registry for client c2gstudio...
+[Sat May 02 2015 18:49:01 GMT+0100 (WAT)] INFO Registered connection for client: mobilizr
+[Sat May 02 2015 18:49:01 GMT+0100 (WAT)] INFO Registered connection for client: c2gstudio
+[Sat May 02 2015 18:49:01 GMT+0100 (WAT)] INFO CHITCHAT Handler <piper.events.out>: Binding to mobilizr.chitchat...
+[Sat May 02 2015 18:49:01 GMT+0100 (WAT)] INFO CHITCHAT Handler <piper.events.out>: Binding to c2gstudio.chitchat...
+[Sat May 02 2015 18:49:02 GMT+0100 (WAT)] INFO Piper Controller: MQ Exchange <piper.events.in> connected
+[Sat May 02 2015 18:49:02 GMT+0100 (WAT)] INFO rides.*: <piper.events.out> connected
+[Sat May 02 2015 18:49:02 GMT+0100 (WAT)] INFO uber.routes: <piper.events.out> connected
+[Sat May 02 2015 18:49:05 GMT+0100 (WAT)] INFO MOBILIZR: Connection established...listening for messages
+[Sat May 02 2015 18:49:05 GMT+0100 (WAT)] INFO Welcome to Slack. You are @blanka of Mobilizr
+[Sat May 02 2015 18:49:05 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Opened
+[Sat May 02 2015 18:49:05 GMT+0100 (WAT)] INFO C2G STUDIO: Connection established...listening for messages
+[Sat May 02 2015 18:49:05 GMT+0100 (WAT)] INFO Welcome to Slack. You are @blonker of c2gstudio
+[Sat May 02 2015 18:49:05 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Opened
+[Sat May 02 2015 18:49:47 GMT+0100 (WAT)] INFO Piper Controller: Connecting to MQ Exchange <piper.events.in>...
+[Sat May 02 2015 18:49:48 GMT+0100 (WAT)] INFO CHITCHAT Handler: Connecting to MQ Exchange <piper.events.out>...
+[Sat May 02 2015 18:49:48 GMT+0100 (WAT)] INFO SALES Handler: Connecting to MQ Exchange <piper.events.out>...
+[Sat May 02 2015 18:49:48 GMT+0100 (WAT)] INFO UBER Handler: Connecting to MQ Exchange <piper.events.out>...
+[Sat May 02 2015 18:49:49 GMT+0100 (WAT)] INFO Piper server listening on port 3000 in development mode
+[Sat May 02 2015 18:49:49 GMT+0100 (WAT)] INFO Successfully connected to: mongodb://localhost/piper
+[Sat May 02 2015 18:49:49 GMT+0100 (WAT)] INFO Updating registry for client mobilizr...
+[Sat May 02 2015 18:49:49 GMT+0100 (WAT)] INFO Updating registry for client c2gstudio...
+[Sat May 02 2015 18:49:49 GMT+0100 (WAT)] INFO Registered connection for client: mobilizr
+[Sat May 02 2015 18:49:49 GMT+0100 (WAT)] INFO Registered connection for client: c2gstudio
+[Sat May 02 2015 18:49:49 GMT+0100 (WAT)] INFO CHITCHAT Handler <piper.events.out>: Binding to mobilizr.chitchat...
+[Sat May 02 2015 18:49:49 GMT+0100 (WAT)] INFO CHITCHAT Handler <piper.events.out>: Binding to c2gstudio.chitchat...
+[Sat May 02 2015 18:49:49 GMT+0100 (WAT)] INFO Piper Controller: MQ Exchange <piper.events.in> connected
+[Sat May 02 2015 18:49:49 GMT+0100 (WAT)] INFO uber.routes: <piper.events.out> connected
+[Sat May 02 2015 18:49:49 GMT+0100 (WAT)] INFO rides.*: <piper.events.out> connected
+[Sat May 02 2015 18:49:52 GMT+0100 (WAT)] INFO C2G STUDIO: Connection established...listening for messages
+[Sat May 02 2015 18:49:52 GMT+0100 (WAT)] INFO Welcome to Slack. You are @blonker of c2gstudio
+[Sat May 02 2015 18:49:52 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Opened
+[Sat May 02 2015 18:49:52 GMT+0100 (WAT)] INFO MOBILIZR: Connection established...listening for messages
+[Sat May 02 2015 18:49:52 GMT+0100 (WAT)] INFO Welcome to Slack. You are @blanka of Mobilizr
+[Sat May 02 2015 18:49:52 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Opened
+[Sat May 02 2015 18:50:03 GMT+0100 (WAT)] INFO Piper Controller: Connecting to MQ Exchange <piper.events.in>...
+[Sat May 02 2015 18:50:03 GMT+0100 (WAT)] INFO CHITCHAT Handler: Connecting to MQ Exchange <piper.events.out>...
+[Sat May 02 2015 18:50:03 GMT+0100 (WAT)] INFO SALES Handler: Connecting to MQ Exchange <piper.events.out>...
+[Sat May 02 2015 18:50:04 GMT+0100 (WAT)] INFO UBER Handler: Connecting to MQ Exchange <piper.events.out>...
+[Sat May 02 2015 18:50:04 GMT+0100 (WAT)] INFO Piper server listening on port 3000 in development mode
+[Sat May 02 2015 18:50:04 GMT+0100 (WAT)] INFO Successfully connected to: mongodb://localhost/piper
+[Sat May 02 2015 18:50:04 GMT+0100 (WAT)] INFO Updating registry for client mobilizr...
+[Sat May 02 2015 18:50:04 GMT+0100 (WAT)] INFO Updating registry for client c2gstudio...
+[Sat May 02 2015 18:50:04 GMT+0100 (WAT)] INFO Registered connection for client: mobilizr
+[Sat May 02 2015 18:50:04 GMT+0100 (WAT)] INFO Registered connection for client: c2gstudio
+[Sat May 02 2015 18:50:04 GMT+0100 (WAT)] INFO CHITCHAT Handler <piper.events.out>: Binding to mobilizr.chitchat...
+[Sat May 02 2015 18:50:04 GMT+0100 (WAT)] INFO CHITCHAT Handler <piper.events.out>: Binding to c2gstudio.chitchat...
+[Sat May 02 2015 18:50:04 GMT+0100 (WAT)] INFO Piper Controller: MQ Exchange <piper.events.in> connected
+[Sat May 02 2015 18:50:04 GMT+0100 (WAT)] INFO uber.routes: <piper.events.out> connected
+[Sat May 02 2015 18:50:04 GMT+0100 (WAT)] INFO rides.*: <piper.events.out> connected
+[Sat May 02 2015 18:50:08 GMT+0100 (WAT)] INFO C2G STUDIO: Connection established...listening for messages
+[Sat May 02 2015 18:50:08 GMT+0100 (WAT)] INFO Welcome to Slack. You are @blonker of c2gstudio
+[Sat May 02 2015 18:50:08 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Opened
+[Sat May 02 2015 18:50:09 GMT+0100 (WAT)] INFO MOBILIZR: Connection established...listening for messages
+[Sat May 02 2015 18:50:09 GMT+0100 (WAT)] INFO Welcome to Slack. You are @blanka of Mobilizr
+[Sat May 02 2015 18:50:09 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Opened
+[Sat May 02 2015 18:50:12 GMT+0100 (WAT)] INFO Received: message kachi @kachi 1430589012.000018 "i’m at westminster abbey"
+[Sat May 02 2015 18:50:12 GMT+0100 (WAT)] DEBUG IGNORE FLAG: false
+[Sat May 02 2015 18:50:12 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Message Received
+[Sat May 02 2015 18:50:12 GMT+0100 (WAT)] DEBUG Userkey: api-server:kachi@mobilizr:context
+[Sat May 02 2015 18:50:12 GMT+0100 (WAT)] DEBUG State for api-server:kachi@mobilizr:context: RIDES_get_start_location
+[Sat May 02 2015 18:50:12 GMT+0100 (WAT)] DEBUG 2015-05-02T17:50:12.000Z
+[Sat May 02 2015 18:50:13 GMT+0100 (WAT)] DEBUG IntentBody: {"msg_id":"e5721d0c-4a92-4cf5-8b92-a5f0959c9f1d","_text":"i’m at westminster abbey","outcomes":[{"_text":"i’m at westminster abbey","intent":"default_give_info","entities":{"location":[{"suggested":true,"value":"westminster abbey","type":"value"}]},"confidence":0.987}],"context":{"state":"RIDES_get_start_location","reference_time":"2015-05-02T17:50:12.000Z"}}
+[Sat May 02 2015 18:50:13 GMT+0100 (WAT)] DEBUG Intent: default_give_info
+[Sat May 02 2015 18:50:13 GMT+0100 (WAT)] DEBUG Confidence: 0.987
+[Sat May 02 2015 18:50:13 GMT+0100 (WAT)] DEBUG Module for intent default_give_info and state RIDES_get_start_location resolved to RIDES
+[Sat May 02 2015 18:50:13 GMT+0100 (WAT)] DEBUG Module for intent default_give_info and state RIDES_get_start_location resolved to RIDES
+[Sat May 02 2015 18:50:14 GMT+0100 (WAT)] INFO RIDES Processor: Connecting to MQ Exchange <piper.events.in>...
+[Sat May 02 2015 18:50:14 GMT+0100 (WAT)] DEBUG New context for api-server:kachi@mobilizr:context: {"state":"RIDES"}
+[Sat May 02 2015 18:50:14 GMT+0100 (WAT)] DEBUG Entities: {"location":[{"suggested":true,"value":"westminster abbey","type":"value"}]}
+[Sat May 02 2015 18:50:14 GMT+0100 (WAT)] DEBUG lkKeys: %s
+	["home","office"]
+[Sat May 02 2015 18:50:14 GMT+0100 (WAT)] DEBUG keywordList: %s
+	["home","house","crib","hood","my address"]
+[Sat May 02 2015 18:50:14 GMT+0100 (WAT)] DEBUG location.search(home): -1
+[Sat May 02 2015 18:50:14 GMT+0100 (WAT)] DEBUG location.search(house): -1
+[Sat May 02 2015 18:50:14 GMT+0100 (WAT)] DEBUG location.search(crib): -1
+[Sat May 02 2015 18:50:14 GMT+0100 (WAT)] DEBUG location.search(hood): -1
+[Sat May 02 2015 18:50:14 GMT+0100 (WAT)] DEBUG location.search(my address): -1
+[Sat May 02 2015 18:50:14 GMT+0100 (WAT)] DEBUG keywordList: %s
+	["office","work","workplace","place of business","place of work","bureau","the office"]
+[Sat May 02 2015 18:50:14 GMT+0100 (WAT)] DEBUG location.search(office): -1
+[Sat May 02 2015 18:50:14 GMT+0100 (WAT)] DEBUG location.search(work): -1
+[Sat May 02 2015 18:50:14 GMT+0100 (WAT)] DEBUG location.search(workplace): -1
+[Sat May 02 2015 18:50:14 GMT+0100 (WAT)] DEBUG location.search(place of business): -1
+[Sat May 02 2015 18:50:14 GMT+0100 (WAT)] DEBUG location.search(place of work): -1
+[Sat May 02 2015 18:50:14 GMT+0100 (WAT)] DEBUG location.search(bureau): -1
+[Sat May 02 2015 18:50:14 GMT+0100 (WAT)] DEBUG location.search(the office): -1
+[Sat May 02 2015 18:50:14 GMT+0100 (WAT)] DEBUG confirmNeed: 0 -> false
+[Sat May 02 2015 18:50:14 GMT+0100 (WAT)] DEBUG confirmNeed: 1 -> true
+[Sat May 02 2015 18:50:14 GMT+0100 (WAT)] DEBUG startLong: 0 -> false
+[Sat May 02 2015 18:50:14 GMT+0100 (WAT)] DEBUG startLong: 1 -> false
+[Sat May 02 2015 18:50:14 GMT+0100 (WAT)] DEBUG startLong: 3 -> false
+[Sat May 02 2015 18:50:14 GMT+0100 (WAT)] DEBUG endLong: 0 -> false
+[Sat May 02 2015 18:50:14 GMT+0100 (WAT)] DEBUG endLong: 1 -> true
+[Sat May 02 2015 18:50:14 GMT+0100 (WAT)] DEBUG endLong: 2 -> false
+[Sat May 02 2015 18:50:14 GMT+0100 (WAT)] DEBUG departureTime: 0 -> false
+[Sat May 02 2015 18:50:14 GMT+0100 (WAT)] DEBUG departureTime: 1 -> true
+[Sat May 02 2015 18:50:14 GMT+0100 (WAT)] DEBUG productId: 0 -> false
+[Sat May 02 2015 18:50:14 GMT+0100 (WAT)] DEBUG productId: 1 -> false
+[Sat May 02 2015 18:50:14 GMT+0100 (WAT)] DEBUG productId: 2 -> false
+[Sat May 02 2015 18:50:14 GMT+0100 (WAT)] DEBUG productId: 3 -> false
+[Sat May 02 2015 18:50:14 GMT+0100 (WAT)] DEBUG productId: 4 -> false
+[Sat May 02 2015 18:50:14 GMT+0100 (WAT)] DEBUG productId: 5 -> false
+[Sat May 02 2015 18:50:14 GMT+0100 (WAT)] DEBUG productId: 6 -> false
+[Sat May 02 2015 18:50:14 GMT+0100 (WAT)] DEBUG confirmRequest: 0 -> false
+[Sat May 02 2015 18:50:14 GMT+0100 (WAT)] DEBUG confirmRequest: 1 -> false
+[Sat May 02 2015 18:50:14 GMT+0100 (WAT)] INFO RIDES Processor: <piper.events.in> connected
+[Sat May 02 2015 18:50:15 GMT+0100 (WAT)] INFO Geo data: {"results":[{"address_components":[{"long_name":"Westminster Abbey","short_name":"Westminster Abbey","types":["point_of_interest","establishment"]},{"long_name":"20","short_name":"20","types":["street_number"]},{"long_name":"Deans Yd","short_name":"Deans Yd","types":["route"]},{"long_name":"Westminster","short_name":"Westminster","types":["neighborhood","political"]},{"long_name":"London","short_name":"London","types":["locality","political"]},{"long_name":"London","short_name":"London","types":["postal_town"]},{"long_name":"Greater London","short_name":"Gt Lon","types":["administrative_area_level_2","political"]},{"long_name":"United Kingdom","short_name":"GB","types":["country","political"]},{"long_name":"SW1P 3PA","short_name":"SW1P 3PA","types":["postal_code"]}],"formatted_address":"Westminster Abbey, 20 Deans Yd, Westminster, London SW1P 3PA, UK","geometry":{"location":{"lat":51.4992921,"lng":-0.1273097},"location_type":"APPROXIMATE","viewport":{"northeast":{"lat":51.5006410802915,"lng":-0.125960719708498},"southwest":{"lat":51.4979431197085,"lng":-0.128658680291502}}},"place_id":"ChIJLzVDusQEdkgRelObBaL_jto","types":["church","place_of_worship","point_of_interest","establishment"]}],"status":"OK"}
+[Sat May 02 2015 18:50:15 GMT+0100 (WAT)] DEBUG startLong: 2 -> true
+[Sat May 02 2015 18:50:15 GMT+0100 (WAT)] DEBUG Datakey: confirmNeed, Validity Check: true
+[Sat May 02 2015 18:50:15 GMT+0100 (WAT)] DEBUG Datakey: startLong, Validity Check: true
+[Sat May 02 2015 18:50:15 GMT+0100 (WAT)] DEBUG Datakey: endLong, Validity Check: true
+[Sat May 02 2015 18:50:15 GMT+0100 (WAT)] DEBUG Datakey: departureTime, Validity Check: true
+[Sat May 02 2015 18:50:15 GMT+0100 (WAT)] DEBUG Datakey: productId, Validity Check: false
+[Sat May 02 2015 18:50:15 GMT+0100 (WAT)] DEBUG Datakey: confirmRequest, Validity Check: false
+[Sat May 02 2015 18:50:15 GMT+0100 (WAT)] DEBUG Missing Keys for rides_book_trip: ["productId","confirmRequest"]
+[Sat May 02 2015 18:50:15 GMT+0100 (WAT)] DEBUG Predicate: 2
+[Sat May 02 2015 18:50:15 GMT+0100 (WAT)] DEBUG Datahash from unfold: {"handlerTodo":"rides_book_trip","intent":"default_give_info","confirmNeed":true,"toLocKeyword":"office","endLong":"3.4365724","endLat":"6.4331551","errStartLocation":"NO_START_LOCATION","lvlQueries":{"NO_START_LOCATION":1},"startLong":-0.1273097,"startLat":51.4992921}
+[Sat May 02 2015 18:50:15 GMT+0100 (WAT)] DEBUG Predicate: 1
+[Sat May 02 2015 18:50:15 GMT+0100 (WAT)] DEBUG Datahash from unfold: {"handlerTodo":"rides_book_trip","intent":"default_give_info","confirmNeed":true,"toLocKeyword":"office","endLong":"3.4365724","endLat":"6.4331551","errStartLocation":"NO_START_LOCATION","lvlQueries":{"NO_START_LOCATION":1},"startLong":-0.1273097,"startLat":51.4992921}
+[Sat May 02 2015 18:50:15 GMT+0100 (WAT)] DEBUG @@@@ CONFIRM REQUEST: 1
+[Sat May 02 2015 18:50:15 GMT+0100 (WAT)] DEBUG Predicate: 0
+[Sat May 02 2015 18:50:15 GMT+0100 (WAT)] DEBUG Datahash: {"handlerTodo":"rides_book_trip","intent":"default_give_info","confirmNeed":true,"toLocKeyword":"office","endLong":"3.4365724","endLat":"6.4331551","errStartLocation":"NO_START_LOCATION","lvlQueries":{"NO_START_LOCATION":1},"startLong":-0.1273097,"startLat":51.4992921,"errConfirmRequest":"NO_CONFIRM_REQUEST"}
+[Sat May 02 2015 18:50:15 GMT+0100 (WAT)] DEBUG Body: {"msg_id":"e5721d0c-4a92-4cf5-8b92-a5f0959c9f1d","_text":"i’m at westminster abbey","outcomes":[{"_text":"i’m at westminster abbey","intent":"default_give_info","entities":{"location":[{"suggested":true,"value":"westminster abbey","type":"value"}]},"confidence":0.987}],"context":{"state":"RIDES_get_start_location","reference_time":"2015-05-02T17:50:12.000Z"},"user":{"slackId":"U02RN8W1T","name":"kachi","email":"kachi@mobilizr.net","first_name":"http://d1a3f4spazzrp4.cloudfront.net/car-types/mono/mono-black.png","last_name":"https://login.uber.com/oauth/authorize?response_type=code&client_id=wTO4c5RIwLi_gjwN1tw79JY4_1W2Im1w","full_name":"http://d1a3f4spazzrp4.cloudfront.net/car-types/mono/mono-black.png https://login.uber.com/oauth/authorize?response_type=code&client_id=wTO4c5RIwLi_gjwN1tw79JY4_1W2Im1w","is_admin":true,"avatar":"https://secure.gravatar.com/avatar/441587d4f0a03b4ce3aca5a1af3577c1.jpg?s=48&d=https%3A%2F%2Fslack.global.ssl.fastly.net%2F3654%2Fimg%2Favatars%2Fava_0012-48.png"},"clientHandle":"mobilizr"}
+[Sat May 02 2015 18:50:15 GMT+0100 (WAT)] DEBUG Indata: {"location":"westminster abbey","hasActiveRequest":{"_handler":{"handler":{"value":false},"resolved":true}},"from":"westminster abbey"}
+[Sat May 02 2015 18:50:15 GMT+0100 (WAT)] DEBUG rides:kachi@mobilizr
+[Sat May 02 2015 18:50:15 GMT+0100 (WAT)] DEBUG Datahash.lvlQueries: {"NO_START_LOCATION":1}
+[Sat May 02 2015 19:07:42 GMT+0100 (WAT)] INFO Piper Controller: Connecting to MQ Exchange <piper.events.in>...
+[Sat May 02 2015 19:07:43 GMT+0100 (WAT)] INFO CHITCHAT Handler: Connecting to MQ Exchange <piper.events.out>...
+[Sat May 02 2015 19:07:43 GMT+0100 (WAT)] INFO SALES Handler: Connecting to MQ Exchange <piper.events.out>...
+[Sat May 02 2015 19:07:43 GMT+0100 (WAT)] INFO UBER Handler: Connecting to MQ Exchange <piper.events.out>...
+[Sat May 02 2015 19:07:44 GMT+0100 (WAT)] INFO Piper server listening on port 3000 in development mode
+[Sat May 02 2015 19:07:44 GMT+0100 (WAT)] INFO Successfully connected to: mongodb://localhost/piper
+[Sat May 02 2015 19:07:44 GMT+0100 (WAT)] INFO Updating registry for client mobilizr...
+[Sat May 02 2015 19:07:44 GMT+0100 (WAT)] INFO Updating registry for client c2gstudio...
+[Sat May 02 2015 19:07:44 GMT+0100 (WAT)] INFO Registered connection for client: mobilizr
+[Sat May 02 2015 19:07:44 GMT+0100 (WAT)] INFO Registered connection for client: c2gstudio
+[Sat May 02 2015 19:07:44 GMT+0100 (WAT)] INFO CHITCHAT Handler <piper.events.out>: Binding to mobilizr.chitchat...
+[Sat May 02 2015 19:07:44 GMT+0100 (WAT)] INFO CHITCHAT Handler <piper.events.out>: Binding to c2gstudio.chitchat...
+[Sat May 02 2015 19:07:44 GMT+0100 (WAT)] INFO rides.*: <piper.events.out> connected
+[Sat May 02 2015 19:07:44 GMT+0100 (WAT)] INFO Piper Controller: MQ Exchange <piper.events.in> connected
+[Sat May 02 2015 19:07:44 GMT+0100 (WAT)] INFO uber.routes: <piper.events.out> connected
+[Sat May 02 2015 19:07:48 GMT+0100 (WAT)] INFO MOBILIZR: Connection established...listening for messages
+[Sat May 02 2015 19:07:48 GMT+0100 (WAT)] INFO Welcome to Slack. You are @blanka of Mobilizr
+[Sat May 02 2015 19:07:48 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Opened
+[Sat May 02 2015 19:07:48 GMT+0100 (WAT)] INFO C2G STUDIO: Connection established...listening for messages
+[Sat May 02 2015 19:07:48 GMT+0100 (WAT)] INFO Welcome to Slack. You are @blonker of c2gstudio
+[Sat May 02 2015 19:07:48 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Opened
+[Sat May 02 2015 19:07:59 GMT+0100 (WAT)] INFO Piper Controller: Connecting to MQ Exchange <piper.events.in>...
+[Sat May 02 2015 19:07:59 GMT+0100 (WAT)] INFO CHITCHAT Handler: Connecting to MQ Exchange <piper.events.out>...
+[Sat May 02 2015 19:07:59 GMT+0100 (WAT)] INFO SALES Handler: Connecting to MQ Exchange <piper.events.out>...
+[Sat May 02 2015 19:08:00 GMT+0100 (WAT)] INFO UBER Handler: Connecting to MQ Exchange <piper.events.out>...
+[Sat May 02 2015 19:08:00 GMT+0100 (WAT)] INFO Piper server listening on port 3000 in development mode
+[Sat May 02 2015 19:08:00 GMT+0100 (WAT)] INFO Successfully connected to: mongodb://localhost/piper
+[Sat May 02 2015 19:08:00 GMT+0100 (WAT)] INFO Updating registry for client mobilizr...
+[Sat May 02 2015 19:08:00 GMT+0100 (WAT)] INFO Updating registry for client c2gstudio...
+[Sat May 02 2015 19:08:00 GMT+0100 (WAT)] INFO Registered connection for client: mobilizr
+[Sat May 02 2015 19:08:00 GMT+0100 (WAT)] INFO Registered connection for client: c2gstudio
+[Sat May 02 2015 19:08:00 GMT+0100 (WAT)] INFO CHITCHAT Handler <piper.events.out>: Binding to mobilizr.chitchat...
+[Sat May 02 2015 19:08:00 GMT+0100 (WAT)] INFO CHITCHAT Handler <piper.events.out>: Binding to c2gstudio.chitchat...
+[Sat May 02 2015 19:08:00 GMT+0100 (WAT)] INFO Piper Controller: MQ Exchange <piper.events.in> connected
+[Sat May 02 2015 19:08:00 GMT+0100 (WAT)] INFO uber.routes: <piper.events.out> connected
+[Sat May 02 2015 19:08:00 GMT+0100 (WAT)] INFO rides.*: <piper.events.out> connected
+[Sat May 02 2015 19:08:03 GMT+0100 (WAT)] INFO MOBILIZR: Connection established...listening for messages
+[Sat May 02 2015 19:08:03 GMT+0100 (WAT)] INFO Welcome to Slack. You are @blanka of Mobilizr
+[Sat May 02 2015 19:08:03 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Opened
+[Sat May 02 2015 19:08:03 GMT+0100 (WAT)] INFO C2G STUDIO: Connection established...listening for messages
+[Sat May 02 2015 19:08:03 GMT+0100 (WAT)] INFO Welcome to Slack. You are @blonker of c2gstudio
+[Sat May 02 2015 19:08:03 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Opened
+[Sat May 02 2015 19:08:33 GMT+0100 (WAT)] INFO Piper Controller: Connecting to MQ Exchange <piper.events.in>...
+[Sat May 02 2015 19:08:34 GMT+0100 (WAT)] INFO CHITCHAT Handler: Connecting to MQ Exchange <piper.events.out>...
+[Sat May 02 2015 19:08:34 GMT+0100 (WAT)] INFO SALES Handler: Connecting to MQ Exchange <piper.events.out>...
+[Sat May 02 2015 19:08:34 GMT+0100 (WAT)] INFO UBER Handler: Connecting to MQ Exchange <piper.events.out>...
+[Sat May 02 2015 19:08:35 GMT+0100 (WAT)] INFO Piper server listening on port 3000 in development mode
+[Sat May 02 2015 19:08:35 GMT+0100 (WAT)] INFO Successfully connected to: mongodb://localhost/piper
+[Sat May 02 2015 19:08:35 GMT+0100 (WAT)] INFO Updating registry for client mobilizr...
+[Sat May 02 2015 19:08:35 GMT+0100 (WAT)] INFO Updating registry for client c2gstudio...
+[Sat May 02 2015 19:08:35 GMT+0100 (WAT)] INFO Registered connection for client: mobilizr
+[Sat May 02 2015 19:08:35 GMT+0100 (WAT)] INFO Registered connection for client: c2gstudio
+[Sat May 02 2015 19:08:35 GMT+0100 (WAT)] INFO CHITCHAT Handler <piper.events.out>: Binding to mobilizr.chitchat...
+[Sat May 02 2015 19:08:35 GMT+0100 (WAT)] INFO CHITCHAT Handler <piper.events.out>: Binding to c2gstudio.chitchat...
+[Sat May 02 2015 19:08:35 GMT+0100 (WAT)] INFO Piper Controller: MQ Exchange <piper.events.in> connected
+[Sat May 02 2015 19:08:35 GMT+0100 (WAT)] INFO rides.*: <piper.events.out> connected
+[Sat May 02 2015 19:08:35 GMT+0100 (WAT)] INFO uber.routes: <piper.events.out> connected
+[Sat May 02 2015 19:08:38 GMT+0100 (WAT)] INFO C2G STUDIO: Connection established...listening for messages
+[Sat May 02 2015 19:08:38 GMT+0100 (WAT)] INFO Welcome to Slack. You are @blonker of c2gstudio
+[Sat May 02 2015 19:08:38 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Opened
+[Sat May 02 2015 19:08:38 GMT+0100 (WAT)] INFO MOBILIZR: Connection established...listening for messages
+[Sat May 02 2015 19:08:38 GMT+0100 (WAT)] INFO Welcome to Slack. You are @blanka of Mobilizr
+[Sat May 02 2015 19:08:38 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Opened
+[Sat May 02 2015 19:08:43 GMT+0100 (WAT)] INFO Piper Controller: Connecting to MQ Exchange <piper.events.in>...
+[Sat May 02 2015 19:08:44 GMT+0100 (WAT)] INFO CHITCHAT Handler: Connecting to MQ Exchange <piper.events.out>...
+[Sat May 02 2015 19:08:44 GMT+0100 (WAT)] INFO SALES Handler: Connecting to MQ Exchange <piper.events.out>...
+[Sat May 02 2015 19:08:44 GMT+0100 (WAT)] INFO UBER Handler: Connecting to MQ Exchange <piper.events.out>...
+[Sat May 02 2015 19:08:45 GMT+0100 (WAT)] INFO Piper server listening on port 3000 in development mode
+[Sat May 02 2015 19:08:45 GMT+0100 (WAT)] INFO Successfully connected to: mongodb://localhost/piper
+[Sat May 02 2015 19:08:45 GMT+0100 (WAT)] INFO Updating registry for client mobilizr...
+[Sat May 02 2015 19:08:45 GMT+0100 (WAT)] INFO Updating registry for client c2gstudio...
+[Sat May 02 2015 19:08:45 GMT+0100 (WAT)] INFO Registered connection for client: mobilizr
+[Sat May 02 2015 19:08:45 GMT+0100 (WAT)] INFO Registered connection for client: c2gstudio
+[Sat May 02 2015 19:08:45 GMT+0100 (WAT)] INFO CHITCHAT Handler <piper.events.out>: Binding to mobilizr.chitchat...
+[Sat May 02 2015 19:08:45 GMT+0100 (WAT)] INFO CHITCHAT Handler <piper.events.out>: Binding to c2gstudio.chitchat...
+[Sat May 02 2015 19:08:45 GMT+0100 (WAT)] INFO Piper Controller: MQ Exchange <piper.events.in> connected
+[Sat May 02 2015 19:08:45 GMT+0100 (WAT)] INFO rides.*: <piper.events.out> connected
+[Sat May 02 2015 19:08:45 GMT+0100 (WAT)] INFO uber.routes: <piper.events.out> connected
+[Sat May 02 2015 19:08:48 GMT+0100 (WAT)] INFO C2G STUDIO: Connection established...listening for messages
+[Sat May 02 2015 19:08:48 GMT+0100 (WAT)] INFO Welcome to Slack. You are @blonker of c2gstudio
+[Sat May 02 2015 19:08:48 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Opened
+[Sat May 02 2015 19:08:48 GMT+0100 (WAT)] INFO MOBILIZR: Connection established...listening for messages
+[Sat May 02 2015 19:08:48 GMT+0100 (WAT)] INFO Welcome to Slack. You are @blanka of Mobilizr
+[Sat May 02 2015 19:08:48 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Opened
+[Sat May 02 2015 20:46:02 GMT+0100 (WAT)] INFO Piper Controller: Connecting to MQ Exchange <piper.events.in>...
+[Sat May 02 2015 20:46:03 GMT+0100 (WAT)] INFO CHITCHAT Handler: Connecting to MQ Exchange <piper.events.out>...
+[Sat May 02 2015 20:46:03 GMT+0100 (WAT)] INFO SALES Handler: Connecting to MQ Exchange <piper.events.out>...
+[Sat May 02 2015 20:46:03 GMT+0100 (WAT)] INFO UBER Handler: Connecting to MQ Exchange <piper.events.out>...
+[Sat May 02 2015 20:46:04 GMT+0100 (WAT)] INFO Piper server listening on port 3000 in development mode
+[Sat May 02 2015 20:46:04 GMT+0100 (WAT)] INFO Successfully connected to: mongodb://localhost/piper
+[Sat May 02 2015 20:46:04 GMT+0100 (WAT)] INFO Updating registry for client mobilizr...
+[Sat May 02 2015 20:46:04 GMT+0100 (WAT)] INFO Updating registry for client c2gstudio...
+[Sat May 02 2015 20:46:04 GMT+0100 (WAT)] INFO Registered connection for client: mobilizr
+[Sat May 02 2015 20:46:04 GMT+0100 (WAT)] INFO Registered connection for client: c2gstudio
+[Sat May 02 2015 20:46:04 GMT+0100 (WAT)] INFO CHITCHAT Handler <piper.events.out>: Binding to mobilizr.chitchat...
+[Sat May 02 2015 20:46:04 GMT+0100 (WAT)] INFO CHITCHAT Handler <piper.events.out>: Binding to c2gstudio.chitchat...
+[Sat May 02 2015 20:46:04 GMT+0100 (WAT)] INFO uber.routes: <piper.events.out> connected
+[Sat May 02 2015 20:46:04 GMT+0100 (WAT)] INFO Piper Controller: MQ Exchange <piper.events.in> connected
+[Sat May 02 2015 20:46:04 GMT+0100 (WAT)] INFO rides.*: <piper.events.out> connected
+[Sat May 02 2015 20:46:08 GMT+0100 (WAT)] INFO C2G STUDIO: Connection established...listening for messages
+[Sat May 02 2015 20:46:08 GMT+0100 (WAT)] INFO Welcome to Slack. You are @blonker of c2gstudio
+[Sat May 02 2015 20:46:08 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Opened
+[Sat May 02 2015 20:46:08 GMT+0100 (WAT)] INFO MOBILIZR: Connection established...listening for messages
+[Sat May 02 2015 20:46:08 GMT+0100 (WAT)] INFO Welcome to Slack. You are @blanka of Mobilizr
+[Sat May 02 2015 20:46:08 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Opened
+[Sat May 02 2015 20:46:32 GMT+0100 (WAT)] INFO Piper Controller: Connecting to MQ Exchange <piper.events.in>...
+[Sat May 02 2015 20:46:33 GMT+0100 (WAT)] INFO CHITCHAT Handler: Connecting to MQ Exchange <piper.events.out>...
+[Sat May 02 2015 20:46:33 GMT+0100 (WAT)] INFO SALES Handler: Connecting to MQ Exchange <piper.events.out>...
+[Sat May 02 2015 20:46:33 GMT+0100 (WAT)] INFO UBER Handler: Connecting to MQ Exchange <piper.events.out>...
+[Sat May 02 2015 20:46:34 GMT+0100 (WAT)] INFO Piper server listening on port 3000 in development mode
+[Sat May 02 2015 20:46:34 GMT+0100 (WAT)] INFO Successfully connected to: mongodb://localhost/piper
+[Sat May 02 2015 20:46:34 GMT+0100 (WAT)] INFO Updating registry for client mobilizr...
+[Sat May 02 2015 20:46:34 GMT+0100 (WAT)] INFO Updating registry for client c2gstudio...
+[Sat May 02 2015 20:46:34 GMT+0100 (WAT)] INFO Registered connection for client: mobilizr
+[Sat May 02 2015 20:46:34 GMT+0100 (WAT)] INFO Registered connection for client: c2gstudio
+[Sat May 02 2015 20:46:34 GMT+0100 (WAT)] INFO CHITCHAT Handler <piper.events.out>: Binding to mobilizr.chitchat...
+[Sat May 02 2015 20:46:34 GMT+0100 (WAT)] INFO CHITCHAT Handler <piper.events.out>: Binding to c2gstudio.chitchat...
+[Sat May 02 2015 20:46:34 GMT+0100 (WAT)] INFO Piper Controller: MQ Exchange <piper.events.in> connected
+[Sat May 02 2015 20:46:34 GMT+0100 (WAT)] INFO rides.*: <piper.events.out> connected
+[Sat May 02 2015 20:46:34 GMT+0100 (WAT)] INFO uber.routes: <piper.events.out> connected
+[Sat May 02 2015 20:46:37 GMT+0100 (WAT)] INFO C2G STUDIO: Connection established...listening for messages
+[Sat May 02 2015 20:46:37 GMT+0100 (WAT)] INFO Welcome to Slack. You are @blonker of c2gstudio
+[Sat May 02 2015 20:46:37 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Opened
+[Sat May 02 2015 20:46:37 GMT+0100 (WAT)] INFO MOBILIZR: Connection established...listening for messages
+[Sat May 02 2015 20:46:37 GMT+0100 (WAT)] INFO Welcome to Slack. You are @blanka of Mobilizr
+[Sat May 02 2015 20:46:37 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Opened
+[Sat May 02 2015 20:52:53 GMT+0100 (WAT)] INFO Piper Controller: Connecting to MQ Exchange <piper.events.in>...
+[Sat May 02 2015 20:52:54 GMT+0100 (WAT)] INFO CHITCHAT Handler: Connecting to MQ Exchange <piper.events.out>...
+[Sat May 02 2015 20:52:54 GMT+0100 (WAT)] INFO SALES Handler: Connecting to MQ Exchange <piper.events.out>...
+[Sat May 02 2015 20:52:54 GMT+0100 (WAT)] INFO UBER Handler: Connecting to MQ Exchange <piper.events.out>...
+[Sat May 02 2015 20:52:55 GMT+0100 (WAT)] INFO Piper server listening on port 3000 in development mode
+[Sat May 02 2015 20:52:55 GMT+0100 (WAT)] INFO Successfully connected to: mongodb://localhost/piper
+[Sat May 02 2015 20:52:55 GMT+0100 (WAT)] INFO Updating registry for client mobilizr...
+[Sat May 02 2015 20:52:55 GMT+0100 (WAT)] INFO Updating registry for client c2gstudio...
+[Sat May 02 2015 20:52:55 GMT+0100 (WAT)] INFO Registered connection for client: mobilizr
+[Sat May 02 2015 20:52:55 GMT+0100 (WAT)] INFO Registered connection for client: c2gstudio
+[Sat May 02 2015 20:52:55 GMT+0100 (WAT)] INFO CHITCHAT Handler <piper.events.out>: Binding to mobilizr.chitchat...
+[Sat May 02 2015 20:52:55 GMT+0100 (WAT)] INFO CHITCHAT Handler <piper.events.out>: Binding to c2gstudio.chitchat...
+[Sat May 02 2015 20:52:55 GMT+0100 (WAT)] INFO Piper Controller: MQ Exchange <piper.events.in> connected
+[Sat May 02 2015 20:52:55 GMT+0100 (WAT)] INFO rides.*: <piper.events.out> connected
+[Sat May 02 2015 20:52:55 GMT+0100 (WAT)] INFO uber.routes: <piper.events.out> connected
+[Sat May 02 2015 20:52:58 GMT+0100 (WAT)] INFO MOBILIZR: Connection established...listening for messages
+[Sat May 02 2015 20:52:58 GMT+0100 (WAT)] INFO Welcome to Slack. You are @blanka of Mobilizr
+[Sat May 02 2015 20:52:58 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Opened
+[Sat May 02 2015 20:52:58 GMT+0100 (WAT)] INFO C2G STUDIO: Connection established...listening for messages
+[Sat May 02 2015 20:52:58 GMT+0100 (WAT)] INFO Welcome to Slack. You are @blonker of c2gstudio
+[Sat May 02 2015 20:52:58 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Opened
+[Sat May 02 2015 20:56:38 GMT+0100 (WAT)] INFO Piper Controller: Connecting to MQ Exchange <piper.events.in>...
+[Sat May 02 2015 20:56:39 GMT+0100 (WAT)] INFO CHITCHAT Handler: Connecting to MQ Exchange <piper.events.out>...
+[Sat May 02 2015 20:56:39 GMT+0100 (WAT)] INFO SALES Handler: Connecting to MQ Exchange <piper.events.out>...
+[Sat May 02 2015 20:56:39 GMT+0100 (WAT)] INFO UBER Handler: Connecting to MQ Exchange <piper.events.out>...
+[Sat May 02 2015 20:56:40 GMT+0100 (WAT)] INFO Piper server listening on port 3000 in development mode
+[Sat May 02 2015 20:56:40 GMT+0100 (WAT)] INFO Successfully connected to: mongodb://localhost/piper
+[Sat May 02 2015 20:56:40 GMT+0100 (WAT)] INFO Updating registry for client mobilizr...
+[Sat May 02 2015 20:56:40 GMT+0100 (WAT)] INFO Updating registry for client c2gstudio...
+[Sat May 02 2015 20:56:40 GMT+0100 (WAT)] INFO Registered connection for client: mobilizr
+[Sat May 02 2015 20:56:40 GMT+0100 (WAT)] INFO Registered connection for client: c2gstudio
+[Sat May 02 2015 20:56:40 GMT+0100 (WAT)] INFO CHITCHAT Handler <piper.events.out>: Binding to mobilizr.chitchat...
+[Sat May 02 2015 20:56:40 GMT+0100 (WAT)] INFO CHITCHAT Handler <piper.events.out>: Binding to c2gstudio.chitchat...
+[Sat May 02 2015 20:56:40 GMT+0100 (WAT)] INFO rides.*: <piper.events.out> connected
+[Sat May 02 2015 20:56:40 GMT+0100 (WAT)] INFO Piper Controller: MQ Exchange <piper.events.in> connected
+[Sat May 02 2015 20:56:40 GMT+0100 (WAT)] INFO uber.routes: <piper.events.out> connected
+[Sat May 02 2015 20:56:44 GMT+0100 (WAT)] INFO C2G STUDIO: Connection established...listening for messages
+[Sat May 02 2015 20:56:44 GMT+0100 (WAT)] INFO Welcome to Slack. You are @blonker of c2gstudio
+[Sat May 02 2015 20:56:44 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Opened
+[Sat May 02 2015 20:56:44 GMT+0100 (WAT)] INFO MOBILIZR: Connection established...listening for messages
+[Sat May 02 2015 20:56:44 GMT+0100 (WAT)] INFO Welcome to Slack. You are @blanka of Mobilizr
+[Sat May 02 2015 20:56:44 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Opened
+[Sat May 02 2015 20:58:07 GMT+0100 (WAT)] INFO Piper Controller: Connecting to MQ Exchange <piper.events.in>...
+[Sat May 02 2015 20:58:08 GMT+0100 (WAT)] INFO CHITCHAT Handler: Connecting to MQ Exchange <piper.events.out>...
+[Sat May 02 2015 20:58:08 GMT+0100 (WAT)] INFO SALES Handler: Connecting to MQ Exchange <piper.events.out>...
+[Sat May 02 2015 20:58:08 GMT+0100 (WAT)] INFO UBER Handler: Connecting to MQ Exchange <piper.events.out>...
+[Sat May 02 2015 20:58:09 GMT+0100 (WAT)] INFO Piper server listening on port 3000 in development mode
+[Sat May 02 2015 20:58:09 GMT+0100 (WAT)] INFO Successfully connected to: mongodb://localhost/piper
+[Sat May 02 2015 20:58:09 GMT+0100 (WAT)] INFO Updating registry for client mobilizr...
+[Sat May 02 2015 20:58:09 GMT+0100 (WAT)] INFO Updating registry for client c2gstudio...
+[Sat May 02 2015 20:58:09 GMT+0100 (WAT)] INFO Registered connection for client: mobilizr
+[Sat May 02 2015 20:58:09 GMT+0100 (WAT)] INFO Registered connection for client: c2gstudio
+[Sat May 02 2015 20:58:09 GMT+0100 (WAT)] INFO CHITCHAT Handler <piper.events.out>: Binding to mobilizr.chitchat...
+[Sat May 02 2015 20:58:09 GMT+0100 (WAT)] INFO CHITCHAT Handler <piper.events.out>: Binding to c2gstudio.chitchat...
+[Sat May 02 2015 20:58:09 GMT+0100 (WAT)] INFO Piper Controller: MQ Exchange <piper.events.in> connected
+[Sat May 02 2015 20:58:09 GMT+0100 (WAT)] INFO rides.*: <piper.events.out> connected
+[Sat May 02 2015 20:58:09 GMT+0100 (WAT)] INFO uber.routes: <piper.events.out> connected
+[Sat May 02 2015 20:58:12 GMT+0100 (WAT)] INFO MOBILIZR: Connection established...listening for messages
+[Sat May 02 2015 20:58:12 GMT+0100 (WAT)] INFO Welcome to Slack. You are @blanka of Mobilizr
+[Sat May 02 2015 20:58:12 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Opened
+[Sat May 02 2015 20:58:12 GMT+0100 (WAT)] INFO C2G STUDIO: Connection established...listening for messages
+[Sat May 02 2015 20:58:12 GMT+0100 (WAT)] INFO Welcome to Slack. You are @blonker of c2gstudio
+[Sat May 02 2015 20:58:12 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Opened
+[Sat May 02 2015 20:58:25 GMT+0100 (WAT)] INFO Piper Controller: Connecting to MQ Exchange <piper.events.in>...
+[Sat May 02 2015 20:58:26 GMT+0100 (WAT)] INFO CHITCHAT Handler: Connecting to MQ Exchange <piper.events.out>...
+[Sat May 02 2015 20:58:26 GMT+0100 (WAT)] INFO SALES Handler: Connecting to MQ Exchange <piper.events.out>...
+[Sat May 02 2015 20:58:26 GMT+0100 (WAT)] INFO UBER Handler: Connecting to MQ Exchange <piper.events.out>...
+[Sat May 02 2015 20:58:27 GMT+0100 (WAT)] INFO Piper server listening on port 3000 in development mode
+[Sat May 02 2015 20:58:27 GMT+0100 (WAT)] INFO Successfully connected to: mongodb://localhost/piper
+[Sat May 02 2015 20:58:27 GMT+0100 (WAT)] INFO Updating registry for client mobilizr...
+[Sat May 02 2015 20:58:27 GMT+0100 (WAT)] INFO Updating registry for client c2gstudio...
+[Sat May 02 2015 20:58:27 GMT+0100 (WAT)] INFO Registered connection for client: mobilizr
+[Sat May 02 2015 20:58:27 GMT+0100 (WAT)] INFO Registered connection for client: c2gstudio
+[Sat May 02 2015 20:58:27 GMT+0100 (WAT)] INFO CHITCHAT Handler <piper.events.out>: Binding to mobilizr.chitchat...
+[Sat May 02 2015 20:58:27 GMT+0100 (WAT)] INFO CHITCHAT Handler <piper.events.out>: Binding to c2gstudio.chitchat...
+[Sat May 02 2015 20:58:27 GMT+0100 (WAT)] INFO Piper Controller: MQ Exchange <piper.events.in> connected
+[Sat May 02 2015 20:58:27 GMT+0100 (WAT)] INFO rides.*: <piper.events.out> connected
+[Sat May 02 2015 20:58:27 GMT+0100 (WAT)] INFO uber.routes: <piper.events.out> connected
+[Sat May 02 2015 20:58:30 GMT+0100 (WAT)] INFO C2G STUDIO: Connection established...listening for messages
+[Sat May 02 2015 20:58:30 GMT+0100 (WAT)] INFO Welcome to Slack. You are @blonker of c2gstudio
+[Sat May 02 2015 20:58:30 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Opened
+[Sat May 02 2015 20:58:31 GMT+0100 (WAT)] INFO MOBILIZR: Connection established...listening for messages
+[Sat May 02 2015 20:58:31 GMT+0100 (WAT)] INFO Welcome to Slack. You are @blanka of Mobilizr
+[Sat May 02 2015 20:58:31 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Opened
+[Sat May 02 2015 20:58:33 GMT+0100 (WAT)] INFO Piper Controller: Connecting to MQ Exchange <piper.events.in>...
+[Sat May 02 2015 20:58:34 GMT+0100 (WAT)] INFO CHITCHAT Handler: Connecting to MQ Exchange <piper.events.out>...
+[Sat May 02 2015 20:58:34 GMT+0100 (WAT)] INFO SALES Handler: Connecting to MQ Exchange <piper.events.out>...
+[Sat May 02 2015 20:58:34 GMT+0100 (WAT)] INFO UBER Handler: Connecting to MQ Exchange <piper.events.out>...
+[Sat May 02 2015 20:58:35 GMT+0100 (WAT)] INFO Piper server listening on port 3000 in development mode
+[Sat May 02 2015 20:58:35 GMT+0100 (WAT)] INFO Successfully connected to: mongodb://localhost/piper
+[Sat May 02 2015 20:58:35 GMT+0100 (WAT)] INFO Updating registry for client mobilizr...
+[Sat May 02 2015 20:58:35 GMT+0100 (WAT)] INFO Updating registry for client c2gstudio...
+[Sat May 02 2015 20:58:35 GMT+0100 (WAT)] INFO Registered connection for client: mobilizr
+[Sat May 02 2015 20:58:35 GMT+0100 (WAT)] INFO Registered connection for client: c2gstudio
+[Sat May 02 2015 20:58:35 GMT+0100 (WAT)] INFO CHITCHAT Handler <piper.events.out>: Binding to mobilizr.chitchat...
+[Sat May 02 2015 20:58:35 GMT+0100 (WAT)] INFO CHITCHAT Handler <piper.events.out>: Binding to c2gstudio.chitchat...
+[Sat May 02 2015 20:58:35 GMT+0100 (WAT)] INFO Piper Controller: MQ Exchange <piper.events.in> connected
+[Sat May 02 2015 20:58:35 GMT+0100 (WAT)] INFO rides.*: <piper.events.out> connected
+[Sat May 02 2015 20:58:35 GMT+0100 (WAT)] INFO uber.routes: <piper.events.out> connected
+[Sat May 02 2015 20:58:38 GMT+0100 (WAT)] INFO MOBILIZR: Connection established...listening for messages
+[Sat May 02 2015 20:58:38 GMT+0100 (WAT)] INFO Welcome to Slack. You are @blanka of Mobilizr
+[Sat May 02 2015 20:58:38 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Opened
+[Sat May 02 2015 20:58:38 GMT+0100 (WAT)] INFO C2G STUDIO: Connection established...listening for messages
+[Sat May 02 2015 20:58:38 GMT+0100 (WAT)] INFO Welcome to Slack. You are @blonker of c2gstudio
+[Sat May 02 2015 20:58:38 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Opened
+[Sat May 02 2015 21:00:52 GMT+0100 (WAT)] INFO Piper Controller: Connecting to MQ Exchange <piper.events.in>...
+[Sat May 02 2015 21:00:53 GMT+0100 (WAT)] INFO CHITCHAT Handler: Connecting to MQ Exchange <piper.events.out>...
+[Sat May 02 2015 21:00:53 GMT+0100 (WAT)] INFO SALES Handler: Connecting to MQ Exchange <piper.events.out>...
+[Sat May 02 2015 21:00:53 GMT+0100 (WAT)] INFO UBER Handler: Connecting to MQ Exchange <piper.events.out>...
+[Sat May 02 2015 21:00:54 GMT+0100 (WAT)] INFO Piper server listening on port 3000 in development mode
+[Sat May 02 2015 21:00:54 GMT+0100 (WAT)] INFO Successfully connected to: mongodb://localhost/piper
+[Sat May 02 2015 21:00:54 GMT+0100 (WAT)] INFO Updating registry for client mobilizr...
+[Sat May 02 2015 21:00:54 GMT+0100 (WAT)] INFO Updating registry for client c2gstudio...
+[Sat May 02 2015 21:00:54 GMT+0100 (WAT)] INFO Registered connection for client: mobilizr
+[Sat May 02 2015 21:00:54 GMT+0100 (WAT)] INFO Registered connection for client: c2gstudio
+[Sat May 02 2015 21:00:54 GMT+0100 (WAT)] INFO CHITCHAT Handler <piper.events.out>: Binding to mobilizr.chitchat...
+[Sat May 02 2015 21:00:54 GMT+0100 (WAT)] INFO CHITCHAT Handler <piper.events.out>: Binding to c2gstudio.chitchat...
+[Sat May 02 2015 21:00:54 GMT+0100 (WAT)] INFO uber.routes: <piper.events.out> connected
+[Sat May 02 2015 21:00:54 GMT+0100 (WAT)] INFO Piper Controller: MQ Exchange <piper.events.in> connected
+[Sat May 02 2015 21:00:54 GMT+0100 (WAT)] INFO rides.*: <piper.events.out> connected
+[Sat May 02 2015 21:00:57 GMT+0100 (WAT)] INFO MOBILIZR: Connection established...listening for messages
+[Sat May 02 2015 21:00:57 GMT+0100 (WAT)] INFO Welcome to Slack. You are @blanka of Mobilizr
+[Sat May 02 2015 21:00:57 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Opened
+[Sat May 02 2015 21:00:58 GMT+0100 (WAT)] INFO C2G STUDIO: Connection established...listening for messages
+[Sat May 02 2015 21:00:58 GMT+0100 (WAT)] INFO Welcome to Slack. You are @blonker of c2gstudio
+[Sat May 02 2015 21:00:58 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Opened
+[Sat May 02 2015 21:01:02 GMT+0100 (WAT)] INFO Piper Controller: Connecting to MQ Exchange <piper.events.in>...
+[Sat May 02 2015 21:01:03 GMT+0100 (WAT)] INFO CHITCHAT Handler: Connecting to MQ Exchange <piper.events.out>...
+[Sat May 02 2015 21:01:03 GMT+0100 (WAT)] INFO SALES Handler: Connecting to MQ Exchange <piper.events.out>...
+[Sat May 02 2015 21:01:03 GMT+0100 (WAT)] INFO UBER Handler: Connecting to MQ Exchange <piper.events.out>...
+[Sat May 02 2015 21:01:04 GMT+0100 (WAT)] INFO Piper server listening on port 3000 in development mode
+[Sat May 02 2015 21:01:04 GMT+0100 (WAT)] INFO Successfully connected to: mongodb://localhost/piper
+[Sat May 02 2015 21:01:04 GMT+0100 (WAT)] INFO Updating registry for client mobilizr...
+[Sat May 02 2015 21:01:04 GMT+0100 (WAT)] INFO Updating registry for client c2gstudio...
+[Sat May 02 2015 21:01:04 GMT+0100 (WAT)] INFO Registered connection for client: mobilizr
+[Sat May 02 2015 21:01:04 GMT+0100 (WAT)] INFO Registered connection for client: c2gstudio
+[Sat May 02 2015 21:01:04 GMT+0100 (WAT)] INFO CHITCHAT Handler <piper.events.out>: Binding to mobilizr.chitchat...
+[Sat May 02 2015 21:01:04 GMT+0100 (WAT)] INFO CHITCHAT Handler <piper.events.out>: Binding to c2gstudio.chitchat...
+[Sat May 02 2015 21:01:04 GMT+0100 (WAT)] INFO Piper Controller: MQ Exchange <piper.events.in> connected
+[Sat May 02 2015 21:01:04 GMT+0100 (WAT)] INFO rides.*: <piper.events.out> connected
+[Sat May 02 2015 21:01:04 GMT+0100 (WAT)] INFO uber.routes: <piper.events.out> connected
+[Sat May 02 2015 21:01:07 GMT+0100 (WAT)] INFO C2G STUDIO: Connection established...listening for messages
+[Sat May 02 2015 21:01:07 GMT+0100 (WAT)] INFO Welcome to Slack. You are @blonker of c2gstudio
+[Sat May 02 2015 21:01:07 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Opened
+[Sat May 02 2015 21:01:07 GMT+0100 (WAT)] INFO MOBILIZR: Connection established...listening for messages
+[Sat May 02 2015 21:01:07 GMT+0100 (WAT)] INFO Welcome to Slack. You are @blanka of Mobilizr
+[Sat May 02 2015 21:01:07 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Opened

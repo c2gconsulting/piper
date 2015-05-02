@@ -116,8 +116,18 @@ function onProcessorEvent(id, user, client, body) {
 								//  - 409
 								logger.error('Ride Request Error: %s', JSON.stringify(error));
 								switch (error.statusCode) {
+									case 401:
+										if (error.error.code === 'unauthorized') {
+											cacheRequestData(id, user, client, body); // restart after auth
+											cache.hdel(emailCacheKey, 'access_token');
+											requestAuth(user.email);
+										} else {
+											var ebody = { header: 'request_error', status: 'other_error' };
+											push(user.email, ebody);
+										}
+										
+										break;
 									case 422:
-										//
 										var ebody = { header: 'request_error', status: 'other_error' };
 										push(user.email, ebody);
 										break;
@@ -151,8 +161,8 @@ function onProcessorEvent(id, user, client, body) {
 									cache.hgetall(emailCacheKey).then(function(userData) {
 										if (userData && userData.request_data) {
 											var reqData = JSON.parse(userData.request_data);
-											var clat = reqData.startLat, 
-												clng = reqData.startLong;
+											var clat = reqData.body.startLat, 
+												clng = reqData.body.startLong;
 											uber.getDriverMap(clat, clng, response.location.latitude, response.location.longitude
 												).then(function(link) {
 													rbody.href = link;
@@ -192,8 +202,8 @@ function onProcessorEvent(id, user, client, body) {
 										if (userData && userData.request_data) {
 											var reqData = JSON.parse(userData.request_data);
 											logger.debug('reqData: %s', JSON.stringify(reqData));
-											var clat = reqData.startLat, 
-												clng = reqData.startLong;
+											var clat = reqData.body.startLat, 
+												clng = reqData.body.startLong;
 											uber.getDriverMap(clat, clng, response.location.latitude, response.location.longitude
 												).then(function(link) {
 													rbody.href = link;

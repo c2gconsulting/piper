@@ -636,18 +636,24 @@ function Rides(data) {
 							return false;
 						}
 
+						logger.debug('@@@@ CONFIRM REQUEST: 1');
 						// get ETA
 						if (data.productId) {
+							logger.debug('@@@@ CONFIRM REQUEST: 2');
 							return getTimeEstimate(user.name, clientHandle, data).then(function (etas) {
+								logger.debug('@@@@ CONFIRM REQUEST: 3');
 								if (etas) {
+									logger.debug('@@@@ CONFIRM REQUEST: 4');
 									jEtas = JSON.parse(etas);
-									if (jEtas.times.length > 0) {
+									if (jEtas.times && jEtas.times.length > 0) {
+										logger.debug('@@@@ CONFIRM REQUEST: 5');
 										return getPriceEstimate(user.name, clientHandle, data).then(function (prices) {
+											logger.debug('@@@@ CONFIRM REQUEST: 6');
 											jPrices = JSON.parse(prices);
 											
 											// price text
 											var priceText = '';
-											if (jPrices.prices.length > 0) priceText = 'for ' + jPrices.prices[0].estimate;
+											if (jPrices.prices && jPrices.prices.length > 0) priceText = 'for ' + jPrices.prices[0].estimate;
 											
 											// eta text
 											var etaSecs = jEtas.times[0].estimate;
@@ -683,7 +689,10 @@ function Rides(data) {
 									}
 									return false;
 								} else {
-									return true;
+									// no available rides
+									var responseText = getResponse(data, 'NO_RIDE_ETA');
+									me.emit('message', Rides.MODULE, user.name, clientHandle, responseText, errorContext['NO_RIDE_ETA']);
+									return false;
 								}
 							});
 						} else {
