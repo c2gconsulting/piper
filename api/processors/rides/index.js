@@ -528,6 +528,7 @@ function Rides(data) {
 							}
 							if ((state === 'RIDES_confirm_request' && i.yes_no === 'no') || d.confirmRequest === false || d.confirmRequest === 'false')  {
 								d.confirmRequest = false;
+								data.errConfirmRequest = "CONFIRM_REQUEST_CANCEL";
 								return false;
 							}
 							return false;
@@ -627,6 +628,14 @@ function Rides(data) {
 							data.errConfirmRequest = 'NO_CONFIRM_REQUEST'; 
 						}
 						
+						if (data.errConfirmRequest === 'CONFIRM_REQUEST_CANCEL') {
+							var responseText = getResponse(data, data.errConfirmRequest);
+							responseText = responseText.replace("@username", user.name);
+							me.emit('message', Rides.MODULE, user.name, clientHandle, responseText, errorContext[data.errConfirmRequest]);
+							delete data.errConfirmRequest;
+							return false;
+						}
+
 						// get ETA
 						if (data.productId) {
 							return getTimeEstimate(user.name, clientHandle, data).then(function (etas) {
@@ -1204,19 +1213,19 @@ Rides.prototype.processRequestUpdate = function(username, clientHandle, body) {
 			if (body.href) me.emit('message', Rides.MODULE, username, clientHandle, body.href);
 			break;
 		case 'no_drivers_available':
-			me.emit('message', Rides.MODULE, username, clientHandle, "Sorry, no drivers available");
+			me.emit('message', Rides.MODULE, username, clientHandle, "Sorry, no drivers available", " ");
 			me.cancelRequest(username, clientHandle, {});
 			deleteActiveRequest(username, clientHandle);
 			break;
 		case 'in_progress':
 			break;
 		case 'driver_canceled':
-			me.emit('message', Rides.MODULE, username, clientHandle, "Sorry, the driver canceled...");
+			me.emit('message', Rides.MODULE, username, clientHandle, "Sorry, the driver canceled...", " ");
 			me.cancelRequest(username, clientHandle, {});
 			deleteActiveRequest(username, clientHandle);
 			break;
 		case 'rider_canceled':
-			me.emit('message', Rides.MODULE, username, clientHandle, "Your ride has been canceled");
+			me.emit('message', Rides.MODULE, username, clientHandle, "Your ride has been canceled", " ");
 			me.cancelRequest(username, clientHandle, {});
 			deleteActiveRequest(username, clientHandle);
 			break;
@@ -1231,19 +1240,19 @@ Rides.prototype.processRequestError = function(username, clientHandle, body) {
 	var me = this;
 	switch (body.status) {
 		case 'no_drivers_available':
-			me.emit('message', Rides.MODULE, username, clientHandle, "Sorry, no drivers available");
+			me.emit('message', Rides.MODULE, username, clientHandle, "Sorry, no drivers available", " ");
 			me.cancelRequest(username, clientHandle, {});
 			deleteActiveRequest(username, clientHandle);
 			break;
 		case 'in_progress':
 			break;
 		case 'driver_canceled':
-			me.emit('message', Rides.MODULE, username, clientHandle, "Sorry, the driver canceled...");
+			me.emit('message', Rides.MODULE, username, clientHandle, "Sorry, the driver canceled...", " ");
 			me.cancelRequest(username, clientHandle, {});
 			deleteActiveRequest(username, clientHandle);
 			break;
 		case 'other_error':
-			me.emit('message', Rides.MODULE, username, clientHandle, "Sorry @" + username + " can't find you a ride at this time. Try again later");
+			me.emit('message', Rides.MODULE, username, clientHandle, "Sorry @" + username + " can't find you a ride at this time. Try again later", " ");
 			me.cancelRequest(username, clientHandle, {});
 			deleteActiveRequest(username, clientHandle);
 			break;
