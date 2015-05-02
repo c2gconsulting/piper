@@ -1164,6 +1164,9 @@ Rides.prototype.in = function(msgid, username, clientHandle, body) {
 			case 'request_response':
 				me.processRequestUpdate(username, clientHandle, body);	
 				break;	
+			case 'request_error':
+				me.processRequestError(username, clientHandle, body);	
+				break;	
 			case 'request_details':
 				me.processRequestUpdate(username, clientHandle, body);	
 				break;	
@@ -1214,6 +1217,33 @@ Rides.prototype.processRequestUpdate = function(username, clientHandle, body) {
 			break;
 		case 'rider_canceled':
 			me.emit('message', Rides.MODULE, username, clientHandle, "Your ride has been canceled");
+			me.cancelRequest(username, clientHandle, {});
+			deleteActiveRequest(username, clientHandle);
+			break;
+		case 'completed':
+			me.cancelRequest(username, clientHandle, {});
+			deleteActiveRequest(username, clientHandle);
+			break;
+	}
+}
+
+Rides.prototype.processRequestError = function(username, clientHandle, body) {
+	var me = this;
+	switch (body.status) {
+		case 'no_drivers_available':
+			me.emit('message', Rides.MODULE, username, clientHandle, "Sorry, no drivers available");
+			me.cancelRequest(username, clientHandle, {});
+			deleteActiveRequest(username, clientHandle);
+			break;
+		case 'in_progress':
+			break;
+		case 'driver_canceled':
+			me.emit('message', Rides.MODULE, username, clientHandle, "Sorry, the driver canceled...");
+			me.cancelRequest(username, clientHandle, {});
+			deleteActiveRequest(username, clientHandle);
+			break;
+		case 'other_error':
+			me.emit('message', Rides.MODULE, username, clientHandle, "Sorry @" + username + " can't find you a ride at this time. Try again later");
 			me.cancelRequest(username, clientHandle, {});
 			deleteActiveRequest(username, clientHandle);
 			break;

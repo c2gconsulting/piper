@@ -115,6 +115,20 @@ function onProcessorEvent(id, user, client, body) {
 								//  - 422
 								//  - 409
 								logger.error('Ride Request Error: %s', JSON.stringify(error));
+								switch (error.statusCode) {
+									case 422:
+										//
+										var ebody = { header: 'request_error', status: 'other_error' };
+										push(user.email, ebody);
+										break;
+									case 409:
+										var ebody = { header: 'request_error', status: error.error.errors[0].code };
+										push(user.email, ebody);
+										break;
+									default:
+										var ebody = { header: 'request_error', status: 'other_error' };
+										push(user.email, ebody);
+								}
 							});
 					} else {
 						// cache request till authorized
