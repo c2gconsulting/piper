@@ -528,7 +528,7 @@ function Rides(data) {
 							}
 							if ((state === 'RIDES_confirm_request' && i.yes_no === 'no') || d.confirmRequest === false || d.confirmRequest === 'false')  {
 								d.confirmRequest = false;
-								data.errConfirmRequest = "CONFIRM_REQUEST_CANCEL";
+								d.errConfirmRequest = "CONFIRM_REQUEST_CANCEL";
 								return false;
 							}
 							return false;
