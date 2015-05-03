@@ -551,6 +551,9 @@ function checkSurge(email, body) {
 					} else {
 						return false
 					}
+				}).catch(function(error){
+					logger.error('requestEstimate->ERROR: %s', JSON.stringify(error));
+					return false;
 				});
 		});
 	}
