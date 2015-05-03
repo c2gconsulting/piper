@@ -125,11 +125,13 @@ function onProcessorEvent(id, user, client, body) {
 													requestAuth(user.email);
 												} else {
 													var ebody = { header: 'request_error', status: 'create_error' };
+													if (error.error.errors) ebody.title = error.error.errors[0].title;
 													push(user.email, ebody);
 												}
 												break;
 											case 422:
 												var ebody = { header: 'request_error', status: 'create_error' };
+												if (error.error.errors) ebody.title = error.error.errors[0].title;
 												push(user.email, ebody);
 												break;
 											case 409:
@@ -138,11 +140,13 @@ function onProcessorEvent(id, user, client, body) {
 													requestSurgeConfirmation(user.email, error.error.meta.surge_confirmation.surge_confirmation_id, error.error.meta.surge_confirmation.href);
 												} else {
 													var ebody = { header: 'request_error', status: error.error.errors[0].code };
+													if (error.error.errors) ebody.title = error.error.errors[0].title;
 													push(user.email, ebody);
 												}
 												break;
 											default:
 												var ebody = { header: 'request_error', status: 'create_error' };
+												if (error.error.errors) ebody.title = error.error.errors[0].title;
 												push(user.email, ebody);
 										}
 									});
@@ -201,20 +205,24 @@ function onProcessorEvent(id, user, client, body) {
 											requestAuth(user.email);
 										} else {
 											var ebody = { header: 'request_error', status: 'retrieve_error' };
+											if (error.error.errors) ebody.title = error.error.errors[0].title;
 											push(user.email, ebody);
 										}
 										
 										break;
 									case 422:
 										var ebody = { header: 'request_error', status: 'retrieve_error' };
+										if (error.error.errors) ebody.title = error.error.errors[0].title;
 										push(user.email, ebody);
 										break;
 									case 409:
 										var ebody = { header: 'request_error', status: error.error.errors[0].code };
+										if (error.error.errors) ebody.title = error.error.errors[0].title;
 										push(user.email, ebody);
 										break;
 									default:
 										var ebody = { header: 'request_error', status: 'retrieve_error' };
+										if (error.error.errors) ebody.title = error.error.errors[0].title;
 										push(user.email, ebody);
 								}
 							});
@@ -263,20 +271,24 @@ function onProcessorEvent(id, user, client, body) {
 											requestAuth(user.email);
 										} else {
 											var ebody = { header: 'request_error', status: 'hook_retrieve_error' };
+											if (error.error.errors) ebody.title = error.error.errors[0].title;
 											push(user.email, ebody);
 										}
 										
 										break;
 									case 422:
 										var ebody = { header: 'request_error', status: 'hook_retrieve_error' };
+										if (error.error.errors) ebody.title = error.error.errors[0].title;
 										push(user.email, ebody);
 										break;
 									case 409:
 										var ebody = { header: 'request_error', status: error.error.errors[0].code };
+										if (error.error.errors) ebody.title = error.error.errors[0].title;
 										push(user.email, ebody);
 										break;
 									default:
 										var ebody = { header: 'request_error', status: 'hook_retrieve_error' };
+										if (error.error.errors) ebody.title = error.error.errors[0].title;
 										push(user.email, ebody);
 								}
 							});
@@ -313,20 +325,24 @@ function onProcessorEvent(id, user, client, body) {
 											requestAuth(user.email);
 										} else {
 											var ebody = { header: 'request_error', status: 'retrieve_error' };
+											if (error.error.errors) ebody.title = error.error.errors[0].title;
 											push(user.email, ebody);
 										}
 										
 										break;
 									case 422:
 										var ebody = { header: 'request_error', status: 'retrieve_error' };
+										if (error.error.errors) ebody.title = error.error.errors[0].title;
 										push(user.email, ebody);
 										break;
 									case 409:
 										var ebody = { header: 'request_error', status: error.error.errors[0].code };
+										if (error.error.errors) ebody.title = error.error.errors[0].title;
 										push(user.email, ebody);
 										break;
 									default:
 										var ebody = { header: 'request_error', status: 'retrieve_error' };
+										if (error.error.errors) ebody.title = error.error.errors[0].title;
 										push(user.email, ebody);
 								}
 							});
@@ -353,20 +369,24 @@ function onProcessorEvent(id, user, client, body) {
 											requestAuth(user.email);
 										} else {
 											var ebody = { header: 'request_error', status: 'retrieve_error' };
+											if (error.error.errors) ebody.title = error.error.errors[0].title;
 											push(user.email, ebody);
 										}
 										
 										break;
 									case 422:
 										var ebody = { header: 'request_error', status: 'retrieve_error' };
+										if (error.error.errors) ebody.title = error.error.errors[0].title;
 										push(user.email, ebody);
 										break;
 									case 409:
 										var ebody = { header: 'request_error', status: error.error.errors[0].code };
+										if (error.error.errors) ebody.title = error.error.errors[0].title;
 										push(user.email, ebody);
 										break;
 									default:
 										var ebody = { header: 'request_error', status: 'retrieve_error' };
+										if (error.error.errors) ebody.title = error.error.errors[0].title;
 										push(user.email, ebody);
 								}
 							});
@@ -391,20 +411,24 @@ function onProcessorEvent(id, user, client, body) {
 											requestAuth(user.email);
 										} else {
 											var ebody = { header: 'request_error', status: 'delete_error' };
+											if (error.error.errors) ebody.title = error.error.errors[0].title;
 											push(user.email, ebody);
 										}
 										
 										break;
 									case 422:
 										var ebody = { header: 'request_error', status: 'delete_error' };
+										if (error.error.errors) ebody.title = error.error.errors[0].title;
 										push(user.email, ebody);
 										break;
 									case 409:
 										var ebody = { header: 'request_error', status: error.error.errors[0].code };
+										if (error.error.errors) ebody.title = error.error.errors[0].title;
 										push(user.email, ebody);
 										break;
 									default:
 										var ebody = { header: 'request_error', status: 'delete_error' };
+										if (error.error.errors) ebody.title = error.error.errors[0].title;
 										push(user.email, ebody);
 								}
 							});

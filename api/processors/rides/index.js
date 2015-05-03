@@ -1248,12 +1248,14 @@ Rides.prototype.processRequestError = function(username, clientHandle, body) {
 			deleteActiveRequest(username, clientHandle);
 			break;
 		case 'create_error':
-			me.emit('message', Rides.MODULE, username, clientHandle, "Sorry @" + username + " can't find you a ride at this time. Try again later", " ");
+			var errRunnerMessage = body.title != false ? body.title : 'Try again later';
+			me.emit('message', Rides.MODULE, username, clientHandle, "Sorry @" + username + " can't find you a ride at this time. " + errRunnerMessage, " ");
 			me.cancelRequest(username, clientHandle, {});
 			deleteActiveRequest(username, clientHandle);
 			break;
 		case 'retrieve_error':
-			me.emit('message', Rides.MODULE, username, clientHandle, "Sorry @" + username + " can't get the info you need at this time. Try again later", " ");
+			var errRunnerMessage = body.title != false ? body.title : 'Try again later';
+			me.emit('message', Rides.MODULE, username, clientHandle, "Sorry @" + username + " can't get the info you need at this time. " + errRunnerMessage, " ");
 			break;
 	}
 }
