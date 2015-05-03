@@ -6274,3 +6274,206 @@
 [Sun May 03 2015 15:54:54 GMT+0100 (WAT)] DEBUG module: RIDES, user: kachi, client: mobilizr, message: I still need your location. Click here... http://bit.ly/1I4qZAT
 [Sun May 03 2015 15:54:54 GMT+0100 (WAT)] INFO @blanka responded with "I still need your location. Click here... http://bit.ly/1I4qZAT"
 [Sun May 03 2015 15:54:54 GMT+0100 (WAT)] DEBUG Message: I still need your location. Click here... http://bit.ly/1I4qZAT sent to user kachi
+[Sun May 03 2015 16:00:37 GMT+0100 (WAT)] INFO Received: message kachi @kachi 1430665237.000006 "i need a cab"
+[Sun May 03 2015 16:00:37 GMT+0100 (WAT)] DEBUG IGNORE FLAG: false
+[Sun May 03 2015 16:00:37 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Message Received
+[Sun May 03 2015 16:00:37 GMT+0100 (WAT)] DEBUG Userkey: api-server:kachi@mobilizr:context
+[Sun May 03 2015 16:00:37 GMT+0100 (WAT)] DEBUG State for api-server:kachi@mobilizr:context: RIDES_get_start_location
+[Sun May 03 2015 16:00:37 GMT+0100 (WAT)] DEBUG 2015-05-03T15:00:37.000Z
+[Sun May 03 2015 16:00:39 GMT+0100 (WAT)] DEBUG IntentBody: {"msg_id":"aa27e11b-e12f-47ee-a500-8a4ed72061f1","_text":"i need a cab","outcomes":[{"_text":"i need a cab","intent":"rides_request_trip","entities":{},"confidence":1}],"context":{"state":"RIDES_get_start_location","reference_time":"2015-05-03T15:00:37.000Z"}}
+[Sun May 03 2015 16:00:39 GMT+0100 (WAT)] DEBUG Intent: rides_request_trip
+[Sun May 03 2015 16:00:39 GMT+0100 (WAT)] DEBUG Confidence: 1
+[Sun May 03 2015 16:00:39 GMT+0100 (WAT)] DEBUG New context for api-server:kachi@mobilizr:context: {"state":"RIDES"}
+[Sun May 03 2015 16:00:39 GMT+0100 (WAT)] DEBUG Entities: {}
+[Sun May 03 2015 16:00:39 GMT+0100 (WAT)] DEBUG Validation Predicate: 6
+[Sun May 03 2015 16:00:39 GMT+0100 (WAT)] DEBUG confirmNeed: 0 -> false
+[Sun May 03 2015 16:00:39 GMT+0100 (WAT)] DEBUG confirmNeed: 1 -> true
+[Sun May 03 2015 16:00:39 GMT+0100 (WAT)] DEBUG Validation Predicate: 5
+[Sun May 03 2015 16:00:39 GMT+0100 (WAT)] DEBUG startLong: 0 -> false
+[Sun May 03 2015 16:00:39 GMT+0100 (WAT)] DEBUG startLong: 1 -> false
+[Sun May 03 2015 16:00:39 GMT+0100 (WAT)] DEBUG startLong: 2 -> false
+[Sun May 03 2015 16:00:39 GMT+0100 (WAT)] DEBUG startLong: 3 -> false
+[Sun May 03 2015 16:00:39 GMT+0100 (WAT)] DEBUG Validation Predicate: 4
+[Sun May 03 2015 16:00:39 GMT+0100 (WAT)] DEBUG productId: 0 -> false
+[Sun May 03 2015 16:00:39 GMT+0100 (WAT)] DEBUG productId: 1 -> false
+[Sun May 03 2015 16:00:39 GMT+0100 (WAT)] DEBUG productId: 2 -> false
+[Sun May 03 2015 16:00:39 GMT+0100 (WAT)] DEBUG productId: 3 -> false
+[Sun May 03 2015 16:00:39 GMT+0100 (WAT)] DEBUG productId: 4 -> false
+[Sun May 03 2015 16:00:39 GMT+0100 (WAT)] DEBUG productId: 5 -> false
+[Sun May 03 2015 16:00:39 GMT+0100 (WAT)] DEBUG productId: 6 -> false
+[Sun May 03 2015 16:00:39 GMT+0100 (WAT)] DEBUG Validation Predicate: 3
+[Sun May 03 2015 16:00:39 GMT+0100 (WAT)] DEBUG endLong: 0 -> false
+[Sun May 03 2015 16:00:39 GMT+0100 (WAT)] DEBUG endLong: 1 -> false
+[Sun May 03 2015 16:00:39 GMT+0100 (WAT)] DEBUG endLong: 2 -> false
+[Sun May 03 2015 16:00:39 GMT+0100 (WAT)] DEBUG Validation Predicate: 2
+[Sun May 03 2015 16:00:39 GMT+0100 (WAT)] DEBUG departureTime: 0 -> false
+[Sun May 03 2015 16:00:39 GMT+0100 (WAT)] DEBUG departureTime: 1 -> true
+[Sun May 03 2015 16:00:39 GMT+0100 (WAT)] DEBUG Validation Predicate: 1
+[Sun May 03 2015 16:00:39 GMT+0100 (WAT)] DEBUG confirmRequest: 0 -> false
+[Sun May 03 2015 16:00:39 GMT+0100 (WAT)] DEBUG confirmRequest: 1 -> false
+[Sun May 03 2015 16:00:39 GMT+0100 (WAT)] DEBUG Validation Predicate: 0
+[Sun May 03 2015 16:00:39 GMT+0100 (WAT)] DEBUG Datakey: confirmNeed, Validity Check: true
+[Sun May 03 2015 16:00:39 GMT+0100 (WAT)] DEBUG Datakey: startLong, Validity Check: false
+[Sun May 03 2015 16:00:39 GMT+0100 (WAT)] DEBUG Datakey: productId, Validity Check: false
+[Sun May 03 2015 16:00:39 GMT+0100 (WAT)] DEBUG Datakey: endLong, Validity Check: false
+[Sun May 03 2015 16:00:39 GMT+0100 (WAT)] DEBUG Datakey: departureTime, Validity Check: true
+[Sun May 03 2015 16:00:39 GMT+0100 (WAT)] DEBUG Datakey: confirmRequest, Validity Check: false
+[Sun May 03 2015 16:00:39 GMT+0100 (WAT)] DEBUG Missing Keys for rides_book_trip: ["startLong","productId","endLong","confirmRequest"]
+[Sun May 03 2015 16:00:39 GMT+0100 (WAT)] DEBUG Response Predicate: 4
+[Sun May 03 2015 16:00:39 GMT+0100 (WAT)] DEBUG Datahash from unfold: {"handlerTodo":"rides_book_trip","intent":"rides_request_trip","confirmNeed":true,"errStartLocation":"NO_START_LOCATION","lvlQueries":{"NO_START_LOCATION":2}}
+[Sun May 03 2015 16:00:40 GMT+0100 (WAT)] DEBUG Response Predicate: 3
+[Sun May 03 2015 16:00:40 GMT+0100 (WAT)] DEBUG Datahash: {"handlerTodo":"rides_book_trip","intent":"rides_request_trip","confirmNeed":true,"errStartLocation":"NO_START_LOCATION","lvlQueries":{"NO_START_LOCATION":3}}
+[Sun May 03 2015 16:00:40 GMT+0100 (WAT)] DEBUG Body: {"msg_id":"aa27e11b-e12f-47ee-a500-8a4ed72061f1","_text":"i need a cab","outcomes":[{"_text":"i need a cab","intent":"rides_request_trip","entities":{},"confidence":1}],"context":{"state":"RIDES_get_start_location","reference_time":"2015-05-03T15:00:37.000Z"},"user":{"slackId":"U02RN8W1T","name":"kachi","email":"kachi@mobilizr.net","first_name":"http://d1a3f4spazzrp4.cloudfront.net/car-types/mono/mono-black.png","last_name":"https://login.uber.com/oauth/authorize?response_type=code&client_id=wTO4c5RIwLi_gjwN1tw79JY4_1W2Im1w","full_name":"http://d1a3f4spazzrp4.cloudfront.net/car-types/mono/mono-black.png https://login.uber.com/oauth/authorize?response_type=code&client_id=wTO4c5RIwLi_gjwN1tw79JY4_1W2Im1w","is_admin":true,"avatar":"https://secure.gravatar.com/avatar/441587d4f0a03b4ce3aca5a1af3577c1.jpg?s=48&d=https%3A%2F%2Fslack.global.ssl.fastly.net%2F3654%2Fimg%2Favatars%2Fava_0012-48.png"},"clientHandle":"mobilizr"}
+[Sun May 03 2015 16:00:40 GMT+0100 (WAT)] DEBUG Indata: {"hasActiveRequest":{"_handler":{"handler":{"value":false},"resolved":true}}}
+[Sun May 03 2015 16:00:40 GMT+0100 (WAT)] DEBUG rides:kachi@mobilizr
+[Sun May 03 2015 16:00:40 GMT+0100 (WAT)] DEBUG Datahash.lvlQueries: {"NO_START_LOCATION":3}
+[Sun May 03 2015 16:00:40 GMT+0100 (WAT)] DEBUG module: RIDES, user: kachi, client: mobilizr, message: I can't send your ride if I don't know where to send it. The link again... http://bit.ly/1KExhqE
+[Sun May 03 2015 16:00:40 GMT+0100 (WAT)] INFO @blanka responded with "I can't send your ride if I don't know where to send it. The link again... http://bit.ly/1KExhqE"
+[Sun May 03 2015 16:00:40 GMT+0100 (WAT)] DEBUG Message: I can't send your ride if I don't know where to send it. The link again... http://bit.ly/1KExhqE sent to user kachi
+[Sun May 03 2015 16:20:43 GMT+0100 (WAT)] INFO Piper Controller: Connecting to MQ Exchange <piper.events.in>...
+[Sun May 03 2015 16:20:44 GMT+0100 (WAT)] INFO CHITCHAT Handler: Connecting to MQ Exchange <piper.events.out>...
+[Sun May 03 2015 16:20:44 GMT+0100 (WAT)] INFO SALES Handler: Connecting to MQ Exchange <piper.events.out>...
+[Sun May 03 2015 16:20:44 GMT+0100 (WAT)] INFO UBER Handler: Connecting to MQ Exchange <piper.events.out>...
+[Sun May 03 2015 16:20:45 GMT+0100 (WAT)] INFO Piper server listening on port 3000 in development mode
+[Sun May 03 2015 16:20:45 GMT+0100 (WAT)] INFO Successfully connected to: mongodb://localhost/piper
+[Sun May 03 2015 16:20:45 GMT+0100 (WAT)] INFO Updating registry for client mobilizr...
+[Sun May 03 2015 16:20:45 GMT+0100 (WAT)] INFO Updating registry for client c2gstudio...
+[Sun May 03 2015 16:20:45 GMT+0100 (WAT)] INFO Registered connection for client: mobilizr
+[Sun May 03 2015 16:20:45 GMT+0100 (WAT)] INFO Registered connection for client: c2gstudio
+[Sun May 03 2015 16:20:45 GMT+0100 (WAT)] INFO CHITCHAT Handler <piper.events.out>: Binding to mobilizr.chitchat...
+[Sun May 03 2015 16:20:45 GMT+0100 (WAT)] INFO CHITCHAT Handler <piper.events.out>: Binding to c2gstudio.chitchat...
+[Sun May 03 2015 16:20:45 GMT+0100 (WAT)] INFO rides.*: <piper.events.out> connected
+[Sun May 03 2015 16:20:45 GMT+0100 (WAT)] INFO Piper Controller: MQ Exchange <piper.events.in> connected
+[Sun May 03 2015 16:20:45 GMT+0100 (WAT)] INFO uber.routes: <piper.events.out> connected
+[Sun May 03 2015 16:20:49 GMT+0100 (WAT)] INFO MOBILIZR: Connection established...listening for messages
+[Sun May 03 2015 16:20:49 GMT+0100 (WAT)] INFO Welcome to Slack. You are @blanka of Mobilizr
+[Sun May 03 2015 16:20:49 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Opened
+[Sun May 03 2015 16:20:49 GMT+0100 (WAT)] INFO C2G STUDIO: Connection established...listening for messages
+[Sun May 03 2015 16:20:49 GMT+0100 (WAT)] INFO Welcome to Slack. You are @blonker of c2gstudio
+[Sun May 03 2015 16:20:49 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Opened
+[Sun May 03 2015 16:20:57 GMT+0100 (WAT)] INFO Piper Controller: Connecting to MQ Exchange <piper.events.in>...
+[Sun May 03 2015 16:20:57 GMT+0100 (WAT)] INFO CHITCHAT Handler: Connecting to MQ Exchange <piper.events.out>...
+[Sun May 03 2015 16:20:57 GMT+0100 (WAT)] INFO SALES Handler: Connecting to MQ Exchange <piper.events.out>...
+[Sun May 03 2015 16:20:58 GMT+0100 (WAT)] INFO UBER Handler: Connecting to MQ Exchange <piper.events.out>...
+[Sun May 03 2015 16:20:58 GMT+0100 (WAT)] INFO Piper server listening on port 3000 in development mode
+[Sun May 03 2015 16:20:58 GMT+0100 (WAT)] INFO Successfully connected to: mongodb://localhost/piper
+[Sun May 03 2015 16:20:58 GMT+0100 (WAT)] INFO Updating registry for client mobilizr...
+[Sun May 03 2015 16:20:58 GMT+0100 (WAT)] INFO Updating registry for client c2gstudio...
+[Sun May 03 2015 16:20:58 GMT+0100 (WAT)] INFO Registered connection for client: mobilizr
+[Sun May 03 2015 16:20:58 GMT+0100 (WAT)] INFO Registered connection for client: c2gstudio
+[Sun May 03 2015 16:20:58 GMT+0100 (WAT)] INFO CHITCHAT Handler <piper.events.out>: Binding to mobilizr.chitchat...
+[Sun May 03 2015 16:20:58 GMT+0100 (WAT)] INFO CHITCHAT Handler <piper.events.out>: Binding to c2gstudio.chitchat...
+[Sun May 03 2015 16:20:58 GMT+0100 (WAT)] INFO Piper Controller: MQ Exchange <piper.events.in> connected
+[Sun May 03 2015 16:20:58 GMT+0100 (WAT)] INFO rides.*: <piper.events.out> connected
+[Sun May 03 2015 16:20:58 GMT+0100 (WAT)] INFO uber.routes: <piper.events.out> connected
+[Sun May 03 2015 16:21:01 GMT+0100 (WAT)] INFO MOBILIZR: Connection established...listening for messages
+[Sun May 03 2015 16:21:01 GMT+0100 (WAT)] INFO Welcome to Slack. You are @blanka of Mobilizr
+[Sun May 03 2015 16:21:01 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Opened
+[Sun May 03 2015 16:21:01 GMT+0100 (WAT)] INFO C2G STUDIO: Connection established...listening for messages
+[Sun May 03 2015 16:21:01 GMT+0100 (WAT)] INFO Welcome to Slack. You are @blonker of c2gstudio
+[Sun May 03 2015 16:21:01 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Opened
+[Sun May 03 2015 16:21:42 GMT+0100 (WAT)] INFO Piper Controller: Connecting to MQ Exchange <piper.events.in>...
+[Sun May 03 2015 16:21:43 GMT+0100 (WAT)] INFO CHITCHAT Handler: Connecting to MQ Exchange <piper.events.out>...
+[Sun May 03 2015 16:21:43 GMT+0100 (WAT)] INFO SALES Handler: Connecting to MQ Exchange <piper.events.out>...
+[Sun May 03 2015 16:21:43 GMT+0100 (WAT)] INFO UBER Handler: Connecting to MQ Exchange <piper.events.out>...
+[Sun May 03 2015 16:21:44 GMT+0100 (WAT)] INFO Piper server listening on port 3000 in development mode
+[Sun May 03 2015 16:21:44 GMT+0100 (WAT)] INFO Successfully connected to: mongodb://localhost/piper
+[Sun May 03 2015 16:21:44 GMT+0100 (WAT)] INFO Updating registry for client mobilizr...
+[Sun May 03 2015 16:21:44 GMT+0100 (WAT)] INFO Updating registry for client c2gstudio...
+[Sun May 03 2015 16:21:44 GMT+0100 (WAT)] INFO Registered connection for client: mobilizr
+[Sun May 03 2015 16:21:44 GMT+0100 (WAT)] INFO Registered connection for client: c2gstudio
+[Sun May 03 2015 16:21:44 GMT+0100 (WAT)] INFO CHITCHAT Handler <piper.events.out>: Binding to mobilizr.chitchat...
+[Sun May 03 2015 16:21:44 GMT+0100 (WAT)] INFO CHITCHAT Handler <piper.events.out>: Binding to c2gstudio.chitchat...
+[Sun May 03 2015 16:21:44 GMT+0100 (WAT)] INFO Piper Controller: MQ Exchange <piper.events.in> connected
+[Sun May 03 2015 16:21:44 GMT+0100 (WAT)] INFO uber.routes: <piper.events.out> connected
+[Sun May 03 2015 16:21:44 GMT+0100 (WAT)] INFO rides.*: <piper.events.out> connected
+[Sun May 03 2015 16:21:47 GMT+0100 (WAT)] INFO C2G STUDIO: Connection established...listening for messages
+[Sun May 03 2015 16:21:47 GMT+0100 (WAT)] INFO Welcome to Slack. You are @blonker of c2gstudio
+[Sun May 03 2015 16:21:47 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Opened
+[Sun May 03 2015 16:21:47 GMT+0100 (WAT)] INFO MOBILIZR: Connection established...listening for messages
+[Sun May 03 2015 16:21:47 GMT+0100 (WAT)] INFO Welcome to Slack. You are @blanka of Mobilizr
+[Sun May 03 2015 16:21:47 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Opened
+[Sun May 03 2015 16:21:58 GMT+0100 (WAT)] INFO Piper Controller: Connecting to MQ Exchange <piper.events.in>...
+[Sun May 03 2015 16:21:59 GMT+0100 (WAT)] INFO CHITCHAT Handler: Connecting to MQ Exchange <piper.events.out>...
+[Sun May 03 2015 16:21:59 GMT+0100 (WAT)] INFO SALES Handler: Connecting to MQ Exchange <piper.events.out>...
+[Sun May 03 2015 16:21:59 GMT+0100 (WAT)] INFO UBER Handler: Connecting to MQ Exchange <piper.events.out>...
+[Sun May 03 2015 16:22:00 GMT+0100 (WAT)] INFO Piper server listening on port 3000 in development mode
+[Sun May 03 2015 16:22:00 GMT+0100 (WAT)] INFO Successfully connected to: mongodb://localhost/piper
+[Sun May 03 2015 16:22:00 GMT+0100 (WAT)] INFO Updating registry for client mobilizr...
+[Sun May 03 2015 16:22:00 GMT+0100 (WAT)] INFO Updating registry for client c2gstudio...
+[Sun May 03 2015 16:22:00 GMT+0100 (WAT)] INFO Registered connection for client: mobilizr
+[Sun May 03 2015 16:22:00 GMT+0100 (WAT)] INFO Registered connection for client: c2gstudio
+[Sun May 03 2015 16:22:00 GMT+0100 (WAT)] INFO CHITCHAT Handler <piper.events.out>: Binding to mobilizr.chitchat...
+[Sun May 03 2015 16:22:00 GMT+0100 (WAT)] INFO CHITCHAT Handler <piper.events.out>: Binding to c2gstudio.chitchat...
+[Sun May 03 2015 16:22:00 GMT+0100 (WAT)] INFO Piper Controller: MQ Exchange <piper.events.in> connected
+[Sun May 03 2015 16:22:00 GMT+0100 (WAT)] INFO uber.routes: <piper.events.out> connected
+[Sun May 03 2015 16:22:00 GMT+0100 (WAT)] INFO rides.*: <piper.events.out> connected
+[Sun May 03 2015 16:22:04 GMT+0100 (WAT)] INFO MOBILIZR: Connection established...listening for messages
+[Sun May 03 2015 16:22:04 GMT+0100 (WAT)] INFO Welcome to Slack. You are @blanka of Mobilizr
+[Sun May 03 2015 16:22:04 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Opened
+[Sun May 03 2015 16:22:04 GMT+0100 (WAT)] INFO C2G STUDIO: Connection established...listening for messages
+[Sun May 03 2015 16:22:04 GMT+0100 (WAT)] INFO Welcome to Slack. You are @blonker of c2gstudio
+[Sun May 03 2015 16:22:04 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Opened
+[Sun May 03 2015 16:23:00 GMT+0100 (WAT)] INFO Piper Controller: Connecting to MQ Exchange <piper.events.in>...
+[Sun May 03 2015 16:23:01 GMT+0100 (WAT)] INFO CHITCHAT Handler: Connecting to MQ Exchange <piper.events.out>...
+[Sun May 03 2015 16:23:01 GMT+0100 (WAT)] INFO SALES Handler: Connecting to MQ Exchange <piper.events.out>...
+[Sun May 03 2015 16:23:01 GMT+0100 (WAT)] INFO UBER Handler: Connecting to MQ Exchange <piper.events.out>...
+[Sun May 03 2015 16:23:02 GMT+0100 (WAT)] INFO Piper server listening on port 3000 in development mode
+[Sun May 03 2015 16:23:02 GMT+0100 (WAT)] INFO Successfully connected to: mongodb://localhost/piper
+[Sun May 03 2015 16:23:02 GMT+0100 (WAT)] INFO Updating registry for client mobilizr...
+[Sun May 03 2015 16:23:02 GMT+0100 (WAT)] INFO Updating registry for client c2gstudio...
+[Sun May 03 2015 16:23:02 GMT+0100 (WAT)] INFO Registered connection for client: mobilizr
+[Sun May 03 2015 16:23:02 GMT+0100 (WAT)] INFO Registered connection for client: c2gstudio
+[Sun May 03 2015 16:23:02 GMT+0100 (WAT)] INFO CHITCHAT Handler <piper.events.out>: Binding to mobilizr.chitchat...
+[Sun May 03 2015 16:23:02 GMT+0100 (WAT)] INFO CHITCHAT Handler <piper.events.out>: Binding to c2gstudio.chitchat...
+[Sun May 03 2015 16:23:02 GMT+0100 (WAT)] INFO Piper Controller: MQ Exchange <piper.events.in> connected
+[Sun May 03 2015 16:23:02 GMT+0100 (WAT)] INFO rides.*: <piper.events.out> connected
+[Sun May 03 2015 16:23:02 GMT+0100 (WAT)] INFO uber.routes: <piper.events.out> connected
+[Sun May 03 2015 16:23:06 GMT+0100 (WAT)] INFO C2G STUDIO: Connection established...listening for messages
+[Sun May 03 2015 16:23:06 GMT+0100 (WAT)] INFO Welcome to Slack. You are @blonker of c2gstudio
+[Sun May 03 2015 16:23:06 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Opened
+[Sun May 03 2015 16:23:06 GMT+0100 (WAT)] INFO MOBILIZR: Connection established...listening for messages
+[Sun May 03 2015 16:23:06 GMT+0100 (WAT)] INFO Welcome to Slack. You are @blanka of Mobilizr
+[Sun May 03 2015 16:23:06 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Opened
+[Sun May 03 2015 16:23:19 GMT+0100 (WAT)] INFO Piper Controller: Connecting to MQ Exchange <piper.events.in>...
+[Sun May 03 2015 16:23:19 GMT+0100 (WAT)] INFO CHITCHAT Handler: Connecting to MQ Exchange <piper.events.out>...
+[Sun May 03 2015 16:23:19 GMT+0100 (WAT)] INFO SALES Handler: Connecting to MQ Exchange <piper.events.out>...
+[Sun May 03 2015 16:23:19 GMT+0100 (WAT)] INFO UBER Handler: Connecting to MQ Exchange <piper.events.out>...
+[Sun May 03 2015 16:23:20 GMT+0100 (WAT)] INFO Piper server listening on port 3000 in development mode
+[Sun May 03 2015 16:23:20 GMT+0100 (WAT)] INFO Successfully connected to: mongodb://localhost/piper
+[Sun May 03 2015 16:23:20 GMT+0100 (WAT)] INFO Updating registry for client mobilizr...
+[Sun May 03 2015 16:23:20 GMT+0100 (WAT)] INFO Updating registry for client c2gstudio...
+[Sun May 03 2015 16:23:20 GMT+0100 (WAT)] INFO Registered connection for client: mobilizr
+[Sun May 03 2015 16:23:20 GMT+0100 (WAT)] INFO Registered connection for client: c2gstudio
+[Sun May 03 2015 16:23:20 GMT+0100 (WAT)] INFO CHITCHAT Handler <piper.events.out>: Binding to mobilizr.chitchat...
+[Sun May 03 2015 16:23:20 GMT+0100 (WAT)] INFO CHITCHAT Handler <piper.events.out>: Binding to c2gstudio.chitchat...
+[Sun May 03 2015 16:23:20 GMT+0100 (WAT)] INFO Piper Controller: MQ Exchange <piper.events.in> connected
+[Sun May 03 2015 16:23:20 GMT+0100 (WAT)] INFO rides.*: <piper.events.out> connected
+[Sun May 03 2015 16:23:20 GMT+0100 (WAT)] INFO uber.routes: <piper.events.out> connected
+[Sun May 03 2015 16:23:24 GMT+0100 (WAT)] INFO MOBILIZR: Connection established...listening for messages
+[Sun May 03 2015 16:23:24 GMT+0100 (WAT)] INFO Welcome to Slack. You are @blanka of Mobilizr
+[Sun May 03 2015 16:23:24 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Opened
+[Sun May 03 2015 16:23:24 GMT+0100 (WAT)] INFO C2G STUDIO: Connection established...listening for messages
+[Sun May 03 2015 16:23:24 GMT+0100 (WAT)] INFO Welcome to Slack. You are @blonker of c2gstudio
+[Sun May 03 2015 16:23:24 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Opened
+[Sun May 03 2015 16:23:51 GMT+0100 (WAT)] INFO Piper Controller: Connecting to MQ Exchange <piper.events.in>...
+[Sun May 03 2015 16:23:52 GMT+0100 (WAT)] INFO CHITCHAT Handler: Connecting to MQ Exchange <piper.events.out>...
+[Sun May 03 2015 16:23:52 GMT+0100 (WAT)] INFO SALES Handler: Connecting to MQ Exchange <piper.events.out>...
+[Sun May 03 2015 16:23:52 GMT+0100 (WAT)] INFO UBER Handler: Connecting to MQ Exchange <piper.events.out>...
+[Sun May 03 2015 16:23:53 GMT+0100 (WAT)] INFO Piper server listening on port 3000 in development mode
+[Sun May 03 2015 16:23:53 GMT+0100 (WAT)] INFO Successfully connected to: mongodb://localhost/piper
+[Sun May 03 2015 16:23:53 GMT+0100 (WAT)] INFO Updating registry for client mobilizr...
+[Sun May 03 2015 16:23:53 GMT+0100 (WAT)] INFO Updating registry for client c2gstudio...
+[Sun May 03 2015 16:23:53 GMT+0100 (WAT)] INFO Registered connection for client: mobilizr
+[Sun May 03 2015 16:23:53 GMT+0100 (WAT)] INFO Registered connection for client: c2gstudio
+[Sun May 03 2015 16:23:53 GMT+0100 (WAT)] INFO CHITCHAT Handler <piper.events.out>: Binding to mobilizr.chitchat...
+[Sun May 03 2015 16:23:53 GMT+0100 (WAT)] INFO CHITCHAT Handler <piper.events.out>: Binding to c2gstudio.chitchat...
+[Sun May 03 2015 16:23:53 GMT+0100 (WAT)] INFO Piper Controller: MQ Exchange <piper.events.in> connected
+[Sun May 03 2015 16:23:53 GMT+0100 (WAT)] INFO rides.*: <piper.events.out> connected
+[Sun May 03 2015 16:23:53 GMT+0100 (WAT)] INFO uber.routes: <piper.events.out> connected
+[Sun May 03 2015 16:23:56 GMT+0100 (WAT)] INFO MOBILIZR: Connection established...listening for messages
+[Sun May 03 2015 16:23:56 GMT+0100 (WAT)] INFO Welcome to Slack. You are @blanka of Mobilizr
+[Sun May 03 2015 16:23:56 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Opened
+[Sun May 03 2015 16:23:56 GMT+0100 (WAT)] INFO C2G STUDIO: Connection established...listening for messages
+[Sun May 03 2015 16:23:56 GMT+0100 (WAT)] INFO Welcome to Slack. You are @blonker of c2gstudio
+[Sun May 03 2015 16:23:56 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Opened
