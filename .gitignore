@@ -14,3 +14,4 @@ shared/tmp/piper1.log
 
 #Code settings files
 .settings/*
+typings

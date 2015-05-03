@@ -1,3 +1,4 @@
+/// <reference path="../typings/node/node.d.ts"/>
 var UberUser = require('../shared/models/UberUser');
 var mq = require('../shared/lib/mq');
 var logger = require('../shared/lib/log');
@@ -60,7 +61,7 @@ subProcessor.connect('piper.events.out', RIDES_DESC + '.*', function() {
 });
 
 subProcessor.on('data', function(data) {
-	jsonData = JSON.parse(data);
+	var jsonData = JSON.parse(data);
 	if (data) onProcessorEvent(jsonData.id, jsonData.user, jsonData.client, jsonData.body);
 });
 
@@ -69,7 +70,7 @@ subRoutes.connect('piper.events.out', 'uber.routes', function() {
 });
 
 subRoutes.on('data', function(data) {
-	jsonData = JSON.parse(data);
+	var jsonData = JSON.parse(data);
 	if (data) onRoutesEvent(jsonData);
 });
 

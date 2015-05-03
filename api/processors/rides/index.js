@@ -108,7 +108,7 @@ function Rides(data) {
 									// if keyword, check if preferences set
 									d.fromLocKeyword = lockeyword;
 									return User.getUserPreference(b.user.email, lockeyword + '_address').then (function(doc) {
-										logger.debug('Got to then of getUserPreference...')
+										logger.debug('Got to then of getUserPreference...');
 											
 										if (doc) {
 											i.from = doc.pValue;
@@ -126,7 +126,7 @@ function Rides(data) {
 											});
 										} else {
 											// does not exist in preferences
-											logger.debug('Got to setting of errLocation...')
+											logger.debug('Got to setting of errLocation...');
 											d.errStartLocation = 'NO_STARTLOC_PREFERENCE';
 											return false;
 										}
@@ -392,7 +392,7 @@ function Rides(data) {
 									// if keyword, check if preferences set
 									d.toLocKeyword = lockeyword;
 									return User.getUserPreference(b.user.email, lockeyword + '_address').then (function(doc) {
-										logger.debug('Got to then of getUserPreference...')
+										logger.debug('Got to then of getUserPreference...');
 											
 										if (doc) {
 											i.to = doc.pValue;
@@ -410,7 +410,7 @@ function Rides(data) {
 											});
 										} else {
 											// does not exist in preferences
-											logger.debug('Got to setting of errEndLocation...')
+											logger.debug('Got to setting of errEndLocation...');
 											d.errEndLocation = 'NO_ENDLOC_PREFERENCE';
 											return false;
 										}
@@ -530,7 +530,7 @@ function Rides(data) {
 						return false;
 					},	
 		'startLong' : function(user, clientHandle, data) {
-						if (data.errStartLocation === "CONFIRM_REQUEST_CANCEL") delete errStartLocation;
+						if (data.errStartLocation === "CONFIRM_REQUEST_CANCEL") delete data.errStartLocation;
 						if (data.cancelFlagSL === true) {
 							data.errStartLocation = "CONFIRM_REQUEST_CANCEL";
 							delete data.cancelFlagSL;
@@ -562,7 +562,7 @@ function Rides(data) {
 						return false;
 					},
 		'endLong': function(user, clientHandle, data) {
-						if (data.errEndLocation === "CONFIRM_REQUEST_CANCEL") delete errEndLocation;
+						if (data.errEndLocation === "CONFIRM_REQUEST_CANCEL") delete data.errEndLocation;
 						if (data.cancelFlagEL === true) {
 							data.errEndLocation = "CONFIRM_REQUEST_CANCEL";
 							delete data.cancelFlagEL;
@@ -603,10 +603,10 @@ function Rides(data) {
 						if (data.productId) {
 							return getTimeEstimate(user.name, clientHandle, data).then(function (etas) {
 								if (etas) {
-									jEtas = JSON.parse(etas);
+									var jEtas = JSON.parse(etas);
 									if (jEtas.times && jEtas.times.length > 0) {
 										return getPriceEstimate(user.name, clientHandle, data).then(function (prices) {
-											jPrices = JSON.parse(prices);
+											var jPrices = JSON.parse(prices);
 											
 											// price text
 											var priceText = '';
@@ -870,7 +870,7 @@ Rides.prototype.init = function(){
 	});
 	var me = this;
 	this.sub.on('data', function(data) {
-		jsonData = JSON.parse(data);
+		var jsonData = JSON.parse(data);
 		if (data) me.in(jsonData.id, jsonData.user, jsonData.client, jsonData.body);
 	});
 
@@ -908,8 +908,6 @@ Rides.prototype.out = function(user, client, body) {
 	    me.processData(user, client.slackHandle, body, handlerTodo);
 	});
 	
-	
-
 }
 
 Rides.prototype.refreshHandlerEndpoint = function(user, clientHandle) {
@@ -1000,10 +998,10 @@ Rides.prototype.processData = function(user, clientHandle, body, handlerTodo) {
 			    return remaining.length < 1;
 			}, function(validationPromises) {
 				for (var f=0; f<validationPromises.length; f++) {
-					(function(_i, _f) {
+					(function (_i, _f) {
 						validationPromises[_f].then(function (ret) {
 							logger.debug('%s: %s -> %s', datakeys[_i], _f, ret);
-						});	
+						});
 					} (step, f));	
 				}
 				return fvPromises[step] = when.reduce(validationPromises, function (validAgg, value, index) {
@@ -1267,7 +1265,7 @@ Rides.prototype.processRequestError = function(username, clientHandle, body) {
  * @param message - JSON object with message to be processed by the handler
  */
 Rides.prototype.push = function(user, clientHandle, body) {
-	data = {  'id': new Date().getTime(), 'user': user, 'client': clientHandle, 'body': body };
+	var data = {  'id': new Date().getTime(), 'user': user, 'client': clientHandle, 'body': body };
 	logger.info('%s Processor: Connecting to MQ Exchange <piper.events.out>...', Rides.MODULE);
 	var me = this;
 	this.pub.connect('piper.events.out', function() {
@@ -1356,7 +1354,7 @@ function getLocationKeyword(location) {
 				reqkey = lkKey;
 			}
 		});
-	})
+	});
 	return reqkey;
 }
 

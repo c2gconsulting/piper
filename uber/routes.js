@@ -21,7 +21,7 @@ module.exports = {
 
     // notify handler_main 
     var pub = mq.context.socket('PUB', {routing: 'topic'});
-    qdata = { id : new Date().getTime(), header : 'webhook', body : qbody };
+    var qdata = { id : new Date().getTime(), header : 'webhook', body : qbody };
     logger.info('UBER_ROUTES_HOOKS: Connecting to MQ Exchange <piper.events.out>...');
     pub.connect('piper.events.out', function() {
       logger.info('UBER_ROUTES_HOOKS: <piper.events.out> connected');
@@ -71,8 +71,8 @@ module.exports = {
 
               // notify handler_main 
               var pub = mq.context.socket('PUB', {routing: 'topic'});
-              qbody = { access_token : data.access_token };
-              qdata = { id : new Date().getTime(), email : userdata.email, header: 'auth', body : qbody };
+              var qbody = { access_token : data.access_token };
+              var qdata = { id : new Date().getTime(), email : userdata.email, header: 'auth', body : qbody };
               logger.info('UBER_ROUTES_AUTH: Connecting to MQ Exchange <piper.events.out>...');
               pub.connect('piper.events.out', function() {
                 logger.info('UBER_ROUTES_AUTH: <piper.events.out> connected');
@@ -103,8 +103,8 @@ module.exports = {
 
               // notify handler_main 
               var pub = mq.context.socket('PUB', {routing: 'topic'});
-              qbody = { surge_confirmation_id : surge_confirmation_id };
-              qdata = { id : new Date().getTime(), email : email, header: 'surge', body : qbody };
+              var qbody = { surge_confirmation_id : surge_confirmation_id };
+              var qdata = { id : new Date().getTime(), email : email, header: 'surge', body : qbody };
               logger.info('UBER_ROUTES_SURGE: Connecting to MQ Exchange <piper.events.out>...');
               pub.connect('piper.events.out', function() {
                 logger.info('UBER_ROUTES_SURGE: <piper.events.out> connected');
@@ -133,7 +133,7 @@ module.exports = {
   timeEstimates: function(req, res) {
     var lat = req.query.lat;
     var lng = req.query.lng;
-    var productId = req.query.product_id
+    var productId = req.query.product_id;
     uber.getTimeEstimates(lat,lng, productId
       ).then(function(data) {
         logger.debug('Time Estimates: %s', JSON.stringify(data));
