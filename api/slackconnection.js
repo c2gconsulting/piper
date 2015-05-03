@@ -13,7 +13,6 @@ function SlackConnection(client) {
 	cache = require('../shared/lib/cache').getRedisClient();
 	this.client = client;
 	this.slack = {};
-	
 }
 
 

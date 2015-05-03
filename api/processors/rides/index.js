@@ -1143,12 +1143,13 @@ Rides.prototype.in = function(msgid, username, clientHandle, body) {
 				me.emit('message', Rides.MODULE, username, clientHandle, 'Thanks @' + username + '. Now hold on a minute...');
 				break;
 			case 'surge_link':
+				var surgeMessage = 'Surge pricing is in effect and your trip will cost more than usual. Click here to review and accept: ';
 				utils.shortenLink(body.surgeLink)
 					.then (function(shortSurgeLink) {
-						me.emit('message', Rides.MODULE, username, clientHandle, 'Surge pricing is in effect for this product. Click here to review and accept: ' + shortSurgeLink);
+						me.emit('message', Rides.MODULE, username, clientHandle, surgeMessage + shortSurgeLink);
 					}).catch(function(){
 						if (body.surgeLink) {
-							me.emit('message', Rides.MODULE, username, clientHandle, 'Surge pricing is in effect for this product. Click here to review and accept: ' + body.surgeLink);	
+							me.emit('message', Rides.MODULE, username, clientHandle, surgeMessage + body.surgeLink);	
 						} else {
 							me.emit('message', Rides.MODULE, username, clientHandle, "Sorry can't get you a ride at this time. Please try again in a little bit", " ");
 							me.cancelRequest(username, clientHandle, {});
@@ -1198,13 +1199,13 @@ Rides.prototype.processRequestUpdate = function(username, clientHandle, body) {
 			me.emit('message', Rides.MODULE, username, clientHandle, 'Waiting for a driver\'s confirmation...');
 			break;
 		case 'accepted':
-			me.emit('message', Rides.MODULE, username, clientHandle, 'Your ride is on its way...');
 			if (body.driver) {
-				me.emit('message', Rides.MODULE, username, clientHandle, body.driver.name + ' (' + body.driver.rating +' stars) will be there in ' + body.eta + ' minutes in a ' + body.vehicle.make + ' ' + body.vehicle.model + ', registration ' + body.vehicle.license_plate);
+				me.emit('message', Rides.MODULE, username, clientHandle, body.driver.name + ' (' + body.driver.rating +' stars) will be there in ' + body.eta + ' minutes in a ' + body.vehicle.make + ' ' + body.vehicle.model + ', registration ' + body.vehicle.license_plate + '. \nYou can reach him on ' + body.driver.phone_number);
 				if (body.href) me.emit('message', Rides.MODULE, username, clientHandle, body.href);
 				//if (body.driver.picture_url != null) me.emit('message', Rides.MODULE, username, clientHandle, body.driver.picture_url);
-				me.emit('message', Rides.MODULE, username, clientHandle, 'You can reach him on ' + body.driver.phone_number);
-			} 
+			} else {
+				me.emit('message', Rides.MODULE, username, clientHandle, 'Your ride is on its way...');	
+			}
 			break;
 		case 'arriving':
 			me.emit('message', Rides.MODULE, username, clientHandle, "Your ride has arrived");
