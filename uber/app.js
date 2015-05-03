@@ -12,6 +12,7 @@ var CACHE_PREFIX = 'uber-handler:';
 var RIDES_DESC = 'rides';
 var ERROR_RESPONSE_CODE = 422;
 var prod = false;
+var when = require('when');
 
 // Create the Express application
 var app = exports.app = express(); 
