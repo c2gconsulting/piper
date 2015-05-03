@@ -132,7 +132,7 @@ function onProcessorEvent(id, user, client, body) {
 											case 409:
 												if (error.error.errors[0].code === 'surge') {
 													cacheRequestData(id, user, client, body); // restart after auth
-													requestSurgeConfirmation(user.email);
+													requestSurgeConfirmation(user.email, error.error.meta.surge_confirmation.surge_confirmation_id, error.error.meta.surge_confirmation.href);
 												} else {
 													var ebody = { header: 'request_error', status: error.error.errors[0].code };
 													push(user.email, ebody);
@@ -537,7 +537,7 @@ function checkSurge(email, body) {
 		return false;
 	} else {
 		return cache.hget(emailCacheKey, 'access_token').then(function (access_token) {
-			return uber.getRequestEstimate(access_token, body.productId, body.startLat, body.startLong, body.endLat, body.endLong
+			return uber.getRequestEstimate(access_token, body.productId, body.startLat, body.startLong, body.endLat, body.endLong, prod
 				).then(function(response) {
 					logger.debug('requestEstimate->RESPONSE: %s', JSON.stringify(response));
 					if (response.price.surge_multiplier > 1) {

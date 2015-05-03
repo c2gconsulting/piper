@@ -310,10 +310,11 @@ var rideRequest = function (bearer_token, productId, startlat, startlng, endlat,
  * @param endlat Latitude component of end location
  * @param endlng Longitude component of end location
  */
-var getRequestEstimate = function (bearer_token, productId, startlat, startlng, endlat, endlng) {
+var getRequestEstimate = function (bearer_token, productId, startlat, startlng, endlat, endlng, prod) {
     var resource = '/v1/requests/estimate' ;
+    var root_url = prod === true ? base_url : sandbox_base_url;
     var requrl = {
-        url : base_url + resource,
+        url : root_url + resource,
         method : 'post',
         json : {
             'product_id': productId,
