@@ -102,7 +102,9 @@ function onProcessorEvent(id, user, client, body) {
 			case 'request_ride':
 				checkAuth(user.email).then(function(access_token) {
 					if (access_token) {
+						logger.debug('++++++++++++++++++++++++++++++++ TEST LOC 1, %s', JSON.stringify(body));
 						checkSurge(user.email, body).then(function(surge) {
+							logger.debug('++++++++++++++++++++++++++++++++ TEST LOC 2, %s', surge);
 							if (!surge) {
 								logger.debug('Requesting ride...');
 								uber.rideRequest(access_token, body.productId, body.startLat, body.startLong, body.endLat, body.endLong, prod, body.surge_confirmation_id
@@ -533,9 +535,12 @@ function checkAuth(email) {
 function checkSurge(email, body) {
 	// check cache for access token
 	var emailCacheKey = CACHE_PREFIX + email;
+	logger.debug('++++++++++++++++++++++++++++++++ CHECK SURGE 1, email: %s', email);
 	if (body.surge_confirmation_id) {
+		logger.debug('++++++++++++++++++++++++++++++++ CHECK SURGE 2, surge conf id: %s', body.surge_confirmation_id);
 		return when(false);
 	} else {
+		logger.debug('++++++++++++++++++++++++++++++++ CHECK SURGE 3, surge conf id: %s', body.surge_confirmation_id);
 		return cache.hget(emailCacheKey, 'access_token').then(function (access_token) {
 			return uber.getRequestEstimate(access_token, body.productId, body.startLat, body.startLong, body.endLat, body.endLong, prod
 				).then(function(response) {

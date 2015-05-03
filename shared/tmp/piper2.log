@@ -6561,3 +6561,323 @@
 [Sun May 03 2015 16:32:42 GMT+0100 (WAT)] INFO C2G STUDIO: Connection established...listening for messages
 [Sun May 03 2015 16:32:42 GMT+0100 (WAT)] INFO Welcome to Slack. You are @blonker of c2gstudio
 [Sun May 03 2015 16:32:42 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Opened
+[Sun May 03 2015 16:37:47 GMT+0100 (WAT)] INFO Received: message kachi @kachi 1430667467.000008 "i need a cab"
+[Sun May 03 2015 16:37:47 GMT+0100 (WAT)] DEBUG IGNORE FLAG: false
+[Sun May 03 2015 16:37:47 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Message Received
+[Sun May 03 2015 16:37:47 GMT+0100 (WAT)] DEBUG Userkey: api-server:kachi@mobilizr:context
+[Sun May 03 2015 16:37:47 GMT+0100 (WAT)] DEBUG State for api-server:kachi@mobilizr:context: RIDES_get_start_location
+[Sun May 03 2015 16:37:47 GMT+0100 (WAT)] DEBUG 2015-05-03T15:37:47.000Z
+[Sun May 03 2015 16:37:50 GMT+0100 (WAT)] DEBUG IntentBody: {"msg_id":"d9c3ae55-6de6-41a6-90c8-7b126be9a89f","_text":"i need a cab","outcomes":[{"_text":"i need a cab","intent":"rides_request_trip","entities":{},"confidence":1}],"context":{"state":"RIDES_get_start_location","reference_time":"2015-05-03T15:37:47.000Z"}}
+[Sun May 03 2015 16:37:50 GMT+0100 (WAT)] DEBUG Intent: rides_request_trip
+[Sun May 03 2015 16:37:50 GMT+0100 (WAT)] DEBUG Confidence: 1
+[Sun May 03 2015 16:37:50 GMT+0100 (WAT)] INFO RIDES Processor: Connecting to MQ Exchange <piper.events.in>...
+[Sun May 03 2015 16:37:50 GMT+0100 (WAT)] DEBUG New context for api-server:kachi@mobilizr:context: {"state":"RIDES"}
+[Sun May 03 2015 16:37:50 GMT+0100 (WAT)] DEBUG Entities: {}
+[Sun May 03 2015 16:37:50 GMT+0100 (WAT)] DEBUG Validation Predicate: 6
+[Sun May 03 2015 16:37:50 GMT+0100 (WAT)] DEBUG confirmNeed: 0 -> false
+[Sun May 03 2015 16:37:50 GMT+0100 (WAT)] DEBUG confirmNeed: 1 -> true
+[Sun May 03 2015 16:37:50 GMT+0100 (WAT)] DEBUG Validation Predicate: 5
+[Sun May 03 2015 16:37:50 GMT+0100 (WAT)] DEBUG startLong: 0 -> false
+[Sun May 03 2015 16:37:50 GMT+0100 (WAT)] DEBUG startLong: 1 -> false
+[Sun May 03 2015 16:37:50 GMT+0100 (WAT)] DEBUG startLong: 2 -> false
+[Sun May 03 2015 16:37:50 GMT+0100 (WAT)] DEBUG startLong: 3 -> false
+[Sun May 03 2015 16:37:50 GMT+0100 (WAT)] DEBUG Validation Predicate: 4
+[Sun May 03 2015 16:37:50 GMT+0100 (WAT)] DEBUG productId: 0 -> false
+[Sun May 03 2015 16:37:50 GMT+0100 (WAT)] DEBUG productId: 1 -> false
+[Sun May 03 2015 16:37:50 GMT+0100 (WAT)] DEBUG productId: 2 -> false
+[Sun May 03 2015 16:37:50 GMT+0100 (WAT)] DEBUG productId: 3 -> false
+[Sun May 03 2015 16:37:50 GMT+0100 (WAT)] DEBUG productId: 4 -> false
+[Sun May 03 2015 16:37:50 GMT+0100 (WAT)] DEBUG productId: 5 -> false
+[Sun May 03 2015 16:37:50 GMT+0100 (WAT)] DEBUG productId: 6 -> false
+[Sun May 03 2015 16:37:50 GMT+0100 (WAT)] DEBUG Validation Predicate: 3
+[Sun May 03 2015 16:37:50 GMT+0100 (WAT)] DEBUG endLong: 0 -> false
+[Sun May 03 2015 16:37:50 GMT+0100 (WAT)] DEBUG endLong: 1 -> false
+[Sun May 03 2015 16:37:50 GMT+0100 (WAT)] DEBUG endLong: 2 -> false
+[Sun May 03 2015 16:37:50 GMT+0100 (WAT)] DEBUG Validation Predicate: 2
+[Sun May 03 2015 16:37:50 GMT+0100 (WAT)] DEBUG departureTime: 0 -> false
+[Sun May 03 2015 16:37:50 GMT+0100 (WAT)] DEBUG departureTime: 1 -> true
+[Sun May 03 2015 16:37:50 GMT+0100 (WAT)] DEBUG Validation Predicate: 1
+[Sun May 03 2015 16:37:50 GMT+0100 (WAT)] DEBUG confirmRequest: 0 -> false
+[Sun May 03 2015 16:37:50 GMT+0100 (WAT)] DEBUG confirmRequest: 1 -> false
+[Sun May 03 2015 16:37:50 GMT+0100 (WAT)] DEBUG Validation Predicate: 0
+[Sun May 03 2015 16:37:50 GMT+0100 (WAT)] DEBUG Datakey: confirmNeed, Validity Check: true
+[Sun May 03 2015 16:37:50 GMT+0100 (WAT)] DEBUG Datakey: startLong, Validity Check: false
+[Sun May 03 2015 16:37:50 GMT+0100 (WAT)] DEBUG Datakey: productId, Validity Check: false
+[Sun May 03 2015 16:37:50 GMT+0100 (WAT)] DEBUG Datakey: endLong, Validity Check: false
+[Sun May 03 2015 16:37:50 GMT+0100 (WAT)] DEBUG Datakey: departureTime, Validity Check: true
+[Sun May 03 2015 16:37:50 GMT+0100 (WAT)] DEBUG Datakey: confirmRequest, Validity Check: false
+[Sun May 03 2015 16:37:50 GMT+0100 (WAT)] DEBUG Missing Keys for rides_book_trip: ["startLong","productId","endLong","confirmRequest"]
+[Sun May 03 2015 16:37:50 GMT+0100 (WAT)] DEBUG Response Predicate: 4
+[Sun May 03 2015 16:37:50 GMT+0100 (WAT)] DEBUG Datahash from unfold: {"handlerTodo":"rides_book_trip","intent":"rides_request_trip","confirmNeed":true}
+[Sun May 03 2015 16:37:50 GMT+0100 (WAT)] INFO RIDES Processor: <piper.events.in> connected
+[Sun May 03 2015 16:37:52 GMT+0100 (WAT)] DEBUG Response Predicate: 3
+[Sun May 03 2015 16:37:52 GMT+0100 (WAT)] DEBUG Datahash: {"handlerTodo":"rides_book_trip","intent":"rides_request_trip","confirmNeed":true,"errStartLocation":"NO_START_LOCATION","lvlQueries":{"NO_START_LOCATION":1}}
+[Sun May 03 2015 16:37:52 GMT+0100 (WAT)] DEBUG Body: {"msg_id":"d9c3ae55-6de6-41a6-90c8-7b126be9a89f","_text":"i need a cab","outcomes":[{"_text":"i need a cab","intent":"rides_request_trip","entities":{},"confidence":1}],"context":{"state":"RIDES_get_start_location","reference_time":"2015-05-03T15:37:47.000Z"},"user":{"slackId":"U02RN8W1T","name":"kachi","email":"kachi@mobilizr.net","first_name":"http://d1a3f4spazzrp4.cloudfront.net/car-types/mono/mono-black.png","last_name":"https://login.uber.com/oauth/authorize?response_type=code&client_id=wTO4c5RIwLi_gjwN1tw79JY4_1W2Im1w","full_name":"http://d1a3f4spazzrp4.cloudfront.net/car-types/mono/mono-black.png https://login.uber.com/oauth/authorize?response_type=code&client_id=wTO4c5RIwLi_gjwN1tw79JY4_1W2Im1w","is_admin":true,"avatar":"https://secure.gravatar.com/avatar/441587d4f0a03b4ce3aca5a1af3577c1.jpg?s=48&d=https%3A%2F%2Fslack.global.ssl.fastly.net%2F3654%2Fimg%2Favatars%2Fava_0012-48.png"},"clientHandle":"mobilizr"}
+[Sun May 03 2015 16:37:52 GMT+0100 (WAT)] DEBUG Indata: {"hasActiveRequest":{"_handler":{"handler":{"value":false},"resolved":true}}}
+[Sun May 03 2015 16:37:52 GMT+0100 (WAT)] DEBUG rides:kachi@mobilizr
+[Sun May 03 2015 16:37:52 GMT+0100 (WAT)] DEBUG Datahash.lvlQueries: {"NO_START_LOCATION":1}
+[Sun May 03 2015 16:37:52 GMT+0100 (WAT)] DEBUG module: RIDES, user: kachi, client: mobilizr, message: Ok. Just click here: http://bit.ly/1PfTgER, and i'll pinpoint your current location
+[Sun May 03 2015 16:37:52 GMT+0100 (WAT)] INFO @blanka responded with "Ok. Just click here: http://bit.ly/1PfTgER, and i'll pinpoint your current location"
+[Sun May 03 2015 16:37:52 GMT+0100 (WAT)] DEBUG Message: Ok. Just click here: http://bit.ly/1PfTgER, and i'll pinpoint your current location sent to user kachi
+[Sun May 03 2015 16:38:01 GMT+0100 (WAT)] INFO Geodata: {"ref":"1430667470947","lat":6.4564406,"longt":3.5263378999999997}
+[Sun May 03 2015 16:38:01 GMT+0100 (WAT)] DEBUG Retrieved REF: 1430667470947
+[Sun May 03 2015 16:38:01 GMT+0100 (WAT)] DEBUG CACHEKEY: utils:1430667470947
+[Sun May 03 2015 16:38:01 GMT+0100 (WAT)] INFO UTILS: Connecting to MQ Exchange <piper.events.in>...
+[Sun May 03 2015 16:38:01 GMT+0100 (WAT)] INFO UTILS: <piper.events.in> connected
+[Sun May 03 2015 16:38:01 GMT+0100 (WAT)] DEBUG onHandlerEvent-> msgid: 1430667481776, username: kachi, clientHandle: mobilizr, module: RIDES, data: {"header":"geo_data","lat":6.4564406,"longt":3.5263378999999997}
+[Sun May 03 2015 16:38:01 GMT+0100 (WAT)] DEBUG Done setting user geodata...
+[Sun May 03 2015 16:38:02 GMT+0100 (WAT)] DEBUG module: RIDES, user: kachi, client: mobilizr, message: Thanks, I have your location 
+http://bit.ly/1GSKrSh
+[Sun May 03 2015 16:38:02 GMT+0100 (WAT)] INFO @blanka responded with "Thanks, I have your location 
+http://bit.ly/1GSKrSh"
+[Sun May 03 2015 16:38:02 GMT+0100 (WAT)] DEBUG Message: Thanks, I have your location 
+http://bit.ly/1GSKrSh sent to user kachi
+[Sun May 03 2015 16:38:03 GMT+0100 (WAT)] DEBUG IGNORE FLAG SET
+[Sun May 03 2015 16:38:03 GMT+0100 (WAT)] INFO SlackConnection.onMessage: Original message changed by blanka
+[Sun May 03 2015 16:38:03 GMT+0100 (WAT)] DEBUG Message: {"id":1,"type":"message","channel":"D03SDHUUJ"}
+[Sun May 03 2015 16:38:03 GMT+0100 (WAT)] DEBUG Message.Message: {"type":"message","user":"U03SDHUTU","text":"Thanks, I have your location \n<http://bit.ly/1GSKrSh>","attachments":[{"from_url":"http://bit.ly/1GSKrSh","fallback":"400x400px image","image_url":"http://bit.ly/1GSKrSh","image_width":400,"image_height":400,"image_bytes":14697,"id":1}],"ts":"1430667482.000010"}
+[Sun May 03 2015 16:38:03 GMT+0100 (WAT)] INFO Received: message kachi @blanka 1430667483.000011 "Thanks, I have your location 
+<http://bit.ly/1GSKrSh>"
+[Sun May 03 2015 16:38:03 GMT+0100 (WAT)] DEBUG Message.Subtype: "message_changed"
+[Sun May 03 2015 16:38:03 GMT+0100 (WAT)] DEBUG Address: false
+[Sun May 03 2015 16:38:03 GMT+0100 (WAT)] DEBUG Entities: {}
+[Sun May 03 2015 16:38:03 GMT+0100 (WAT)] DEBUG Validation Predicate: 6
+[Sun May 03 2015 16:38:03 GMT+0100 (WAT)] DEBUG confirmNeed: 0 -> false
+[Sun May 03 2015 16:38:03 GMT+0100 (WAT)] DEBUG confirmNeed: 1 -> true
+[Sun May 03 2015 16:38:03 GMT+0100 (WAT)] DEBUG Validation Predicate: 5
+[Sun May 03 2015 16:38:03 GMT+0100 (WAT)] DEBUG startLong: 0 -> false
+[Sun May 03 2015 16:38:03 GMT+0100 (WAT)] DEBUG startLong: 1 -> true
+[Sun May 03 2015 16:38:03 GMT+0100 (WAT)] DEBUG startLong: 2 -> false
+[Sun May 03 2015 16:38:03 GMT+0100 (WAT)] DEBUG startLong: 3 -> false
+[Sun May 03 2015 16:38:03 GMT+0100 (WAT)] DEBUG Validation Predicate: 4
+[Sun May 03 2015 16:38:03 GMT+0100 (WAT)] DEBUG Going for products...
+[Sun May 03 2015 16:38:03 GMT+0100 (WAT)] DEBUG productId: 0 -> false
+[Sun May 03 2015 16:38:03 GMT+0100 (WAT)] DEBUG productId: 1 -> false
+[Sun May 03 2015 16:38:03 GMT+0100 (WAT)] DEBUG productId: 3 -> false
+[Sun May 03 2015 16:38:03 GMT+0100 (WAT)] DEBUG productId: 4 -> false
+[Sun May 03 2015 16:38:03 GMT+0100 (WAT)] DEBUG productId: 5 -> false
+[Sun May 03 2015 16:38:03 GMT+0100 (WAT)] DEBUG productId: 6 -> false
+[Sun May 03 2015 16:38:03 GMT+0100 (WAT)] DEBUG getProducts->endpoint: http://uber.example.com:3000
+[Sun May 03 2015 16:38:05 GMT+0100 (WAT)] DEBUG Products: {"products":[{"capacity":4,"product_id":"21141cb0-76f7-4638-b26a-3122f27ce90a","price_details":{"service_fees":[],"cost_per_minute":10,"distance_unit":"km","minimum":500,"cost_per_distance":110,"base":500,"cancellation_fee":1000,"currency_code":"NGN"},"image":"http://d1a3f4spazzrp4.cloudfront.net/car-types/mono/mono-uberx.png","display_name":"uberX","description":"The Low-Cost Uber"},{"capacity":4,"product_id":"f1462af9-8e3f-4079-b7c2-a17877d81805","price_details":{"service_fees":[],"cost_per_minute":15,"distance_unit":"km","minimum":800,"cost_per_distance":155,"base":500,"cancellation_fee":1000,"currency_code":"NGN"},"image":"http://d1a3f4spazzrp4.cloudfront.net/car-types/mono/mono-black.png","display_name":"UberBLACK","description":"The Original Uber"}]}
+[Sun May 03 2015 16:38:05 GMT+0100 (WAT)] DEBUG productId: 2 -> true
+[Sun May 03 2015 16:38:05 GMT+0100 (WAT)] DEBUG Validation Predicate: 3
+[Sun May 03 2015 16:38:05 GMT+0100 (WAT)] DEBUG endLong: 0 -> false
+[Sun May 03 2015 16:38:05 GMT+0100 (WAT)] DEBUG endLong: 1 -> false
+[Sun May 03 2015 16:38:05 GMT+0100 (WAT)] DEBUG endLong: 2 -> false
+[Sun May 03 2015 16:38:05 GMT+0100 (WAT)] DEBUG Validation Predicate: 2
+[Sun May 03 2015 16:38:05 GMT+0100 (WAT)] DEBUG departureTime: 0 -> false
+[Sun May 03 2015 16:38:05 GMT+0100 (WAT)] DEBUG departureTime: 1 -> true
+[Sun May 03 2015 16:38:05 GMT+0100 (WAT)] DEBUG Validation Predicate: 1
+[Sun May 03 2015 16:38:05 GMT+0100 (WAT)] DEBUG confirmRequest: 0 -> false
+[Sun May 03 2015 16:38:05 GMT+0100 (WAT)] DEBUG confirmRequest: 1 -> false
+[Sun May 03 2015 16:38:05 GMT+0100 (WAT)] DEBUG Validation Predicate: 0
+[Sun May 03 2015 16:38:05 GMT+0100 (WAT)] DEBUG Datakey: confirmNeed, Validity Check: true
+[Sun May 03 2015 16:38:05 GMT+0100 (WAT)] DEBUG Datakey: startLong, Validity Check: true
+[Sun May 03 2015 16:38:05 GMT+0100 (WAT)] DEBUG Datakey: productId, Validity Check: true
+[Sun May 03 2015 16:38:05 GMT+0100 (WAT)] DEBUG Datakey: endLong, Validity Check: false
+[Sun May 03 2015 16:38:05 GMT+0100 (WAT)] DEBUG Datakey: departureTime, Validity Check: true
+[Sun May 03 2015 16:38:05 GMT+0100 (WAT)] DEBUG Datakey: confirmRequest, Validity Check: false
+[Sun May 03 2015 16:38:05 GMT+0100 (WAT)] DEBUG Missing Keys for rides_book_trip: ["endLong","confirmRequest"]
+[Sun May 03 2015 16:38:05 GMT+0100 (WAT)] DEBUG Response Predicate: 2
+[Sun May 03 2015 16:38:05 GMT+0100 (WAT)] DEBUG Datahash from unfold: {"handlerTodo":"rides_book_trip","intent":"rides_request_trip","confirmNeed":true,"lvlQueries":{"NO_START_LOCATION":1},"startLat":"6.4564406","startLong":"3.5263378999999997","products":true,"productId":"21141cb0-76f7-4638-b26a-3122f27ce90a","productName":"uberX"}
+[Sun May 03 2015 16:38:05 GMT+0100 (WAT)] DEBUG Response Predicate: 1
+[Sun May 03 2015 16:38:05 GMT+0100 (WAT)] DEBUG Datahash: {"handlerTodo":"rides_book_trip","intent":"rides_request_trip","confirmNeed":true,"lvlQueries":{"NO_START_LOCATION":1,"NO_END_LOCATION":1},"startLat":"6.4564406","startLong":"3.5263378999999997","products":true,"productId":"21141cb0-76f7-4638-b26a-3122f27ce90a","productName":"uberX","errEndLocation":"NO_END_LOCATION"}
+[Sun May 03 2015 16:38:05 GMT+0100 (WAT)] DEBUG Body: {"context":{"state":"RIDES"},"user":{"full_name":"http://d1a3f4spazzrp4.cloudfront.net/car-types/mono/mono-black.png https://login.uber.com/oauth/authorize?response_type=code&client_id=wTO4c5RIwLi_gjwN1tw79JY4_1W2Im1w","avatar":"https://secure.gravatar.com/avatar/441587d4f0a03b4ce3aca5a1af3577c1.jpg?s=48&d=https%3A%2F%2Fslack.global.ssl.fastly.net%2F3654%2Fimg%2Favatars%2Fava_0012-48.png","last_name":"https://login.uber.com/oauth/authorize?response_type=code&client_id=wTO4c5RIwLi_gjwN1tw79JY4_1W2Im1w","email":"kachi@mobilizr.net","phone":"undefined","slackId":"U02RN8W1T","name":"kachi","is_admin":"true","first_name":"http://d1a3f4spazzrp4.cloudfront.net/car-types/mono/mono-black.png"},"clientHandle":"mobilizr"}
+[Sun May 03 2015 16:38:05 GMT+0100 (WAT)] DEBUG Indata: {"hasActiveRequest":{"_handler":{"handler":{"value":false},"resolved":true}}}
+[Sun May 03 2015 16:38:05 GMT+0100 (WAT)] DEBUG rides:kachi@mobilizr
+[Sun May 03 2015 16:38:05 GMT+0100 (WAT)] DEBUG Datahash.lvlQueries: {"NO_START_LOCATION":1,"NO_END_LOCATION":1}
+[Sun May 03 2015 16:38:05 GMT+0100 (WAT)] DEBUG module: RIDES, user: kachi, client: mobilizr, message: Where are you going? I need an address or a landmark
+[Sun May 03 2015 16:38:05 GMT+0100 (WAT)] INFO @blanka responded with "Where are you going? I need an address or a landmark"
+[Sun May 03 2015 16:38:05 GMT+0100 (WAT)] DEBUG Message: Where are you going? I need an address or a landmark sent to user kachi
+[Sun May 03 2015 16:39:34 GMT+0100 (WAT)] INFO Received: message kachi @kachi 1430667574.000013 "the office"
+[Sun May 03 2015 16:39:34 GMT+0100 (WAT)] DEBUG IGNORE FLAG: false
+[Sun May 03 2015 16:39:34 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Message Received
+[Sun May 03 2015 16:39:34 GMT+0100 (WAT)] DEBUG Userkey: api-server:kachi@mobilizr:context
+[Sun May 03 2015 16:39:34 GMT+0100 (WAT)] DEBUG State for api-server:kachi@mobilizr:context: RIDES_get_end_location
+[Sun May 03 2015 16:39:34 GMT+0100 (WAT)] DEBUG 2015-05-03T15:39:34.000Z
+[Sun May 03 2015 16:39:36 GMT+0100 (WAT)] DEBUG IntentBody: {"msg_id":"6270685e-1008-4878-9d7d-0cad2b357da4","_text":"the office","outcomes":[{"_text":"the office","intent":"default_give_info","entities":{"to":[{"suggested":true,"value":"the office","type":"value"}]},"confidence":0.893}],"context":{"state":"RIDES_get_end_location","reference_time":"2015-05-03T15:39:34.000Z"}}
+[Sun May 03 2015 16:39:36 GMT+0100 (WAT)] DEBUG Intent: default_give_info
+[Sun May 03 2015 16:39:36 GMT+0100 (WAT)] DEBUG Confidence: 0.893
+[Sun May 03 2015 16:39:36 GMT+0100 (WAT)] DEBUG Module for intent default_give_info and state RIDES_get_end_location resolved to RIDES
+[Sun May 03 2015 16:39:36 GMT+0100 (WAT)] DEBUG Module for intent default_give_info and state RIDES_get_end_location resolved to RIDES
+[Sun May 03 2015 16:39:36 GMT+0100 (WAT)] DEBUG New context for api-server:kachi@mobilizr:context: {"state":"RIDES"}
+[Sun May 03 2015 16:39:36 GMT+0100 (WAT)] DEBUG Entities: {"to":[{"suggested":true,"value":"the office","type":"value"}]}
+[Sun May 03 2015 16:39:36 GMT+0100 (WAT)] DEBUG Validation Predicate: 6
+[Sun May 03 2015 16:39:36 GMT+0100 (WAT)] DEBUG confirmNeed: 0 -> false
+[Sun May 03 2015 16:39:36 GMT+0100 (WAT)] DEBUG confirmNeed: 1 -> true
+[Sun May 03 2015 16:39:36 GMT+0100 (WAT)] DEBUG Validation Predicate: 5
+[Sun May 03 2015 16:39:36 GMT+0100 (WAT)] DEBUG startLong: 0 -> false
+[Sun May 03 2015 16:39:36 GMT+0100 (WAT)] DEBUG startLong: 1 -> true
+[Sun May 03 2015 16:39:36 GMT+0100 (WAT)] DEBUG startLong: 2 -> false
+[Sun May 03 2015 16:39:36 GMT+0100 (WAT)] DEBUG startLong: 3 -> false
+[Sun May 03 2015 16:39:36 GMT+0100 (WAT)] DEBUG Validation Predicate: 4
+[Sun May 03 2015 16:39:36 GMT+0100 (WAT)] DEBUG Going for time...
+[Sun May 03 2015 16:39:36 GMT+0100 (WAT)] DEBUG productId: 0 -> false
+[Sun May 03 2015 16:39:36 GMT+0100 (WAT)] DEBUG productId: 1 -> false
+[Sun May 03 2015 16:39:36 GMT+0100 (WAT)] DEBUG productId: 2 -> false
+[Sun May 03 2015 16:39:36 GMT+0100 (WAT)] DEBUG productId: 3 -> false
+[Sun May 03 2015 16:39:36 GMT+0100 (WAT)] DEBUG productId: 4 -> false
+[Sun May 03 2015 16:39:36 GMT+0100 (WAT)] DEBUG productId: 6 -> true
+[Sun May 03 2015 16:39:36 GMT+0100 (WAT)] DEBUG getTimeEstimateAll->endpoint: http://uber.example.com:3000
+[Sun May 03 2015 16:39:37 GMT+0100 (WAT)] DEBUG Time Estimates: {"times":[]}
+[Sun May 03 2015 16:39:37 GMT+0100 (WAT)] DEBUG OldProductId: 21141cb0-76f7-4638-b26a-3122f27ce90a
+[Sun May 03 2015 16:39:37 GMT+0100 (WAT)] DEBUG NewProductId: 21141cb0-76f7-4638-b26a-3122f27ce90a
+[Sun May 03 2015 16:39:37 GMT+0100 (WAT)] DEBUG Datahash Val: {"handlerTodo":"rides_book_trip","intent":"default_give_info","confirmNeed":true,"lvlQueries":{"NO_START_LOCATION":1,"NO_END_LOCATION":1},"startLat":"6.4564406","startLong":"3.5263378999999997","products":"true","productId":"21141cb0-76f7-4638-b26a-3122f27ce90a","productName":"uberX","errEndLocation":"NO_END_LOCATION"}
+[Sun May 03 2015 16:39:37 GMT+0100 (WAT)] DEBUG productId: 5 -> true
+[Sun May 03 2015 16:39:37 GMT+0100 (WAT)] DEBUG Validation Predicate: 3
+[Sun May 03 2015 16:39:37 GMT+0100 (WAT)] DEBUG keywordList: %s
+	["home","house","crib","hood","my address"]
+[Sun May 03 2015 16:39:37 GMT+0100 (WAT)] DEBUG keywordList: %s
+	["office","work","workplace","place of business","place of work","bureau","the office"]
+[Sun May 03 2015 16:39:37 GMT+0100 (WAT)] DEBUG endLong: 0 -> false
+[Sun May 03 2015 16:39:37 GMT+0100 (WAT)] DEBUG endLong: 1 -> false
+[Sun May 03 2015 16:39:37 GMT+0100 (WAT)] DEBUG Got to then of getUserPreference...
+[Sun May 03 2015 16:39:38 GMT+0100 (WAT)] INFO Geo data: {"results":[{"address_components":[{"long_name":"Etim Inyang Crescent","short_name":"Etim Inyang Cres","types":["route"]},{"long_name":"Eti-Osa","short_name":"Eti-Osa","types":["sublocality_level_1","sublocality","political"]},{"long_name":"Lagos","short_name":"Lagos","types":["colloquial_area","locality","political"]},{"long_name":"Lagos","short_name":"Lagos","types":["administrative_area_level_1","political"]},{"long_name":"Nigeria","short_name":"NG","types":["country","political"]}],"formatted_address":"Etim Inyang Crescent, Lagos, Nigeria","geometry":{"bounds":{"northeast":{"lat":6.433278,"lng":3.4395313},"southwest":{"lat":6.4320812,"lng":3.4337308}},"location":{"lat":6.4331551,"lng":3.4365724},"location_type":"GEOMETRIC_CENTER","viewport":{"northeast":{"lat":6.434028580291502,"lng":3.4395313},"southwest":{"lat":6.431330619708498,"lng":3.4337308}}},"partial_match":true,"place_id":"ChIJ6eBtzyP1OxARBosrrPDU44k","types":["route"]}],"status":"OK"}
+[Sun May 03 2015 16:39:38 GMT+0100 (WAT)] DEBUG endLong: 2 -> true
+[Sun May 03 2015 16:39:38 GMT+0100 (WAT)] DEBUG Validation Predicate: 2
+[Sun May 03 2015 16:39:38 GMT+0100 (WAT)] DEBUG departureTime: 0 -> false
+[Sun May 03 2015 16:39:38 GMT+0100 (WAT)] DEBUG departureTime: 1 -> true
+[Sun May 03 2015 16:39:38 GMT+0100 (WAT)] DEBUG Validation Predicate: 1
+[Sun May 03 2015 16:39:38 GMT+0100 (WAT)] DEBUG confirmRequest: 0 -> false
+[Sun May 03 2015 16:39:38 GMT+0100 (WAT)] DEBUG confirmRequest: 1 -> false
+[Sun May 03 2015 16:39:38 GMT+0100 (WAT)] DEBUG Validation Predicate: 0
+[Sun May 03 2015 16:39:38 GMT+0100 (WAT)] DEBUG Datakey: confirmNeed, Validity Check: true
+[Sun May 03 2015 16:39:38 GMT+0100 (WAT)] DEBUG Datakey: startLong, Validity Check: true
+[Sun May 03 2015 16:39:38 GMT+0100 (WAT)] DEBUG Datakey: productId, Validity Check: true
+[Sun May 03 2015 16:39:38 GMT+0100 (WAT)] DEBUG Datakey: endLong, Validity Check: true
+[Sun May 03 2015 16:39:38 GMT+0100 (WAT)] DEBUG Datakey: departureTime, Validity Check: true
+[Sun May 03 2015 16:39:38 GMT+0100 (WAT)] DEBUG Datakey: confirmRequest, Validity Check: false
+[Sun May 03 2015 16:39:38 GMT+0100 (WAT)] DEBUG Missing Keys for rides_book_trip: ["confirmRequest"]
+[Sun May 03 2015 16:39:38 GMT+0100 (WAT)] DEBUG Response Predicate: 1
+[Sun May 03 2015 16:39:38 GMT+0100 (WAT)] DEBUG Datahash from unfold: {"handlerTodo":"rides_book_trip","intent":"default_give_info","confirmNeed":true,"lvlQueries":{"NO_START_LOCATION":1,"NO_END_LOCATION":1},"startLat":"6.4564406","startLong":"3.5263378999999997","products":"true","productId":"21141cb0-76f7-4638-b26a-3122f27ce90a","productName":"uberX","errEndLocation":"NO_END_LOCATION","toLocKeyword":"office","endLong":3.4365724,"endLat":6.4331551}
+[Sun May 03 2015 16:39:38 GMT+0100 (WAT)] DEBUG getTimeEstimate->endpoint: http://uber.example.com:3000
+[Sun May 03 2015 16:39:39 GMT+0100 (WAT)] DEBUG Time Estimates: {"times":[]}
+[Sun May 03 2015 16:39:39 GMT+0100 (WAT)] DEBUG Response Predicate: 0
+[Sun May 03 2015 16:39:39 GMT+0100 (WAT)] DEBUG Datahash: {"handlerTodo":"rides_book_trip","intent":"default_give_info","confirmNeed":true,"lvlQueries":{"NO_START_LOCATION":1,"NO_END_LOCATION":1,"NO_RIDE_ETA":1},"startLat":"6.4564406","startLong":"3.5263378999999997","products":"true","productId":"21141cb0-76f7-4638-b26a-3122f27ce90a","productName":"uberX","errEndLocation":"NO_END_LOCATION","toLocKeyword":"office","endLong":3.4365724,"endLat":6.4331551,"errConfirmRequest":"NO_CONFIRM_REQUEST"}
+[Sun May 03 2015 16:39:39 GMT+0100 (WAT)] DEBUG Body: {"msg_id":"6270685e-1008-4878-9d7d-0cad2b357da4","_text":"the office","outcomes":[{"_text":"the office","intent":"default_give_info","entities":{"to":[{"suggested":true,"value":"the office","type":"value"}]},"confidence":0.893}],"context":{"state":"RIDES_get_end_location","reference_time":"2015-05-03T15:39:34.000Z"},"user":{"slackId":"U02RN8W1T","name":"kachi","email":"kachi@mobilizr.net","first_name":"http://d1a3f4spazzrp4.cloudfront.net/car-types/mono/mono-black.png","last_name":"https://login.uber.com/oauth/authorize?response_type=code&client_id=wTO4c5RIwLi_gjwN1tw79JY4_1W2Im1w","full_name":"http://d1a3f4spazzrp4.cloudfront.net/car-types/mono/mono-black.png https://login.uber.com/oauth/authorize?response_type=code&client_id=wTO4c5RIwLi_gjwN1tw79JY4_1W2Im1w","is_admin":true,"avatar":"https://secure.gravatar.com/avatar/441587d4f0a03b4ce3aca5a1af3577c1.jpg?s=48&d=https%3A%2F%2Fslack.global.ssl.fastly.net%2F3654%2Fimg%2Favatars%2Fava_0012-48.png"},"clientHandle":"mobilizr"}
+[Sun May 03 2015 16:39:39 GMT+0100 (WAT)] DEBUG Indata: {"to":"259 etim inyang crescent","hasActiveRequest":{"_handler":{"handler":{"value":false},"resolved":true}}}
+[Sun May 03 2015 16:39:39 GMT+0100 (WAT)] DEBUG rides:kachi@mobilizr
+[Sun May 03 2015 16:39:39 GMT+0100 (WAT)] DEBUG Datahash.lvlQueries: {"NO_START_LOCATION":1,"NO_END_LOCATION":1,"NO_RIDE_ETA":1}
+[Sun May 03 2015 16:39:39 GMT+0100 (WAT)] DEBUG module: RIDES, user: kachi, client: mobilizr, message: Can't get an ETA for any ride at the moment, do I just go ahead and attempt the booking?
+[Sun May 03 2015 16:39:39 GMT+0100 (WAT)] INFO @blanka responded with "Can't get an ETA for any ride at the moment, do I just go ahead and attempt the booking?"
+[Sun May 03 2015 16:39:39 GMT+0100 (WAT)] DEBUG Message: Can't get an ETA for any ride at the moment, do I just go ahead and attempt the booking? sent to user kachi
+[Sun May 03 2015 16:39:42 GMT+0100 (WAT)] INFO Received: message kachi @kachi 1430667582.000015 "yea"
+[Sun May 03 2015 16:39:42 GMT+0100 (WAT)] DEBUG IGNORE FLAG: false
+[Sun May 03 2015 16:39:42 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Message Received
+[Sun May 03 2015 16:39:42 GMT+0100 (WAT)] DEBUG Userkey: api-server:kachi@mobilizr:context
+[Sun May 03 2015 16:39:42 GMT+0100 (WAT)] DEBUG State for api-server:kachi@mobilizr:context: RIDES_confirm_request
+[Sun May 03 2015 16:39:42 GMT+0100 (WAT)] DEBUG 2015-05-03T15:39:42.000Z
+[Sun May 03 2015 16:39:43 GMT+0100 (WAT)] DEBUG IntentBody: {"msg_id":"6104fb4e-a55c-4596-b3b1-fbde62450f40","_text":"yea","outcomes":[{"_text":"yea","intent":"default_accept","entities":{},"confidence":0.979}],"context":{"state":"RIDES_confirm_request","reference_time":"2015-05-03T15:39:42.000Z"}}
+[Sun May 03 2015 16:39:43 GMT+0100 (WAT)] DEBUG Intent: default_accept
+[Sun May 03 2015 16:39:43 GMT+0100 (WAT)] DEBUG Confidence: 0.979
+[Sun May 03 2015 16:39:43 GMT+0100 (WAT)] DEBUG Module for intent default_accept and state RIDES_confirm_request resolved to RIDES
+[Sun May 03 2015 16:39:43 GMT+0100 (WAT)] DEBUG Module for intent default_accept and state RIDES_confirm_request resolved to RIDES
+[Sun May 03 2015 16:39:43 GMT+0100 (WAT)] DEBUG New context for api-server:kachi@mobilizr:context: {"state":"RIDES"}
+[Sun May 03 2015 16:39:43 GMT+0100 (WAT)] DEBUG Entities: {}
+[Sun May 03 2015 16:39:43 GMT+0100 (WAT)] DEBUG Validation Predicate: 6
+[Sun May 03 2015 16:39:43 GMT+0100 (WAT)] DEBUG confirmNeed: 0 -> false
+[Sun May 03 2015 16:39:43 GMT+0100 (WAT)] DEBUG confirmNeed: 1 -> true
+[Sun May 03 2015 16:39:43 GMT+0100 (WAT)] DEBUG Validation Predicate: 5
+[Sun May 03 2015 16:39:43 GMT+0100 (WAT)] DEBUG startLong: 0 -> false
+[Sun May 03 2015 16:39:43 GMT+0100 (WAT)] DEBUG startLong: 1 -> true
+[Sun May 03 2015 16:39:43 GMT+0100 (WAT)] DEBUG startLong: 2 -> false
+[Sun May 03 2015 16:39:43 GMT+0100 (WAT)] DEBUG startLong: 3 -> false
+[Sun May 03 2015 16:39:43 GMT+0100 (WAT)] DEBUG Validation Predicate: 4
+[Sun May 03 2015 16:39:43 GMT+0100 (WAT)] DEBUG Going for time...
+[Sun May 03 2015 16:39:43 GMT+0100 (WAT)] DEBUG productId: 0 -> false
+[Sun May 03 2015 16:39:43 GMT+0100 (WAT)] DEBUG productId: 1 -> false
+[Sun May 03 2015 16:39:43 GMT+0100 (WAT)] DEBUG productId: 2 -> false
+[Sun May 03 2015 16:39:43 GMT+0100 (WAT)] DEBUG productId: 3 -> false
+[Sun May 03 2015 16:39:43 GMT+0100 (WAT)] DEBUG productId: 4 -> false
+[Sun May 03 2015 16:39:43 GMT+0100 (WAT)] DEBUG productId: 6 -> true
+[Sun May 03 2015 16:39:43 GMT+0100 (WAT)] DEBUG getTimeEstimateAll->endpoint: http://uber.example.com:3000
+[Sun May 03 2015 16:39:45 GMT+0100 (WAT)] DEBUG Time Estimates: {"times":[]}
+[Sun May 03 2015 16:39:45 GMT+0100 (WAT)] DEBUG OldProductId: 21141cb0-76f7-4638-b26a-3122f27ce90a
+[Sun May 03 2015 16:39:45 GMT+0100 (WAT)] DEBUG NewProductId: 21141cb0-76f7-4638-b26a-3122f27ce90a
+[Sun May 03 2015 16:39:45 GMT+0100 (WAT)] DEBUG Datahash Val: {"handlerTodo":"rides_book_trip","intent":"default_accept","confirmNeed":true,"lvlQueries":{"NO_START_LOCATION":1,"NO_END_LOCATION":1,"NO_RIDE_ETA":1},"startLat":"6.4564406","startLong":"3.5263378999999997","products":"true","productId":"21141cb0-76f7-4638-b26a-3122f27ce90a","productName":"uberX","errEndLocation":"NO_END_LOCATION","toLocKeyword":"office","endLong":"3.4365724","endLat":"6.4331551","errConfirmRequest":"NO_CONFIRM_REQUEST"}
+[Sun May 03 2015 16:39:45 GMT+0100 (WAT)] DEBUG productId: 5 -> true
+[Sun May 03 2015 16:39:45 GMT+0100 (WAT)] DEBUG Validation Predicate: 3
+[Sun May 03 2015 16:39:45 GMT+0100 (WAT)] DEBUG endLong: 0 -> false
+[Sun May 03 2015 16:39:45 GMT+0100 (WAT)] DEBUG endLong: 1 -> true
+[Sun May 03 2015 16:39:45 GMT+0100 (WAT)] DEBUG endLong: 2 -> false
+[Sun May 03 2015 16:39:45 GMT+0100 (WAT)] DEBUG Validation Predicate: 2
+[Sun May 03 2015 16:39:45 GMT+0100 (WAT)] DEBUG departureTime: 0 -> false
+[Sun May 03 2015 16:39:45 GMT+0100 (WAT)] DEBUG departureTime: 1 -> true
+[Sun May 03 2015 16:39:45 GMT+0100 (WAT)] DEBUG Validation Predicate: 1
+[Sun May 03 2015 16:39:45 GMT+0100 (WAT)] DEBUG confirmRequest: 0 -> false
+[Sun May 03 2015 16:39:45 GMT+0100 (WAT)] DEBUG confirmRequest: 1 -> true
+[Sun May 03 2015 16:39:45 GMT+0100 (WAT)] DEBUG Validation Predicate: 0
+[Sun May 03 2015 16:39:45 GMT+0100 (WAT)] DEBUG Datakey: confirmNeed, Validity Check: true
+[Sun May 03 2015 16:39:45 GMT+0100 (WAT)] DEBUG Datakey: startLong, Validity Check: true
+[Sun May 03 2015 16:39:45 GMT+0100 (WAT)] DEBUG Datakey: productId, Validity Check: true
+[Sun May 03 2015 16:39:45 GMT+0100 (WAT)] DEBUG Datakey: endLong, Validity Check: true
+[Sun May 03 2015 16:39:45 GMT+0100 (WAT)] DEBUG Datakey: departureTime, Validity Check: true
+[Sun May 03 2015 16:39:45 GMT+0100 (WAT)] DEBUG Datakey: confirmRequest, Validity Check: true
+[Sun May 03 2015 16:39:45 GMT+0100 (WAT)] DEBUG Response Predicate: 0
+[Sun May 03 2015 16:39:45 GMT+0100 (WAT)] DEBUG Datahash: {"handlerTodo":"rides_book_trip","intent":"default_accept","confirmNeed":true,"lvlQueries":{"NO_START_LOCATION":1,"NO_END_LOCATION":1,"NO_RIDE_ETA":1},"startLat":"6.4564406","startLong":"3.5263378999999997","products":"true","productId":"21141cb0-76f7-4638-b26a-3122f27ce90a","productName":"uberX","toLocKeyword":"office","endLong":"3.4365724","endLat":"6.4331551","errConfirmRequest":"NO_CONFIRM_REQUEST","confirmRequest":true}
+[Sun May 03 2015 16:39:45 GMT+0100 (WAT)] DEBUG Body: {"msg_id":"6104fb4e-a55c-4596-b3b1-fbde62450f40","_text":"yea","outcomes":[{"_text":"yea","intent":"default_accept","entities":{},"confidence":0.979}],"context":{"state":"RIDES_confirm_request","reference_time":"2015-05-03T15:39:42.000Z"},"user":{"slackId":"U02RN8W1T","name":"kachi","email":"kachi@mobilizr.net","first_name":"http://d1a3f4spazzrp4.cloudfront.net/car-types/mono/mono-black.png","last_name":"https://login.uber.com/oauth/authorize?response_type=code&client_id=wTO4c5RIwLi_gjwN1tw79JY4_1W2Im1w","full_name":"http://d1a3f4spazzrp4.cloudfront.net/car-types/mono/mono-black.png https://login.uber.com/oauth/authorize?response_type=code&client_id=wTO4c5RIwLi_gjwN1tw79JY4_1W2Im1w","is_admin":true,"avatar":"https://secure.gravatar.com/avatar/441587d4f0a03b4ce3aca5a1af3577c1.jpg?s=48&d=https%3A%2F%2Fslack.global.ssl.fastly.net%2F3654%2Fimg%2Favatars%2Fava_0012-48.png"},"clientHandle":"mobilizr"}
+[Sun May 03 2015 16:39:45 GMT+0100 (WAT)] DEBUG Indata: {"hasActiveRequest":{"_handler":{"handler":{"value":false},"resolved":true}},"yes_no":"yes"}
+[Sun May 03 2015 16:39:45 GMT+0100 (WAT)] DEBUG rides:kachi@mobilizr
+[Sun May 03 2015 16:39:45 GMT+0100 (WAT)] DEBUG Datahash.lvlQueries: {"NO_START_LOCATION":1,"NO_END_LOCATION":1,"NO_RIDE_ETA":1}
+[Sun May 03 2015 16:39:45 GMT+0100 (WAT)] DEBUG No more missing data: calling handleRequest for rides_book_trip
+[Sun May 03 2015 16:39:45 GMT+0100 (WAT)] DEBUG HandleRequest: handling for rides_book_trip... {"handlerTodo":"rides_book_trip","intent":"default_accept","confirmNeed":true,"lvlQueries":"{\"NO_START_LOCATION\":1,\"NO_END_LOCATION\":1,\"NO_RIDE_ETA\":1}","startLat":"6.4564406","startLong":"3.5263378999999997","products":"true","productId":"21141cb0-76f7-4638-b26a-3122f27ce90a","productName":"uberX","toLocKeyword":"office","endLong":"3.4365724","endLat":"6.4331551","errConfirmRequest":"NO_CONFIRM_REQUEST","confirmRequest":true}
+[Sun May 03 2015 16:39:45 GMT+0100 (WAT)] INFO RIDES Processor: Connecting to MQ Exchange <piper.events.out>...
+[Sun May 03 2015 16:39:45 GMT+0100 (WAT)] DEBUG module: RIDES, user: kachi, client: mobilizr, message: One second, let me see...
+[Sun May 03 2015 16:39:45 GMT+0100 (WAT)] INFO @blanka responded with "One second, let me see..."
+[Sun May 03 2015 16:39:45 GMT+0100 (WAT)] DEBUG Message: One second, let me see... sent to user kachi
+[Sun May 03 2015 16:39:45 GMT+0100 (WAT)] INFO RIDES Processor: <piper.events.out> connected
+[Sun May 03 2015 16:39:45 GMT+0100 (WAT)] INFO Uber Handler.onProcessorEvent for data {"handlerTodo":"rides_book_trip","intent":"default_accept","confirmNeed":true,"lvlQueries":"{\"NO_START_LOCATION\":1,\"NO_END_LOCATION\":1,\"NO_RIDE_ETA\":1}","startLat":"6.4564406","startLong":"3.5263378999999997","products":"true","productId":"21141cb0-76f7-4638-b26a-3122f27ce90a","productName":"uberX","toLocKeyword":"office","endLong":"3.4365724","endLat":"6.4331551","errConfirmRequest":"NO_CONFIRM_REQUEST","confirmRequest":true,"header":"request_ride"}
+[Sun May 03 2015 16:39:45 GMT+0100 (WAT)] DEBUG checkAuth.access_token: bWqdffscMpTQrXlnRPx3iIyXfVuLpd
+[Sun May 03 2015 16:39:47 GMT+0100 (WAT)] DEBUG requestEstimate->RESPONSE: {"price":{"surge_confirmation_href":null,"high_estimate":2629,"surge_confirmation_id":null,"minimum":2127,"low_estimate":2127,"surge_multiplier":1,"display":"NGN2,127-2,629","currency_code":"NGN"},"trip":{"distance_unit":"mile","duration_estimate":2216,"distance_estimate":7.38},"pickup_estimate":10}
+[Sun May 03 2015 16:39:47 GMT+0100 (WAT)] DEBUG Requesting ride...
+[Sun May 03 2015 16:39:49 GMT+0100 (WAT)] DEBUG rideRequest->RESPONSE: {"status":"processing","request_id":"59c0d41a-a391-471f-b7e5-fef37c203e8f","driver":null,"eta":5,"location":null,"vehicle":null,"surge_multiplier":1}
+[Sun May 03 2015 16:39:49 GMT+0100 (WAT)] DEBUG push.body: {"status":"processing","request_id":"59c0d41a-a391-471f-b7e5-fef37c203e8f","driver":null,"eta":5,"location":null,"vehicle":null,"surge_multiplier":1,"header":"request_response"}
+[Sun May 03 2015 16:39:49 GMT+0100 (WAT)] INFO Uber Handler: Connecting to MQ Exchange <piper.events.in>...
+[Sun May 03 2015 16:39:49 GMT+0100 (WAT)] DEBUG push.rdata: {"id":1430667589404,"user":"kachi","client":"mobilizr","module":"RIDES","body":{"status":"processing","request_id":"59c0d41a-a391-471f-b7e5-fef37c203e8f","driver":null,"eta":5,"location":null,"vehicle":null,"surge_multiplier":1,"header":"request_response","handler":"UBER"}}
+[Sun May 03 2015 16:39:49 GMT+0100 (WAT)] INFO Uber Handler:  MQ Exchange <piper.events.in> connected
+[Sun May 03 2015 16:39:49 GMT+0100 (WAT)] DEBUG onHandlerEvent-> msgid: 1430667589404, username: kachi, clientHandle: mobilizr, module: RIDES, data: {"status":"processing","request_id":"59c0d41a-a391-471f-b7e5-fef37c203e8f","driver":null,"eta":5,"location":null,"vehicle":null,"surge_multiplier":1,"header":"request_response","handler":"UBER"}
+[Sun May 03 2015 16:39:49 GMT+0100 (WAT)] DEBUG module: RIDES, user: kachi, client: mobilizr, message: Waiting for a driver's confirmation...
+[Sun May 03 2015 16:39:49 GMT+0100 (WAT)] INFO @blanka responded with "Waiting for a driver's confirmation..."
+[Sun May 03 2015 16:39:49 GMT+0100 (WAT)] DEBUG Message: Waiting for a driver's confirmation... sent to user kachi
+[Sun May 03 2015 16:45:07 GMT+0100 (WAT)] INFO Piper Controller: Connecting to MQ Exchange <piper.events.in>...
+[Sun May 03 2015 16:45:07 GMT+0100 (WAT)] INFO CHITCHAT Handler: Connecting to MQ Exchange <piper.events.out>...
+[Sun May 03 2015 16:45:07 GMT+0100 (WAT)] INFO SALES Handler: Connecting to MQ Exchange <piper.events.out>...
+[Sun May 03 2015 16:45:07 GMT+0100 (WAT)] INFO UBER Handler: Connecting to MQ Exchange <piper.events.out>...
+[Sun May 03 2015 16:45:08 GMT+0100 (WAT)] INFO Piper server listening on port 3000 in development mode
+[Sun May 03 2015 16:45:08 GMT+0100 (WAT)] INFO Successfully connected to: mongodb://localhost/piper
+[Sun May 03 2015 16:45:08 GMT+0100 (WAT)] INFO Updating registry for client mobilizr...
+[Sun May 03 2015 16:45:08 GMT+0100 (WAT)] INFO Updating registry for client c2gstudio...
+[Sun May 03 2015 16:45:08 GMT+0100 (WAT)] INFO Registered connection for client: mobilizr
+[Sun May 03 2015 16:45:08 GMT+0100 (WAT)] INFO Registered connection for client: c2gstudio
+[Sun May 03 2015 16:45:08 GMT+0100 (WAT)] INFO CHITCHAT Handler <piper.events.out>: Binding to mobilizr.chitchat...
+[Sun May 03 2015 16:45:08 GMT+0100 (WAT)] INFO CHITCHAT Handler <piper.events.out>: Binding to c2gstudio.chitchat...
+[Sun May 03 2015 16:45:09 GMT+0100 (WAT)] INFO Piper Controller: MQ Exchange <piper.events.in> connected
+[Sun May 03 2015 16:45:09 GMT+0100 (WAT)] INFO rides.*: <piper.events.out> connected
+[Sun May 03 2015 16:45:09 GMT+0100 (WAT)] INFO uber.routes: <piper.events.out> connected
+[Sun May 03 2015 16:45:12 GMT+0100 (WAT)] INFO MOBILIZR: Connection established...listening for messages
+[Sun May 03 2015 16:45:12 GMT+0100 (WAT)] INFO Welcome to Slack. You are @blanka of Mobilizr
+[Sun May 03 2015 16:45:12 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Opened
+[Sun May 03 2015 16:45:12 GMT+0100 (WAT)] INFO C2G STUDIO: Connection established...listening for messages
+[Sun May 03 2015 16:45:12 GMT+0100 (WAT)] INFO Welcome to Slack. You are @blonker of c2gstudio
+[Sun May 03 2015 16:45:12 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Opened
+[Sun May 03 2015 16:45:17 GMT+0100 (WAT)] INFO Piper Controller: Connecting to MQ Exchange <piper.events.in>...
+[Sun May 03 2015 16:45:17 GMT+0100 (WAT)] INFO CHITCHAT Handler: Connecting to MQ Exchange <piper.events.out>...
+[Sun May 03 2015 16:45:17 GMT+0100 (WAT)] INFO SALES Handler: Connecting to MQ Exchange <piper.events.out>...
+[Sun May 03 2015 16:45:18 GMT+0100 (WAT)] INFO UBER Handler: Connecting to MQ Exchange <piper.events.out>...
+[Sun May 03 2015 16:45:18 GMT+0100 (WAT)] INFO Piper server listening on port 3000 in development mode
+[Sun May 03 2015 16:45:18 GMT+0100 (WAT)] INFO Successfully connected to: mongodb://localhost/piper
+[Sun May 03 2015 16:45:18 GMT+0100 (WAT)] INFO Updating registry for client mobilizr...
+[Sun May 03 2015 16:45:18 GMT+0100 (WAT)] INFO Updating registry for client c2gstudio...
+[Sun May 03 2015 16:45:18 GMT+0100 (WAT)] INFO Registered connection for client: mobilizr
+[Sun May 03 2015 16:45:18 GMT+0100 (WAT)] INFO Registered connection for client: c2gstudio
+[Sun May 03 2015 16:45:18 GMT+0100 (WAT)] INFO CHITCHAT Handler <piper.events.out>: Binding to mobilizr.chitchat...
+[Sun May 03 2015 16:45:18 GMT+0100 (WAT)] INFO CHITCHAT Handler <piper.events.out>: Binding to c2gstudio.chitchat...
+[Sun May 03 2015 16:45:18 GMT+0100 (WAT)] INFO Piper Controller: MQ Exchange <piper.events.in> connected
+[Sun May 03 2015 16:45:18 GMT+0100 (WAT)] INFO rides.*: <piper.events.out> connected
+[Sun May 03 2015 16:45:19 GMT+0100 (WAT)] INFO uber.routes: <piper.events.out> connected
+[Sun May 03 2015 16:45:21 GMT+0100 (WAT)] INFO MOBILIZR: Connection established...listening for messages
+[Sun May 03 2015 16:45:21 GMT+0100 (WAT)] INFO Welcome to Slack. You are @blanka of Mobilizr
+[Sun May 03 2015 16:45:21 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Opened
+[Sun May 03 2015 16:45:21 GMT+0100 (WAT)] INFO C2G STUDIO: Connection established...listening for messages
+[Sun May 03 2015 16:45:21 GMT+0100 (WAT)] INFO Welcome to Slack. You are @blonker of c2gstudio
+[Sun May 03 2015 16:45:21 GMT+0100 (WAT)] INFO SLACK_CONNECTION: Connection Opened
