@@ -154,6 +154,8 @@ function onProcessorEvent(id, user, client, body) {
 									// cache request till surge accepted
 									cacheRequestData(id, user, client, body);
 								}
+							}).catch(function(error) {
+								logger.debug('checkSurge->ERROR: %s', JSON.stringify(error));
 							});
 					} else {
 						// cache request till authorized

@@ -290,7 +290,7 @@ var rideRequest = function (bearer_token, productId, startlat, startlng, endlat,
         },
         headers: getBearerHeadersJSON(bearer_token)
     };
-    if (surgeConfirmationId) requrl.qs.surge_confirmation_id = surgeConfirmationId;
+    if (surgeConfirmationId) requrl.json.surge_confirmation_id = surgeConfirmationId;
     
     return request(requrl).then(function(data) {
         try {
