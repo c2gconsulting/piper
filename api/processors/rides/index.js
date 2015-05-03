@@ -1143,9 +1143,19 @@ Rides.prototype.in = function(msgid, username, clientHandle, body) {
 				me.emit('message', Rides.MODULE, username, clientHandle, 'Thanks @' + username + '. Now hold on a minute...');
 				break;
 			case 'surge_link':
-				utils.shortenLink(body.surgeLink).then (function(shortSurgeLink) {
-					me.emit('message', Rides.MODULE, username, clientHandle, 'Surge pricing is in effect for this product. Click here to review and accept: ' + shortSurgeLink);
-				});
+				utils.shortenLink(body.surgeLink)
+					.then (function(shortSurgeLink) {
+						me.emit('message', Rides.MODULE, username, clientHandle, 'Surge pricing is in effect for this product. Click here to review and accept: ' + shortSurgeLink);
+					});
+					.catch(function(){
+						if (body.surgeLink) {
+							me.emit('message', Rides.MODULE, username, clientHandle, 'Surge pricing is in effect for this product. Click here to review and accept: ' + body.surgeLink);	
+						} else {
+							me.emit('message', Rides.MODULE, username, clientHandle, "Sorry can't get you a ride at this time. Please try again in a little bit", " ");
+							me.cancelRequest(username, clientHandle, {});
+							deleteActiveRequest(username, clientHandle);
+						}
+					})
 				break;
 			case 'surge_ack':
 				me.emit('message', Rides.MODULE, username, clientHandle, 'Thanks @' + username + '. Now hold on a minute...');
