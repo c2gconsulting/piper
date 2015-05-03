@@ -28,8 +28,7 @@ module.exports = {
       pub.publish('uber.routes', JSON.stringify(qdata));
     });
     res.send('OK');
-  },
-
+  }, 
   auth: function(req, res) {
     var code = req.query.code;
     var state = req.query.state;
@@ -88,7 +87,6 @@ module.exports = {
     }
     res.render('thankyou');
     //res.redirect('slack://open');
-    
   },
 
   surge: function(req, res) {

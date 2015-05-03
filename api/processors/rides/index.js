@@ -1,5 +1,4 @@
-var EventEmitter = require('events').EventEmitter
-
+var EventEmitter = require('events').EventEmitter;
 var cache = require('../../../shared/lib/cache').getRedisClient();
 var logger = require('../../../shared/lib/log');
 var mq = require('../../../shared/lib/mq');
@@ -21,7 +20,7 @@ var END_LOC = 12;
 
 
 cache.on("error", function (err) {
-    logger.error("Redis Error: " + err);
+    logger.error("Redis Error: " + err); 
 });
 
 var errKeys = Object.keys(errorContext);
@@ -1200,7 +1199,8 @@ Rides.prototype.processRequestUpdate = function(username, clientHandle, body) {
 			break;
 		case 'accepted':
 			if (body.driver) {
-				me.emit('message', Rides.MODULE, username, clientHandle, body.driver.name + ' (' + body.driver.rating +' stars) will be there in ' + body.eta + ' minutes in a ' + body.vehicle.make + ' ' + body.vehicle.model + ', registration ' + body.vehicle.license_plate + '. \nYou can reach him on ' + body.driver.phone_number);
+				var acceptedMessage = body.driver.name + ' (' + body.driver.rating +' stars) will be there in ' + body.eta + ' minutes in a ' + body.vehicle.make + ' ' + body.vehicle.model + ', registration ' + body.vehicle.license_plate + '. \nYou can reach him on ' + body.driver.phone_number;
+				me.emit('message', Rides.MODULE, username, clientHandle, acceptedMessage);
 				if (body.href) me.emit('message', Rides.MODULE, username, clientHandle, body.href);
 				//if (body.driver.picture_url != null) me.emit('message', Rides.MODULE, username, clientHandle, body.driver.picture_url);
 			} else {

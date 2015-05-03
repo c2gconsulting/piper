@@ -48,7 +48,7 @@ var getAuthorizeLink = function (state, responseType) {
     if (!responseType) responseType = 'code';
     return authorize_url + '?response_type=' + responseType + '&client_id=' + UBER_CLIENT_ID + '&state=' + state + '&scope=' + scope; 
 };
-
+ 
 /**
  * getDriverMap Returns a link to a google map image with driver location. 
  * @param clat Map center latitude (user location)

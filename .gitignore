@@ -11,3 +11,6 @@ tmp/dbinit.js
 dump.rdb
 shared/tmp/piper.log
 shared/tmp/piper1.log
+
+#Code settings files
+.settings/*

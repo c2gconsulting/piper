@@ -1,4 +1,4 @@
-var EventEmitter = require('events').EventEmitter
+var EventEmitter = require('events').EventEmitter;
 var Slack = require('slack-client');
 var wit = require('../shared/lib/wit');
 var db = require('../shared/lib/db');
