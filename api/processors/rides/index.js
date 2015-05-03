@@ -1146,8 +1146,7 @@ Rides.prototype.in = function(msgid, username, clientHandle, body) {
 				utils.shortenLink(body.surgeLink)
 					.then (function(shortSurgeLink) {
 						me.emit('message', Rides.MODULE, username, clientHandle, 'Surge pricing is in effect for this product. Click here to review and accept: ' + shortSurgeLink);
-					});
-					.catch(function(){
+					}).catch(function(){
 						if (body.surgeLink) {
 							me.emit('message', Rides.MODULE, username, clientHandle, 'Surge pricing is in effect for this product. Click here to review and accept: ' + body.surgeLink);	
 						} else {
@@ -1155,7 +1154,7 @@ Rides.prototype.in = function(msgid, username, clientHandle, body) {
 							me.cancelRequest(username, clientHandle, {});
 							deleteActiveRequest(username, clientHandle);
 						}
-					})
+					});
 				break;
 			case 'surge_ack':
 				me.emit('message', Rides.MODULE, username, clientHandle, 'Thanks @' + username + '. Now hold on a minute...');
