@@ -92,9 +92,34 @@ module.exports = {
   },
 
   surge: function(req, res) {
-    // process surge confirmation follow up
-  },
+    var surge_confirmation_id = req.query.surge_confirmation_id;
+    var cachekey = CACHE_PREFIX + surge_confirmation_id;
+    logger.debug('CACHEKEY: %s', cachekey);
 
+    if (surge_confirmation_id) {
+      logger.debug('Surge Confirmation ID: %s', surge_confirmation_id);
+      
+          cache.get(cachekey).then(function(email) {
+            if (email) {
+              logger.debug('Cached email: %s', email);
+
+              // notify handler_main 
+              var pub = mq.context.socket('PUB', {routing: 'topic'});
+              qbody = { surge_confirmation_id : surge_confirmation_id };
+              qdata = { id : new Date().getTime(), email : email, header: 'surge', body : qbody };
+              logger.info('UBER_ROUTES_SURGE: Connecting to MQ Exchange <piper.events.out>...');
+              pub.connect('piper.events.out', function() {
+                logger.info('UBER_ROUTES_SURGE: <piper.events.out> connected');
+                pub.publish('uber.routes', JSON.stringify(qdata));
+              });
+            }
+            cache.del(cachekey);
+          });
+    }
+    res.render('thankyou');
+    //res.redirect('slack://open');
+    
+  },
   products: function(req, res) {
     var lat = req.query.lat;
     var lng = req.query.lng;

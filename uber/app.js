@@ -102,42 +102,50 @@ function onProcessorEvent(id, user, client, body) {
 			case 'request_ride':
 				checkAuth(user.email).then(function(access_token) {
 					if (access_token) {
-						logger.debug('Requesting ride...');
-						uber.rideRequest(access_token, body.productId, body.startLat, body.startLong, body.endLat, body.endLong, prod
-							).then(function(response) {
-								logger.debug('rideRequest->RESPONSE: %s', JSON.stringify(response));
-								var rbody = response;
-								rbody.header = 'request_response';
-								push(user.email, rbody);
-								cache.hset(CACHE_PREFIX + 'requests', response.request_id, user.email); // cache for lookup
-							}).catch(function(error) {
-								// handle errors:
-								//  - 422
-								//  - 409
-								logger.error('Ride Request Error: %s', JSON.stringify(error));
-								switch (error.statusCode) {
-									case 401:
-										if (error.error.code === 'unauthorized') {
-											cacheRequestData(id, user, client, body); // restart after auth
-											cache.hdel(emailCacheKey, 'access_token');
-											requestAuth(user.email);
-										} else {
-											var ebody = { header: 'request_error', status: 'other_error' };
-											push(user.email, ebody);
+						checkSurge(user.email, body).then(function(surge) {
+							if (!surge) {
+								logger.debug('Requesting ride...');
+								uber.rideRequest(access_token, body.productId, body.startLat, body.startLong, body.endLat, body.endLong, prod, body.surge_confirmation_id
+									).then(function(response) {
+										logger.debug('rideRequest->RESPONSE: %s', JSON.stringify(response));
+										var rbody = response;
+										rbody.header = 'request_response';
+										push(user.email, rbody);
+										cache.hset(CACHE_PREFIX + 'requests', response.request_id, user.email); // cache for lookup
+									}).catch(function(error) {
+										logger.error('Ride Request Error: %s', JSON.stringify(error));
+										switch (error.statusCode) {
+											case 401:
+												if (error.error.code === 'unauthorized') {
+													cacheRequestData(id, user, client, body); // restart after auth
+													cache.hdel(emailCacheKey, 'access_token');
+													requestAuth(user.email);
+												} else {
+													var ebody = { header: 'request_error', status: 'create_error' };
+													push(user.email, ebody);
+												}
+												break;
+											case 422:
+												var ebody = { header: 'request_error', status: 'create_error' };
+												push(user.email, ebody);
+												break;
+											case 409:
+												if (error.error.errors[0].code === 'surge') {
+													cacheRequestData(id, user, client, body); // restart after auth
+													requestSurgeConfirmation(user.email);
+												} else {
+													var ebody = { header: 'request_error', status: error.error.errors[0].code };
+													push(user.email, ebody);
+												}
+												break;
+											default:
+												var ebody = { header: 'request_error', status: 'create_error' };
+												push(user.email, ebody);
 										}
-										
-										break;
-									case 422:
-										var ebody = { header: 'request_error', status: 'other_error' };
-										push(user.email, ebody);
-										break;
-									case 409:
-										var ebody = { header: 'request_error', status: error.error.errors[0].code };
-										push(user.email, ebody);
-										break;
-									default:
-										var ebody = { header: 'request_error', status: 'other_error' };
-										push(user.email, ebody);
+									});
+								} else {
+									// cache request till surge accepted
+									cacheRequestData(id, user, client, body);
 								}
 							});
 					} else {
@@ -179,10 +187,31 @@ function onProcessorEvent(id, user, client, body) {
 									cache.hdel(CACHE_PREFIX + 'requests', body.requestId);
 								}
 							}).catch(function(error) {
-								// handle errors:
-								//  - 422
-								//  - 409
 								logger.error('Request Details Error: %s', JSON.stringify(error));
+								switch (error.statusCode) {
+									case 401:
+										if (error.error.code === 'unauthorized') {
+											cacheRequestData(id, user, client, body); // restart after auth
+											cache.hdel(emailCacheKey, 'access_token');
+											requestAuth(user.email);
+										} else {
+											var ebody = { header: 'request_error', status: 'retrieve_error' };
+											push(user.email, ebody);
+										}
+										
+										break;
+									case 422:
+										var ebody = { header: 'request_error', status: 'retrieve_error' };
+										push(user.email, ebody);
+										break;
+									case 409:
+										var ebody = { header: 'request_error', status: error.error.errors[0].code };
+										push(user.email, ebody);
+										break;
+									default:
+										var ebody = { header: 'request_error', status: 'retrieve_error' };
+										push(user.email, ebody);
+								}
 							});
 					}
 				});
@@ -220,10 +249,31 @@ function onProcessorEvent(id, user, client, body) {
 									cache.hdel(CACHE_PREFIX + 'requests', body.requestId);
 								}
 							}).catch(function(error) {
-								// handle errors:
-								//  - 422
-								//  - 409
 								logger.error('Request Details Hook Error: %s', JSON.stringify(error));
+								switch (error.statusCode) {
+									case 401:
+										if (error.error.code === 'unauthorized') {
+											cacheRequestData(id, user, client, body); // restart after auth
+											cache.hdel(emailCacheKey, 'access_token');
+											requestAuth(user.email);
+										} else {
+											var ebody = { header: 'request_error', status: 'hook_retrieve_error' };
+											push(user.email, ebody);
+										}
+										
+										break;
+									case 422:
+										var ebody = { header: 'request_error', status: 'hook_retrieve_error' };
+										push(user.email, ebody);
+										break;
+									case 409:
+										var ebody = { header: 'request_error', status: error.error.errors[0].code };
+										push(user.email, ebody);
+										break;
+									default:
+										var ebody = { header: 'request_error', status: 'hook_retrieve_error' };
+										push(user.email, ebody);
+								}
 							});
 					}
 				});
@@ -249,10 +299,31 @@ function onProcessorEvent(id, user, client, body) {
 								rbody.header = 'request_map';
 								push(user.email, rbody);
 							}).catch(function(error) {
-								// handle errors:
-								//  - 422
-								//  - 409
 								logger.error('Get Request Map Error: %s', JSON.stringify(error));
+								switch (error.statusCode) {
+									case 401:
+										if (error.error.code === 'unauthorized') {
+											cacheRequestData(id, user, client, body); // restart after auth
+											cache.hdel(emailCacheKey, 'access_token');
+											requestAuth(user.email);
+										} else {
+											var ebody = { header: 'request_error', status: 'retrieve_error' };
+											push(user.email, ebody);
+										}
+										
+										break;
+									case 422:
+										var ebody = { header: 'request_error', status: 'retrieve_error' };
+										push(user.email, ebody);
+										break;
+									case 409:
+										var ebody = { header: 'request_error', status: error.error.errors[0].code };
+										push(user.email, ebody);
+										break;
+									default:
+										var ebody = { header: 'request_error', status: 'retrieve_error' };
+										push(user.email, ebody);
+								}
 							});
 					}
 				});
@@ -268,10 +339,31 @@ function onProcessorEvent(id, user, client, body) {
 								rbody.header = 'request_receipt';
 								push(user.email, rbody);
 							}).catch(function(error) {
-								// handle errors:
-								//  - 422
-								//  - 409
 								logger.error('Get Request Receipt Error: %s', JSON.stringify(error));
+								switch (error.statusCode) {
+									case 401:
+										if (error.error.code === 'unauthorized') {
+											cacheRequestData(id, user, client, body); // restart after auth
+											cache.hdel(emailCacheKey, 'access_token');
+											requestAuth(user.email);
+										} else {
+											var ebody = { header: 'request_error', status: 'retrieve_error' };
+											push(user.email, ebody);
+										}
+										
+										break;
+									case 422:
+										var ebody = { header: 'request_error', status: 'retrieve_error' };
+										push(user.email, ebody);
+										break;
+									case 409:
+										var ebody = { header: 'request_error', status: error.error.errors[0].code };
+										push(user.email, ebody);
+										break;
+									default:
+										var ebody = { header: 'request_error', status: 'retrieve_error' };
+										push(user.email, ebody);
+								}
 							});
 					}
 				});
@@ -281,14 +373,35 @@ function onProcessorEvent(id, user, client, body) {
 					if (access_token) {
 						uber.cancelRequest(access_token, body.requestId, prod
 							).then(function(response) {
-								var rbody = { header: 'request_cancel' };
+								var rbody = { header: 'request_cancel', status: 'rider_canceled' };
 								push(user.email, rbody);
 								cache.hdel(CACHE_PREFIX + 'requests', body.requestId);
 							}).catch(function(error) {
-								// handle errors:
-								//  - 422
-								//  - 409
 								logger.error('Cancel Error: %s', JSON.stringify(error));
+								switch (error.statusCode) {
+									case 401:
+										if (error.error.code === 'unauthorized') {
+											cacheRequestData(id, user, client, body); // restart after auth
+											cache.hdel(emailCacheKey, 'access_token');
+											requestAuth(user.email);
+										} else {
+											var ebody = { header: 'request_error', status: 'delete_error' };
+											push(user.email, ebody);
+										}
+										
+										break;
+									case 422:
+										var ebody = { header: 'request_error', status: 'delete_error' };
+										push(user.email, ebody);
+										break;
+									case 409:
+										var ebody = { header: 'request_error', status: error.error.errors[0].code };
+										push(user.email, ebody);
+										break;
+									default:
+										var ebody = { header: 'request_error', status: 'delete_error' };
+										push(user.email, ebody);
+								}
 							});
 					}
 				});
@@ -314,6 +427,23 @@ function onRoutesEvent(data) {
 					if (requestData) {
 						logger.debug('RequestData: %s', requestData);
 						var jsonData = JSON.parse(requestData);
+						onProcessorEvent(new Date().getTime(), jsonData.user, jsonData.client, jsonData.body);
+					}
+				});
+				break;
+			case 'surge':
+				// send user acknowledgement
+				var body = { header : 'surge_ack' };
+				logger.debug('Calling push(%s,%s)', data.email,JSON.stringify(body));
+				push(data.email, body);
+
+				// pick up active request and process
+				var emailCacheKey = CACHE_PREFIX + data.email;
+				cache.hget(emailCacheKey, 'request_data').then(function(requestData) {
+					if (requestData) {
+						logger.debug('RequestData: %s', requestData);
+						var jsonData = JSON.parse(requestData);
+						jsonData.body.surge_confirmation_id = data.body.surge_confirmation_id;
 						onProcessorEvent(new Date().getTime(), jsonData.user, jsonData.client, jsonData.body);
 					}
 				});
@@ -399,6 +529,34 @@ function checkAuth(email) {
 		}
 	});
 }
+
+function checkSurge(email, body) {
+	// check cache for access token
+	var emailCacheKey = CACHE_PREFIX + email;
+	if (body.surge_confirmation_id) {
+		return false;
+	} else {
+		return cache.hget(emailCacheKey, 'access_token').then(function (access_token) {
+			return uber.getRequestEstimate(access_token, body.productId, body.startLat, body.startLong, body.endLat, body.endLong
+				).then(function(response) {
+					logger.debug('requestEstimate->RESPONSE: %s', JSON.stringify(response));
+					if (response.price.surge_multiplier > 1) {
+						requestSurgeConfirmation(email, response.price.surge_confirmation_id, response.price.surge_confirmation_href);
+						return true; // surge active
+					} else {
+						return false
+					}
+				});
+		});
+	}
+}
+
+function requestSurgeConfirmation(email, surge_confirmation_id, surge_confirmation_href) {
+	cache.set(CACHE_PREFIX + surge_confirmation_id, email); // cache for lookup					
+	var rbody = { header : 'surge_link', surgeLink : surge_confirmation_href };
+	push(email, rbody); // push to processor
+}
+
 
 function requestAuth(email) {
 	var ref = new Date().getTime(); // generate unique ref and persist along with user details in cache

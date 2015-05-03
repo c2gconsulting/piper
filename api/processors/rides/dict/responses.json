@@ -11,12 +11,12 @@
 	],
 	"NO_START_LOCATION" : [
 		"Ok. Just click here: @locationlink, and i'll pinpoint your current location",
-		"I still need your location. You can tell me your address or click here... @locationlink",
+		"I still need your location. Click here... @locationlink",
 		"I can't send your ride if I don't know where to send it. The link again... @locationlink",
 		"Sorry, can't proceed without your location. Click @locationlink"
 	],
 	"BAD_START_ADDRESS" : [
-		"I can't locate that address, can you correct it? Or maybe just click here: @locationlink, and i'll pinpoint your current location",
+		"I can't locate that address, just click here: @locationlink, and i'll pinpoint your current location",
 		"Nope, something is still not right with the address. Just click here... @locationlink",
 		"Can't locate you from the address so can't send a ride. The link again... @locationlink",
 		"Sorry, can't proceed without your location. Click @locationlink"

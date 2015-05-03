@@ -9,11 +9,13 @@ var responses = require('./dict/responses.json');
 var keywords = require('./dict/keywords.json');
 var errorContext = require('./dict/error_context.json');
 var when = require('when');
+var request = require('request-promise');
 var geo = require('./lib/geo');
 
 var CACHE_PREFIX = 'rides:';
 var MSGKEYS_TTL = 300;
 var CONTEXT_TTL = 1800;
+var ONE_DAY_TTL = 86400;
 var START_LOC = 11;
 var END_LOC = 12;
 
@@ -41,7 +43,7 @@ function Rides(data) {
 						'startLong',
 						'endLong',
 						'departureTime',
-						'carrier',
+						'productId',
 						'confirmRequest'
 					],
 		'rides_cancel_trip' : [
@@ -56,15 +58,17 @@ function Rides(data) {
 		'confirmCancellation' : [
 						function(d, b, i) {
 							var state = b.context.state;
-							if (d.confirmNeed !== true && d.confirmNeed !== 'true') return true; // no need to cancel, no active trip
-							if ((state === 'RIDES_confirm_cancellation' && i.yes_no === 'yes') || d.confirmCancellation === true) return d.confirmCancellation = true;
-							if (state === 'RIDES_confirm_cancellation' && d.intent === 'rides_cancel_trip') return d.confirmCancellation = true;
-							if ((state === 'RIDES_confirm_cancellation' && i.yes_no === 'no') || d.confirmCancellation === false)  {
-								d.confirmCancellation = false;
-								d.errConfirmCancellation = 'CANCEL_REQUEST_CANCEL';
+							return i.hasActiveRequest.then(function (requestActive) {
+								if (d.confirmNeed !== true && d.confirmNeed !== 'true' && !requestActive) return true; // no need to cancel, no active trip
+								if ((state === 'RIDES_confirm_cancellation' && i.yes_no === 'yes') || d.confirmCancellation === true) return d.confirmCancellation = true;
+								if (state === 'RIDES_confirm_cancellation' && d.intent === 'rides_cancel_trip') return d.confirmCancellation = true;
+								if ((state === 'RIDES_confirm_cancellation' && i.yes_no === 'no') || d.confirmCancellation === false)  {
+									d.confirmCancellation = false;
+									d.errConfirmCancellation = 'CANCEL_REQUEST_CANCEL';
+									return false;
+								}
 								return false;
-							}
-							return false;
+							});
 						}
 					],
 		'confirmNeed' : [
@@ -89,7 +93,7 @@ function Rides(data) {
 						function(d, b, i) {
 							return i.hasActiveRequest;
 						},
-						function(d, b, i) {
+						/*function(d, b, i) {
 							if (i.yes_no === 'no') {
 								d.cancelFlagSL = true; // if a 'no', assume cancellation by default. if the 'no' is expected by any subsequent validation, it should clear flag
 							} else {
@@ -97,7 +101,7 @@ function Rides(data) {
 								if (d.errStartLocation === 'CONFIRM_REQUEST_CANCEL') delete d.errStartLocation;
 							}
 							return false;
-						},	
+						},*/	
 						function(d, b, i) {
 							if(d.confirmNeed === false) return true; // exit validations if trip cancelled
 							if (!d.startLong || d.startLong === 0) return false;
@@ -123,7 +127,7 @@ function Rides(data) {
 													d.startLong = location.longt;
 													d.startLat = location.lat;
 													delete d.currLocation;
-													if (d.errStartLocation === 'BAD_START_ADDRESS') delete data.errStartLocation;
+													if (d.errStartLocation === 'BAD_START_ADDRESS') delete d.errStartLocation;
 													return true;
 												} else {
 													d.errStartLocation = 'BAD_START_ADDRESS';
@@ -144,7 +148,7 @@ function Rides(data) {
 												d.startLong = location.longt;
 												d.startLat = location.lat;
 												delete d.currLocation;
-												if (d.errStartLocation === 'BAD_START_ADDRESS') delete data.errStartLocation;
+												if (d.errStartLocation === 'BAD_START_ADDRESS') delete d.errStartLocation;
 												return true;
 											} else {
 												d.errStartLocation = 'BAD_START_ADDRESS';
@@ -210,7 +214,7 @@ function Rides(data) {
 						function(d, b, i) {
 							return i.hasActiveRequest;
 						},
-						function(d, b, i) {
+						/*function(d, b, i) {
 							if (i.yes_no === 'no') {
 								d.cancelFlagEL = true; // if a 'no', assume cancellation by default. if the 'no' is expected by any subsequent validation, it should clear flag
 							} else {
@@ -218,10 +222,11 @@ function Rides(data) {
 								if (d.errEndAddress === 'CONFIRM_REQUEST_CANCEL') delete d.errEndAddress;
 							}
 							return false;
-						},
+						},*/
 						function(d, b, i) {
 							if(d.confirmNeed === false) return true; // exit validations if trip cancelled
 							if (!d.endLong || d.endLong === 0) return false;
+							if (d.errEndLocation === 'NO_END_LOCATION') delete d.errEndLocation;
 							return true;
 						},
 						function(d, b, i) {
@@ -243,7 +248,7 @@ function Rides(data) {
 													d.endLong = location.longt;
 													d.endLat = location.lat;
 													delete d.currLocation;
-													if (d.errEndLocation === 'BAD_END_ADDRESS') delete data.errEndLocation;
+													if (d.errEndLocation === 'BAD_END_ADDRESS') delete d.errEndLocation;
 													return true;
 												} else {
 													d.errEndLocation = 'BAD_END_ADDRESS';
@@ -264,7 +269,7 @@ function Rides(data) {
 												d.endLong = location.longt;
 												d.endLat = location.lat;
 												delete d.currLocation;
-												if (d.errEndLocation === 'BAD_END_ADDRESS') delete data.errEndLocation;
+												if (d.errEndLocation === 'BAD_END_ADDRESS') delete d.errEndLocation;
 												return true;
 											} else {
 												d.errEndLocation = 'BAD_END_ADDRESS';
@@ -307,7 +312,7 @@ function Rides(data) {
 						function(d, b, i) {
 							return i.hasActiveRequest;
 						},
-						function(d, b, i) {
+						/*function(d, b, i) {
 							if (i.yes_no === 'no') {
 								d.cancelFlagDT = true; // if a 'no', assume cancellation by default. if the 'no' is expected by any subsequent validation, it should clear flag
 							} else {
@@ -315,17 +320,17 @@ function Rides(data) {
 								if (d.errDepartureTime === 'CONFIRM_REQUEST_CANCEL') delete d.errDepartureTime;
 							}
 							return false;
-						},
+						},*/
 						function(d, b, i) {
 							if(d.confirmNeed === false) return true; // exit validations if trip cancelled
 							return true;
 						}
 					],
-		'carrier' 	: [
+		'productId' 	: [
 						function(d, b, i) {
 							return i.hasActiveRequest;
 						},
-						function(d, b, i) {
+						/*function(d, b, i) {
 							if (i.yes_no === 'no') {
 								d.cancelFlagCA = true; // if a 'no', assume cancellation by default. if the 'no' is expected by any subsequent validation, it should clear flag
 							} else {
@@ -333,17 +338,180 @@ function Rides(data) {
 								if (d.errCarrier === 'CONFIRM_REQUEST_CANCEL') delete d.errCarrier;
 							}
 							return false;
-						},
+						},*/
 						function(d, b, i) {
 							if(d.confirmNeed === false) return true; // exit validations if trip cancelled
-							return true;
+							return false;
+						},
+						function(d, b, i) {
+							if(!d.products && d.startLong && d.startLong != 0) {
+								logger.debug('Going for products...');
+								return getProducts(b.user.name, b.clientHandle, d).then(function(prod) {
+									if (prod) {
+										var jProducts = JSON.parse(prod);
+										if (jProducts.products.length > 0) {
+											d.products = true;
+											d.productId = jProducts.products[0].product_id;
+											d.productName = jProducts.products[0].display_name;
+											if (d.carrier) {
+												jProducts.products.every(function(product) {
+													if (product.display_name.toLowerCase() === d.carrier.toLowerCase()) {
+														d.productId = product.product_id;
+														d.productName = product.display_name;
+														return false;
+													}
+													return true;
+												});
+												if (d.productName.toLowerCase() !== d.carrier.toLowerCase()) {
+													d.noPreferred = true;
+												} else {
+													delete d.noPreferred;
+												}
+											} 
+											if (d.unCarrier && d.noPreferred) {
+												jProducts.products.every(function(product) {
+													if (product.display_name.toLowerCase() !== d.unCarrier.toLowerCase()) {
+														d.productId = product.product_id;
+														d.productName = product.display_name;
+														return false;
+													}
+													return true;
+												});
+												if (d.productName.toLowerCase() === d.unCarrier.toLowerCase()) {
+													d.onlyUnPreferred = true;
+												} else {
+													delete d.onlyUnPreferred;
+												}
+											}
+											return true;
+										} else {
+											d.errProductId = 'NO_PRODUCTS_AVAILABLE';
+											return false;
+										}
+									} else {
+										return false;
+									}
+								});
+							} else {
+								return false;
+							}
+						},
+						function(d, b, i) {
+							var retVal = false;
+							if(i.carrier && i.yes_no !== 'no') {
+								d.carrier = i.carrier;
+								if (d.unCarrier && (d.unCarrier.toLowerCase() === d.carrier.toLowerCase())) delete d.unCarrier;
+							}
+							return retVal;
+						},
+						function(d, b, i) {
+							var retVal = false;
+							if(i.carrier && i.yes_no === 'no') {
+								d.unCarrier = i.carrier;
+								if (d.carrier && (d.unCarrier.toLowerCase() === d.carrier.toLowerCase())) delete d.carrier;
+							}
+							return retVal;
+						},
+						function(d, b, i) {
+							if(d.products) {
+								logger.debug('Going for time...');
+								return getTimeEstimateAll(b.user.name, b.clientHandle, d).then(function(etas) {
+									if (etas) {
+										var jEtas = JSON.parse(etas);
+										var oldProductId = d.productId;
+										logger.debug('OldProductId: %s', oldProductId);
+										logger.debug('NewProductId: %s', d.productId);
+										logger.debug('Datahash Val: %s', JSON.stringify(d));
+										if (jEtas.times.length > 0) {
+											d.productId = jEtas.times[0].product_id;
+											d.productName = jEtas.times[0].display_name;
+											if (oldProductId !== d.productId) {
+												if (d.carrier) {
+													jEtas.times.every(function(product) {
+														if (product.display_name.toLowerCase() === d.carrier.toLowerCase()) {
+															d.productId = product.product_id;
+															d.productName = product.display_name;
+															return false;
+														}
+														return true;
+													});
+													if (d.productName.toLowerCase() !== d.carrier.toLowerCase()) {
+														logger.debug('***************************************** prefVal: GOT HERE 1');
+														logger.debug('OldProductId: %s', oldProductId);
+														logger.debug('NewProductId: %s', d.productId);
+														d.noPreferred = true;
+													} else {
+														delete d.noPreferred;
+													}
+												} 
+												if (d.unCarrier && d.noPreferred) {
+													jEtas.times.every(function(product) {
+														if (product.display_name.toLowerCase() !== d.unCarrier.toLowerCase()) {
+															d.productId = product.product_id;
+															d.productName = product.display_name;
+															return false;
+														}
+														return true;
+													});
+													if (d.productName.toLowerCase() === d.unCarrier.toLowerCase()) {
+														logger.debug('***************************************** prefVal: GOT HERE 2');
+														d.onlyUnPreferred = true;
+													} else {
+														delete d.onlyUnPreferred;
+													}
+												}
+											} else {
+												if (i.carrier && i.yes_no !== 'no') {
+													jEtas.times.every(function(product) {
+														if (product.display_name.toLowerCase() === i.carrier.toLowerCase()) {
+															d.productId = product.product_id;
+															d.productName = product.display_name;
+															return false;
+														}
+														return true;
+													});
+													if (d.productName.toLowerCase() !== i.carrier.toLowerCase()) {
+														logger.debug('****************Strange, got here');
+														d.noPreferred = true;
+													} else {
+														delete d.noPreferred;
+													}
+												} else if (i.carrier && i.yes_no === 'no') {
+													jEtas.times.every(function(product) {
+														if (product.display_name.toLowerCase() !== i.carrier.toLowerCase()) {
+															d.productId = product.product_id;
+															d.productName = product.display_name;
+															return false;
+														}
+														return true;
+													});
+													if (d.productName.toLowerCase() === i.carrier.toLowerCase()) {
+														d.onlyUnPreferred = true;
+													} else {
+														delete d.onlyUnPreferred;
+													}
+												}
+											}
+										}
+										return true;
+									} else {
+										return false;
+									}
+								});
+							} else {
+								return false;
+							}
+						},
+						function(d, b, i) {
+							if (d.productId) return true;
+							return false;
 						}
 					],
 		'confirmRequest' : [
 						function(d, b, i) {
 							return i.hasActiveRequest;
 						},
-						function(d, b, i) {
+						/*function(d, b, i) {
 							if (i.yes_no === 'no') {
 								d.cancelFlagCR = true; // if a 'no', assume cancellation by default. if the 'no' is expected by any subsequent validation, it should clear flag
 							} else {
@@ -351,13 +519,7 @@ function Rides(data) {
 								if (d.errConfirmRequest === 'CONFIRM_REQUEST_CANCEL') delete d.errConfirmRequest;
 							}
 							return false;
-						},
-						function(d, b, i) {
-							return i.hasActiveRequest;
-						},
-						function(d, b, i) {
-							return i.hasActiveRequest;
-						},
+						},*/
 						function(d, b, i) {
 							var state = b.context.state;
 							if (d.confirmNeed === false) return true; // exit validations if trip cancelled
@@ -366,6 +528,7 @@ function Rides(data) {
 							}
 							if ((state === 'RIDES_confirm_request' && i.yes_no === 'no') || d.confirmRequest === false || d.confirmRequest === 'false')  {
 								d.confirmRequest = false;
+								d.errConfirmRequest = "CONFIRM_REQUEST_CANCEL";
 								return false;
 							}
 							return false;
@@ -425,15 +588,14 @@ function Rides(data) {
 							return false;
 						});
 					},
-		'carrier' 	: function(user, clientHandle, data) {
-						if (data.preferredCarrier) {
-							if (!data.lvlCarrierQueries || isNaN(data.lvlCarrierQueries)) data.lvlCarrierQueries = 0;
-							while (!responses.carrier[data.lvlCarrierQueries] && data.lvlCarrierQueries > 0) data.lvlCarrierQueries--;
-							var responseText = responses.carrier[data.lvlCarrierQueries] ? responses.carrier[data.lvlCarrierQueries].replace("@preferredCarrier", data.preferredCarrier) : "I'm a bit confused..."; 
-							data.lvlCarrierQueries++;
+		'productId' : function(user, clientHandle, data) {
+						if (!data.errProductId || errKeys.indexOf(data.errProductId) < 0) return true; 
+						var responseText = getResponse(data, data.errProductId);
+						responseText = responseText.replace("@username", user.name);
 						
-							me.emit('message', Rides.MODULE, user.name, clientHandle, responseText, Rides.MODULE + "_confirm_carrier");
-						} 
+						me.emit('message', Rides.MODULE, user.name, clientHandle, responseText, errorContext[data.errProductId]);
+						if (data.errProductId === 'NO_PRODUCTS_AVAILABLE') data.cancelFlag = true; // fatal error, cancel
+						delete data.errProductId;
 						return false;
 					},
 		'endLong': function(user, clientHandle, data) {
@@ -458,17 +620,85 @@ function Rides(data) {
 						return true;
 					},
 		'confirmRequest' : function(user, clientHandle, data) {
-						if (data.cancelFlagCR === true) {
+						/*if (data.cancelFlagCR === true) {
 							data.errConfirmRequest = "CONFIRM_REQUEST_CANCEL";
 							delete data.cancelFlagCR;
-						} else if (!data.errConfirmRequest || errKeys.indexOf(data.errConfirmRequest) < 0) {
+						} else */
+						if (!data.errConfirmRequest || errKeys.indexOf(data.errConfirmRequest) < 0) {
 							data.errConfirmRequest = 'NO_CONFIRM_REQUEST'; 
 						}
-						var responseText = getResponse(data, data.errConfirmRequest).replace("@username", user.name);
 						
-						me.emit('message', Rides.MODULE, user.name, clientHandle, responseText, errorContext[data.errConfirmRequest]);
-						delete data.errConfirmRequest;
-						return false;
+						if (data.errConfirmRequest === 'CONFIRM_REQUEST_CANCEL') {
+							var responseText = getResponse(data, data.errConfirmRequest);
+							responseText = responseText.replace("@username", user.name);
+							me.emit('message', Rides.MODULE, user.name, clientHandle, responseText, errorContext[data.errConfirmRequest]);
+							delete data.errConfirmRequest;
+							return false;
+						}
+
+						logger.debug('@@@@ CONFIRM REQUEST: 1');
+						// get ETA
+						if (data.productId) {
+							logger.debug('@@@@ CONFIRM REQUEST: 2');
+							return getTimeEstimate(user.name, clientHandle, data).then(function (etas) {
+								logger.debug('@@@@ CONFIRM REQUEST: 3');
+								if (etas) {
+									logger.debug('@@@@ CONFIRM REQUEST: 4');
+									jEtas = JSON.parse(etas);
+									if (jEtas.times && jEtas.times.length > 0) {
+										logger.debug('@@@@ CONFIRM REQUEST: 5');
+										return getPriceEstimate(user.name, clientHandle, data).then(function (prices) {
+											logger.debug('@@@@ CONFIRM REQUEST: 6');
+											jPrices = JSON.parse(prices);
+											
+											// price text
+											var priceText = '';
+											if (jPrices.prices && jPrices.prices.length > 0) priceText = 'for ' + jPrices.prices[0].estimate;
+											
+											// eta text
+											var etaSecs = jEtas.times[0].estimate;
+											var etaMins = Math.round(etaSecs / 60);
+											var etaText = etaMins === 1 ? (etaMins + ' min') : (etaMins + ' mins');
+											
+											var responseText = getResponse(data, data.errConfirmRequest).replace("@username", user.name);
+											responseText = responseText.replace("@eta", etaText);
+											responseText = responseText.replace("@product_name", data.productName);
+											responseText = responseText.replace("@price", priceText);
+
+											var prefixText = '';
+											if (data.noPreferred && data.carrier) {
+												prefixText = 'No ' + data.carrier + ' available... ';
+												delete data.noPreferred;
+												logger.debug('################ data.noPreferred: %s', data.noPreferred);
+											}
+
+											if (data.onlyUnPreferred && data.unCarrier) {
+												prefixText += 'Only the ' + data.unCarrier + ' available at the moment. ';
+												delete data.onlyUnPreferred;
+											}
+
+											responseText = prefixText + responseText;
+											me.emit('message', Rides.MODULE, user.name, clientHandle, responseText, errorContext[data.errConfirmRequest]);
+											delete data.errConfirmRequest;
+										});
+									
+									} else {
+										// no available rides
+										var responseText = getResponse(data, 'NO_RIDE_ETA');
+										me.emit('message', Rides.MODULE, user.name, clientHandle, responseText, errorContext['NO_RIDE_ETA']);
+									}
+									return false;
+								} else {
+									// no available rides
+									var responseText = getResponse(data, 'NO_RIDE_ETA');
+									me.emit('message', Rides.MODULE, user.name, clientHandle, responseText, errorContext['NO_RIDE_ETA']);
+									return false;
+								}
+							});
+						} else {
+							return true;
+						}
+
 					},
 		'infotype' : function(user, clientHandle, data) {
 						me.emit('message', Rides.MODULE, user.name, clientHandle, 'What do you want to know?', Rides.MODULE + "_info_query");
@@ -481,6 +711,13 @@ function Rides(data) {
 		'rides_cancel_trip' : function(user, clientHandle, data) {
 						if (data.confirmCancellation === true) {
 							me.cancelRequest(user.name, clientHandle, data);
+							getActiveRequest(user.name, clientHandle).then(function(activeRequest) {
+								if (activeRequest) {
+									var rbody = { header: 'cancel_request', requestId: activeRequest.request_id };
+									me.push(user, clientHandle, rbody);
+								}
+								deleteActiveRequest(user.name, clientHandle);
+							});
 							me.emit('message', Rides.MODULE, user.name, clientHandle, 'Fine, your trip request has been cancelled');
 						} else {
 							me.emit('message', Rides.MODULE, user.name, clientHandle, "You have no active ride requests to cancel");
@@ -498,6 +735,8 @@ function Rides(data) {
 						if (data.confirmNeed === false) {
 							logger.debug('HandleRequest: handling for rides_book_trip...calling cancelrequest');
 							me.cancelRequest(user.name, clientHandle, data);
+
+
 						} else {
 							// check if there's an active request
 							checkActiveRequest(user.name, clientHandle).then(function(active) {
@@ -537,6 +776,130 @@ function checkActiveRequest(username, clientHandle) {
 	});
 }
 
+function getActiveRequest(username, clientHandle) {
+	var userkey = getUserKey(username, clientHandle);
+	return cache.hgetall(userkey + ':activerequest');
+}
+
+function deleteActiveRequest(username, clientHandle) {
+	var userkey = getUserKey(username, clientHandle);
+	cache.del(userkey + ':activerequest');
+}
+
+function cacheActiveRequest(username, clientHandle, data) {
+	var userkey = getUserKey(username, clientHandle);
+
+	var activeRequest = {
+		request_id : data.request_id,
+		status : data.status,
+		eta    : data.eta
+	};
+	if (data.vehicle) activeRequest.vehicle = JSON.stringify(data.vehicle);
+	if (data.driver) activeRequest.driver = JSON.stringify(data.driver);
+	if (data.location) activeRequest.location = JSON.stringify(data.location);
+	if (data.href) activeRequest.href = data.href;
+
+	cache.hmset(userkey + ':activerequest', activeRequest);
+}
+
+
+
+function getHandlerEndpoint(username, clientHandle) {
+	var userkey = getUserKey(username, clientHandle);
+	return cache.hget(userkey + ':handler', 'endpoint_base').then(function(endpoint) {
+		if (!endpoint) {
+			return false;
+		} else {
+			return endpoint;
+		}
+	});
+}
+
+function getProducts(username, clientHandle, data) {
+	return getHandlerEndpoint(username, clientHandle).then (function (endpoint) {
+		if (endpoint) {
+			logger.debug('getProducts->endpoint: %s', endpoint);
+			var resource = '/v1/products' ;
+		    var requrl = {
+		        url : endpoint + resource,
+		        method : 'get',
+		        qs : {
+		            'lat': data.startLat,
+		            'lng' : data.startLong
+		        }
+		    };    
+		    return request(requrl);
+		} else {
+			return false;
+		}
+	});
+}
+
+function getTimeEstimate(username, clientHandle, data) {
+	return getHandlerEndpoint(username, clientHandle).then (function (endpoint) {
+		if (endpoint) {
+			logger.debug('getTimeEstimate->endpoint: %s', endpoint);
+			var resource = '/v1/estimates/time' ;
+		    var requrl = {
+		        url : endpoint + resource,
+		        method : 'get',
+		        qs : {
+		            'lat': data.startLat,
+		            'lng' : data.startLong
+		        }
+		    };
+		    if (data.productId) requrl.qs.product_id = data.productId;    
+		    return request(requrl);
+		} else {
+			return false;
+		}
+	});
+}
+
+function getPriceEstimate(username, clientHandle, data) {
+	return getHandlerEndpoint(username, clientHandle).then (function (endpoint) {
+		if (endpoint) {
+			logger.debug('getPriceEstimate->endpoint: %s', endpoint);
+			var resource = '/v1/estimates/price' ;
+		    var requrl = {
+		        url : endpoint + resource,
+		        method : 'get',
+		        qs : {
+		            'product_id': data.productId,
+		            'slat': data.startLat,
+		            'slng' : data.startLong,
+		            'elat': data.endLat,
+		            'elng' : data.endLong
+		        }
+		    };
+		    return request(requrl);
+		} else {
+			return false;
+		}
+	});
+}
+
+function getTimeEstimateAll(username, clientHandle, data) {
+	return getHandlerEndpoint(username, clientHandle).then (function (endpoint) {
+		if (endpoint) {
+			logger.debug('getTimeEstimateAll->endpoint: %s', endpoint);
+			var resource = '/v1/estimates/time' ;
+		    var requrl = {
+		        url : endpoint + resource,
+		        method : 'get',
+		        qs : {
+		            'lat': data.startLat,
+		            'lng' : data.startLong
+		        }
+		    };
+		    return request(requrl);
+		} else {
+			return false;
+		}
+	});
+}
+
+
 Rides.prototype = Object.create(EventEmitter.prototype);
 Rides.prototype.constructor = Rides;
 Rides.MODULE = 'RIDES';
@@ -562,24 +925,48 @@ Rides.prototype.init = function(){
  * @param body - JSON object with request details
  */
 Rides.prototype.out = function(user, client, body) {
+	var me = this;
 	var handlerTodo = '';
+
+	checkActiveRequest(user.name, client.slackHandle).then(function(activeRequest) {
+		if (body.outcomes[0].intent === 'rides_cancel_trip' || body.outcomes[0].intent === 'default_cancel_request') {
+			handlerTodo = 'rides_cancel_trip';
+		} else if (body.context.state === 'RIDES_confirm_cancellation' && body.outcomes[0].intent !== 'rides_request_trip') {
+			handlerTodo = 'rides_cancel_trip';
+		} else if (activeRequest && body.outcomes[0].intent === 'default_reject') {
+			handlerTodo = 'rides_cancel_trip';
+		} else if (activeRequest) {
+			handlerTodo = 'rides_get_info';
+		} else if (body.outcomes[0].intent === 'rides_request_price_estimate' || body.context.state === 'RIDES_request_price_estimate') {
+			handlerTodo = 'rides_request_price_estimate';
+		} else if (body.outcomes[0].intent === 'rides_request_eta' || body.context.state === 'RIDES_request_eta') {
+			handlerTodo = 'rides_request_eta';
+		} else if (body.outcomes[0].intent === 'rides_info_query' || body.context.state === 'RIDES_info_query' ) {
+			handlerTodo = 'rides_get_info';
+		} else {
+			handlerTodo = 'rides_book_trip';
+		}  
+	            
+	    me.processData(user, client.slackHandle, body, handlerTodo);
+	});
 	
-	if (body.outcomes[0].intent === 'rides_cancel_trip' || body.outcomes[0].intent === 'default_cancel_request' || body.context.state === 'RIDES_confirm_cancellation') {
-		handlerTodo = 'rides_cancel_trip';
-	} else if (body.outcomes[0].intent === 'rides_request_price_estimate' || body.context.state === 'RIDES_request_price_estimate') {
-		handlerTodo = 'rides_request_price_estimate';
-	} else if (body.outcomes[0].intent === 'rides_request_eta' || body.context.state === 'RIDES_request_eta') {
-		handlerTodo = 'rides_request_eta';
-	} else if (body.outcomes[0].intent === 'rides_info_query' || body.context.state === 'RIDES_info_query' ) {
-		handlerTodo = 'rides_get_info';
-	} else {
-		handlerTodo = 'rides_book_trip';
-	}  
-            
-    this.processData(user, client.slackHandle, body, handlerTodo);
+	
 
 }
 
+Rides.prototype.refreshHandlerEndpoint = function(user, clientHandle) {
+	var me = this;
+	var userkey = getUserKey(user.name, clientHandle);
+	return cache.hget(userkey + ':handler', 'endpoint_base').then(function(endpoint) {
+		if (!endpoint) {
+			var body = { header: 'get_endpoint_base' };
+			me.push(user, clientHandle, body);
+			return false;
+		} else {
+			return endpoint;
+		}
+	});
+}
 
 /**
  * Validate data sufficiency and trigger request to endpoint
@@ -592,6 +979,9 @@ Rides.prototype.processData = function(user, clientHandle, body, handlerTodo) {
     var username = user.name;
 	var userkey = getUserKey(username, clientHandle);
 	
+	this.refreshHandlerEndpoint(user, clientHandle);
+	
+
 	var indata = extractEntities(body);
 	indata.hasActiveRequest = checkActiveRequest(username, clientHandle);
 
@@ -601,6 +991,7 @@ Rides.prototype.processData = function(user, clientHandle, body, handlerTodo) {
 	}
 
 	body.user = user;
+	body.clientHandle = clientHandle;
 
 	// check if this is a new request from the user
 	cache.exists(userkey + ':datacheck').then(function (check) {
@@ -712,6 +1103,8 @@ Rides.prototype.processData = function(user, clientHandle, body, handlerTodo) {
 								logger.debug('No more missing data: calling handleRequest for %s', handlerTodo);
 								me.handleRequest[handlerTodo](user, clientHandle, datahash);
 
+							} else {
+								if (datahash.cancelFlag) me.cancelRequest(user.name, clientHandle, datahash);
 							}
 						});
 					});
@@ -720,7 +1113,7 @@ Rides.prototype.processData = function(user, clientHandle, body, handlerTodo) {
 		});
 		cache.expire(userkey + ':payload', CONTEXT_TTL);
 		cache.expire(userkey + ':datacheck', CONTEXT_TTL);
-		cache.expire(userkey + ':activerequest', CONTEXT_TTL);	// for now. change to end based on status	
+		//cache.expire(userkey + ':activerequest', CONTEXT_TTL);	// for now. change to end based on status	
 	});
 }
 
@@ -737,7 +1130,7 @@ Rides.prototype.cancelRequest = function(username, clientHandle, data) {
 
     cache.del(userkey + ':payload');
     cache.del(userkey + ':datacheck');
-    cache.del(userkey + ':activerequest'); // for now. Change to send handler request
+    //cache.del(userkey + ':activerequest'); // for now. Change to send handler request
     data = {};
 }
 	
@@ -749,6 +1142,7 @@ Rides.prototype.cancelRequest = function(username, clientHandle, data) {
  */
 Rides.prototype.in = function(msgid, username, clientHandle, body) {
 	var me = this;
+	var userkey = getUserKey(username, clientHandle);
 
 	// check for message uniqueness
 	if (this.msgid !== msgid) {
@@ -765,13 +1159,8 @@ Rides.prototype.in = function(msgid, username, clientHandle, body) {
 						var handlerTodo = 'rides_book_trip';
 						var rbody = { context: { state : Rides.MODULE }};
 						getAddressByCoords(body.lat, body.longt).then (function(address) {
-							if (address) {
-								// fill in address on body
-								rbody.outcomes = [{ 'entities': { 
-															'geofrom': [{"value": address}] 
-														}
-												 }];
-							}
+							logger.debug('Address: %s', address);
+							if (address) rbody.outcomes = [{ 'entities': { 'geofrom': [{"value": address}] }}];
 							if (user) me.processData(user, clientHandle, rbody, handlerTodo);
 						});
 						
@@ -786,13 +1175,102 @@ Rides.prototype.in = function(msgid, username, clientHandle, body) {
 			case 'auth_ack':
 				me.emit('message', Rides.MODULE, username, clientHandle, 'Thanks @' + username + '. Now hold on a minute...');
 				break;
+			case 'endpoint_base':
+				cache.hset(userkey + ':handler', 'endpoint_base', body.endpoint);
+				cache.expire(userkey + ':handler', ONE_DAY_TTL);
+				break;
+			case 'request_response':
+				me.processRequestUpdate(username, clientHandle, body);	
+				break;	
+			case 'request_error':
+				me.processRequestError(username, clientHandle, body);	
+				break;	
+			case 'request_details':
+				me.processRequestUpdate(username, clientHandle, body);	
+				break;	
+			case 'request_details_hook':
+				getActiveRequest(username, clientHandle).then(function(activeRequest) {
+					if (activeRequest && !(activeRequest.status === body.status && body.header === 'request_details_hook')) {
+						me.processRequestUpdate(username, clientHandle, body);
+					}
+				});
+				break;	
 		}
-		
 		this.msgid = msgid;
 	}
 		
 }
 
+Rides.prototype.processRequestUpdate = function(username, clientHandle, body) {
+	var me = this;
+	cacheActiveRequest(username, clientHandle, body);
+	switch (body.status) {
+		case 'processing':
+			me.emit('message', Rides.MODULE, username, clientHandle, 'Waiting for a driver\'s confirmation...');
+			break;
+		case 'accepted':
+			me.emit('message', Rides.MODULE, username, clientHandle, 'Your ride is on its way...');
+			if (body.driver) {
+				me.emit('message', Rides.MODULE, username, clientHandle, body.driver.name + ' (' + body.driver.rating +' stars) will be there in ' + body.eta + ' minutes in a ' + body.vehicle.make + ' ' + body.vehicle.model + ', registration ' + body.vehicle.license_plate);
+				if (body.href) me.emit('message', Rides.MODULE, username, clientHandle, body.href);
+				//if (body.driver.picture_url != null) me.emit('message', Rides.MODULE, username, clientHandle, body.driver.picture_url);
+				me.emit('message', Rides.MODULE, username, clientHandle, 'You can reach him on ' + body.driver.phone_number);
+			} 
+			break;
+		case 'arriving':
+			me.emit('message', Rides.MODULE, username, clientHandle, "Your ride has arrived");
+			if (body.href) me.emit('message', Rides.MODULE, username, clientHandle, body.href);
+			break;
+		case 'no_drivers_available':
+			me.emit('message', Rides.MODULE, username, clientHandle, "Sorry, no drivers available", " ");
+			me.cancelRequest(username, clientHandle, {});
+			deleteActiveRequest(username, clientHandle);
+			break;
+		case 'in_progress':
+			break;
+		case 'driver_canceled':
+			me.emit('message', Rides.MODULE, username, clientHandle, "Sorry, the driver canceled...", " ");
+			me.cancelRequest(username, clientHandle, {});
+			deleteActiveRequest(username, clientHandle);
+			break;
+		case 'rider_canceled':
+			me.emit('message', Rides.MODULE, username, clientHandle, "Your ride has been canceled", " ");
+			me.cancelRequest(username, clientHandle, {});
+			deleteActiveRequest(username, clientHandle);
+			break;
+		case 'completed':
+			me.cancelRequest(username, clientHandle, {});
+			deleteActiveRequest(username, clientHandle);
+			break;
+	}
+}
+
+Rides.prototype.processRequestError = function(username, clientHandle, body) {
+	var me = this;
+	switch (body.status) {
+		case 'no_drivers_available':
+			me.emit('message', Rides.MODULE, username, clientHandle, "Sorry, no drivers available", " ");
+			me.cancelRequest(username, clientHandle, {});
+			deleteActiveRequest(username, clientHandle);
+			break;
+		case 'in_progress':
+			break;
+		case 'driver_canceled':
+			me.emit('message', Rides.MODULE, username, clientHandle, "Sorry, the driver canceled...", " ");
+			me.cancelRequest(username, clientHandle, {});
+			deleteActiveRequest(username, clientHandle);
+			break;
+		case 'other_error':
+			me.emit('message', Rides.MODULE, username, clientHandle, "Sorry @" + username + " can't find you a ride at this time. Try again later", " ");
+			me.cancelRequest(username, clientHandle, {});
+			deleteActiveRequest(username, clientHandle);
+			break;
+		case 'completed':
+			me.cancelRequest(username, clientHandle, {});
+			deleteActiveRequest(username, clientHandle);
+			break;
+	}
+}
 
 /**
  * Push a message to the message exchange for a handler to pick up
@@ -815,6 +1293,10 @@ function setUserGeoData(username, clientHandle, body) {
 	cache.hset(userkey + ':payload', 'startLong', body.longt);
 }
 
+function setProductsData(username, clientHandle, body) {
+	var userkey = getUserKey(username, clientHandle);
+	cache.hset(userkey + ':payload', 'products', JSON.stringify(body.products));
+}
 
 function extractEntities(body) {
 	var indata = {};
@@ -834,7 +1316,7 @@ function extractEntities(body) {
 
 function getLocationByAddress(address) {
 	return geo.getCode(address).then(function(data){
-		//logger.info('Geo data: ' + JSON.stringify(data));
+		logger.info('Geo data: ' + JSON.stringify(data));
 		if (data.status === 'OK' && data.results[0].geometry.location.lng) {
 			return {longt : data.results[0].geometry.location.lng, lat : data.results[0].geometry.location.lat };
 		} else {
@@ -881,7 +1363,7 @@ function getLocationKeyword(location) {
 		logger.debug('keywordList: %s', keywordList);
 		keywordList.forEach(function(keyword) {
 			logger.debug('location.search(%s): %s', keyword, location.search(keyword));
-			if (location.search(keyword) > -1) {
+			if (location.search(keyword) > -1 && location.length < keyword.length + 4) {
 				reqkey = lkKey;
 			}
 		});
@@ -1017,8 +1499,6 @@ function setTerminal(d, b, i) {
 
 
 }
-
-
 
 
 function getLocationLink(username, clientHandle){
