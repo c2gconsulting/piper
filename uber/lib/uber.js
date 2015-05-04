@@ -1,6 +1,7 @@
 var request = require('request-promise');
 var when = require('when');
 var _ = require('underscore');
+var utils = require('../../shared/lib/utils');
 
 // AUTH details
 var UBER_CLIENT_ID = "wTO4c5RIwLi_gjwN1tw79JY4_1W2Im1w";
@@ -15,9 +16,20 @@ var base_url = exports.base_url = "https://api.uber.com",
     login_url = exports.login_url = "https://login.uber.com",
     redirect_uri = exports.redirect_uri = "https://uber.piperlabs.com/oauth";
 
+var uber_map_image = 'http://j.mp/vublack';
+
+var scope = 'profile request history';
+
 var getBearerHeaders = function (bearer_token, others) {
     return _.extend(others || {}, {
         'Authorization': 'Bearer ' + bearer_token
+    });
+};
+
+var getBearerHeadersJSON = function (bearer_token, others) {
+    return _.extend(others || {}, {
+        'Authorization': 'Bearer ' + bearer_token,
+        'Content-Type': 'application/json'
     });
 };
 
@@ -34,8 +46,23 @@ var getTokenHeaders = function () {
  */
 var getAuthorizeLink = function (state, responseType) {
     if (!responseType) responseType = 'code';
-    return authorize_url + '?response_type=' + responseType + '&client_id=' + UBER_CLIENT_ID + '&state=' + state; 
+    return authorize_url + '?response_type=' + responseType + '&client_id=' + UBER_CLIENT_ID + '&state=' + state + '&scope=' + scope; 
 };
+ 
+/**
+ * getDriverMap Returns a link to a google map image with driver location. 
+ * @param clat Map center latitude (user location)
+ * @param clng Map center longitude (user location)
+ * @param dlat Driver latitude
+ * @param dlng Driver longitude
+ */
+var getDriverMap = function(clat,clng,dlat,dlng) {
+    var clatlongt = clat + ',' + clng;
+    var dlatlongt = dlat + ',' + dlng;
+    return utils.shortenLink('http://maps.googleapis.com/maps/api/staticmap?center=' + clatlongt + '&size=400x400&markers=icon:' + uber_map_image + '|' + dlatlongt);
+}
+
+
 
 /**
  * getUserAccessToken Retrieve access token for user authorization code. 
@@ -245,7 +272,7 @@ var getUserActivity = function (bearer_token, offset, limit) {
  * @param startlng Longitude component of start location
  * @param endlat Latitude component of end location
  * @param endlng Longitude component of end location
- * @param prod Boolean to indicate if production or sandbox endpoints
+ * @param prod Boolean to indicate if production or sandbox endpoints (true=production)
  * @param surgeConfirmationId Surge confirmation id (optional)
  */
 var rideRequest = function (bearer_token, productId, startlat, startlng, endlat, endlng, prod, surgeConfirmationId) {
@@ -254,16 +281,16 @@ var rideRequest = function (bearer_token, productId, startlat, startlng, endlat,
     var requrl = {
         url : root_url + resource,
         method : 'post',
-        qs : {
+        json : {
             'product_id': productId,
             'start_latitude': startlat,
             'start_longitude' : startlng,
             'end_latitude': endlat,
             'end_longitude' : endlng
         },
-        headers: getBearerHeaders(bearer_token)
+        headers: getBearerHeadersJSON(bearer_token)
     };
-    if (surgeConfirmationId) requrl.qs.surge_confirmation_id = surgeConfirmationId;
+    if (surgeConfirmationId) requrl.json.surge_confirmation_id = surgeConfirmationId;
     
     return request(requrl).then(function(data) {
         try {
@@ -275,6 +302,39 @@ var rideRequest = function (bearer_token, productId, startlat, startlng, endlat,
 
 };
 
+/**
+ * getRequestEstimate Allows a ride to be estimated given the desired product, start, and end locations.  
+ * @param bearer_token OAuth 2.0 bearer token with the request scope
+ * @param startlat Latitude component of start location
+ * @param startlng Longitude component of start location
+ * @param endlat Latitude component of end location
+ * @param endlng Longitude component of end location
+ */
+var getRequestEstimate = function (bearer_token, productId, startlat, startlng, endlat, endlng, prod) {
+    var resource = '/v1/requests/estimate' ;
+    var root_url = prod === true ? base_url : sandbox_base_url;
+    var requrl = {
+        url : root_url + resource,
+        method : 'post',
+        json : {
+            'product_id': productId,
+            'start_latitude': startlat,
+            'start_longitude' : startlng,
+            'end_latitude': endlat,
+            'end_longitude' : endlng
+        },
+        headers: getBearerHeadersJSON(bearer_token)
+    };
+    
+    return request(requrl).then(function(data) {
+        try {
+            return JSON.parse(data);
+        } catch (e) {
+            return data;
+        }
+     });
+
+};
 
 /**
  * getRequestDetails Gets the real time status of an ongoing trip that was created using the Ride Request endpoint.
@@ -372,6 +432,7 @@ var getRequestReceipt = function (bearer_token, requestId, prod) {
 };
 
 module.exports.getAuthorizeLink = getAuthorizeLink;
+module.exports.getDriverMap = getDriverMap;
 module.exports.getUserAccessToken = getUserAccessToken;
 module.exports.getProducts = getProducts;
 module.exports.getProductDetails = getProductDetails;
@@ -379,6 +440,7 @@ module.exports.getPriceEstimates = getPriceEstimates;
 module.exports.getTimeEstimates = getTimeEstimates;
 module.exports.getUserActivity = getUserActivity;
 module.exports.rideRequest = rideRequest;
+module.exports.getRequestEstimate = getRequestEstimate;
 module.exports.getRequestDetails = getRequestDetails;
 module.exports.cancelRequest = cancelRequest;
 module.exports.getRequestMap = getRequestMap;

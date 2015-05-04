@@ -9,5 +9,8 @@ node_modules
 #Temporary local files
 tmp/dbinit.js
 dump.rdb
-shared/tmp/piper.log
-shared/tmp/piper1.log
+shared/tmp
+
+#Code settings files
+.settings/*
+typings

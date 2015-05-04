@@ -11,7 +11,9 @@
 	"NO_CARRIER" : "RIDES_check_carrier",
 	"NO_CONFIRM_NEED" : "RIDES_confirm_ride_needed",
 	"NO_CONFIRM_CANCEL" : "RIDES_confirm_cancellation",
+	"NO_RIDE_ETA" : "RIDES_confirm_request",
 	"NO_CONFIRM_REQUEST" : "RIDES_confirm_request",
+	"NO_PRODUCTS_AVAILABLE" : " ",
 	"CONFIRM_REQUEST_CANCEL" : "RIDES_confirm_cancellation",
 	"CANCEL_REQUEST_CANCEL" : "RIDES_confirm_ride_needed"
 }

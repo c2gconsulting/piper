@@ -17,18 +17,18 @@ module.exports = {
     // retrieve message from uber
     // process and set on message queue
     var qbody = req.body;
+    logger.debug('================> Hook: $s', JSON.stringify(qbody));
 
     // notify handler_main 
     var pub = mq.context.socket('PUB', {routing: 'topic'});
-    qdata = { id : new Date().getTime(), header : 'webhook', body : qbody };
+    var qdata = { id : new Date().getTime(), header : 'webhook', body : qbody };
     logger.info('UBER_ROUTES_HOOKS: Connecting to MQ Exchange <piper.events.out>...');
     pub.connect('piper.events.out', function() {
       logger.info('UBER_ROUTES_HOOKS: <piper.events.out> connected');
       pub.publish('uber.routes', JSON.stringify(qdata));
     });
-
-  },
-
+    res.send('OK');
+  }, 
   auth: function(req, res) {
     var code = req.query.code;
     var state = req.query.state;
@@ -67,11 +67,12 @@ module.exports = {
               //update cache
               var emailCacheKey = CACHE_PREFIX + userdata.email;
               cache.hset(emailCacheKey, 'access_token', data.access_token); // save to cache
+              cache.expire(emailCacheKey, data.expires_in);
 
               // notify handler_main 
               var pub = mq.context.socket('PUB', {routing: 'topic'});
-              qbody = { access_token : data.access_token };
-              qdata = { id : new Date().getTime(), email : userdata.email, header: 'auth', body : qbody };
+              var qbody = { access_token : data.access_token };
+              var qdata = { id : new Date().getTime(), email : userdata.email, header: 'auth', body : qbody };
               logger.info('UBER_ROUTES_AUTH: Connecting to MQ Exchange <piper.events.out>...');
               pub.connect('piper.events.out', function() {
                 logger.info('UBER_ROUTES_AUTH: <piper.events.out> connected');
@@ -85,11 +86,77 @@ module.exports = {
 
     }
     res.render('thankyou');
-    
+    //res.redirect('slack://open');
   },
 
   surge: function(req, res) {
-    // process surge confirmation follow up
+    var surge_confirmation_id = req.query.surge_confirmation_id;
+    var cachekey = CACHE_PREFIX + surge_confirmation_id;
+    logger.debug('CACHEKEY: %s', cachekey);
+
+    if (surge_confirmation_id) {
+      logger.debug('Surge Confirmation ID: %s', surge_confirmation_id);
+      
+          cache.get(cachekey).then(function(email) {
+            if (email) {
+              logger.debug('Cached email: %s', email);
+
+              // notify handler_main 
+              var pub = mq.context.socket('PUB', {routing: 'topic'});
+              var qbody = { surge_confirmation_id : surge_confirmation_id };
+              var qdata = { id : new Date().getTime(), email : email, header: 'surge', body : qbody };
+              logger.info('UBER_ROUTES_SURGE: Connecting to MQ Exchange <piper.events.out>...');
+              pub.connect('piper.events.out', function() {
+                logger.info('UBER_ROUTES_SURGE: <piper.events.out> connected');
+                pub.publish('uber.routes', JSON.stringify(qdata));
+              });
+            }
+            cache.del(cachekey);
+          });
+    }
+    res.render('thankyou');
+    //res.redirect('slack://open');
+    
+  },
+  products: function(req, res) {
+    var lat = req.query.lat;
+    var lng = req.query.lng;
+    uber.getProducts(lat,lng)
+      .then(function(data) {
+        logger.debug('Products: %s', JSON.stringify(data));
+        if (data) res.json(data);
+      }).catch(function(data) {
+        logger.error('Cannot process request: %s', JSON.stringify(data));
+        if (data) res.json(data);
+      });
+  },
+  timeEstimates: function(req, res) {
+    var lat = req.query.lat;
+    var lng = req.query.lng;
+    var productId = req.query.product_id;
+    uber.getTimeEstimates(lat,lng, productId
+      ).then(function(data) {
+        logger.debug('Time Estimates: %s', JSON.stringify(data));
+        if (data) res.json(data);
+      }).catch(function(data) {
+          logger.error('Cannot process request: %s', JSON.stringify(data));
+          if (data) res.json(data);
+      });
+  },
+  priceEstimates: function(req, res) {
+    var slat = req.query.slat;
+    var slng = req.query.slng;
+    var elat = req.query.elat;
+    var elng = req.query.elng;
+    uber.getPriceEstimates(slat,slng,elat,elng)
+      .then(function(data) {
+        logger.debug('Price Estimates: %s', JSON.stringify(data));
+        if (data) res.json(data);
+      }).catch(function(data) {
+            logger.error('Cannot process request: %s', JSON.stringify(data));
+            if (data) res.json(data);
+      });
   }
+
 
 }

@@ -19,6 +19,7 @@ window.onload = function(){
   } else {
     error('not supported');
   }
+
 }
 
 function success(position) {
@@ -67,6 +68,10 @@ function success(position) {
     socket = io();
   }
   socket.emit('geodata', returnPackage);
+  if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+    window.location.href = 'slack://open';
+  }
+
   
 
 }
@@ -79,7 +84,9 @@ function error(msg) {
   s.className = 'fail';
   
   cl.innerHTML = "Close this window and return to your chat...";
-  
+  if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+    window.location.href = 'slack://open';
+  }
 }
 
 

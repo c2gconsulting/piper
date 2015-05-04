@@ -13,7 +13,7 @@ var cache = require('../shared/lib/cache').getRedisClient();
 
 var CACHE_PREFIX = 'api-server:';
 var ERROR_RESPONSE_CODE = 422;
-var CONTEXT_TTL = 7200;
+var CONTEXT_TTL = 36000;
 
 var w = [];
 var processors = [];
@@ -417,11 +417,22 @@ var onSlackEvent = function(user, client, message) {
 		
 		// Interprete inbound message -> wit
 		var intentBody;
+		var processorMap = require('./processors/map.json');
+				
+
 		wit.captureTextIntent(witAccessToken, message.text, inContext, function(error,feedback) {
 			if (error) {
 				var response = JSON.stringify(feedback);
-				logger.error('Error retrieving intent from wit.ai: '+ JSON.stringify(error));
+				logger.error('ALARM! -> Error retrieving intent from wit.ai: '+ JSON.stringify(error));
 				logger.debug('Feedback: ' + JSON.stringify(feedback));
+				
+				cache.hset(userkey, 'state', inContext.state); // retain context in cache
+				cache.expire(userkey, CONTEXT_TTL);
+				
+				var Processor = require(processorMap.processors[0][getModule('intent_not_found')]);
+				processMessage(user, client, Processor, { _text: message.text });
+				logger.debug('WIT error, defaulting to ' + getModule('intent_not_found'));
+				
 				
 				// Reply
 				//channel.send(response);
@@ -432,30 +443,29 @@ var onSlackEvent = function(user, client, message) {
 				logger.debug('IntentBody: %s', JSON.stringify(intentBody));
 
 				// Retrieve processor
-				var processorMap = require('./processors/map.json');
 				var intent = intentBody.outcomes[0]['intent'];
 
 				logger.debug("Intent: " + intent);
 
 				// Check confidence level
 
-				var intentChanged = false;
+				var retainState = false;
 				if (intentBody.outcomes[0]['confidence'] < witConfig.MIN_CONFIDENCE) {
-					intent = 'intent_not_found';
-					intentChanged = true; // don't change state if intent changed
+					intent = 'no_intent';
+					retainState = true; // don't change state if intent changed
 					logger.info('Low confidence, changing intent to intent_not_found');
 				}
-
-				//console.log("Updated Intent: " + intent);
+				
 				logger.debug("Confidence: " + intentBody.outcomes[0]['confidence']);
-
+				if (intent === 'chitchat') retainState = true; // also retain state if chitchat to allow better recovery
+				
 				// Create new UserContext and update
 				outContext = {
 						 state : '' 
 					};
 					
 				// Save to cache
-				if (!intentChanged) {
+				if (!retainState) {
 					cache.hset(userkey, 'state', getModule(intent, inContext.state)); // update state to reflect new module
 				} else {
 					cache.hset(userkey, 'state', inContext.state); // retain original state -> allows user to proceed with conversation with the old state
@@ -504,7 +514,7 @@ var processMessage = function(user, client, Processor, body) {
 }
 
 var onHandlerEvent = function(msgid, username, clientHandle, module, data) {
-	
+	logger.debug('onHandlerEvent-> msgid: %s, username: %s, clientHandle: %s, module: %s, data: %s', msgid, username, clientHandle, module, JSON.stringify(data));
 	if (!processors[module]) {
 		//instantiate and setup processor
 		var Processor = getProcessor(module);
