@@ -11,7 +11,8 @@
 	],
 	"NO_START_LOCATION" : [
 		"Ok. Just click here: @locationlink, and i'll pinpoint your current location",
-		"I still need your location. Click here... @locationlink",
+		"I need to get your location. Click here... @locationlink",
+		"I still need your location. Please click @locationlink",
 		"I can't send your ride if I don't know where to send it. The link again... @locationlink",
 		"Sorry, can't proceed without your location. Click @locationlink"
 	],
@@ -42,6 +43,7 @@
 	"NO_END_LOCATION" : [
 		"Where are you going? I need an address or a landmark",
 		"I need to you to confirm your destination, I need an address",
+		"What's your destination mate, please an address",
 		"I need to know where you're going to book your ride",
 		"Sorry, can't proceed without your destination"
 	],
@@ -58,12 +60,7 @@
 		"Please I need confirmation that @address is where you are headed"
 	],
 	"NO_CARRIER" : [
-		"@preferredCarrier is the cheapest option, is that fine?",
-		"./processors/travelRequest/bookFlight",
-		"./processors/general/doNothing",
-		"./processors/general/chitchat.mq",
-		"./processors/analytics/customerAnalytics",
-		"./processors/sales/index"
+		"@preferredCarrier is the cheapest option, is that fine?"
 	],
 	"NO_DEPART_TIME" : [
 		"./processors/leaveRequest/leaveRequest.redis",
@@ -74,7 +71,7 @@
 		"./processors/sales/index"
 	],
 	"NO_CONFIRM_REQUEST" : [
-		"The nearest @product_name will get there in @eta @price. Can I go ahead and book your ride?",
+		"The nearest @product_name will get there in @eta @price. Should I book it?",
 		"An @product_name can get there in @eta @price. I still need confirmation",
 		"@username, i have your @product_name @price. Tell me whether to continue or not. ETA is @eta",
 		"Whenever you're ready I'll send for the @product_name, can't continue till you give the go ahead. ETA: @eta @price"
@@ -98,5 +95,16 @@
 		"Should I go ahead with booking you a cab",
 		"@username, I'm still not clear what you want. Do you need the cab?",
 		"You'd need to make up your mind and let me know whether to proceed"
+	],
+	"NOT_UNDERSTOOD" : [
+		"Huh?",
+		"Sorry I don't understand what you mean",
+		"@username I really don't follow",
+		"Pardon?",
+		"I don't get what you mean",
+		"What?",
+		"Sorry?",
+		"@username you lost me there",
+		"Hmmm, not sure I understand"
 	]
 }
