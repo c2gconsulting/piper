@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 curl -XPOST 'https://api.wit.ai/intents?v=20141022' \
   -H "Authorization: Bearer QJKD3F66M5PUDUCYVUHS6QQ5HYVUJUWT" \
   -H "Content-Type: application/json" \

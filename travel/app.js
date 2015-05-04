@@ -128,25 +128,52 @@ router.get('/subscribe', function(req, res) {
 // get geocode
 router.get('/getcode', function(req, res){
     var address = req.query.address;
-    geocode.getCode(address).then(function(x){res.end(x)});
+    if(address){
+        geocode.getCode(address).then(function(x){res.end(x)});
+    } else { res.end("please specify address e.g address=\'Abuja Nigeria\ ");}
+
 });
 
 
 router.get('/nearby', function(req, res) {
     var address = req.query.address;
-    geocode.getNearby(address)
-        .then(function(d){
-        res.end(JSON.stringify(d));
-    })
+    if(address){
+        geocode.getNearby(address)
+            .then(function(d){
+                if(typeof d == 'string') {
+                    res.end(d);
+                } else {
+                    res.end(JSON.stringify(d));
+                }
+            })
+    } else {
+        res.end("please specify address e.g address=\'Abuja Nigeria\'")
+    }
+
 });
 
 router.get('/getroutes', function(req, res){
    var src = req.query.source, dst = req.query.destination;
-    geocode.getRoutes(src, dst)
-        .then(function(x) {
-            res.end(JSON.stringify(x));
-        });
+    if(src && dst){
+        geocode.getRoutes(src, dst)
+            .then(function(x) {
+                res.end(JSON.stringify(x));
+            });
+    } else { res.end('please ensure that parameter for source and destination is correctly specified');}
+
 });
+
+router.get('/flightsearch', function(req,res){
+    var origin = req.query.origin, destination = req.query.destination, date = req.query.date || '';
+    var obj = { 'origin': origin, 'destination': destination, 'date': date };
+    geocode.flightSearch(obj)
+        .then(function(x){
+            res.end(JSON.stringify(x));
+        })
+        .catch(function(x){
+            logger.error('exception during flightsearch operation ' + x);
+        })
+})
 var subscribeClient = function(handle) {
     try {
         // Check if client already registered
