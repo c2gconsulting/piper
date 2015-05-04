@@ -690,6 +690,7 @@ function Rides(data) {
 	this.failover = {
 		'rides_cancel_trip' : function(user, clientHandle, indata, data) {
 								var responseText = getResponse(data, 'NOT_UNDERSTOOD');
+								responseText = responseText.replace("@username", user.name);
 								me.emit('message', Rides.MODULE, user.name, clientHandle, responseText);
 								return true;
 							},
@@ -701,12 +702,14 @@ function Rides(data) {
 									return false
 								} else {
 									responseText = getResponse(data, 'NOT_UNDERSTOOD');
+									responseText = responseText.replace("@username", user.name);
 									me.emit('message', Rides.MODULE, user.name, clientHandle, responseText);
 									return true;
 								}	
 							},
 		'rides_get_info' : function(user, clientHandle, indata, data) {
 								var responseText = getResponse(data, 'NOT_UNDERSTOOD');
+								responseText = responseText.replace("@username", user.name);
 								me.emit('message', Rides.MODULE, user.name, clientHandle, responseText);
 								return true;
 							}					
