@@ -7,3 +7,10 @@
 
   <footer><span id="closure">Close this window to return to your chat</span></footer>
 </section>
+<script>
+window.onload = function(){
+	if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+    	window.location.href = 'slack://open';
+  	}
+}
+</script>

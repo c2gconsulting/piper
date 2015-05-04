@@ -11,12 +11,13 @@
 	],
 	"NO_START_LOCATION" : [
 		"Ok. Just click here: @locationlink, and i'll pinpoint your current location",
-		"I still need your location. You can tell me your address or click here... @locationlink",
+		"I need to get your location. Click here... @locationlink",
+		"I still need your location. Please click @locationlink",
 		"I can't send your ride if I don't know where to send it. The link again... @locationlink",
 		"Sorry, can't proceed without your location. Click @locationlink"
 	],
 	"BAD_START_ADDRESS" : [
-		"I can't locate that address, can you correct it? Or maybe just click here: @locationlink, and i'll pinpoint your current location",
+		"I can't locate that address, just click here: @locationlink, and i'll pinpoint your current location",
 		"Nope, something is still not right with the address. Just click here... @locationlink",
 		"Can't locate you from the address so can't send a ride. The link again... @locationlink",
 		"Sorry, can't proceed without your location. Click @locationlink"
@@ -40,8 +41,9 @@
 		"Please I need confirmation that @address is your pickup address"
 	],
 	"NO_END_LOCATION" : [
-		"Where are you going to?",
-		"I need to you to confirm your destination",
+		"Where are you going? I need an address or a landmark",
+		"I need to you to confirm your destination, I need an address",
+		"What's your destination mate, please an address",
 		"I need to know where you're going to book your ride",
 		"Sorry, can't proceed without your destination"
 	],
@@ -58,12 +60,7 @@
 		"Please I need confirmation that @address is where you are headed"
 	],
 	"NO_CARRIER" : [
-		"@preferredCarrier is the cheapest option, is that fine?",
-		"./processors/travelRequest/bookFlight",
-		"./processors/general/doNothing",
-		"./processors/general/chitchat.mq",
-		"./processors/analytics/customerAnalytics",
-		"./processors/sales/index"
+		"@preferredCarrier is the cheapest option, is that fine?"
 	],
 	"NO_DEPART_TIME" : [
 		"./processors/leaveRequest/leaveRequest.redis",
@@ -74,20 +71,40 @@
 		"./processors/sales/index"
 	],
 	"NO_CONFIRM_REQUEST" : [
-		"Thanks. Can I go ahead and book your ride?",
-		"I'm still waiting for your confirmation",
-		"@username, your ride? Tell me whether to continue or not",
-		"Whenever you're ready, can't continue till you give the go ahead"
+		"The nearest @product_name will get there in @eta @price. Should I book it?",
+		"An @product_name can get there in @eta @price. I still need confirmation",
+		"@username, i have your @product_name @price. Tell me whether to continue or not. ETA is @eta",
+		"Whenever you're ready I'll send for the @product_name, can't continue till you give the go ahead. ETA: @eta @price"
+	],
+	"NO_RIDE_ETA" : [
+		"Can't get an ETA for any ride at the moment, do I just go ahead and attempt the booking?",
+		"Still no ETA but we can attempt a booking. Should I proceed?",
+		"Let me know if to proceed with a booking. No ETAs confirmed though"
 	],
 	"CONFIRM_REQUEST_CANCEL" : [
 		"So do you want to cancel the trip request?",
 		"Are you saying I shouldn't call the cab anymore?",
 		"@username Just let me know if you need me to cancel this ride"
 	],
+	"NO_PRODUCTS_AVAILABLE" : [
+		"Sorry no service available in your location",
+		"Need to cancel, there's no ride service available at your location"
+	],
 	"CANCEL_REQUEST_CANCEL" : [
 		"Fine so we proceed with the booking?",
 		"Should I go ahead with booking you a cab",
 		"@username, I'm still not clear what you want. Do you need the cab?",
 		"You'd need to make up your mind and let me know whether to proceed"
+	],
+	"NOT_UNDERSTOOD" : [
+		"Huh?",
+		"Sorry I don't understand what you mean",
+		"@username I really don't follow",
+		"Pardon?",
+		"I don't get what you mean",
+		"What?",
+		"Sorry?",
+		"@username you lost me there",
+		"Hmmm, not sure I understand"
 	]
 }
