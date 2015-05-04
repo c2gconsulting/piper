@@ -93,6 +93,15 @@ function Rides(data) {
 							return i.hasActiveRequest;
 						},
 						function(d, b, i) {
+							if (d.startLong && d.startLong === 0) {
+								if (i.yes_no === 'no' && i.infotype === 'location') {  // user rejects captured location, can only be 'from'
+									delete d.startLong;
+									delete d.startLat;
+								}
+							}
+							return false;
+						},
+						function(d, b, i) {
 							if(d.confirmNeed === false) return true; // exit validations if trip cancelled
 							if (!d.startLong || d.startLong === 0) return false;
 							if (d.errStartLocation === 'NO_START_LOCATION') delete d.errStartLocation;
