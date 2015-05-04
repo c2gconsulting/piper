@@ -8,8 +8,8 @@ npm-debug.log
 
 #Temporary local files
 tmp/dbinit.js
-shared/tmp/*
-dump.rdb/*
+shared/tmp
+dump.rdb
 
 # Code settings files
 .settings
