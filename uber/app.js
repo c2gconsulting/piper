@@ -12,7 +12,7 @@ var cache = require('../shared/lib/cache').getRedisClient();
 var CACHE_PREFIX = 'uber-handler:';
 var RIDES_DESC = 'rides';
 var ERROR_RESPONSE_CODE = 422;
-var prod = false;
+var prod = true;
 var when = require('when');
 
 // Create the Express application
