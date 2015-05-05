@@ -112,5 +112,12 @@
 		"Sorry?",
 		"@username you lost me there",
 		"Hmmm, not sure I understand"
+	],
+	"POSITIVE_REINFORCEMENT" : [
+		"Cool",
+		"Aii",
+		"Hmmm",
+		";)",
+		"Okay"
 	]
 }

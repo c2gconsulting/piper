@@ -740,6 +740,11 @@ function Rides(data) {
 									responseText = responseText.replace("@username", user.name);
 									me.emit('message', Rides.MODULE, user.name, clientHandle, responseText, errorContext['CONFIRM_REQUEST_CANCEL']);
 									return false;
+								} else if (indata.yes_no === 'yes') {
+									responseText = getResponse(data, 'POSITIVE_REINFORCEMENT');
+									responseText = responseText.replace("@username", user.name);
+									me.emit('message', Rides.MODULE, user.name, clientHandle, responseText);
+									return false;
 								} else {
 									responseText = getResponse(data, 'NOT_UNDERSTOOD');
 									responseText = responseText.replace("@username", user.name);
