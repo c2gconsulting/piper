@@ -752,6 +752,84 @@ function Rides(data) {
 									return true;
 								}	
 							},
+		'rides_get_cost' : function(user, clientHandle, indata, data) {
+								if (indata.yes_no === 'yes') {
+									var responseText = getResponse(data, 'POSITIVE_REINFORCEMENT');
+									responseText = responseText.replace("@username", user.name);
+									me.emit('message', Rides.MODULE, user.name, clientHandle, responseText);
+									return true;
+								} else {
+									responseText = getResponse(data, 'NOT_UNDERSTOOD');
+									responseText = responseText.replace("@username", user.name);
+									me.emit('message', Rides.MODULE, user.name, clientHandle, responseText);
+									return true;
+								}	
+							},
+		'rides_get_request_status' : function(user, clientHandle, indata, data) {
+								if (indata.yes_no === 'yes') {
+									var responseText = getResponse(data, 'POSITIVE_REINFORCEMENT');
+									responseText = responseText.replace("@username", user.name);
+									me.emit('message', Rides.MODULE, user.name, clientHandle, responseText);
+									return true;
+								} else {
+									responseText = getResponse(data, 'NOT_UNDERSTOOD');
+									responseText = responseText.replace("@username", user.name);
+									me.emit('message', Rides.MODULE, user.name, clientHandle, responseText);
+									return true;
+								}	
+							},
+		'rides_get_driver_info' : function(user, clientHandle, indata, data) {
+								if (indata.yes_no === 'yes') {
+									var responseText = getResponse(data, 'POSITIVE_REINFORCEMENT');
+									responseText = responseText.replace("@username", user.name);
+									me.emit('message', Rides.MODULE, user.name, clientHandle, responseText);
+									return true;
+								} else {
+									responseText = getResponse(data, 'NOT_UNDERSTOOD');
+									responseText = responseText.replace("@username", user.name);
+									me.emit('message', Rides.MODULE, user.name, clientHandle, responseText);
+									return true;
+								}	
+							},
+		'rides_get_vehicle_info' : function(user, clientHandle, indata, data) {
+								if (indata.yes_no === 'yes') {
+									var responseText = getResponse(data, 'POSITIVE_REINFORCEMENT');
+									responseText = responseText.replace("@username", user.name);
+									me.emit('message', Rides.MODULE, user.name, clientHandle, responseText);
+									return true;
+								} else {
+									responseText = getResponse(data, 'NOT_UNDERSTOOD');
+									responseText = responseText.replace("@username", user.name);
+									me.emit('message', Rides.MODULE, user.name, clientHandle, responseText);
+									return true;
+								}	
+							},
+		'rides_get_driver_location' : function(user, clientHandle, indata, data) {
+								if (indata.yes_no === 'yes') {
+									var responseText = getResponse(data, 'POSITIVE_REINFORCEMENT');
+									responseText = responseText.replace("@username", user.name);
+									me.emit('message', Rides.MODULE, user.name, clientHandle, responseText);
+									return true;
+								} else {
+									responseText = getResponse(data, 'NOT_UNDERSTOOD');
+									responseText = responseText.replace("@username", user.name);
+									me.emit('message', Rides.MODULE, user.name, clientHandle, responseText);
+									return true;
+								}	
+							},
+		'rides_get_eta' : function(user, clientHandle, indata, data) {
+								if (indata.yes_no === 'yes') {
+									var responseText = getResponse(data, 'POSITIVE_REINFORCEMENT');
+									responseText = responseText.replace("@username", user.name);
+									me.emit('message', Rides.MODULE, user.name, clientHandle, responseText);
+									return true;
+								} else {
+									responseText = getResponse(data, 'NOT_UNDERSTOOD');
+									responseText = responseText.replace("@username", user.name);
+									me.emit('message', Rides.MODULE, user.name, clientHandle, responseText);
+									return true;
+								}	
+							},
 		'rides_get_info' : function(user, clientHandle, indata, data) {
 								var responseText = getResponse(data, 'NOT_UNDERSTOOD');
 								responseText = responseText.replace("@username", user.name);
@@ -1192,6 +1270,7 @@ function getInfoQuery(body) {
 			default:
 				return 'rides_get_request_status';
 		}
+		if (infotype) body.touch = true;
 	} else {
 		return false;
 	}
@@ -1368,7 +1447,7 @@ Rides.prototype.processData = function(user, clientHandle, body, htd) {
 										datahash.lvlQueries = JSON.stringify(datahash.lvlQueries);
 										cache.hmset(userkey + ':payload', datahash);
 										
-										if (!missingData) {
+										if (!missingData && body.touch) {
 											// data is complete and valid
 											logger.debug('No more missing data: calling handleRequest for %s', handlerTodo);
 											me.handleRequest[handlerTodo](user, clientHandle, datahash);
