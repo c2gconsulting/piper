@@ -35,9 +35,9 @@
 		"Sorry, I don't know how to get to your @lockeyword. Let me have the address"
 	],
 	"SUSPECT_START_LOCATION" : [
-		"Is that your pickup address?",
+		"Is @address your pickup address?",
 		"Is @address where you want to be picked up?",
-		"Can you please confirm that you wish to be picked up at this address",
+		"Can you please confirm that you wish to be picked up at @address",
 		"Please I need confirmation that @address is your pickup address"
 	],
 	"NO_END_LOCATION" : [
@@ -54,9 +54,9 @@
 		"Sorry, can't proceed without a destination"
 	],
 	"SUSPECT_END_LOCATION" : [
-		"Is that your destination address?",
+		"Is @address your destination address?",
 		"Is @address where you are going to?",
-		"Can you please confirm that this address is your destination",
+		"Can you please confirm that @address is your destination",
 		"Please I need confirmation that @address is where you are headed"
 	],
 	"NO_CARRIER" : [
@@ -95,6 +95,12 @@
 		"Should I go ahead with booking you a cab",
 		"@username, I'm still not clear what you want. Do you need the cab?",
 		"You'd need to make up your mind and let me know whether to proceed"
+	],
+	"NO_ACTIVE_REQUEST" : [
+		"I've got no active requests for you",
+		"You've got no requests pending here",
+		"@username you need to request a ride first",
+		"I can't find any open requests from you"
 	],
 	"NOT_UNDERSTOOD" : [
 		"Huh?",

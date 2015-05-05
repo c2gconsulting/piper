@@ -48,9 +48,31 @@ function Rides(data) {
 		'rides_cancel_trip' : [
 						'confirmCancellation'
 					],
+		'rides_get_driver_location' : [
+						'startLong',
+						'productId'
+					],
+		'rides_get_cost' : [
+						'startLong',
+						'productId',
+						'endLong'
+					],
+		'rides_get_request_status' : [
+						'activeRequest'
+					],
+		'rides_get_driver_info' : [
+						'activeRequest'
+					],
+		'rides_get_vehicle_info' : [
+						'activeRequest'
+					],
+		'rides_get_eta' : [
+						'startLong',
+						'productId'
+					],
 		'rides_get_info' : [
 						'infotype'
-					]			
+					]				
 	};
 
 	this.validations = {
@@ -58,6 +80,7 @@ function Rides(data) {
 						function(d, b, i) {
 							var state = b.context.state;
 							return i.hasActiveRequest.then(function (requestActive) {
+								if (state === 'RIDES_confirm_cancellation' && i.yes_no) b.touch = true;
 								if (d.confirmNeed !== true && d.confirmNeed !== 'true' && !requestActive) return true; // no need to cancel, no active trip
 								if ((state === 'RIDES_confirm_cancellation' && i.yes_no === 'yes') || d.confirmCancellation === true) return d.confirmCancellation = true;
 								if (state === 'RIDES_confirm_cancellation' && d.intent === 'rides_cancel_trip') return d.confirmCancellation = true;
@@ -66,9 +89,13 @@ function Rides(data) {
 									d.errConfirmCancellation = 'CANCEL_REQUEST_CANCEL';
 									return false;
 								}
-								if (state === 'RIDES_confirm_cancellation' && i.yes_no) b.touch = true;
 								return false;
 							});
+						}
+					],
+		'activeRequest' : [
+						function(d, b, i) {
+							return i.hasActiveRequest;
 						}
 					],
 		'confirmNeed' : [
@@ -77,6 +104,7 @@ function Rides(data) {
 						},
 						function(d, b, i) {
 							var state = b.context.state;
+							if (state === 'RIDES_confirm_ride_needed' && i.yes_no) b.touch = true;
 							if (d.intent !== 'rides_go_out' && state !== 'RIDES_confirm_ride_needed') return d.confirmNeed = true;
 							if (d.intent === 'rides_request_trip') return d.confirmNeed = true;
 							if ((state === 'RIDES_confirm_ride_needed' && i.yes_no === 'yes')  || d.confirmNeed === true || d.confirmNeed === 'true') {
@@ -86,7 +114,6 @@ function Rides(data) {
 								d.confirmNeed = false;
 								return true;
 							}
-							if (state === 'RIDES_confirm_ride_needed' && i.yes_no) b.touch = true;
 							return false;
 						}
 					],
@@ -99,6 +126,7 @@ function Rides(data) {
 								if (i.yes_no === 'no' && i.infotype === 'location') {  // user rejects captured location, can only be 'from'
 									delete d.startLong;
 									delete d.startLat;
+									if (data.lvlQueries[d.errStartLocation] && !isNaN(data.lvlQueries[d.errStartLocation])) data.lvlQueries[d.errStartLocation] = 0; // reset if reset
 									b.touch = true;
 								}
 							}
@@ -303,6 +331,7 @@ function Rides(data) {
 									if (etas) {
 										var jEtas = JSON.parse(etas);
 										var oldProductId = d.productId;
+										var oldProductName = d.productName;
 										logger.debug('OldProductId: %s', oldProductId);
 										logger.debug('NewProductId: %s', d.productId);
 										logger.debug('Datahash Val: %s', JSON.stringify(d));
@@ -319,13 +348,15 @@ function Rides(data) {
 														}
 														return true;
 													});
-													if (d.productName.toLowerCase() !== d.carrier.toLowerCase()) {
-														logger.debug('***************************************** prefVal: GOT HERE 1');
-														logger.debug('OldProductId: %s', oldProductId);
-														logger.debug('NewProductId: %s', d.productId);
-														d.noPreferred = true;
-													} else {
-														delete d.noPreferred;
+													if (d.carrier.toLowerCase() === oldProductName.toLowerCase() || i.carrier.toLowerCase() === d.carrier.toLowerCase()) {
+														if (d.productName.toLowerCase() !== d.carrier.toLowerCase()) {
+															logger.debug('***************************************** prefVal: GOT HERE 1');
+															logger.debug('OldProductId: %s', oldProductId);
+															logger.debug('NewProductId: %s', d.productId);
+															d.noPreferred = true;
+														} else {
+															delete d.noPreferred;
+														}
 													}
 												} 
 												if (d.unCarrier && d.noPreferred) {
@@ -337,11 +368,13 @@ function Rides(data) {
 														}
 														return true;
 													});
-													if (d.productName.toLowerCase() === d.unCarrier.toLowerCase()) {
-														logger.debug('***************************************** prefVal: GOT HERE 2');
-														d.onlyUnPreferred = true;
-													} else {
-														delete d.onlyUnPreferred;
+													if (d.unCarrier.toLowerCase() !== oldProductName.toLowerCase() || i.carrier.toLowerCase() === d.unCarrier.toLowerCase()) {
+														if (d.productName.toLowerCase() === d.unCarrier.toLowerCase()) {
+															logger.debug('***************************************** prefVal: GOT HERE 2');
+															d.onlyUnPreferred = true;
+														} else {
+															delete d.onlyUnPreferred;
+														}
 													}
 												}
 											} else {
@@ -507,16 +540,16 @@ function Rides(data) {
 						},*/
 						function(d, b, i) {
 							var state = b.context.state;
+							if (state === 'RIDES_confirm_request' && i.yes_no === 'yes') b.touch = true;
 							if (d.confirmNeed === false) return true; // exit validations if trip cancelled
 							if ((state === 'RIDES_confirm_request' && i.yes_no === 'yes') || d.confirmRequest === true || d.confirmRequest === 'true') {
 								return d.confirmRequest = true;
 							}
 							if ((state === 'RIDES_confirm_request' && i.yes_no === 'no') || d.confirmRequest === false || d.confirmRequest === 'false')  {
 								d.confirmRequest = false;
-								d.errConfirmRequest = "CONFIRM_REQUEST_CANCEL";
+								// d.errConfirmRequest = "CONFIRM_REQUEST_CANCEL";
 								return false;
 							}
-							if (state === 'RIDES_confirm_request' && i.yes_no) b.touch = true;
 							return false;
 						}
 					],
@@ -541,6 +574,13 @@ function Rides(data) {
 						responseText = responseText.replace("@username", user.name);
 						me.emit('message', Rides.MODULE, user.name, clientHandle, responseText, errorContext[data.errConfirmCancellation]);
 						delete data.errConfirmCancellation;
+						return false;
+					},	
+		'activeRequest' : function(user, clientHandle, data) {
+						var responseText = getResponse(data, 'NO_ACTIVE_REQUEST');
+						
+						responseText = responseText.replace("@username", user.name);
+						me.emit('message', Rides.MODULE, user.name, clientHandle, responseText);
 						return false;
 					},	
 		'confirmNeed' : function(user, clientHandle, data) {
@@ -699,7 +739,7 @@ function Rides(data) {
 									var responseText = getResponse(data, 'CONFIRM_REQUEST_CANCEL');
 									responseText = responseText.replace("@username", user.name);
 									me.emit('message', Rides.MODULE, user.name, clientHandle, responseText, errorContext['CONFIRM_REQUEST_CANCEL']);
-									return false
+									return false;
 								} else {
 									responseText = getResponse(data, 'NOT_UNDERSTOOD');
 									responseText = responseText.replace("@username", user.name);
@@ -719,25 +759,177 @@ function Rides(data) {
 		'rides_cancel_trip' : function(user, clientHandle, data) {
 						if (data.confirmCancellation === true) {
 							me.cancelRequest(user.name, clientHandle, data);
-							getActiveRequest(user.name, clientHandle).then(function(activeRequest) {
+							return getActiveRequest(user.name, clientHandle).then(function(activeRequest) {
 								if (activeRequest && activeRequest.status !== 'pending') {
 									var rbody = { header: 'cancel_request', requestId: activeRequest.request_id };
 									me.push(user, clientHandle, rbody);
 								} else {
 									me.emit('message', Rides.MODULE, user.name, clientHandle, 'Fine, your ride request has been cancelled');
 									deleteActiveRequest(user.name, clientHandle);
-								}								
+								}	
+								return true;							
 							});
 							
 						} else {
 							me.emit('message', Rides.MODULE, user.name, clientHandle, "You have no active ride requests to cancel");
+							return false;
 						}
 					},
-		'rides_request_price_estimate' : function(user, clientHandle, data) {
-
+		'rides_get_cost' : function(user, clientHandle, data) {
+						return getPriceEstimate(user.name, clientHandle, data).then(function (prices) {
+							var jPrices = JSON.parse(prices);
+							
+							// price text
+							if (jPrices.prices && jPrices.prices.length > 0) var priceText = 'An estimate for the ride is ' + jPrices.prices[0].estimate;
+							var failureText = 'Sorry cannot retrieve an estimate for your ride at this time, try again later';
+							var responseText = priceText == undefined ? failureText : priceText;
+							
+							me.emit('message', Rides.MODULE, user.name, clientHandle, responseText);
+							return true;
+						});
 					},
-		'rides_request_eta' : function(user, clientHandle, data) {
-
+		'rides_get_request_status' : function(user, clientHandle, data) {
+						var rbody = { header : 'get_request_details', tag : 'query_request_status' };
+						return getActiveRequest(user.name, clientHandle).then( function(activeRequest) {
+							if (activeRequest && activeRequest.requestId) {
+								rbody.requestId = activeRequest.requestId;
+								me.emit('message', Rides.MODULE, user.name, clientHandle, 'Let me check that for you...');
+								me.push(user, clientHandle, rbody);
+							} else {
+								me.emit('message', Rides.MODULE, user.name, clientHandle, 'Your request is still pending');
+							}
+							return true;
+						});
+					},
+		'rides_get_driver_info' : function(user, clientHandle, data) {
+						var rbody = { header : 'get_request_details', tag : 'query_driver_info' };
+						return getActiveRequest(user.name, clientHandle).then( function(activeRequest) {
+							if (activeRequest && activeRequest.requestId) {
+								rbody.requestId = activeRequest.requestId;
+								me.emit('message', Rides.MODULE, user.name, clientHandle, 'Uno momento...');
+								me.push(user, clientHandle, rbody);
+							} else {
+								me.emit('message', Rides.MODULE, user.name, clientHandle, 'No driver has accepted your request yet, still pending');
+							}
+							return true;
+						});
+					},
+		'rides_get_vehicle_info' : function(user, clientHandle, data) {
+						var rbody = { header : 'get_request_details', tag : 'query_vehicle_info' };
+						return getActiveRequest(user.name, clientHandle).then( function(activeRequest) {
+							if (activeRequest && activeRequest.requestId) {
+								rbody.requestId = activeRequest.requestId;
+								me.emit('message', Rides.MODULE, user.name, clientHandle, 'Let me see...');
+								me.push(user, clientHandle, rbody);
+							} else {
+								me.emit('message', Rides.MODULE, user.name, clientHandle, 'No ride has been assigned to you yet, still pending');
+							}
+							return true;
+						});
+					},
+		'rides_get_driver_location' : function(user, clientHandle, data) {
+						return getActiveRequest(user.name, clientHandle).then( function(activeRequest) {
+							if (activeRequest && activeRequest.requestId) {
+								var rbody = { header : 'get_request_details', tag : 'query_driver_location' };
+								rbody.requestId = activeRequest.requestId;
+								me.push(user, clientHandle, rbody);
+							} else {
+								return getTimeEstimate(user.name, clientHandle, data).then(function (etas) {
+									if (etas) {
+										var jEtas = JSON.parse(etas);
+										if (jEtas.times && jEtas.times.length > 0) {	
+												// eta text
+												var etaSecs = jEtas.times[0].estimate;
+												var etaMins = Math.round(etaSecs / 60);
+												var etaText = etaMins === 1 ? (etaMins + ' min') : (etaMins + ' mins');
+												
+												var responseText = 'The nearest @product_name is @eta away';
+												responseText = responseText.replace("@eta", etaText);
+												responseText = responseText.replace("@product_name", data.productName);
+												
+												var prefixText = '';
+												if (data.noPreferred && data.carrier) {
+													prefixText = 'No ' + data.carrier + ' available... ';
+													var userkey = getUserKey(user.name, clientHandle);
+													cache.hdel(userkey + ':payload', 'noPreferred');
+												}
+	
+												if (data.onlyUnPreferred && data.unCarrier) {
+													prefixText += 'Only the ' + data.unCarrier + ' available at the moment. ';
+													userkey = getUserKey(user.name, clientHandle);
+													cache.hdel(userkey + ':payload', 'onlyUnPreferred');
+												}
+												
+												responseText = prefixText + responseText;
+												me.emit('message', Rides.MODULE, user.name, clientHandle, responseText);
+										
+										} else {
+											// no available rides
+											responseText = 'No available rides around you at the moment';
+											me.emit('message', Rides.MODULE, user.name, clientHandle, responseText);
+										}
+									} else {
+										// no available rides
+										responseText = 'No available rides around you at the moment';
+										me.emit('message', Rides.MODULE, user.name, clientHandle, responseText);
+										return false;
+									}
+								});
+							}
+							return true;
+						});
+					},
+		'rides_get_eta' : function(user, clientHandle, data) {
+						return getActiveRequest(user.name, clientHandle).then( function(activeRequest) {
+							if (activeRequest && activeRequest.requestId) {
+								var rbody = { header : 'get_request_details', tag : 'query_request_eta' };
+								rbody.requestId = activeRequest.requestId;
+								me.push(user, clientHandle, rbody);
+							} else {
+								return getTimeEstimate(user.name, clientHandle, data).then(function (etas) {
+									if (etas) {
+										var jEtas = JSON.parse(etas);
+										if (jEtas.times && jEtas.times.length > 0) {	
+												// eta text
+												var etaSecs = jEtas.times[0].estimate;
+												var etaMins = Math.round(etaSecs / 60);
+												var etaText = etaMins === 1 ? (etaMins + ' min') : (etaMins + ' mins');
+												
+												var responseText = 'The nearest @product_name is @eta away';
+												responseText = responseText.replace("@eta", etaText);
+												responseText = responseText.replace("@product_name", data.productName);
+												
+												var prefixText = '';
+												if (data.noPreferred && data.carrier) {
+													prefixText = 'No ' + data.carrier + ' available... ';
+													var userkey = getUserKey(user.name, clientHandle);
+													cache.hdel(userkey + ':payload', 'noPreferred');
+												}
+	
+												if (data.onlyUnPreferred && data.unCarrier) {
+													prefixText += 'Only the ' + data.unCarrier + ' available at the moment. ';
+													userkey = getUserKey(user.name, clientHandle);
+													cache.hdel(userkey + ':payload', 'noPreferred');
+												}
+												
+												responseText = prefixText + responseText;
+												me.emit('message', Rides.MODULE, user.name, clientHandle, responseText);
+										
+										} else {
+											// no available rides
+											responseText = 'No available rides around you at the moment';
+											me.emit('message', Rides.MODULE, user.name, clientHandle, responseText);
+										}
+									} else {
+										// no available rides
+										responseText = 'No available rides around you at the moment';
+										me.emit('message', Rides.MODULE, user.name, clientHandle, responseText);
+										return false;
+									}
+								});
+							}
+							return true;
+						});
 					},
 		'rides_book_trip' : function(user, clientHandle, data) {
 						var userkey = getUserKey(user.name, clientHandle);
@@ -745,11 +937,10 @@ function Rides(data) {
 						if (data.confirmNeed === false) {
 							logger.debug('HandleRequest: handling for rides_book_trip...calling cancelrequest');
 							me.cancelRequest(user.name, clientHandle, data);
-
-
+							return true;
 						} else {
 							// check if there's an active request
-							checkActiveRequest(user.name, clientHandle).then(function(active) {
+							return checkActiveRequest(user.name, clientHandle).then(function(active) {
 								if (active) {
 									// ...
 								} else {
@@ -764,11 +955,13 @@ function Rides(data) {
 									};
 									cache.hmset(userkey + ':activerequest', newRequest);
 								}
+								return true;
 							});
 						}
 					},
 		'rides_get_info' : function(user, clientHandle, data) {
 						me.emit('message', Rides.MODULE, user.name, clientHandle, 'You want to know ' + data.infotype);
+						return true;
 					}
 	};
 
@@ -910,6 +1103,7 @@ function getTimeEstimateAll(username, clientHandle, data) {
 }
 
 
+
 Rides.prototype = Object.create(EventEmitter.prototype);
 Rides.prototype.constructor = Rides;
 Rides.MODULE = 'RIDES';
@@ -936,11 +1130,10 @@ Rides.prototype.init = function(){
  */
 Rides.prototype.out = function(user, client, body) {
 	var me = this;
-	var handlerTodo = '';
-
+	
 	checkActiveRequest(user.name, client.slackHandle).then(function(activeRequest) {
 		if (body.outcomes[0].intent === 'rides_cancel_trip' || body.outcomes[0].intent === 'default_cancel_request') {
-			handlerTodo = 'rides_cancel_trip';
+			var handlerTodo = 'rides_cancel_trip';
 			body.touch = true;  // confirms the statement is understood
 		} else if (body.context.state === 'RIDES_confirm_cancellation' && body.outcomes[0].intent !== 'rides_request_trip') {
 			handlerTodo = 'rides_cancel_trip';
@@ -951,24 +1144,76 @@ Rides.prototype.out = function(user, client, body) {
 		} else if (activeRequest) {
 			handlerTodo = 'rides_get_info';
 		} else if (body.outcomes[0].intent === 'rides_request_price_estimate' || body.context.state === 'RIDES_request_price_estimate') {
-			handlerTodo = 'rides_request_price_estimate';
-			body.touch = true;
-		} else if (body.outcomes[0].intent === 'rides_request_eta' || body.context.state === 'RIDES_request_eta') {
-			handlerTodo = 'rides_request_eta';
-			body.touch = true;
-		} else if (body.outcomes[0].intent === 'rides_info_query' || body.context.state === 'RIDES_info_query' ) {
-			handlerTodo = 'rides_get_info';
+			handlerTodo = 'rides_get_cost';
 			body.touch = true;
 		} else if (body.outcomes[0].intent === 'rides_request_trip') {
 			handlerTodo = 'rides_book_trip';
 			body.touch = true;
-		} else {
+		} else if (body.outcomes[0].intent === 'rides_request_eta' || body.context.state === 'RIDES_request_eta') {
+			handlerTodo = 'rides_get_eta';
+			body.touch = true;
+		} else if (body.outcomes[0].intent === 'rides_info_query' || body.context.state === 'RIDES_info_query' ) {
+			handlerTodo = 'rides_get_info';
+			body.touch = true;
+		} else if (body.context.state === 'RIDES_confirm_ride_needed' || body.context.state === 'RIDES_confirm_request') {
 			handlerTodo = 'rides_book_trip';
+		} else {
+			// do nothing
 		}  
-	            
-	    me.processData(user, client.slackHandle, body, handlerTodo);
-	});
-	
+		
+		if (handlerTodo === 'rides_get_info') {
+			var infoQuery = getInfoQuery(body);
+			handlerTodo = infoQuery == undefined ? handlerTodo : infoQuery;
+		}
+		me.processData(user, client.slackHandle, body, handlerTodo);  
+	});	
+}
+
+
+function getInfoQuery(body) {
+	if (body.outcomes[0].entities.infotype) {
+		var infotype = body.outcomes[0].entities.infotype[0].value;
+		switch (infotype) {
+			case 'location':
+				return 'rides_get_driver_location';
+				break;
+			case 'cost':
+				return 'rides_get_cost';
+				break;
+			case 'request_status':
+				return 'rides_get_request_status';
+				break;
+			case 'contact_info':
+				return 'rides_get_driver_info';
+				break;
+			case 'vehicle_info':
+				return 'rides_get_vehicle_info';
+				break;
+			case 'time':
+				return 'rides_get_eta';
+				break;
+			default:
+				return 'rides_get_request_status';
+		}
+	} else {
+		return false;
+	}
+}
+
+
+function validateHandlerTodo(username, clientHandle, handlerTodo) {
+	var userkey = getUserKey(username, clientHandle);
+	if (handlerTodo) {
+		return when(handlerTodo);
+	} else {
+		return cache.hget(userkey + ':payload', 'handlerTodo').then(function(htd) {
+			if (!htd) {
+				return 'rides_book_trip';
+			} else {
+				return htd; // return previous handlerTodo if exists
+			}
+		});
+	}
 }
 
 Rides.prototype.refreshHandlerEndpoint = function(user, clientHandle) {
@@ -991,7 +1236,7 @@ Rides.prototype.refreshHandlerEndpoint = function(user, clientHandle) {
  * @param client - the company that owns this message
  * @param body - JSON object with request details
  */
-Rides.prototype.processData = function(user, clientHandle, body, handlerTodo) {
+Rides.prototype.processData = function(user, clientHandle, body, htd) {
     var me = this;
     var username = user.name;
 	var userkey = getUserKey(username, clientHandle);
@@ -1010,140 +1255,141 @@ Rides.prototype.processData = function(user, clientHandle, body, handlerTodo) {
 	body.user = user;
 	body.clientHandle = clientHandle;
 
-	// check if this is a new request from the user
-	cache.exists(userkey + ':datacheck').then(function (check) {
-		var datakeys = me.handlerKeys[handlerTodo];
-		if (check === 0 && datakeys && datakeys.length > 0) {
-			// new request: initialize datacheck set with entity list
-			for (var d=0; d<datakeys.length; d++) {
-				cache.zadd(userkey + ':datacheck', d, datakeys[d]);
-			}
-		}
-
-		cache.hgetall(userkey + ':payload').then(function(datahash) {
-			if (!datahash) {
-				datahash = { 'handlerTodo' : handlerTodo};
-			} else {
-				datahash.handlerTodo = handlerTodo;
-			}
-			if (body.outcomes) datahash.intent = body.outcomes[0].intent;
-			if (datahash.lvlQueries) {
-				try {
-					datahash.lvlQueries = JSON.parse(datahash.lvlQueries);
-				} catch(e) {
-					datahash.lvlQueries = {};
+	validateHandlerTodo(user.name, clientHandle, htd).then (function (handlerTodo) {	
+		// check if this is a new request from the user
+		cache.exists(userkey + ':datacheck').then(function (check) {
+			var datakeys = me.handlerKeys[handlerTodo];
+			if (check === 0 && datakeys && datakeys.length > 0) {
+				// new request: initialize datacheck set with entity list
+				for (var d=0; d<datakeys.length; d++) {
+					cache.zadd(userkey + ':datacheck', d, datakeys[d]);
 				}
 			}
-
-			var datacheckPromises = [],
-				validationPromisesFn = [],
-				fvPromises = [];
-			
-			for (var i=0; i<datakeys.length; i++) {
-				validationPromisesFn[i] = [];
-				for (var f=0; f<me.validations[datakeys[i]].length; f++) {
-					validationPromisesFn[i][f] = when.lift(me.validations[datakeys[i]][f]);
+	
+			cache.hgetall(userkey + ':payload').then(function(datahash) {
+				if (!datahash) {
+					datahash = { 'handlerTodo' : handlerTodo};
+				} else {
+					datahash.handlerTodo = handlerTodo;
 				}
-			}
-
-			var step = -1;
-			when.unfold(function(validationPromisesFn) {
-				step++;
-				var vPromises = [];
-				for (var f=0; f<me.validations[datakeys[step]].length; f++) {
-					vPromises[f] = validationPromisesFn[0][f](datahash, body, indata);
-				}
-				return [vPromises, validationPromisesFn.slice(1)];
-			}, function(remaining) {
-			    logger.debug('Validation Predicate: ' + remaining.length);
-			    return remaining.length < 1;
-			}, function(validationPromises) {
-				for (var f=0; f<validationPromises.length; f++) {
-					(function (_i, _f) {
-						validationPromises[_f].then(function (ret) {
-							logger.debug('%s: %s -> %s', datakeys[_i], _f, ret);
-						});
-					} (step, f));	
-				}
-				return fvPromises[step] = when.reduce(validationPromises, function (validAgg, value, index) {
-				    return validAgg || value;
-				}, false);
-				
-			}, validationPromisesFn).done(function(){		
-				when.all(fvPromises).then(function(validityChecks) {
-					for (var i=0; i<validityChecks.length; i++) {
-						logger.debug('Datakey: %s, Validity Check: %s', datakeys[i], validityChecks[i]);
-
-						if (validityChecks[i]) {
-							datacheckPromises[i] = cache.zrem(userkey + ':datacheck', datakeys[i]); // remove from datacheck if valid
-						} else {
-							datacheckPromises[i] = cache.zadd(userkey + ':datacheck', i, datakeys[i]); // add to datacheck if not valid (leave in datahash)
-						}	
+				if (body.outcomes) datahash.intent = body.outcomes[0].intent;
+				if (datahash.lvlQueries) {
+					try {
+						datahash.lvlQueries = JSON.parse(datahash.lvlQueries);
+					} catch(e) {
+						datahash.lvlQueries = {};
 					}
-					
-					var doResponse = true;
-					if (!body.touch && me.failover[handlerTodo]) doResponse = me.failover[handlerTodo](user, clientHandle, indata, datahash); // process failover if statement not understood
-					
-					if (doResponse) {
-						when.all(datacheckPromises).then(function() {
-							cache.zrange(userkey + ':datacheck', 0, -1).then(function(missingKeys) {
-								var missingData = false;
-									var stop = false;
-									var count = 0;
-									var pResponses = [];
-									var currMissingKeys = [];
+				}
 	
-								if (missingKeys.length > 0 && datakeys && datakeys.length > 0) {
-									for (var k=0; k<missingKeys.length; k++) {
-										if (me.handlerKeys[handlerTodo].indexOf(missingKeys[k]) > -1) {
-											missingData = true;
-											pResponses[count] = when.lift(me.response[missingKeys[k]]);
-											currMissingKeys[count] = missingKeys[k];
-											count++;
+				var datacheckPromises = [],
+					validationPromisesFn = [],
+					fvPromises = [];
+				
+				for (var i=0; i<datakeys.length; i++) {
+					validationPromisesFn[i] = [];
+					for (var f=0; f<me.validations[datakeys[i]].length; f++) {
+						validationPromisesFn[i][f] = when.lift(me.validations[datakeys[i]][f]);
+					}
+				}
+	
+				var step = -1;
+				when.unfold(function(validationPromisesFn) {
+					step++;
+					var vPromises = [];
+					for (var f=0; f<me.validations[datakeys[step]].length; f++) {
+						vPromises[f] = validationPromisesFn[0][f](datahash, body, indata);
+					}
+					return [vPromises, validationPromisesFn.slice(1)];
+				}, function(remaining) {
+				    logger.debug('Validation Predicate: ' + remaining.length);
+				    return remaining.length < 1;
+				}, function(validationPromises) {
+					for (var f=0; f<validationPromises.length; f++) {
+						(function (_i, _f) {
+							validationPromises[_f].then(function (ret) {
+								logger.debug('%s: %s -> %s', datakeys[_i], _f, ret);
+							});
+						} (step, f));	
+					}
+					return fvPromises[step] = when.reduce(validationPromises, function (validAgg, value, index) {
+					    return validAgg || value;
+					}, false);
+					
+				}, validationPromisesFn).done(function(){		
+					when.all(fvPromises).then(function(validityChecks) {
+						for (var i=0; i<validityChecks.length; i++) {
+							logger.debug('Datakey: %s, Validity Check: %s', datakeys[i], validityChecks[i]);
+	
+							if (validityChecks[i]) {
+								datacheckPromises[i] = cache.zrem(userkey + ':datacheck', datakeys[i]); // remove from datacheck if valid
+							} else {
+								datacheckPromises[i] = cache.zadd(userkey + ':datacheck', i, datakeys[i]); // add to datacheck if not valid (leave in datahash)
+							}	
+						}
+						
+						var doResponse = true;
+						if (!body.touch && me.failover[handlerTodo]) doResponse = me.failover[handlerTodo](user, clientHandle, indata, datahash); // process failover if statement not understood
+						
+						if (doResponse) {
+							when.all(datacheckPromises).then(function() {
+								cache.zrange(userkey + ':datacheck', 0, -1).then(function(missingKeys) {
+									var missingData = false;
+										var stop = false;
+										var count = 0;
+										var pResponses = [];
+										var currMissingKeys = [];
+		
+									if (missingKeys.length > 0 && datakeys && datakeys.length > 0) {
+										for (var k=0; k<missingKeys.length; k++) {
+											if (me.handlerKeys[handlerTodo].indexOf(missingKeys[k]) > -1) {
+												missingData = true;
+												pResponses[count] = when.lift(me.response[missingKeys[k]]);
+												currMissingKeys[count] = missingKeys[k];
+												count++;
+											}
 										}
+		
+										logger.debug('Missing Keys for %s: %s', handlerTodo, JSON.stringify(currMissingKeys));
 									}
-	
-									logger.debug('Missing Keys for %s: %s', handlerTodo, JSON.stringify(currMissingKeys));
-								}
-								
-								when.unfold(function(pResponses) {
-									logger.debug('Datahash from unfold: %s', JSON.stringify(datahash));
-								    return [pResponses[0](user, clientHandle, datahash), pResponses.slice(1)];
-								}, function(remaining) {
-								    // Stop when all done or return value is true
-								    logger.debug('Response Predicate: ' + remaining.length);
-								    return remaining.length < 1 || stop;
-								}, function(proceed) {
-										if (!proceed) stop = true;
-								}, pResponses).done(function(){
-	
-									logger.debug('Datahash: %s', JSON.stringify(datahash));
-									logger.debug('Body: %s', JSON.stringify(body));
-									logger.debug('Indata: %s', JSON.stringify(indata));
-	
-									logger.debug(userkey);
-									if (datahash.lvlQueries) logger.debug('Datahash.lvlQueries: %s', JSON.stringify(datahash.lvlQueries));
-									datahash.lvlQueries = JSON.stringify(datahash.lvlQueries);
-									cache.hmset(userkey + ':payload', datahash);
-	
-									if (!missingData) {
-										// data is complete and valid
-										logger.debug('No more missing data: calling handleRequest for %s', handlerTodo);
-										me.handleRequest[handlerTodo](user, clientHandle, datahash);
-	
-									} else {
-										if (datahash.cancelFlag) me.cancelRequest(user.name, clientHandle, datahash);
-									}
+									
+									when.unfold(function(pResponses) {
+										logger.debug('Datahash from unfold: %s', JSON.stringify(datahash));
+									    return [pResponses[0](user, clientHandle, datahash), pResponses.slice(1)];
+									}, function(remaining) {
+									    // Stop when all done or return value is true
+									    logger.debug('Response Predicate: ' + remaining.length);
+									    return remaining.length < 1 || stop;
+									}, function(proceed) {
+											if (!proceed) stop = true;
+									}, pResponses).done(function(){
+		
+										logger.debug('Body: %s', JSON.stringify(body));
+										logger.debug('Indata: %s', JSON.stringify(indata));
+		
+										logger.debug(userkey);
+										if (datahash.lvlQueries) logger.debug('Datahash.lvlQueries: %s', JSON.stringify(datahash.lvlQueries));
+										datahash.lvlQueries = JSON.stringify(datahash.lvlQueries);
+										cache.hmset(userkey + ':payload', datahash);
+										
+										if (!missingData) {
+											// data is complete and valid
+											logger.debug('No more missing data: calling handleRequest for %s', handlerTodo);
+											me.handleRequest[handlerTodo](user, clientHandle, datahash);
+											
+										} else {
+											if (datahash.cancelFlag) me.cancelRequest(user.name, clientHandle, datahash);
+										}
+									});
 								});
 							});
-						});
-					}
-				});
-			});		
+						}
+					});
+				});		
+			});
+			cache.expire(userkey + ':payload', CONTEXT_TTL);
+			cache.expire(userkey + ':datacheck', CONTEXT_TTL);
+			//cache.expire(userkey + ':activerequest', CONTEXT_TTL);	// for now. change to end based on status	
 		});
-		cache.expire(userkey + ':payload', CONTEXT_TTL);
-		cache.expire(userkey + ':datacheck', CONTEXT_TTL);
-		//cache.expire(userkey + ':activerequest', CONTEXT_TTL);	// for now. change to end based on status	
 	});
 }
 
@@ -1186,12 +1432,11 @@ Rides.prototype.in = function(msgid, username, clientHandle, body) {
 
 					//refresh dialog
 					cache.hgetall(username + '@' + clientHandle).then(function(user){
-						var handlerTodo = 'rides_book_trip';
 						var rbody = { context: { state : Rides.MODULE }, touch: true };
 						getAddressByCoords(body.lat, body.longt).then (function(address) {
 							logger.debug('Address: %s', address);
 							if (address) rbody.outcomes = [{ 'entities': { 'geofrom': [{"value": address}] }}];
-							if (user) me.processData(user, clientHandle, rbody, handlerTodo);
+							if (user) me.processData(user, clientHandle, rbody);
 						});
 						
 					});
@@ -1248,6 +1493,90 @@ Rides.prototype.in = function(msgid, username, clientHandle, body) {
 					}
 				});
 				break;	
+			case 'query_request_status':
+				cacheActiveRequest(username, clientHandle, body);	
+				if (body.status === 'accepted') {
+					if (body.driver) {
+						var acceptedMessage = body.driver.name + ' (' + body.driver.rating +' stars) will be there in ' + body.eta + ' minutes in a ' + body.vehicle.make + ' ' + body.vehicle.model;
+						acceptedMessage += ', registration ' + body.vehicle.license_plate + '. \nYou can reach him on ' + body.driver.phone_number;
+						me.emit('message', Rides.MODULE, username, clientHandle, acceptedMessage);
+						if (body.href) me.emit('message', Rides.MODULE, username, clientHandle, body.href);
+						//if (body.driver.picture_url != null) me.emit('message', Rides.MODULE, username, clientHandle, body.driver.picture_url);
+					} else {
+						me.emit('message', Rides.MODULE, username, clientHandle, 'Your ride is on its way...');	
+					}
+				} else {
+					me.processRequestQuery(username, clientHandle, body);
+				}
+				break;	
+			case 'query_driver_info':
+				cacheActiveRequest(username, clientHandle, body);	
+				if (body.status === 'accepted') {
+					if (body.driver) {
+						acceptedMessage = 'Your driver is ' + body.driver.name + ' (' + body.driver.rating +' stars). He\'ll be there in ' + body.eta + ' minutes. \nYou can reach him on ' + body.driver.phone_number;
+						me.emit('message', Rides.MODULE, username, clientHandle, acceptedMessage);
+						if (body.driver.picture_url != null) {
+							utils.shortenLink(body.driver.picture_url).then(function(driverPicLink){
+								me.emit('message', Rides.MODULE, username, clientHandle, driverPicLink);
+							}).catch(function(error){
+								me.emit('message', Rides.MODULE, username, clientHandle, body.driver.picture_url);	
+							});	
+						}
+					} else {
+						me.emit('message', Rides.MODULE, username, clientHandle, 'Your ride should soon be on its way...can\'t get your driver\'s details just yet');	
+					}
+				} else {
+					me.processRequestQuery(username, clientHandle, body);
+				}
+				break;	
+			case 'query_vehicle_info':
+				cacheActiveRequest(username, clientHandle, body);	
+				if (body.status === 'accepted') {
+					if (body.vehicle) {
+						acceptedMessage = 'Your ride is a ' + body.vehicle.make + ' ' + body.vehicle.model + ' driven by ' + body.driver.name + ' (' + body.driver.rating +' stars). He should be there in ' + body.eta + ' minutes. \nHis cell is ' + body.driver.phone_number;
+						me.emit('message', Rides.MODULE, username, clientHandle, acceptedMessage);
+						if (body.vehicle.picture_url != null) {
+							utils.shortenLink(body.vehicle.picture_url).then(function(vehiclePicLink){
+								me.emit('message', Rides.MODULE, username, clientHandle, vehiclePicLink);
+							}).catch(function(error){
+								me.emit('message', Rides.MODULE, username, clientHandle, body.vehicle.picture_url);	
+							});	
+						}
+					} else {
+						me.emit('message', Rides.MODULE, username, clientHandle, 'Your ride should soon be on its way...can\'t get your vehicle details just yet');	
+					}
+				} else {
+					me.processRequestQuery(username, clientHandle, body);
+				}	
+				break;	
+			case 'query_driver_location':
+				cacheActiveRequest(username, clientHandle, body);	
+				if (body.status === 'accepted') {
+					if (body.driver) {
+						acceptedMessage = body.driver.name + ' is ' + body.eta + ' minutes away';
+						me.emit('message', Rides.MODULE, username, clientHandle, acceptedMessage);
+						if (body.href) me.emit('message', Rides.MODULE, username, clientHandle, body.href);
+						//if (body.driver.picture_url != null) me.emit('message', Rides.MODULE, username, clientHandle, body.driver.picture_url);
+					} else {
+						me.emit('message', Rides.MODULE, username, clientHandle, 'Your ride should soon be on its way...can\'t get your driver\'s details just yet');	
+					}
+				} else {
+					me.processRequestQuery(username, clientHandle, body);
+				}
+				break;	
+			case 'query_request_eta':
+				cacheActiveRequest(username, clientHandle, body);	
+				if (body.status === 'accepted') {
+					if (body.eta) {
+						acceptedMessage = 'Your ride should be there in ' + body.eta + ' mins';
+						me.emit('message', Rides.MODULE, username, clientHandle, acceptedMessage);
+					} else {
+						me.emit('message', Rides.MODULE, username, clientHandle, 'Your ride should soon be on its way...can\'t get an ETA at the moment');	
+					}
+				} else {
+					me.processRequestQuery(username, clientHandle, body);
+				}
+				break;	
 		}
 		this.msgid = msgid;
 	}
@@ -1299,6 +1628,42 @@ Rides.prototype.processRequestUpdate = function(username, clientHandle, body) {
 	}
 }
 
+Rides.prototype.processRequestQuery = function(username, clientHandle, body) {
+	var me = this;
+	switch (body.status) {
+		case 'processing':
+			me.emit('message', Rides.MODULE, username, clientHandle, 'Still waiting for a driver\'s confirmation...');
+			break;
+		case 'arriving':
+			me.emit('message', Rides.MODULE, username, clientHandle, "Your ride has arrived");
+			if (body.href) me.emit('message', Rides.MODULE, username, clientHandle, body.href);
+			break;
+		case 'no_drivers_available':
+			me.emit('message', Rides.MODULE, username, clientHandle, "Sorry, no drivers available", " ");
+			me.cancelRequest(username, clientHandle, {});
+			deleteActiveRequest(username, clientHandle);
+			break;
+		case 'in_progress':
+			me.emit('message', Rides.MODULE, username, clientHandle, "You're on your way my friend");
+			break;
+		case 'driver_canceled':
+			me.emit('message', Rides.MODULE, username, clientHandle, "Sorry, the driver canceled...", " ");
+			me.cancelRequest(username, clientHandle, {});
+			deleteActiveRequest(username, clientHandle);
+			break;
+		case 'rider_canceled':
+			me.emit('message', Rides.MODULE, username, clientHandle, "Your ride has been canceled", " ");
+			me.cancelRequest(username, clientHandle, {});
+			deleteActiveRequest(username, clientHandle);
+			break;
+		case 'completed':
+			me.emit('message', Rides.MODULE, username, clientHandle, "Your ride is completed", " ");
+			me.cancelRequest(username, clientHandle, {});
+			deleteActiveRequest(username, clientHandle);
+			break;
+	}
+}
+
 Rides.prototype.processRequestError = function(username, clientHandle, body) {
 	var me = this;
 	switch (body.status) {
@@ -1314,13 +1679,13 @@ Rides.prototype.processRequestError = function(username, clientHandle, body) {
 			break;
 		case 'create_error':
 			var errRunnerMessage = body.title != false ? body.title : 'Try again later';
-			me.emit('message', Rides.MODULE, username, clientHandle, "Sorry @" + username + " can't find you a ride at this time. " + errRunnerMessage, " ");
+			me.emit('message', Rides.MODULE, username, clientHandle, "Sorry @" + username + " can't find you a ride at the moment. " + errRunnerMessage, " ");
 			me.cancelRequest(username, clientHandle, {});
 			deleteActiveRequest(username, clientHandle);
 			break;
 		case 'retrieve_error':
 			errRunnerMessage = body.title != false ? body.title : 'Try again later';
-			me.emit('message', Rides.MODULE, username, clientHandle, "Sorry @" + username + " can't get the info you need at this time. " + errRunnerMessage, " ");
+			me.emit('message', Rides.MODULE, username, clientHandle, "Sorry @" + username + " can't get the info you need at the moment. " + errRunnerMessage, " ");
 			break;
 	}
 }
@@ -1394,11 +1759,8 @@ function getAddressByCoords(lat, lng) {
 
 function getResponse(data, errorMsg) {
 	if (!data.lvlQueries) data.lvlQueries = {};
-	//logger.debug('1. getResponse(): data.lvlQueries[%s] -> %s', errorMsg, data.lvlQueries[errorMsg]);
 	if (!data.lvlQueries[errorMsg] || isNaN(data.lvlQueries[errorMsg])) data.lvlQueries[errorMsg] = 0;
-	//logger.debug('2. getResponse(): data.lvlQueries[%s] -> %s', errorMsg, data.lvlQueries[errorMsg]);
 	while (!responses[errorMsg][data.lvlQueries[errorMsg]] && data.lvlQueries[errorMsg] > 0) data.lvlQueries[errorMsg]--;
-	//logger.debug('3. getResponse(): data.lvlQueries[%s] -> %s', errorMsg, data.lvlQueries[errorMsg]);
 	
 	var responseText = responses[errorMsg][data.lvlQueries[errorMsg]] ? responses[errorMsg][data.lvlQueries[errorMsg]] : "I'm a bit confused..."; 
 	data.lvlQueries[errorMsg]++; 
@@ -1545,7 +1907,7 @@ function setTerminal(d, b, i) {
 			// Suspect Start Location
 			d.errStartLocation = 'SUSPECT_START_LOCATION';
 		}
-		d.tempLocation = i.location;
+		if (i.location) d.tempLocation = i.location;
 	}
 
 
