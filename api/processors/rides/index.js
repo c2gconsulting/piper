@@ -1148,22 +1148,14 @@ Rides.prototype.out = function(user, client, body) {
 			body.touch = true;
 		} else if (activeRequest) {
 			handlerTodo = 'rides_get_info';
-		} else if (body.outcomes[0].intent === 'rides_request_price_estimate' || body.context.state === 'RIDES_request_price_estimate') {
-			handlerTodo = 'rides_get_cost';
-			body.touch = true;
 		} else if (body.outcomes[0].intent === 'rides_request_trip') {
 			handlerTodo = 'rides_book_trip';
-			body.touch = true;
-		} else if (body.outcomes[0].intent === 'rides_request_eta' || body.context.state === 'RIDES_request_eta') {
-			handlerTodo = 'rides_get_eta';
 			body.touch = true;
 		} else if (body.outcomes[0].intent === 'rides_info_query' || body.context.state === 'RIDES_info_query' ) {
 			handlerTodo = 'rides_get_info';
 			body.touch = true;
 		} else if (body.context.state === 'RIDES_confirm_ride_needed' || body.context.state === 'RIDES_confirm_request') {
 			handlerTodo = 'rides_book_trip';
-		} else {
-			// do nothing
 		}  
 		
 		if (handlerTodo === 'rides_get_info') {

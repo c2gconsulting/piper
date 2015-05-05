@@ -1,0 +1,46 @@
+ { "name":"StatusCodeError",
+   "statusCode":401,
+   "message":"401 - {\"message\":\"Invalid OAuth 2.0 credentials provided.\",\"code\":\"unauthorized\"}",
+   "error":"{\"message\":\"Invalid OAuth 2.0 credentials provided.\",\"code\":\"unauthorized\"}",
+   "options":{
+  		"headers":{
+		  "Authorization":"Bearer bWqdffscMpTQrXlnRPx3iIyXfVuLpd",
+		  "content-length":0 },
+		"method":"DELETE",
+		"url":"https://api.uber.com/v1/requests/622824a6-f25d-4851-9114-278b7b59765e",
+		"tunnel":false,
+		"simple":true,
+		"resolveWithFullResponse":false},
+   "response":{
+  		"statusCode":401,
+		"body":"{\"message\":\"Invalid OAuth 2.0 credentials provided.\",\"code\":\"unauthorized\"}",
+		"headers":{
+			"server":"nginx",
+			"date":"Tue, 05 May 2015 20:29:17 GMT",
+			"content-type":"application/json",
+			"content-length":"75",
+			"connection":"keep-alive",
+			"x-uber-app":"uberex-nonsandbox",
+			"strict-transport-security":"max-age=31536000; includeSubDomains; preload",
+			"x-xss-protection":"1; mode=block"},
+		"request":{
+			"uri":{
+				"protocol":"https:",
+				"slashes":true,
+				"auth":null,
+				"host":"api.uber.com",
+				"port":443,
+				"hostname":"api.uber.com",
+				"hash":null,
+				"search":null,
+				"query":null,
+				"pathname":"/v1/requests/622824a6-f25d-4851-9114-278b7b59765e",
+				"path":"/v1/requests/622824a6-f25d-4851-9114-278b7b59765e",
+				"href":"https://api.uber.com/v1/requests/622824a6-f25d-4851-9114-278b7b59765e"},
+			"method":"delete",
+			"headers":{
+				"Authorization":"Bearer bWqdffscMpTQrXlnRPx3iIyXfVuLpd",
+				"content-length":0}
+			}
+		}
+	}
