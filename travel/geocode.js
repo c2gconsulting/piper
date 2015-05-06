@@ -86,6 +86,7 @@ var airports = function(lat, long) {
 };
 
 var getRoutes = function(src, dst){
+    //////////Will have to change this method to properly use when.all([])
     // first determine if flight is needed;
     //
     //
@@ -155,18 +156,37 @@ var routeMapper = function(arr){
         sdist[i]= arr[i]['airports'][0]; //result sorted by distance 'recalculate distance using google distance matrix'
         weightedOpt[i] = weigh(arr[i]['airports']);
     }
-    carrier = { most_popular: mpop, shortest_distance: sdist, weightedOpt: weightedOpt };
-    return promise(carrier);
-    //determine flights for most popular airport and
-    //var mpopOrigin = carrier['most_popular'][0]['code'];
-    //var mpopDestination = carrier['most_popular'][1]['code'];
-    //var sdistOrigin = carrier['shortest_distance'][0]['code'];
-    //var sdistDestination = carrier['shortest_distance'][1]['code'];
-    //var weightedOrigin = carrier['weightedOpt'][0]['code']
-    //var searchObj = { mpopFlightOptions : flightSearch({origin:mpopOrigin, destination: mpopDestination}), sdistFlightOptions : flightSearch({origin:sdistOrigin, destination:sdistDestination}) };
-    //return promise(searchObj);
+    // check if any of the suggested routes have same source and destination
+    if(sameCode(mpop) || sameCode(sdist) || sameCode(weightedOpt)){
+        // Select next option as Transit or Taxi... condition=> Taxi if no Transit is available.
+        //using google direactions api
+        return routeOptions(arr[0]['address'],arr[1]['address'])
+            .then(function(x){ return JSON.parse(x)});
+
+
+    } else {
+        //determine flights for most popular airport and
+        var mpopOrigin = mpop[0]['code'];
+        var mpopDestination = mpop[1]['code'];
+        var sdistOrigin = sdist[0]['code'];
+        var sdistDestination = sdist[1]['code'];
+        var weightedOrigin = weightedOpt[0]['code'];
+        var weightedDestination = weightedOpt[1]['code'];
+        var searchObj = when.all([flightSearch({origin:mpopOrigin, destination: mpopDestination}), flightSearch({origin:sdistOrigin, destination:sdistDestination}), flightSearch({origin:weightedOrigin, destination:weightedDestination})]);
+        return searchObj;
+    }
+
 };
 
+function sameCode(arr) {
+    try {
+        var src = arr[0]['code'], dst = arr[1]['code'];
+        if (!(src && dst) ) throw 'Arry must contain two objects with code as property';
+        return src === dst ? true : false;
+    } catch(e){
+       logger.error(e);
+    }
+}
 var routeOptions = function(src,dst){
     // use google directions api to determine best route
     //https://maps.googleapis.com/maps/api/directions/json?origin=turino&destination=lazio&mode=transit&key=KEY
@@ -176,9 +196,7 @@ var routeOptions = function(src,dst){
             'method': 'get',
             'qs': {'origin': src, 'destination': dst, 'mode': mode, 'key': key}
         };
-    request(requrl).then(function(res){
-        logger.debug(res);
-    });
+    return request(requrl);
 }
 
 //Rad()
