@@ -1546,6 +1546,8 @@ Rides.prototype.processData = function(user, clientHandle, body, htd) {
 	body.user = user;
 	body.clientHandle = clientHandle;
 
+		
+	
 	validateHandlerTodo(user.name, clientHandle, htd).then (function (handlerTodo) {	
 		logger.debug('HandlerTodo->Final Cut (validateHandlerTodo): %s', handlerTodo);
 		// check if this is a new request from the user
@@ -1664,6 +1666,8 @@ Rides.prototype.processData = function(user, clientHandle, body, htd) {
 										datahash.lvlQueries = JSON.stringify(datahash.lvlQueries);
 										cache.del(userkey + ':payload').then (function(){
 											cache.hmset(userkey + ':payload', datahash).then(function(){
+												cache.expire(userkey + ':payload', CONTEXT_TTL);
+												cache.expire(userkey + ':datacheck', CONTEXT_TTL);
 												if (!missingData && body.touch) {
 													// data is complete and valid
 													logger.debug('No more missing data: calling handleRequest for %s', handlerTodo);
@@ -1682,8 +1686,7 @@ Rides.prototype.processData = function(user, clientHandle, body, htd) {
 					});
 				});		
 			});
-			cache.expire(userkey + ':payload', CONTEXT_TTL);
-			cache.expire(userkey + ':datacheck', CONTEXT_TTL);	
+
 		});
 	});
 }
