@@ -133,7 +133,7 @@ function Rides(data) {
 								if (i.yes_no === 'no' && i.infotype === 'location') {  // user rejects captured location, can only be 'from'
 									delete d.startLong;
 									delete d.startLat;
-									if (data.lvlQueries[d.errStartLocation] && !isNaN(data.lvlQueries[d.errStartLocation])) data.lvlQueries[d.errStartLocation] = 0; // reset if reset
+									if (data.lvlQueries && data.lvlQueries[d.errStartLocation] && !isNaN(data.lvlQueries[d.errStartLocation])) data.lvlQueries[d.errStartLocation] = 0; // reset if reset
 									b.touch = true;
 								}
 							}
