@@ -714,7 +714,7 @@ function Rides(data) {
 		'confirmSchedule' : function(user, clientHandle, data) {
 						if (!data.errConfirmSchedule || errKeys.indexOf(data.errConfirmSchedule) < 0) data.errConfirmSchedule = 'NO_CONFIRM_SCHEDULE'; 
 						var responseText = getResponse(data, data.errConfirmSchedule);
-						var dateText = moment(data.departureTime).calendar();
+						var dateText = momentz(data.departureTime).tz(user.timezone).calendar();
 						responseText = responseText.replace("@username", user.name);
 						responseText = responseText.replace("@departureTime", dateText.toLowerCase());
 							
