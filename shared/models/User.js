@@ -8,6 +8,8 @@ var schema = new mongoose.Schema({
   , email           : String
   , phone           : String
   , avatar          : String 
+  , timezone        : String
+  , timezone_offset : Number
   , active          : Boolean
   , createdAt       : { type: Date, default: Date.now }
   , slackProfiles   : [{

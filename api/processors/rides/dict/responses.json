@@ -5,7 +5,7 @@
 		"Just let me know if you need me to cancel this ride"
 	],
 	"NO_CONFIRM_NEED" : [
-		"Need a cab?",
+		"Need a cab now?",
 		"Do you need me to call you a cab?",
 		"Just let me know if you need a ride, and for what time"
 	],
@@ -62,19 +62,35 @@
 	"NO_CARRIER" : [
 		"@preferredCarrier is the cheapest option, is that fine?"
 	],
-	"NO_DEPART_TIME" : [
-		"./processors/leaveRequest/leaveRequest.redis",
-		"./processors/travelRequest/bookFlight",
-		"./processors/general/doNothing",
-		"./processors/general/chitchat.mq",
-		"./processors/analytics/customerAnalytics",
-		"./processors/sales/index"
+	"NO_DEPARTURE_TIME" : [
+		"When do you want to be picked up?",
+		"What time do you want the ride for?",
+		"Please confirm when you want to be picked up",
+		"I need to know when you wish to leave"
+	],
+	"NON_SPECIFIC_TIME" : [
+		"Narrow it down for me, what time specifically?",
+		"I need a specific time, when do you wish to be picked up?",
+		"Please confirm what time exactly you wish to be picked up",
+		"I need to know when exactly you wish to leave"
+	],
+	"DEPARTURE_TOO_SOON" : [
+		"The time you indicate is too soon, should I just get you a ride right away?",
+		"Your proposed schedule is too soon considering usual ETAs. Do I just book you a ride now?",
+		"Can't schedule for your proposed time, too close. Probably just check for a ride now?",
+		"@username probably safer to just book a ride immediately"
 	],
 	"NO_CONFIRM_REQUEST" : [
 		"The nearest @product_name will get there in @eta @price. Should I book it?",
 		"An @product_name can get there in @eta @price. I still need confirmation",
 		"@username, i have your @product_name @price. Tell me whether to continue or not. ETA is @eta",
 		"Whenever you're ready I'll send for the @product_name, can't continue till you give the go ahead. ETA: @eta @price"
+	],
+	"NO_CONFIRM_SCHEDULE" : [
+		"To confirm, you wish to be picked up @departureTime. Should I go ahead and schedule it?",
+		"Should I schedule your pickup for @departureTime? Please confirm",
+		"@username, need you to confirm I should schedule a pickup for @departureTime",
+		"Hey I need your go ahead to schedule this pickup for @departureTime"
 	],
 	"NO_RIDE_ETA" : [
 		"Can't get an ETA for any ride at the moment, do I just go ahead and attempt the booking?",

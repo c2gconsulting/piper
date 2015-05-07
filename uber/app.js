@@ -125,7 +125,7 @@ function onProcessorEvent(id, user, client, body) {
 												requestAuth(user.email);
 												break;
 											case 422:
-												ebody = { header: 'request_error', status: 'create_error' };
+												var ebody = { header: 'request_error', status: 'create_error' };
 												if (error.error.errors) ebody.title = error.error.errors[0].title;
 												push(user.email, ebody);
 												break;
@@ -199,7 +199,7 @@ function onProcessorEvent(id, user, client, body) {
 										requestAuth(user.email);
 									break;
 									case 422:
-										ebody = { header: 'request_error', status: 'retrieve_error' };
+										var ebody = { header: 'request_error', status: 'retrieve_error' };
 										if (error.error.errors) ebody.title = error.error.errors[0].title;
 										push(user.email, ebody);
 										break;
@@ -258,7 +258,7 @@ function onProcessorEvent(id, user, client, body) {
 										requestAuth(user.email);
 										break;
 									case 422:
-										ebody = { header: 'request_error', status: 'hook_retrieve_error' };
+										var ebody = { header: 'request_error', status: 'hook_retrieve_error' };
 										if (error.error.errors) ebody.title = error.error.errors[0].title;
 										push(user.email, ebody);
 										break;
@@ -305,7 +305,7 @@ function onProcessorEvent(id, user, client, body) {
 										requestAuth(user.email);						
 										break;
 									case 422:
-										ebody = { header: 'request_error', status: 'retrieve_error' };
+										var ebody = { header: 'request_error', status: 'retrieve_error' };
 										if (error.error.errors) ebody.title = error.error.errors[0].title;
 										push(user.email, ebody);
 										break;
@@ -342,7 +342,7 @@ function onProcessorEvent(id, user, client, body) {
 										requestAuth(user.email);			
 										break;
 									case 422:
-										ebody = { header: 'request_error', status: 'retrieve_error' };
+										var ebody = { header: 'request_error', status: 'retrieve_error' };
 										if (error.error.errors) ebody.title = error.error.errors[0].title;
 										push(user.email, ebody);
 										break;
@@ -377,7 +377,7 @@ function onProcessorEvent(id, user, client, body) {
 										requestAuth(user.email);					
 										break;
 									case 422:
-										ebody = { header: 'request_error', status: 'delete_error' };
+										var ebody = { header: 'request_error', status: 'delete_error' };
 										if (error.error.errors) ebody.title = error.error.errors[0].title;
 										push(user.email, ebody);
 										break;
@@ -506,7 +506,7 @@ function checkAuth(email) {
 				if (doc && doc.access_token) {
 					// user and access_token exists...check for expiry
 					logger.debug('checkAuth.access_token: %s', JSON.stringify(doc));
-					if (typeof doc.tokenExpiry == Date && new Date() < doc.tokenExpiry) {
+					if (new Date() < new Date(doc.tokenExpiry)) {
 						cache.hset(emailCacheKey, 'access_token', doc.access_token); // update cache
 						return doc.access_token; // valid token, return
 					} else {

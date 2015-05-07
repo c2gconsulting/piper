@@ -8,6 +8,7 @@ var responses = require('./dict/responses.json');
 var keywords = require('./dict/keywords.json');
 var errorContext = require('./dict/error_context.json');
 var when = require('when');
+var moment = require('moment');
 var request = require('request-promise');
 var geo = require('./lib/geo');
 
@@ -17,6 +18,7 @@ var CONTEXT_TTL = 1800;
 var ONE_DAY_TTL = 86400;
 var START_LOC = 11;
 var END_LOC = 12;
+var CUTOFF_TIME = 60;
 
 
 cache.on("error", function (err) {
@@ -42,8 +44,12 @@ function Rides(data) {
 						'startLong',
 						'productId',
 						'endLong',
-						'departureTime',
 						'confirmRequest'
+					],
+		'rides_schedule_trip' : [
+						'endLong',
+						'departureTime',
+						'confirmSchedule'
 					],
 		'rides_cancel_trip' : [
 						'confirmCancellation'
@@ -81,14 +87,15 @@ function Rides(data) {
 							var state = b.context.state;
 							return i.hasActiveRequest.then(function (requestActive) {
 								if (state === 'RIDES_confirm_cancellation' && i.yes_no) b.touch = true;
-								if (d.confirmNeed !== true && d.confirmNeed !== 'true' && !requestActive) return true; // no need to cancel, no active trip
-								if ((state === 'RIDES_confirm_cancellation' && i.yes_no === 'yes') || d.confirmCancellation === true) return d.confirmCancellation = true;
-								if (state === 'RIDES_confirm_cancellation' && d.intent === 'rides_cancel_trip') return d.confirmCancellation = true;
 								if ((state === 'RIDES_confirm_cancellation' && i.yes_no === 'no') || d.confirmCancellation === false)  {
 									d.confirmCancellation = false;
 									d.errConfirmCancellation = 'CANCEL_REQUEST_CANCEL';
 									return false;
 								}
+								if (d.confirmNeed !== true && d.confirmNeed !== 'true' && !requestActive && !d.departureTime) return true; // no need to cancel, no active trip
+								if ((state === 'RIDES_confirm_cancellation' && i.yes_no === 'yes') || d.confirmCancellation === true) return d.confirmCancellation = true;
+								if (state === 'RIDES_confirm_cancellation' && d.intent === 'rides_cancel_trip') return d.confirmCancellation = true;
+								
 								return false;
 							});
 						}
@@ -105,7 +112,7 @@ function Rides(data) {
 						function(d, b, i) {
 							var state = b.context.state;
 							if (state === 'RIDES_confirm_ride_needed' && i.yes_no) b.touch = true;
-							if (d.intent !== 'rides_go_out' && state !== 'RIDES_confirm_ride_needed') return d.confirmNeed = true;
+							if (d.intent !== 'rides_go_out' && state !== 'RIDES_confirm_ride_needed' && !b.restart) return d.confirmNeed = true;
 							if (d.intent === 'rides_request_trip') return d.confirmNeed = true;
 							if ((state === 'RIDES_confirm_ride_needed' && i.yes_no === 'yes')  || d.confirmNeed === true || d.confirmNeed === 'true') {
 								return d.confirmNeed = true;
@@ -144,6 +151,8 @@ function Rides(data) {
 							if (i.from) {
 								// check for location keyword
 								b.touch = true;
+								// strip of prefix if
+								if (i.from.lastIndexOf('from ', 0) === 0) i.from = i.from.substr(5, i.from.length);
 								var lockeyword;
 								if (lockeyword = getLocationKeyword(i.from)) {
 									// if keyword, check if preferences set
@@ -438,10 +447,12 @@ function Rides(data) {
 						},
 						function(d, b, i) {
 							var state = b.context.state;
-							if (d.errEndLocation === 'SUSPECT_END_LOCATION') setTerminal(d, b, i);
+							if (i.location || d.errEndLocation === 'SUSPECT_END_LOCATION') setTerminal(d, b, i);
 							if (i.to) {
 								// check for location keyword
 								b.touch = true;
+								if (i.to.lastIndexOf('to ', 0) === 0) i.to = i.to.substr(3, i.to.length);
+								
 								var lockeyword;
 								if (lockeyword = getLocationKeyword(i.to)) {
 									// if keyword, check if preferences set
@@ -521,23 +532,78 @@ function Rides(data) {
 							return i.hasActiveRequest;
 						},
 						function(d, b, i) {
-							if(d.confirmNeed === false) return true; // exit validations if trip cancelled
-							return true;
+							if (d.departureTime) {
+								var cutoffTime = moment().add(CUTOFF_TIME, 'minutes');
+								if (moment(d.departureTime).isAfter(cutoffTime)) return true;
+								d.errDepartureTime = 'DEPARTURE_TOO_SOON';
+							}
+							return false;
+						},
+						function(d, b, i) {
+							if(i.datetime) {
+								b.touch = true;
+								
+								/*
+								// align datetime with date information in expression if indicated
+								if (i.datetime_from) {
+									var d1 = moment(i.datetime),
+										d2 = moment(i.datetime_from);
+										
+									var	d3 = i.datetime_to == undefined ? moment(d2).add(1, 'days') : moment(i.datetime_to);
+									
+									if (d1.isBefore(d2)) {
+										var timediff = d2.subtract(d1).minutes();
+										var timedelta = 720 - (timediff % 720);
+										i.datetime = d2.add(timedelta, 'minutes').format();
+										logger.debug('D1: %s, D2: %s, newtime: %s', d1, d2, i.datetime );
+									} else if (d1.isAfter(d3)) {
+										timediff = d1.subtract(d3).minutes();
+										timedelta = 720 - (timediff % 720);
+										i.datetime = d3.subtract(timedelta, 'minutes').format();
+										logger.debug('D1: %s, D2: %s, newtime: %s', d3, d1, i.datetime );
+									}	
+								} else {
+									// move forward if before now
+									if (moment(i.datetime).isBefore(moment())) {
+										d1 = moment(i.datetime);
+										timediff = moment().subtract(d1).minutes();
+										timedelta = 720 - (timediff % 720);
+										i.datetime = moment().add(timedelta, 'minutes').format();
+										logger.debug('D1: %s, Now: %s, newtime: %s', d1, d2, i.datetime );
+									}
+								}
+								
+								var cutoffTime = moment().add(90, 'minutes');
+								if (moment(i.datetime).isAfter(cutoffTime)) {
+									d.departureTime = i.datetime;
+									return true;
+								} 
+								*/
+								var nTime = normalizeTime(i);
+								if (nTime) {
+									d.departureTime = nTime;
+									return true;
+								}
+								d.errDepartureTime = 'DEPARTURE_TOO_SOON';
+								return false;
+							}
+							return false;
+						},
+						function(d, b, i) {
+							if(i.datetime_to) {
+								d.errDepartureTime = 'NON_SPECIFIC_TIME';
+								b.touch = true;
+							}
+							return false;
 						}
 					],
 		'confirmRequest' : [
 						function(d, b, i) {
-							return i.hasActiveRequest;
+							return i.hasActiveRequest.then(function(active){
+								if (active && !i.yes_no) b.touch = true;
+								return active;
+							});
 						},
-						/*function(d, b, i) {
-							if (i.yes_no === 'no') {
-								d.cancelFlagCR = true; // if a 'no', assume cancellation by default. if the 'no' is expected by any subsequent validation, it should clear flag
-							} else {
-								if (d.cancelFlagCR) delete d.cancelFlagCR;
-								if (d.errConfirmRequest === 'CONFIRM_REQUEST_CANCEL') delete d.errConfirmRequest;
-							}
-							return false;
-						},*/
 						function(d, b, i) {
 							var state = b.context.state;
 							if (state === 'RIDES_confirm_request' && i.yes_no === 'yes') b.touch = true;
@@ -547,6 +613,24 @@ function Rides(data) {
 							}
 							if ((state === 'RIDES_confirm_request' && i.yes_no === 'no') || d.confirmRequest === false || d.confirmRequest === 'false')  {
 								d.confirmRequest = false;
+								// d.errConfirmRequest = "CONFIRM_REQUEST_CANCEL";
+								return false;
+							}
+							return false;
+						}
+					],
+		'confirmSchedule' : [
+						function(d, b, i) {
+							return i.hasActiveRequest;
+						},
+						function(d, b, i) {
+							var state = b.context.state;
+							if (state === 'RIDES_confirm_schedule' && i.yes_no === 'yes') b.touch = true;
+							if ((state === 'RIDES_confirm_schedule' && i.yes_no === 'yes') || d.confirmSchedule === true || d.confirmSchedule === 'true') {
+								return d.confirmSchedule = true;
+							}
+							if ((state === 'RIDES_confirm_schedule' && i.yes_no === 'no') || d.confirmSchedule === false || d.confirmSchedule === 'false')  {
+								d.confirmSchedule = false;
 								// d.errConfirmRequest = "CONFIRM_REQUEST_CANCEL";
 								return false;
 							}
@@ -584,9 +668,7 @@ function Rides(data) {
 						return false;
 					},	
 		'confirmNeed' : function(user, clientHandle, data) {
-						logger.debug('data.confirmNeed1: %s', data.errConfirmNeed);
 						if (!data.errConfirmNeed || errKeys.indexOf(data.errConfirmNeed) < 0) data.errConfirmNeed = 'NO_CONFIRM_NEED'; 
-						logger.debug('data.confirmNeed2: %s', data.errConfirmNeed);
 						var responseText = getResponse(data, data.errConfirmNeed);
 						
 						me.emit('message', Rides.MODULE, user.name, clientHandle, responseText, errorContext[data.errConfirmNeed]);
@@ -595,10 +677,7 @@ function Rides(data) {
 					},	
 		'startLong' : function(user, clientHandle, data) {
 						if (data.errStartLocation === "CONFIRM_REQUEST_CANCEL") delete data.errStartLocation;
-						if (data.cancelFlagSL === true) {
-							data.errStartLocation = "CONFIRM_REQUEST_CANCEL";
-							delete data.cancelFlagSL;
-						} else if (!data.errStartLocation || errKeys.indexOf(data.errStartLocation) < 0) {
+						if (!data.errStartLocation || errKeys.indexOf(data.errStartLocation) < 0) {
 							data.errStartLocation = 'NO_START_LOCATION'; 
 						}
 
@@ -644,7 +723,24 @@ function Rides(data) {
 						return false;
 					},
 		'departureTime' : function(user, clientHandle, data) {
-						return true;
+						if (!data.errDepartureTime || errKeys.indexOf(data.errDepartureTime) < 0) data.errDepartureTime = 'NO_DEPARTURE_TIME'; 
+						var responseText = getResponse(data, data.errDepartureTime);
+						responseText = responseText.replace("@username", user.name);
+							
+						me.emit('message', Rides.MODULE, user.name, clientHandle, responseText, errorContext[data.errDepartureTime]);
+						delete data.errDepartureTime;
+						return false;
+					},
+		'confirmSchedule' : function(user, clientHandle, data) {
+						if (!data.errConfirmSchedule || errKeys.indexOf(data.errConfirmSchedule) < 0) data.errConfirmSchedule = 'NO_CONFIRM_SCHEDULE'; 
+						var responseText = getResponse(data, data.errConfirmSchedule);
+						var dateText = moment(data.departureTime).calendar();
+						responseText = responseText.replace("@username", user.name);
+						responseText = responseText.replace("@departureTime", dateText.toLowerCase());
+							
+						me.emit('message', Rides.MODULE, user.name, clientHandle, responseText, errorContext[data.errConfirmSchedule]);
+						delete data.errConfirmSchedule;
+						return false;
 					},
 		'confirmRequest' : function(user, clientHandle, data) {
 						/*if (data.cancelFlagCR === true) {
@@ -745,6 +841,24 @@ function Rides(data) {
 									responseText = responseText.replace("@username", user.name);
 									me.emit('message', Rides.MODULE, user.name, clientHandle, responseText);
 									return false;
+								} else {
+									responseText = getResponse(data, 'NOT_UNDERSTOOD');
+									responseText = responseText.replace("@username", user.name);
+									me.emit('message', Rides.MODULE, user.name, clientHandle, responseText);
+									return true;
+								}	
+							},
+		'rides_schedule_trip' : function(user, clientHandle, indata, data) {
+								if (indata.yes_no === 'no') {
+									var responseText = getResponse(data, 'CONFIRM_REQUEST_CANCEL');
+									responseText = responseText.replace("@username", user.name);
+									me.emit('message', Rides.MODULE, user.name, clientHandle, responseText, errorContext['CONFIRM_REQUEST_CANCEL']);
+									return false;
+								} else if (indata.yes_no === 'yes') {
+									responseText = getResponse(data, 'POSITIVE_REINFORCEMENT');
+									responseText = responseText.replace("@username", user.name);
+									me.emit('message', Rides.MODULE, user.name, clientHandle, responseText);
+									return true;
 								} else {
 									responseText = getResponse(data, 'NOT_UNDERSTOOD');
 									responseText = responseText.replace("@username", user.name);
@@ -1023,9 +1137,28 @@ function Rides(data) {
 							return true;
 						} else {
 							// check if there's an active request
-							return checkActiveRequest(user.name, clientHandle).then(function(active) {
-								if (active) {
-									// ...
+							return getActiveRequest(user.name, clientHandle).then(function(request) {
+								if (request && request.status) {
+									switch (request.status) {
+										case 'pending':
+											var responseText = 'You already have an active request, hold on while I process it...';
+											break;
+										case 'processing':
+											responseText = 'I\'ve already booked a request for you...waiting for a driver to confirm';
+											break;
+										case 'accepted':
+											responseText = 'Your ride is already on its way';
+											break;
+										case 'arriving':
+											responseText = 'Your ride should be here. Go check';
+											break;
+										case 'in_progress':
+											responseText = 'Unless I\'m mistaken, you should be on a ride at the moment';
+											break;
+										default:
+											responseText = 'You can wrap it up and book another';
+									}
+									me.emit('message', Rides.MODULE, user.name, clientHandle, responseText);
 								} else {
 									me.emit('message', Rides.MODULE, user.name, clientHandle, 'One second, let me see...');
 									data.header = 'request_ride';
@@ -1042,6 +1175,32 @@ function Rides(data) {
 							});
 						}
 					},
+		'rides_schedule_trip' : function(user, clientHandle, data) {
+						var userkey = getUserKey(user.name, clientHandle);
+						logger.debug('HandleRequest: handling for rides_schedule_trip... %s', JSON.stringify(data));
+						// check if there's an active request
+						return checkActiveRequest(user.name, clientHandle).then(function(active) {
+							if (active) {
+								// tell user she has an active request...need to complete before booking
+								me.emit('message', Rides.MODULE, user.name, clientHandle, 'You already have another request active. Complete it before scheduling your ride');
+							} else {
+								data.header = 'scheduled_trip';
+								var body = { 'module': Rides.MODULE, 'user': user, 'client': clientHandle, 'data': data };
+								var scheduleTime = moment(data.departureTime).subtract(30, 'minutes'); // Prompt 30 minutes earlier
+								
+								// call the scheduler
+								/*
+								scheduler.add(scheduleTime.toDate().getTime(), body, mq.CONTROLLER_INBOUND).then (function(eventId) {
+									cache.zadd(userkey + ':scheduledrequests', scheduleTime.toDate().getTime(), eventId); //possibly make a then
+									me.emit('message', Rides.MODULE, user.name, clientHandle, 'Done, i\'ll notify you when its time to call the ride...');
+								});
+								*/	
+								me.emit('message', Rides.MODULE, user.name, clientHandle, 'Done, i\'ll follow up with you when its time to call the ride...');
+								cache.del(userkey + ':payload');
+							}
+							return true;
+						});
+					},
 		'rides_get_info' : function(user, clientHandle, data) {
 						me.emit('message', Rides.MODULE, user.name, clientHandle, 'You want to know ' + data.infotype);
 						return true;
@@ -1050,13 +1209,48 @@ function Rides(data) {
 
 }
 
+
+function normalizeTime(i) {
+	if (i.datetime_from) {
+		var d1 = moment(i.datetime),
+			d2 = moment(i.datetime_from);
+			
+		var	d3 = i.datetime_to == undefined ? moment(d2).add(1, 'days') : moment(i.datetime_to);
+		
+		if (d1.isBefore(d2)) {
+			var timediff = d2.diff(d1, 'minutes');
+			var timedelta = 720 - (timediff % 720);
+			i.datetime = d2.add(timedelta, 'minutes').format();
+			logger.debug('D1: %s, D2: %s, newtime: %s, timediff: %s, timedelta: %s', d1, d2, i.datetime, timediff, timedelta );
+		} else if (d1.isAfter(d3)) {
+			timediff = d1.diff(d3, 'minutes');
+			timedelta = 720 - (timediff % 720);
+			i.datetime = d3.subtract(timedelta, 'minutes').format();
+			logger.debug('D3: %s, D1: %s, newtime: %s, timediff: %s, timedelta: %s', d3, d1, i.datetime, timediff, timedelta );
+		}	
+	} else {
+		// move forward if before now
+		if (moment(i.datetime).isBefore(moment())) {
+			d1 = moment(i.datetime);
+			timediff = moment().diff(d1, 'minutes');
+			timedelta = 720 - (timediff % 720);
+			i.datetime = moment().add(timedelta, 'minutes').format();
+			logger.debug('D1: %s, Now: %s, newtime: %s', d1, d2, i.datetime );
+		}
+	}
+	
+	var cutoffTime = moment().add(CUTOFF_TIME, 'minutes');
+	if (moment(i.datetime).isAfter(cutoffTime)) return i.datetime;
+	return false;
+}
+
+
 function checkActiveRequest(username, clientHandle) {
 	var userkey = getUserKey(username, clientHandle);
 	return cache.hgetall(userkey + ':activerequest').then(function(request) {
 		if (!request) {
 			return false;
 		} else {
-			// don't poll for status, webhooks will update
 			return true;
 		}
 	});
@@ -1224,23 +1418,39 @@ Rides.prototype.out = function(user, client, body) {
 		} else if (activeRequest && body.outcomes[0].intent === 'default_reject') {
 			handlerTodo = 'rides_cancel_trip';
 			body.touch = true;
-		} else if (activeRequest) {
-			handlerTodo = 'rides_get_info';
-		} else if (body.outcomes[0].intent === 'rides_request_trip') {
+		} else if (body.outcomes[0].intent === 'rides_schedule_trip') {
+			handlerTodo = 'rides_schedule_trip';
+			body.touch = true;
+		} else if (body.outcomes[0].intent === 'rides_request_trip' || body.outcomes[0].intent === 'rides_go_out') {
 			handlerTodo = 'rides_book_trip';
 			body.touch = true;
 		} else if (body.outcomes[0].intent === 'rides_info_query' || body.context.state === 'RIDES_info_query' ) {
 			handlerTodo = 'rides_get_info';
 			body.touch = true;
+		} else if (activeRequest) {
+			handlerTodo = 'rides_book_trip';
 		} else if (body.context.state === 'RIDES_confirm_ride_needed' || body.context.state === 'RIDES_confirm_request') {
 			handlerTodo = 'rides_book_trip';
-		}  
+		} else if (body.context.state === 'RIDES_confirm_schedule') {
+			handlerTodo = 'rides_schedule_trip';
+		}
+		
+		logger.debug('HandlerTodo->First Cut: %s', handlerTodo);
+		if (body.outcomes[0].intent === 'default_prompt' || body.outcomes[0].intent === 'confused') body.touch = true;
 		
 		if (handlerTodo === 'rides_get_info') {
 			var infoQuery = getInfoQuery(body);
 			handlerTodo = infoQuery == undefined ? handlerTodo : infoQuery;
 		}
-		me.processData(user, client.slackHandle, body, handlerTodo);  
+		
+		logger.debug('HandlerTodo->2nd Cut (getInfoQuery): %s', handlerTodo);
+		logger.debug('Body Touched?: %s', body.touch);
+		
+		resolveBookOrSchedule(user.name, client.slackHandle, body, handlerTodo).then(function(htd) {
+			logger.debug('HandlerTodo->3rd Cut (resolveBookOrSchedule): %s', htd);
+			me.processData(user, client.slackHandle, body, htd);  
+		});
+		
 	});	
 }
 
@@ -1248,6 +1458,8 @@ Rides.prototype.out = function(user, client, body) {
 function getInfoQuery(body) {
 	if (body.outcomes[0].entities.infotype) {
 		var infotype = body.outcomes[0].entities.infotype[0].value;
+		if (infotype) body.touch = true;
+		logger.debug('GetInfoQuery->Infotype: %s', infotype);
 		switch (infotype) {
 			case 'location':
 				return 'rides_get_driver_location';
@@ -1269,10 +1481,32 @@ function getInfoQuery(body) {
 				break;
 			default:
 				return 'rides_get_request_status';
-		}
-		if (infotype) body.touch = true;
+		}		
 	} else {
 		return false;
+	}
+}
+
+
+function resolveBookOrSchedule(username, clientHandle, body, handlerTodo) {
+	var userkey = getUserKey(username, clientHandle);
+	if (handlerTodo === 'rides_book_trip' || handlerTodo === 'rides_schedule_trip') {
+		return checkActiveRequest(username, clientHandle).then( function(active){
+			if (active) return handlerTodo;
+			return cache.hget(userkey + ':payload', 'departureTime').then(function(dTime) {
+				if (body.outcomes[0].entities.datetime || dTime) {
+					if (body.outcomes[0].entities.datetime) {
+						var i = extractEntities(body);
+						if (normalizeTime(i)) return 'rides_schedule_trip';
+					} else {
+						if (moment(dTime).isAfter(moment().add(CUTOFF_TIME, 'minutes'))) return 'rides_schedule_trip';
+					}
+				}
+				return 'rides_book_trip';
+			});	
+		}); 
+	} else {
+		return when(handlerTodo);
 	}
 }
 
@@ -1291,6 +1525,7 @@ function validateHandlerTodo(username, clientHandle, handlerTodo) {
 		});
 	}
 }
+
 
 Rides.prototype.refreshHandlerEndpoint = function(user, clientHandle) {
 	var me = this;
@@ -1332,6 +1567,7 @@ Rides.prototype.processData = function(user, clientHandle, body, htd) {
 	body.clientHandle = clientHandle;
 
 	validateHandlerTodo(user.name, clientHandle, htd).then (function (handlerTodo) {	
+		logger.debug('HandlerTodo->Final Cut (validateHandlerTodo): %s', handlerTodo);
 		// check if this is a new request from the user
 		cache.exists(userkey + ':datacheck').then(function (check) {
 			var datakeys = me.handlerKeys[handlerTodo];
@@ -1345,6 +1581,7 @@ Rides.prototype.processData = function(user, clientHandle, body, htd) {
 			cache.hgetall(userkey + ':payload').then(function(datahash) {
 				if (!datahash) {
 					datahash = { 'handlerTodo' : handlerTodo};
+					body.restart = true;
 				} else {
 					datahash.handlerTodo = handlerTodo;
 				}
@@ -1356,7 +1593,7 @@ Rides.prototype.processData = function(user, clientHandle, body, htd) {
 						datahash.lvlQueries = {};
 					}
 				}
-	
+				
 				var datacheckPromises = [],
 					validationPromisesFn = [],
 					fvPromises = [];
@@ -1383,7 +1620,7 @@ Rides.prototype.processData = function(user, clientHandle, body, htd) {
 					for (var f=0; f<validationPromises.length; f++) {
 						(function (_i, _f) {
 							validationPromises[_f].then(function (ret) {
-								logger.debug('%s: %s -> %s', datakeys[_i], _f, ret);
+								logger.debug('%s: %s -> %s | b.touch: %s', datakeys[_i], _f, ret, body.touch);
 							});
 						} (step, f));	
 					}
@@ -1445,16 +1682,19 @@ Rides.prototype.processData = function(user, clientHandle, body, htd) {
 										logger.debug(userkey);
 										if (datahash.lvlQueries) logger.debug('Datahash.lvlQueries: %s', JSON.stringify(datahash.lvlQueries));
 										datahash.lvlQueries = JSON.stringify(datahash.lvlQueries);
-										cache.hmset(userkey + ':payload', datahash);
+										cache.del(userkey + ':payload').then (function(){
+											cache.hmset(userkey + ':payload', datahash).then(function(){
+												if (!missingData && body.touch) {
+													// data is complete and valid
+													logger.debug('No more missing data: calling handleRequest for %s', handlerTodo);
+													me.handleRequest[handlerTodo](user, clientHandle, datahash);
+													
+												} else {
+													if (datahash.cancelFlag) me.cancelRequest(user.name, clientHandle, datahash);
+												}
+											});
+										});										
 										
-										if (!missingData && body.touch) {
-											// data is complete and valid
-											logger.debug('No more missing data: calling handleRequest for %s', handlerTodo);
-											me.handleRequest[handlerTodo](user, clientHandle, datahash);
-											
-										} else {
-											if (datahash.cancelFlag) me.cancelRequest(user.name, clientHandle, datahash);
-										}
 									});
 								});
 							});
@@ -1463,8 +1703,7 @@ Rides.prototype.processData = function(user, clientHandle, body, htd) {
 				});		
 			});
 			cache.expire(userkey + ':payload', CONTEXT_TTL);
-			cache.expire(userkey + ':datacheck', CONTEXT_TTL);
-			//cache.expire(userkey + ':activerequest', CONTEXT_TTL);	// for now. change to end based on status	
+			cache.expire(userkey + ':datacheck', CONTEXT_TTL);	
 		});
 	});
 }
@@ -1517,6 +1756,13 @@ Rides.prototype.in = function(msgid, username, clientHandle, body) {
 						
 					});
 				});
+				break;
+			case 'scheduled_trip':
+				setUserPayload(username, clientHandle, body);
+				logger.debug('Done setting user payload...');
+
+				me.emit('message', Rides.MODULE, username, clientHandle, 'You have a pickup scheduled for 30 mins from now, do you still need the ride?', 'RIDES_confirm_ride_needed');
+
 				break;
 			case 'auth_link':
 				utils.shortenLink(body.authLink).then (function(shortAuthLink) {
@@ -1787,6 +2033,13 @@ function setUserGeoData(username, clientHandle, body) {
 	cache.hset(userkey + ':payload', 'startLong', body.longt);
 }
 
+
+function setUserPayload(username, clientHandle, body) {
+	var userkey = getUserKey(username, clientHandle);
+	cache.hmset(userkey + ':payload', body);
+}
+
+
 /*
 function setProductsData(username, clientHandle, body) {
 	var userkey = getUserKey(username, clientHandle);
@@ -1803,7 +2056,17 @@ function extractEntities(body) {
 
 	if (eKeys) {
 		for (var e=0; e<eKeys.length; e++) {
-			indata[eKeys[e]] = entities[eKeys[e]][0].value;
+			if (entities[eKeys[e]][0].grain !== 'day') indata[eKeys[e]] = entities[eKeys[e]][0].value;
+			if (entities[eKeys[e]][0].to) indata[eKeys[e] + '_to'] = entities[eKeys[e]][0].to.value;
+			if (entities[eKeys[e]][0].from) indata[eKeys[e] + '_from'] = entities[eKeys[e]][0].from.value;
+			if (entities[eKeys[e]][0].grain === 'day') indata[eKeys[e] + '_from'] = entities[eKeys[e]][0].value;
+			
+			if (entities[eKeys[e]][1]) {
+				if (entities[eKeys[e]][1].grain !== 'day') indata[eKeys[e]] = entities[eKeys[e]][1].value;
+				if (entities[eKeys[e]][1].to) indata[eKeys[e] + '_to'] = entities[eKeys[e]][1].to.value;
+				if (entities[eKeys[e]][1].from) indata[eKeys[e] + '_from'] = entities[eKeys[e]][1].from.value;
+				if (entities[eKeys[e]][1].grain === 'day') indata[eKeys[e] + '_from'] = entities[eKeys[e]][1].value;
+			}
 		}
 	}
 	return indata;
@@ -1864,9 +2127,9 @@ function getLocationKeyword(location) {
 }
 
 function setTerminal(d, b, i) {
-	b.touch = true;
 	var terminalSet = false;
-
+	if (i.location) b.touch = true;
+	
 	// state selection...
 	var state = b.context.state;
 	switch (state) {
@@ -1919,12 +2182,16 @@ function setTerminal(d, b, i) {
 				if (d.errStartLocation === 'SUSPECT_START_LOCATION') delete d.errStartLocation;
 				delete d.tempLocation;
 				terminalSet = true;
-			}
-			if (i.yes_no === 'no') {
+				b.touch = true;
+			} else if (i.yes_no === 'no') {
 				i.to = d.tempLocation;
 				d.currLocation = END_LOC;
 				delete d.tempLocation;
 				terminalSet = true;
+				if (d.errStartLocation === 'SUSPECT_START_LOCATION') delete d.errStartLocation;
+				b.touch = true;
+			} else {
+				delete d.tempLocation;
 				if (d.errStartLocation === 'SUSPECT_START_LOCATION') delete d.errStartLocation;
 			}
 			break;
@@ -1937,12 +2204,16 @@ function setTerminal(d, b, i) {
 				if (d.errEndLocation === 'SUSPECT_END_LOCATION') delete d.errEndLocation;
 				delete d.tempLocation;
 				terminalSet = true;
-			}
-			if (i.yes_no === 'no') {
+				b.touch = true;
+			} else if (i.yes_no === 'no') {
 				i.from = d.tempLocation;
 				d.currLocation = END_LOC;
 				delete d.tempLocation;
 				terminalSet = true;
+				if (d.errEndLocation === 'SUSPECT_END_LOCATION') delete d.errEndLocation;
+				b.touch = true;
+			} else {
+				delete d.tempLocation;
 				if (d.errEndLocation === 'SUSPECT_END_LOCATION') delete d.errEndLocation;
 			}
 			break;

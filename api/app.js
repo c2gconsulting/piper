@@ -48,7 +48,7 @@ sub.connect('piper.events.in', mq.CONTROLLER_INBOUND, function() {
 });
 
 sub.on('data', function(data) {
-	jsonData = JSON.parse(data);
+	var jsonData = JSON.parse(data);
 	if (data) onHandlerEvent(jsonData.id, jsonData.user, jsonData.client, jsonData.module, jsonData.body);
 });
 
@@ -369,7 +369,9 @@ var onSlackEvent = function(user, client, message) {
 							  , full_name       : user.full_name
 							  , email           : user.email
 							  , phone           : user.phone
-							  , avatar          : user.avatar 
+							  , avatar          : user.avatar
+							  , timezone		: user.timezone
+							  , timezone_offset	: user.timezone_offset 
 							  , active          : true
 							  , createdAt       : new Date()
 							  , slackProfiles   : [{
@@ -391,6 +393,22 @@ var onSlackEvent = function(user, client, message) {
 
 					});
 			}
+			
+			// update user timezone
+			User.findOneAndUpdate (
+				{ email: user.email }, 
+				{ timezone: user.timezone,
+				  timezone_offset: user.timezone_offset
+				},
+				{upsert: true}, function (err) {
+				if (err) {
+					logger.error('Unable to update user slack profile: ' + err);
+				} else {
+					logger.info('Slack Profile for User %s successfully updated', user.email);
+					cache.sadd(sukey, user.slackId);
+				}
+			});
+
 		});
 	
 	// save user details to cache
@@ -410,10 +428,12 @@ var onSlackEvent = function(user, client, message) {
 			logger.info('No context: ' + JSON.stringify(inContext));
 		}
 
-		// Update context with current user time
-		var dateTime = new Date(message.time*1000);
-		inContext.reference_time = dateTime.toISOString();
-		logger.debug(inContext.reference_time);
+		// Update context with current user timezone
+		//var dateTime = new Date(message.time * 1000);
+		//inContext.reference_time = dateTime.toISOString();
+		//logger.debug(inContext.reference_time);
+		//logger.debug(JSON.stringify(user));
+		inContext.timezone = user.timezone;
 		
 		// Interprete inbound message -> wit
 		var intentBody;
@@ -422,7 +442,7 @@ var onSlackEvent = function(user, client, message) {
 
 		wit.captureTextIntent(witAccessToken, message.text, inContext, function(error,feedback) {
 			if (error) {
-				var response = JSON.stringify(feedback);
+				//var response = JSON.stringify(feedback);
 				logger.error('ALARM! -> Error retrieving intent from wit.ai: '+ JSON.stringify(error));
 				logger.debug('Feedback: ' + JSON.stringify(feedback));
 				
