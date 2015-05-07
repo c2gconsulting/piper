@@ -1199,13 +1199,15 @@ function normalizeTime(i, tz) {
 		
 		if (d1.isBefore(d2)) {
 			var timediff = d2.diff(d1, 'minutes');
-			var timedelta = 720 - (timediff % 720);
-			i.datetime = d2.add(timedelta, 'minutes').format();
+			var timedelta = 1440 - (timediff % 1440);
+			d2.add(timedelta, 'minutes');
+			i.datetime = d2.isAfter(d3) ? d2.subtract(720, 'minutes').format() : d2.format(); // switch AM <-> PM
 			logger.debug('D1: %s, D2: %s, newtime: %s, timediff: %s, timedelta: %s', d1, d2, i.datetime, timediff, timedelta );
 		} else if (d1.isAfter(d3)) {
 			timediff = d1.diff(d3, 'minutes');
-			timedelta = 720 - (timediff % 720);
-			i.datetime = d3.subtract(timedelta, 'minutes').format();
+			timedelta = 1440 - (timediff % 1440);
+			d3.subtract(timedelta, 'minutes');
+			i.datetime = d3.isBefore(d2) ? d3.add(720, 'minutes').format() : d3.format(); // switch AM <-> PM
 			logger.debug('D3: %s, D1: %s, newtime: %s, timediff: %s, timedelta: %s', d3, d1, i.datetime, timediff, timedelta );
 		}	
 	} else {
@@ -1213,7 +1215,7 @@ function normalizeTime(i, tz) {
 		if (moment(i.datetime).isBefore(moment())) {
 			d1 = moment(i.datetime);
 			timediff = moment().diff(d1, 'minutes');
-			timedelta = 720 - (timediff % 720);
+			timedelta = 1440 - (timediff % 1440);
 			i.datetime = momentz().tz(tz).add(timedelta, 'minutes').format();
 			logger.debug('D1: %s, Now: %s | %s, newtime: %s', d1, moment(), momentz().tz(tz), i.datetime );
 		}
