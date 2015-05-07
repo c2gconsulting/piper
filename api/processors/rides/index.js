@@ -9,6 +9,7 @@ var keywords = require('./dict/keywords.json');
 var errorContext = require('./dict/error_context.json');
 var when = require('when');
 var moment = require('moment');
+var momentz = require('moment-timezone');
 var request = require('request-promise');
 var geo = require('./lib/geo');
 
@@ -532,54 +533,24 @@ function Rides(data) {
 							return i.hasActiveRequest;
 						},
 						function(d, b, i) {
-							if (d.departureTime) {
-								var cutoffTime = moment().add(CUTOFF_TIME, 'minutes');
-								if (moment(d.departureTime).isAfter(cutoffTime)) return true;
-								d.errDepartureTime = 'DEPARTURE_TOO_SOON';
+							if(i.duration) {
+								b.touch = true;
+								if (b.outcomes[0].entities.duration[0].normalized) {
+									var now = momentz().tz(b.context.timezone);
+									if (b.outcomes[0].entities.duration[0].normalized.value > (CUTOFF_TIME * 60)) {
+										d.departureTime = now.add(b.outcomes[0].entities.duration[0].normalized.value, 'seconds').format();
+										return true;
+									} else {
+										d.errDepartureTime = 'DEPARTURE_TOO_SOON';
+									}
+								}
 							}
 							return false;
 						},
 						function(d, b, i) {
 							if(i.datetime) {
 								b.touch = true;
-								
-								/*
-								// align datetime with date information in expression if indicated
-								if (i.datetime_from) {
-									var d1 = moment(i.datetime),
-										d2 = moment(i.datetime_from);
-										
-									var	d3 = i.datetime_to == undefined ? moment(d2).add(1, 'days') : moment(i.datetime_to);
-									
-									if (d1.isBefore(d2)) {
-										var timediff = d2.subtract(d1).minutes();
-										var timedelta = 720 - (timediff % 720);
-										i.datetime = d2.add(timedelta, 'minutes').format();
-										logger.debug('D1: %s, D2: %s, newtime: %s', d1, d2, i.datetime );
-									} else if (d1.isAfter(d3)) {
-										timediff = d1.subtract(d3).minutes();
-										timedelta = 720 - (timediff % 720);
-										i.datetime = d3.subtract(timedelta, 'minutes').format();
-										logger.debug('D1: %s, D2: %s, newtime: %s', d3, d1, i.datetime );
-									}	
-								} else {
-									// move forward if before now
-									if (moment(i.datetime).isBefore(moment())) {
-										d1 = moment(i.datetime);
-										timediff = moment().subtract(d1).minutes();
-										timedelta = 720 - (timediff % 720);
-										i.datetime = moment().add(timedelta, 'minutes').format();
-										logger.debug('D1: %s, Now: %s, newtime: %s', d1, d2, i.datetime );
-									}
-								}
-								
-								var cutoffTime = moment().add(90, 'minutes');
-								if (moment(i.datetime).isAfter(cutoffTime)) {
-									d.departureTime = i.datetime;
-									return true;
-								} 
-								*/
-								var nTime = normalizeTime(i);
+								var nTime = normalizeTime(i, b.context.timezone);
 								if (nTime) {
 									d.departureTime = nTime;
 									return true;
@@ -590,9 +561,18 @@ function Rides(data) {
 							return false;
 						},
 						function(d, b, i) {
-							if(i.datetime_to) {
+							if(i.datetime_to && !i.datetime) {
+								delete d.departureTime;
 								d.errDepartureTime = 'NON_SPECIFIC_TIME';
 								b.touch = true;
+							}
+							return false;
+						},
+						function(d, b, i) {
+							if (d.departureTime) {
+								var cutoffTime = moment().add(CUTOFF_TIME, 'minutes');
+								if (moment(d.departureTime).isAfter(cutoffTime)) return true;
+								d.errDepartureTime = 'DEPARTURE_TOO_SOON';
 							}
 							return false;
 						}
@@ -1210,7 +1190,7 @@ function Rides(data) {
 }
 
 
-function normalizeTime(i) {
+function normalizeTime(i, tz) {
 	if (i.datetime_from) {
 		var d1 = moment(i.datetime),
 			d2 = moment(i.datetime_from);
@@ -1234,8 +1214,8 @@ function normalizeTime(i) {
 			d1 = moment(i.datetime);
 			timediff = moment().diff(d1, 'minutes');
 			timedelta = 720 - (timediff % 720);
-			i.datetime = moment().add(timedelta, 'minutes').format();
-			logger.debug('D1: %s, Now: %s, newtime: %s', d1, d2, i.datetime );
+			i.datetime = momentz().tz(tz).add(timedelta, 'minutes').format();
+			logger.debug('D1: %s, Now: %s | %s, newtime: %s', d1, moment(), momentz().tz(tz), i.datetime );
 		}
 	}
 	
