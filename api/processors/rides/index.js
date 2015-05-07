@@ -958,7 +958,7 @@ function Rides(data) {
 							me.cancelRequest(user.name, clientHandle, data);
 							return getActiveRequest(user.name, clientHandle).then(function(activeRequest) {
 								if (activeRequest && activeRequest.status !== 'pending') {
-									var rbody = { header: 'cancel_request', requestId: activeRequest.request_id };
+									var rbody = { header: 'cancel_request', requestId: activeRequest.requestId };
 									me.push(user, clientHandle, rbody);
 								} else {
 									me.emit('message', Rides.MODULE, user.name, clientHandle, 'Fine, your ride request has been cancelled');
@@ -1270,7 +1270,7 @@ function cacheActiveRequest(username, clientHandle, data) {
 	var userkey = getUserKey(username, clientHandle);
 
 	var activeRequest = {
-		request_id : data.request_id,
+		request_id : data.requestId,
 		status : data.status,
 		eta    : data.eta
 	};
