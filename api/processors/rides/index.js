@@ -536,9 +536,8 @@ function Rides(data) {
 							if(i.duration) {
 								b.touch = true;
 								if (b.outcomes[0].entities.duration[0].normalized) {
-									var now = momentz().tz(b.context.timezone);
 									if (b.outcomes[0].entities.duration[0].normalized.value > (CUTOFF_TIME * 60)) {
-										d.departureTime = now.add(b.outcomes[0].entities.duration[0].normalized.value, 'seconds').format();
+										d.departureTime = moment().add(b.outcomes[0].entities.duration[0].normalized.value, 'seconds').format();
 										return true;
 									} else {
 										d.errDepartureTime = 'DEPARTURE_TOO_SOON';
@@ -1216,7 +1215,7 @@ function normalizeTime(i, tz) {
 			d1 = moment(i.datetime);
 			timediff = moment().diff(d1, 'minutes');
 			timedelta = 1440 - (timediff % 1440);
-			i.datetime = momentz().tz(tz).add(timedelta, 'minutes').format();
+			i.datetime = moment().add(timedelta, 'minutes').format();
 			logger.debug('D1: %s, Now: %s | %s, newtime: %s', d1, moment(), momentz().tz(tz), i.datetime );
 		}
 	}
