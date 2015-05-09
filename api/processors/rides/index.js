@@ -114,7 +114,7 @@ function Rides(data) {
 						function(d, b, i) {
 							var state = b.context.state;
 							if (b.nearTime) delete d.departureTime;
-							if (state === 'RIDES_confirm_ride_needed' && i.yes_no == 'true') b.touch = true;
+							if (state === 'RIDES_confirm_ride_needed' && i.yes_no === 'yes') b.touch = true;
 							if (d.intent !== 'rides_go_out' && state !== 'RIDES_confirm_ride_needed' && !b.restart) return d.confirmNeed = true;
 							if (d.intent === 'rides_request_trip') return d.confirmNeed = true;
 							if ((state === 'RIDES_confirm_ride_needed' && i.yes_no === 'yes')  || d.confirmNeed === true || d.confirmNeed === 'true') return d.confirmNeed = true;
@@ -128,11 +128,17 @@ function Rides(data) {
 							return i.hasActiveRequest;
 						},
 						function(d, b, i) {
+							var state = b.context.state;
+							if (state === 'RIDES_get_start_location' || state === 'RIDES_get_startloc_preference') {
+								if (!i.from && !i.to && !i.location && !d.startLong) i.from = b._text;
+							}
+						},
+						function(d, b, i) {
 							if (d.startLong && d.startLong !== 0) {
 								if (i.yes_no === 'no' && i.infotype === 'location') {  // user rejects captured location, can only be 'from'
 									delete d.startLong;
 									delete d.startLat;
-									if (data.lvlQueries && data.lvlQueries[d.errStartLocation] && !isNaN(data.lvlQueries[d.errStartLocation])) data.lvlQueries[d.errStartLocation] = 0; // reset if reset
+									if (d.lvlQueries && d.lvlQueries[d.errStartLocation] && !isNaN(d.lvlQueries[d.errStartLocation])) d.lvlQueries[d.errStartLocation] = 0; // reset if reset
 									b.touch = true;
 								}
 							}
@@ -161,7 +167,12 @@ function Rides(data) {
 											
 										if (doc) {
 											i.from = doc.pValue;
-											return getLocationByAddress(i.from).then (function (location) {
+											var options = {};
+											if (d.endLong) {
+												var location = d.endLat + ',' + d.endLong;
+												options = { 'location': location, 'radius': 50000 };
+											}
+											return getLocationByAddress(i.from, options).then (function (location) {
 												if (location) {
 													d.startLong = location.longt;
 													d.startLat = location.lat;
@@ -181,7 +192,12 @@ function Rides(data) {
 										}
 									});
 								} else {
-									return getLocationByAddress(i.from)
+									var options = {};
+									if (d.endLong) {
+										var location = d.endLat + ',' + d.endLong;
+										options = { 'location': location, 'radius': 50000 };
+									}
+									return getLocationByAddress(i.from, options)
 										.then (function (location) {
 											if (location) {
 												d.startLong = location.longt;
@@ -439,6 +455,12 @@ function Rides(data) {
 							return i.hasActiveRequest;
 						},
 						function(d, b, i) {
+							var state = b.context.state;
+							if (state === 'RIDES_get_end_location' || state === 'RIDES_get_endloc_preference') {
+								if (!i.from && !i.to && !i.location && !d.endLong) i.to = b._text;
+							}
+						},
+						function(d, b, i) {
 							if(d.confirmNeed === false) return true; // exit validations if trip cancelled
 							if (!d.endLong || d.endLong === 0) return false;
 							if (d.errEndLocation === 'NO_END_LOCATION') delete d.errEndLocation;
@@ -461,7 +483,12 @@ function Rides(data) {
 											
 										if (doc) {
 											i.to = doc.pValue;
-											return getLocationByAddress(i.to).then (function (location) {
+											var options = {};
+											if (d.startLong) {
+												var location = d.startLat + ',' + d.startLong;
+												options = { 'location': location, 'radius': 50000 };
+											}
+											return getLocationByAddress(i.to, options).then (function (location) {
 												if (location) {
 													d.endLong = location.longt;
 													d.endLat = location.lat;
@@ -481,7 +508,12 @@ function Rides(data) {
 										}
 									});
 								} else {
-									return getLocationByAddress(i.to)
+									var options = {};
+									if (d.startLong) {
+										var location = d.startLat + ',' + d.startLong;
+										options = { 'location': location, 'radius': 50000 };
+									}
+									return getLocationByAddress(i.to, options)
 										.then (function (location) {
 											if (location) {
 												d.endLong = location.longt;
@@ -529,6 +561,12 @@ function Rides(data) {
 		'departureTime': [
 						function(d, b, i) {
 							return i.hasActiveRequest;
+						},
+						function(d,b,i) {
+							if (i.rejected_time && d.departureTime) {
+								if (moment(i.rejected_time).isSame(moment(d.departureTime))) delete d.departureTime;
+							}	
+							return false;
 						},
 						function(d, b, i) {
 							if(i.duration) {
@@ -1432,10 +1470,7 @@ Rides.prototype.out = function(user, client, body) {
 		logger.debug('HandlerTodo->2nd Cut (getInfoQuery): %s', handlerTodo);
 		logger.debug('Body Touched?: %s', body.touch);
 		
-		validateHandlerTodo(user.name, client.slackHandle, handlerTodo).then(function(htd) {
-			logger.debug('HandlerTodo->3rd Cut (validateHandlerTodo): %s', htd);
-			me.processData(user, client.slackHandle, body, htd);  
-		});
+		me.processData(user, client.slackHandle, body, handlerTodo);  
 		
 	});	
 };
@@ -1490,28 +1525,30 @@ function validateHandlerTodo(username, clientHandle, handlerTodo) {
 }
 
 
-function resolveBookOrSchedule(username, clientHandle, body, handlerTodo) {
+function resolveBookOrSchedule(username, clientHandle, body, htd) {
 	var userkey = getUserKey(username, clientHandle);
-	if (handlerTodo === 'rides_book_trip' || handlerTodo === 'rides_schedule_trip') {
-		return checkActiveRequest(username, clientHandle).then( function(active){
-			if (active) return handlerTodo;
-			return cache.hget(userkey + ':payload', 'departureTime').then(function(dTime) {
-				if (body.outcomes[0].entities.datetime || dTime) {
-					if (body.outcomes[0].entities.datetime) {
-						var i = extractEntities(body);
-						if (normalizeTime(i)) return 'rides_schedule_trip';
-					} else {
-						if (moment(dTime).isAfter(moment().add(CUTOFF_TIME, 'minutes'))) return 'rides_schedule_trip';
+	return validateHandlerTodo(username, clientHandle, htd).then (function(handlerTodo) {
+		if (handlerTodo === 'rides_book_trip' || handlerTodo === 'rides_schedule_trip') {
+			return checkActiveRequest(username, clientHandle).then( function(active){
+				if (active) return handlerTodo;
+				return cache.hget(userkey + ':payload', 'departureTime').then(function(dTime) {
+					if ((body.outcomes && body.outcomes[0].entities.datetime) || dTime) {
+						if (body.outcomes && body.outcomes[0].entities.datetime) {
+							var i = extractEntities(body);
+							if (normalizeTime(i)) return 'rides_schedule_trip';
+						} else {
+							if (moment(dTime).isAfter(moment().add(CUTOFF_TIME, 'minutes'))) return 'rides_schedule_trip';
+						}
+						body.nearTime = true;
+						body.touch = true;
 					}
-					body.nearTime = true;
-					body.touch = true;
-				}
-				return 'rides_book_trip';
-			});	
-		}); 
-	} else {
-		return when(handlerTodo);
-	}
+					return 'rides_book_trip';
+				});	
+			}); 
+		} else {
+			return when(handlerTodo);
+		}
+	});
 }
 
 
@@ -2066,9 +2103,9 @@ function extractEntities(body) {
 	return indata;
 }
 
-function getLocationByAddress(address) {
-	return geo.getCode(address).then(function(data){
-		logger.info('Geo data: ' + JSON.stringify(data));
+function getLocationByAddress(query, options) {
+	return geo.getPlaceCode(query, options).then(function(data){
+		logger.info('Geo Place data: ' + JSON.stringify(data));
 		if (data.status === 'OK' && data.results[0].geometry.location.lng) {
 			return {longt : data.results[0].geometry.location.lng, lat : data.results[0].geometry.location.lat };
 		} else {

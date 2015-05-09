@@ -42,8 +42,8 @@
 	],
 	"NO_END_LOCATION" : [
 		"Where are you going? I need an address or a landmark",
-		"I need to you to confirm your destination, I need an address",
-		"What's your destination mate, please an address",
+		"I need to you to confirm your destination",
+		"What's your destination mate, please be specific",
 		"I need to know where you're going to book your ride",
 		"Sorry, can't proceed without your destination"
 	],

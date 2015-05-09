@@ -17,7 +17,7 @@
 	"NO_RIDE_ETA" : "RIDES_confirm_request",
 	"NO_CONFIRM_REQUEST" : "RIDES_confirm_request",
 	"NO_CONFIRM_SCHEDULE" : "RIDES_confirm_schedule",
-	"NO_PRODUCTS_AVAILABLE" : " ",
+	"NO_PRODUCTS_AVAILABLE" : "RIDES",
 	"CONFIRM_REQUEST_CANCEL" : "RIDES_confirm_cancellation",
 	"CANCEL_REQUEST_CANCEL" : "RIDES_confirm_ride_needed"
 }
