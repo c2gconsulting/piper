@@ -137,6 +137,7 @@ SlackConnection.prototype.sendDM = function(username, message) {
 
 
 SlackConnection.prototype.sendRichDM = function(username, message, attachments) {
+	var me = this;
 	try {
 		var userId = this.slack.getUserByName(username).id;
 		var params = { channel: userId, text: message, unfurl_links: true };
@@ -145,7 +146,7 @@ SlackConnection.prototype.sendRichDM = function(username, message, attachments) 
 		
 		this.slack._apiCall('chat.postMessage', params, function(response) {
 			logger.info('Rich Message sent...response: %s', JSON.stringify(response));
-			this.emit('dispatch', username, message, this.client);
+			me.emit('dispatch', username, message, this.client);
 		});
 		
 	} catch (e) {

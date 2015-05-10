@@ -1977,7 +1977,7 @@ Rides.prototype.processRequestUpdate = function(username, clientHandle, body) {
 						    ];
 				if (body.href) attachments.image_url = body.href;
 				if (body.mapLink) attachments.title_link = body.mapLink;
-				me.emit('rich_message', Rides.MODULE, username, clientHandle, '', attachments);			
+				me.emit('rich_message', Rides.MODULE, username, clientHandle, ' ', attachments);			
 				
 				
 			} else {
