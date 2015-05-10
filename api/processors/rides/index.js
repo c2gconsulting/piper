@@ -1945,10 +1945,41 @@ Rides.prototype.processRequestUpdate = function(username, clientHandle, body) {
 			break;
 		case 'accepted':
 			if (body.driver) {
-				var acceptedMessage = body.driver.name + ' (' + body.driver.rating +' stars) will be there in ' + body.eta + ' minutes in a ' + body.vehicle.make + ' ' + body.vehicle.model + ', registration ' + body.vehicle.license_plate + '. \nYou can reach him on ' + body.driver.phone_number;
+				var minText = body.eta > 1 ? 'minutes' : 'minute';
+				var etaText = body.eta + ' ' + minText;
+				var fallbackMessage = body.driver.name + ' (' + body.driver.rating +' stars) will be there in ' + etaText + ' in a ' + body.vehicle.make + ' ' + body.vehicle.model + ', registration ' + body.vehicle.license_plate + '. \nYou can reach him on ' + body.driver.phone_number;
+				var feedbackMessage = body.driver.name + ' (' + body.driver.rating +' stars) will be there in a ' + body.vehicle.make + ' ' + body.vehicle.model + ', registration ' + body.vehicle.license_plate + '.';
+				
+				/*
 				me.emit('message', Rides.MODULE, username, clientHandle, acceptedMessage);
 				if (body.href) me.emit('message', Rides.MODULE, username, clientHandle, body.href);
-				//if (body.driver.picture_url != null) me.emit('message', Rides.MODULE, username, clientHandle, body.driver.picture_url);
+				//if (body.driver.picture_url != null) me.emit('message', Rides.MODULE, username, clientHandle, body.driver.picture_url);*/
+				
+				var attachments = [
+						        {
+						            "fallback": fallbackMessage,
+						            "title": "Your ride is on its way...",
+						            "text": feedbackMessage,
+									"fields": [
+								                {
+								                    "title": "ETA",
+								                    "value": etaText,
+								                    "short": true
+								                },
+								                {
+								                    "title": "Contact #",
+								                    "value": body.driver.phone_number,
+								                    "short": true
+								                }
+								            ],
+						            "color": "good"
+						        }
+						    ];
+				if (body.href) attachments.image_url = body.href;
+				if (body.mapLink) attachments.title_link = body.mapLink;
+				me.emit('rich_message', Rides.MODULE, username, clientHandle, '', attachments);			
+				
+				
 			} else {
 				me.emit('message', Rides.MODULE, username, clientHandle, 'Your ride is on its way...');	
 			}

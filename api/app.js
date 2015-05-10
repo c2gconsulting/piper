@@ -504,7 +504,7 @@ var onSlackEvent = function(user, client, message) {
 						logger.debug('Processor not found for ' + getModule(intent, inContext.state) + ', defaulting to ' + getModule('intent_not_found'));
 					}
 				} else {
-					var processorModule = processorMap.processors[0][getModule('intent_not_found')];
+					processorModule = processorMap.processors[0][getModule('intent_not_found')];
 					logger.debug('No intent found, defaulting to ' + getModule('intent_not_found'));
 				}
 
@@ -514,25 +514,26 @@ var onSlackEvent = function(user, client, message) {
 					processMessage(user, client, Processor, intentBody);
 				} catch (e) {
 					logger.debug('Error processing intent for state: ' + getModule(intent, inContext.state) + ' -> ' + e + ', defaulting to ' + getModule('intent_not_found'));
-					var Processor = require(processorMap.processors[0][getModule('intent_not_found')]);
+					Processor = require(processorMap.processors[0][getModule('intent_not_found')]);
 					processMessage(user, client, Processor, intentBody);					
 				}
 			}										
 		});
 	});
-}
+};
 
 var processMessage = function(user, client, Processor, body) {
 	if (!processors[Processor.MODULE]) {
 		//instantiate and setup processor
 		processors[Processor.MODULE] = new Processor();
 		processors[Processor.MODULE].init();
-		processors[Processor.MODULE].on('message', onProcessorEvent);
+		processors[Processor.MODULE].on('message', onProcessorMessage);
+		processors[Processor.MODULE].on('rich_message', onProcessorRichMessage);
 		processors[Processor.MODULE].on('error', onProcessorError);	
 	} 
 
 	processors[Processor.MODULE].out(user, client, body);
-}
+};
 
 var onHandlerEvent = function(msgid, username, clientHandle, module, data) {
 	logger.debug('onHandlerEvent-> msgid: %s, username: %s, clientHandle: %s, module: %s, data: %s', msgid, username, clientHandle, module, JSON.stringify(data));
@@ -542,7 +543,8 @@ var onHandlerEvent = function(msgid, username, clientHandle, module, data) {
 		if (Processor) {
 			processors[Processor.MODULE] = new Processor();
 			processors[Processor.MODULE].init();
-			processors[Processor.MODULE].on('message', onProcessorEvent);
+			processors[Processor.MODULE].on('message', onProcessorMessage);
+			processors[Processor.MODULE].on('rich_message', onProcessorRichMessage);
 			processors[Processor.MODULE].on('error', onProcessorError);	
 
 			// send request
@@ -551,9 +553,10 @@ var onHandlerEvent = function(msgid, username, clientHandle, module, data) {
 	} else {
 		processors[module].in(msgid, username, clientHandle, data);
 	}
-}
+};
 
-var onProcessorEvent = function(module, username, clientHandle, message, state) {
+
+var onProcessorMessage = function(module, username, clientHandle, message, state) {
 	getClientID(clientHandle, function(err, clientID) {
 		if (clientID) {
 			logger.debug('module: %s, user: %s, client: %s, message: %s', module, username, clientHandle, message);
@@ -564,7 +567,22 @@ var onProcessorEvent = function(module, username, clientHandle, message, state) 
 			}
 		}
 	});
-}
+};
+
+
+var onProcessorRichMessage = function(module, username, clientHandle, message, attachments, state) {
+	getClientID(clientHandle, function(err, clientID) {
+		if (clientID) {
+			logger.debug('module: %s, user: %s, client: %s, message: %s, attachments: %s', module, username, clientHandle, message, JSON.stringify(attachments));
+			if (w[clientID]) {
+				w[clientID].sendRichDM(username, message, attachments);
+				if (state) setUserState(username, clientHandle, state);
+				logger.debug('Rich Message: ' + message + ' sent to user ' + username);
+			}
+		}
+	});
+};
+
 
 var onProcessorError = function(module, username, clientHandle, error, message, state) {
 	logger.info('PROCESSOR ERROR - %s: %s', module, error);
@@ -577,7 +595,7 @@ var onProcessorError = function(module, username, clientHandle, error, message, 
 			}
 		}
 	});
-}
+};
 
 var getProcessor = function(module) {
 	if (module) {

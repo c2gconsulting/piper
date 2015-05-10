@@ -32,7 +32,7 @@ SlackConnection.prototype.connect = function(){
 	this.slack.on('open', this.onOpen.bind(this));
 	this.slack.on('message', this.onMessage.bind(this));
 	this.slack.on('error', this.onError.bind(this));	
-}
+};
 
 
 SlackConnection.prototype.onOpen = function() {
@@ -59,7 +59,7 @@ SlackConnection.prototype.onOpen = function() {
 	//logger.info('As well as: %s', groups.join(', '));
 	//logger.info('You have %s unread ' + (unreads === 1 ? 'message' : 'messages'), unreads);
 	logger.info('SLACK_CONNECTION: Connection Opened');
-}
+};
 
 
 SlackConnection.prototype.onMessage = function(message) {
@@ -121,7 +121,7 @@ SlackConnection.prototype.onMessage = function(message) {
 
 		this.emit('message', piperUser, this.client, chatMessage);
 	}
-}
+};
 
 
 
@@ -133,8 +133,25 @@ SlackConnection.prototype.sendDM = function(username, message) {
 	} catch (e) {
 		logger.error('Unable to dispatch message to user %s, error: %s', username, e);
 	}
-}
+};
 
+
+SlackConnection.prototype.sendRichDM = function(username, message, attachments) {
+	try {
+		var userId = this.slack.getUserByName(username).id;
+		var params = { channel: userId, text: message, unfurl_links: true };
+		if (attachments) params.attachments = attachments;
+		logger.debug('Params: %s', JSON.stringify(params));
+		
+		this.slack._apiCall('chat.postMessage', params, function(response) {
+			logger.info('Rich Message sent...response: %s', JSON.stringify(response));
+			this.emit('dispatch', username, message, this.client);
+		});
+		
+	} catch (e) {
+		logger.error('Unable to dispatch message to user %s, error: %s', username, e);
+	}
+};
 
 
 
@@ -142,7 +159,7 @@ SlackConnection.prototype.onError = function(error) {
 	this.emit('error', error, this.client);
 	logger.error('Error: ' + JSON.stringify(error));
 	logger.info('SLACK_CONNECTION: Connection Error');
-}
+};
 
 
 SlackConnection.prototype.disconnect = function(){
@@ -154,7 +171,7 @@ SlackConnection.prototype.disconnect = function(){
 	} else {
 		return false;
 	}
-}
+};
 
 // Export the SlackConnection constructor from this module.
 module.exports = SlackConnection;

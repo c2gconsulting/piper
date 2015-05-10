@@ -178,7 +178,11 @@ function onProcessorEvent(id, user, client, body) {
 											uber.getDriverMap(clat, clng, response.location.latitude, response.location.longitude
 												).then(function(link) {
 													rbody.href = link;
-													push(user.email, rbody);
+													user.getRequestMap(access_token, body.requestId, prod
+														).then(function(mResponse) {
+															if (mResponse) rbody.mapLink = mResponse.href;
+															push(user.email, rbody);
+														});
 												});
 										} else {
 											push (user.email,rbody);
@@ -237,7 +241,11 @@ function onProcessorEvent(id, user, client, body) {
 											uber.getDriverMap(clat, clng, response.location.latitude, response.location.longitude
 												).then(function(link) {
 													rbody.href = link;
-													push(user.email, rbody);
+													user.getRequestMap(access_token, body.requestId, prod
+														).then(function(mResponse) {
+															if (mResponse) rbody.mapLink = mResponse.href;
+															push(user.email, rbody);
+														});
 												});
 										} else {
 											push (user.email,rbody);
