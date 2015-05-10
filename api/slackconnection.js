@@ -2,6 +2,7 @@ var EventEmitter = require('events').EventEmitter;
 var Slack = require('slack-client');
 var wit = require('../shared/lib/wit');
 var db = require('../shared/lib/db');
+var slackAPI = require('./lib/slack');
 var logger = require('../shared/lib/log');
 var CACHE_PREFIX = 'slackrouter:';
 var util = require('util');
@@ -139,12 +140,13 @@ SlackConnection.prototype.sendDM = function(username, message) {
 SlackConnection.prototype.sendRichDM = function(username, message, attachments) {
 	var me = this;
 	try {
-		var userId = this.slack.getUserByName(username).id;
-		var params = { channel: userId, text: message, unfurl_links: true };
-		if (attachments) params.attachments = attachments;
+		var channelID = this.slack.getDMByName(username).id;
+		var params = { token: this.slack.token, channel: channelID, text: message, unfurl_links: true };
+		params.username = this.slack.self.name;
+		if (attachments) params.attachments = JSON.stringify(attachments);
 		logger.debug('Params: %s', JSON.stringify(params));
 		
-		this.slack._apiCall('chat.postMessage', params, function(response) {
+		slackAPI.postRequest('chat.postMessage', params).then(function(response) {
 			logger.info('Rich Message sent...response: %s', JSON.stringify(response));
 			me.emit('dispatch', username, message, this.client);
 		});
