@@ -12,7 +12,7 @@ var cache = require('../shared/lib/cache').getRedisClient();
 var CACHE_PREFIX = 'uber-handler:';
 var RIDES_DESC = 'rides';
 var ERROR_RESPONSE_CODE = 422;
-var prod = true;
+var prod = false;
 var when = require('when');
 
 // Create the Express application
@@ -178,9 +178,11 @@ function onProcessorEvent(id, user, client, body) {
 											uber.getDriverMap(clat, clng, response.location.latitude, response.location.longitude
 												).then(function(link) {
 													rbody.href = link;
-													user.getRequestMap(access_token, body.requestId, prod
+													uber.getRequestMap(access_token, body.requestId, prod
 														).then(function(mResponse) {
 															if (mResponse) rbody.mapLink = mResponse.href;
+															push(user.email, rbody);
+														}).catch(function() {
 															push(user.email, rbody);
 														});
 												});
@@ -240,10 +242,14 @@ function onProcessorEvent(id, user, client, body) {
 												clng = reqData.body.startLong;
 											uber.getDriverMap(clat, clng, response.location.latitude, response.location.longitude
 												).then(function(link) {
+													logger.debug('GOT HERE->REQDETHOOK: 1');
 													rbody.href = link;
-													user.getRequestMap(access_token, body.requestId, prod
+													uber.getRequestMap(access_token, body.requestId, prod
 														).then(function(mResponse) {
+															logger.debug('GOT HERE->REQDETHOOK: 2 | %s', JSON.stringify(mResponse));
 															if (mResponse) rbody.mapLink = mResponse.href;
+															push(user.email, rbody);
+														}).catch(function() {
 															push(user.email, rbody);
 														});
 												});
