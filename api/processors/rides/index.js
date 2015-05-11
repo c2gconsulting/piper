@@ -1256,7 +1256,7 @@ function normalizeTime(i) {
 			var timediff = d2.diff(d1, 'minutes');
 			var timedelta = 1440 - (timediff % 1440);
 			d2.add(timedelta, 'minutes');
-			i.datetime = d2.isAfter(d3.add(720, 'minutes')) ? d2.subtract(1440, 'minutes').format() : d2.format(); // switch AM <-> PM
+			i.datetime = d2.isAfter(d3.add(720, 'minutes')) ? d2.subtract(1440, 'minutes').format() : d2.format(); 
 			logger.debug('D1: %s, D2: %s, newtime: %s, timediff: %s, timedelta: %s', d1, d2, i.datetime, timediff, timedelta );
 		} else if (d1.isAfter(d3)) {
 			timediff = d1.diff(d3, 'minutes');
@@ -1549,8 +1549,11 @@ function resolveBookOrSchedule(username, clientHandle, body, htd) {
 					if ((body.outcomes && body.outcomes[0].entities.datetime) || dTime) {
 						if (body.outcomes && body.outcomes[0].entities.datetime) {
 							var i = extractEntities(body);
-							if (normalizeTime(i)) return 'rides_schedule_trip';
-							if (body.outcomes[0].entities.datetime.from) return 'rides_schedule_trip';
+							if (i.datetime) {
+								if (normalizeTime(i)) return 'rides_schedule_trip';
+							} else {
+								if (i.datetime_from) return 'rides_schedule_trip';
+							}
 						} else {
 							if (moment(dTime).isAfter(moment().add(CUTOFF_TIME, 'minutes'))) return 'rides_schedule_trip';
 						}
