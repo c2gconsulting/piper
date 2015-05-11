@@ -52,6 +52,8 @@ function success(position) {
   };
   var map = new google.maps.Map(document.getElementById("mapcanvas"), myOptions);
   
+  alert('Accuracy: ' + position.coords.accuracy);
+  
   var marker = new google.maps.Marker({
       position: latlng, 
       map: map, 
