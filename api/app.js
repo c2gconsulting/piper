@@ -41,6 +41,7 @@ db.getModel('clients', function(err, model) {
  * All such messages should be sent by handlers with routing key <mq.CONTROLLER_INBOUND>
  */
 var sub = mq.context.socket('SUB', {routing: 'topic'});
+var schedSub = mq.context.socket('SUB', {routing: 'topic'});
 
 logger.info('Piper Controller: Connecting to MQ Exchange <piper.events.in>...');
 sub.connect('piper.events.in', mq.CONTROLLER_INBOUND, function() {
@@ -48,6 +49,17 @@ sub.connect('piper.events.in', mq.CONTROLLER_INBOUND, function() {
 });
 
 sub.on('data', function(data) {
+	var jsonData = JSON.parse(data);
+	if (data) onHandlerEvent(jsonData.id, jsonData.user, jsonData.client, jsonData.module, jsonData.body);
+});
+
+
+logger.info('Piper Controller: Connecting to MQ Exchange <piper.events.scheduler>...');
+schedSub.connect('piper.events.scheduler', mq.CONTROLLER_INBOUND, function() {
+	logger.info('Piper Controller: MQ Exchange <piper.events.scheduler> connected');
+});
+
+schedSub.on('data', function(data) {
 	var jsonData = JSON.parse(data);
 	if (data) onHandlerEvent(jsonData.id, jsonData.user, jsonData.client, jsonData.module, jsonData.body);
 });

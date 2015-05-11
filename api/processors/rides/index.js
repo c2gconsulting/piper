@@ -3,6 +3,7 @@ var cache = require('../../../shared/lib/cache').getRedisClient();
 var logger = require('../../../shared/lib/log');
 var mq = require('../../../shared/lib/mq');
 var utils = require('../../../shared/lib/utils');
+var scheduler = require('../../../shared/lib/scheduler');
 var User = require('../../../shared/models/User');
 var responses = require('./dict/responses.json');
 var keywords = require('./dict/keywords.json');
@@ -138,7 +139,8 @@ function Rides(data) {
 								if (i.yes_no === 'no' && i.infotype === 'location') {  // user rejects captured location, can only be 'from'
 									delete d.startLong;
 									delete d.startLat;
-									if (d.lvlQueries && d.lvlQueries[d.errStartLocation] && !isNaN(d.lvlQueries[d.errStartLocation])) d.lvlQueries[d.errStartLocation] = 0; // reset if reset
+									if (d.lvlQueries && d.lvlQueries['NO_START_LOCATION'] && !isNaN(d.lvlQueries['NO_START_LOCATION'])) d.lvlQueries['NO_START_LOCATION'] = 0; // reset if reset
+									if (d.lvlQueries && d.lvlQueries['BAD_START_ADDRESS'] && !isNaN(d.lvlQueries['BAD_START_ADDRESS'])) d.lvlQueries['BAD_START_ADDRESS'] = 0; // reset if reset
 									b.touch = true;
 								}
 							}
@@ -1216,17 +1218,19 @@ function Rides(data) {
 								me.emit('message', Rides.MODULE, user.name, clientHandle, 'You already have another request active. Complete it before scheduling your ride');
 							} else {
 								data.header = 'scheduled_trip';
-								var body = { 'module': Rides.MODULE, 'user': user, 'client': clientHandle, 'data': data };
+								
+								// delete non-required properties before scheduling
+								delete data.confirmSchedule; 
+								delete data.lvlQueries;
+								
+								var body = { 'module': Rides.MODULE, 'user': user.name, 'client': clientHandle, 'body': data };
 								var scheduleTime = moment(data.departureTime).subtract(30, 'minutes'); // Prompt 30 minutes earlier
 								
 								// call the scheduler
-								/*
-								scheduler.add(scheduleTime.toDate().getTime(), body, mq.CONTROLLER_INBOUND).then (function(eventId) {
+								scheduler.add(scheduleTime.toDate().getTime(), body, mq.CONTROLLER_INBOUND, Rides.MODULE).then (function(eventId) {
 									cache.zadd(userkey + ':scheduledrequests', scheduleTime.toDate().getTime(), eventId); //possibly make a then
-									me.emit('message', Rides.MODULE, user.name, clientHandle, 'Done, i\'ll notify you when its time to call the ride...');
+									me.emit('message', Rides.MODULE, user.name, clientHandle, 'Done, i\'ll follow up with you when its time to call the ride...');
 								});
-								*/	
-								me.emit('message', Rides.MODULE, user.name, clientHandle, 'Done, i\'ll follow up with you when its time to call the ride...');
 								cache.del(userkey + ':payload');
 							}
 							return true;
@@ -1546,6 +1550,7 @@ function resolveBookOrSchedule(username, clientHandle, body, htd) {
 						if (body.outcomes && body.outcomes[0].entities.datetime) {
 							var i = extractEntities(body);
 							if (normalizeTime(i)) return 'rides_schedule_trip';
+							if (body.outcomes[0].entities.datetime.from) return 'rides_schedule_trip';
 						} else {
 							if (moment(dTime).isAfter(moment().add(CUTOFF_TIME, 'minutes'))) return 'rides_schedule_trip';
 						}
@@ -1763,8 +1768,9 @@ Rides.prototype.cancelRequest = function(username, clientHandle, data) {
     cache.expire(userkey + ':datacheck', CANCEL_TTL);
 	cache.hdel(userkey + ':payload', 'departureTime');
 	cache.hdel(userkey + ':payload', 'confirmRequest');
-    //cache.del(userkey + ':activerequest'); // for now. Change to send handler request
- 
+	cache.hdel(userkey + ':payload', 'confirmSchedule');
+	cache.hdel(userkey + ':payload', 'lvlQueries');
+    
 };
 	
 /**
@@ -1802,9 +1808,8 @@ Rides.prototype.in = function(msgid, username, clientHandle, body) {
 			case 'scheduled_trip':
 				setUserPayload(username, clientHandle, body);
 				logger.debug('Done setting user payload...');
-
-				me.emit('message', Rides.MODULE, username, clientHandle, 'You have a pickup scheduled for 30 mins from now, do you still need the ride?', 'RIDES_confirm_ride_needed');
-
+				me.emit('message', Rides.MODULE, username, clientHandle, 'You have a pickup scheduled in about 30 mins, do you still need the ride?', 'RIDES_confirm_ride_needed');
+				if (body.schEventId) cache.zrem(getUserKey(username, clientHandle) + ':scheduledrequests', body.schEventId); // delete cached sched request
 				break;
 			case 'auth_link':
 				utils.shortenLink(body.authLink).then (function(shortAuthLink) {
@@ -1840,7 +1845,14 @@ Rides.prototype.in = function(msgid, username, clientHandle, body) {
 				me.processRequestUpdate(username, clientHandle, body);	
 				break;	
 			case 'request_cancel':
-				me.emit('message', Rides.MODULE, username, clientHandle, "Your ride has been canceled", " ");
+				var attachments = [
+						        {
+						            "fallback": "Your ride has been canceled",
+						            "text": "Your ride has been canceled",
+						            "color": "danger"
+						        }
+						    ];
+				me.emit('rich_message', Rides.MODULE, username, clientHandle, '', attachments, ' ');
 				me.cancelRequest(username, clientHandle, {});
 				deleteActiveRequest(username, clientHandle);
 				break;	
