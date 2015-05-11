@@ -69,6 +69,12 @@ function Rides(data) {
 		'rides_get_request_status' : [
 						'activeRequest'
 					],
+		'rides_get_schedule_status' : [
+						'default'
+					],
+		'rides_cancel_schedule' : [
+						'default'
+					],
 		'rides_get_driver_info' : [
 						'activeRequest'
 					],
@@ -85,6 +91,11 @@ function Rides(data) {
 	};
 
 	this.validations = {
+		'default' : [
+						function(d, b, i) {
+							return true;
+						}
+				],
 		'confirmCancellation' : [
 						function(d, b, i) {
 							var state = b.context.state;
@@ -461,6 +472,18 @@ function Rides(data) {
 							if (state === 'RIDES_get_end_location' || state === 'RIDES_get_endloc_preference') {
 								if (!i.from && !i.to && !i.location && !d.endLong) i.to = b._text;
 							}
+						},
+						function(d, b, i) {
+							if (d.endLong && d.endLong !== 0) {
+								if (i.yes_no === 'no' && i.infotype === 'destination') {  // user rejects captured destination
+									delete d.endLong;
+									delete d.endLat;
+									if (d.lvlQueries && d.lvlQueries['NO_END_LOCATION'] && !isNaN(d.lvlQueries['NO_END_LOCATION'])) d.lvlQueries['NO_END_LOCATION'] = 0; // reset if reset
+									if (d.lvlQueries && d.lvlQueries['BAD_END_ADDRESS'] && !isNaN(d.lvlQueries['BAD_END_ADDRESS'])) d.lvlQueries['BAD_END_ADDRESS'] = 0; // reset if reset
+									b.touch = true;
+								}
+							}
+							return false;
 						},
 						function(d, b, i) {
 							if(d.confirmNeed === false) return true; // exit validations if trip cancelled
@@ -847,6 +870,9 @@ function Rides(data) {
 								me.emit('message', Rides.MODULE, user.name, clientHandle, responseText);
 								return true;
 							},
+		'rides_cancel_schedule' : function(user, clientHandle, indata, data) {
+								return false; // ignore any misunderstood response
+							},
 		'rides_book_trip' : function(user, clientHandle, indata, data) {
 								if (indata.yes_no === 'no') {
 									if (data.confirmNeed === 'true' || data.confirmNeed === true) {
@@ -855,7 +881,7 @@ function Rides(data) {
 										me.emit('message', Rides.MODULE, user.name, clientHandle, responseText, errorContext['CONFIRM_REQUEST_CANCEL']);
 										return false;
 									} else {
-										//just terminate and move on
+										//just terminate the convo and move on
 										me.emit('message', Rides.MODULE, user.name, clientHandle, 'Ok');
 										return false;
 									}
@@ -1005,6 +1031,17 @@ function Rides(data) {
 							return false;
 						}
 					},
+		'rides_cancel_schedule' : function(user, clientHandle, data) {	
+						var userkey = getUserKey(user.name, clientHandle); 
+						return cache.zrange(userkey + ':scheduledrequests', 0, -1, 'withscores').then( function(schedules) {
+							if (schedules && schedules.length > 0) {	
+								me.emit('message', Rides.MODULE, user.name, clientHandle, 'Noted. Will probably still check in later in case you change your mind');
+							} else {
+								me.emit('message', Rides.MODULE, user.name, clientHandle, 'You have no rides scheduled');
+							}
+							return true;
+						});
+					},
 		'rides_get_cost' : function(user, clientHandle, data) {
 						return getPriceEstimate(user.name, clientHandle, data).then(function (prices) {
 							var jPrices = JSON.parse(prices);
@@ -1027,6 +1064,31 @@ function Rides(data) {
 								me.push(user, clientHandle, rbody);
 							} else {
 								me.emit('message', Rides.MODULE, user.name, clientHandle, 'Your request is still pending');
+							}
+							return true;
+						});
+					},
+		'rides_get_schedule_status' : function(user, clientHandle, data) {
+						var userkey = getUserKey(user.name, clientHandle); 
+						return cache.zrange(userkey + ':scheduledrequests', 0, -1, 'withscores').then( function(schedules) {
+							if (schedules && schedules.length > 0) {
+								if (schedules.length === 2) {
+									logger.debug('SCHEDULES: %s', JSON.stringify(schedules));
+									var schedText = momentz(moment(schedules[1]*1).add(30, 'minutes')).tz(user.timezone).calendar();
+									me.emit('message', Rides.MODULE, user.name, clientHandle, 'You have a pickup scheduled for ' + schedText.toLowerCase());
+								} else if (schedules.length === 4) {
+									logger.debug('SCHEDULES: %s', JSON.stringify(schedules));
+									schedText = momentz(moment(schedules[1]*1).add(30, 'minutes')).tz(user.timezone).calendar();
+									var schedText2 = momentz(moment(schedules[3]*1).add(30, 'minutes')).tz(user.timezone).calendar();
+									me.emit('message', Rides.MODULE, user.name, clientHandle, 'You have two pickups scheduled: ' + schedText.toLowerCase() + ' and ' + schedText2.toLowerCase());
+								} else {
+									logger.debug('SCHEDULES: %s', JSON.stringify(schedules));
+									schedText = momentz(moment(schedules[1]*1).add(30, 'minutes')).tz(user.timezone).calendar();
+									schedText2 = momentz(moment(schedules[3]*1).add(30, 'minutes')).tz(user.timezone).calendar();
+									me.emit('message', Rides.MODULE, user.name, clientHandle, 'You\'ve got a few pickups scheduled, I\'ll only focus on the 2 closest ones for now: ' + schedText.toLowerCase() + ' and ' + schedText2.toLowerCase());
+								}
+							} else {
+								me.emit('message', Rides.MODULE, user.name, clientHandle, 'You have no pickups scheduled');
 							}
 							return true;
 						});
@@ -1162,7 +1224,7 @@ function Rides(data) {
 						});
 					},
 		'rides_book_trip' : function(user, clientHandle, data) {
-						var userkey = getUserKey(user.name, clientHandle);
+						userkey = getUserKey(user.name, clientHandle);
 						logger.debug('HandleRequest: handling for rides_book_trip... %s', JSON.stringify(data));
 						if (data.confirmNeed === false) {
 							logger.debug('HandleRequest: handling for rides_book_trip...calling cancelrequest');
@@ -1212,14 +1274,16 @@ function Rides(data) {
 						var userkey = getUserKey(user.name, clientHandle);
 						logger.debug('HandleRequest: handling for rides_schedule_trip... %s', JSON.stringify(data));
 						// check if there's an active request
-						return checkActiveRequest(user.name, clientHandle).then(function(active) {
-							if (active) {
+						return getActiveRequest(user.name, clientHandle).then(function(activeRequest) {
+							if (activeRequest && (activeRequest.status === 'accepted' || activeRequest.status === 'processing' || activeRequest.status === 'pending')) {
 								// tell user she has an active request...need to complete before booking
-								me.emit('message', Rides.MODULE, user.name, clientHandle, 'You already have another request active. Complete it before scheduling your ride');
+								me.emit('message', Rides.MODULE, user.name, clientHandle, 'You already have a request active. At least be on your way before scheduling another ride');
 							} else {
 								data.header = 'scheduled_trip';
 								
 								// delete non-required properties before scheduling
+								delete data.startLong;
+								delete data.startLat;
 								delete data.confirmSchedule; 
 								delete data.lvlQueries;
 								
@@ -1447,8 +1511,11 @@ Rides.prototype.out = function(user, client, body) {
 	var me = this;
 	
 	checkActiveRequest(user.name, client.slackHandle).then(function(activeRequest) {
-		if (body.outcomes[0].intent === 'rides_cancel_trip' || body.outcomes[0].intent === 'default_cancel_request') {
-			var handlerTodo = 'rides_cancel_trip';
+		if (body.outcomes[0].intent === 'rides_cancel_trip' && body.outcomes[0].entities.infotag && body.outcomes[0].entities.infotag[0].value === 'schedule') {
+			var handlerTodo = 'rides_cancel_schedule';
+			body.touch = true;  // confirms the statement is understood
+		} else if (body.outcomes[0].intent === 'rides_cancel_trip' || body.outcomes[0].intent === 'default_cancel_request') {
+			handlerTodo = 'rides_cancel_trip';
 			body.touch = true;  // confirms the statement is understood
 		} else if (body.context.state === 'RIDES_confirm_cancellation' && body.outcomes[0].intent !== 'rides_request_trip') {
 			handlerTodo = 'rides_cancel_trip';
@@ -1458,6 +1525,9 @@ Rides.prototype.out = function(user, client, body) {
 			body.touch = true;
 		} else if (body.outcomes[0].intent === 'rides_schedule_trip') {
 			handlerTodo = 'rides_schedule_trip';
+			body.touch = true;
+		} else if (body.outcomes[0].intent === 'rides_cancel_schedule') {
+			handlerTodo = 'rides_cancel_schedule';
 			body.touch = true;
 		} else if (body.outcomes[0].intent === 'rides_request_trip' || body.outcomes[0].intent === 'rides_go_out') {
 			handlerTodo = 'rides_book_trip';
@@ -1513,6 +1583,9 @@ function getInfoQuery(body) {
 				break;
 			case 'time':
 				return 'rides_get_eta';
+				break;
+			case 'schedule_status':
+				return 'rides_get_schedule_status';
 				break;
 			default:
 				return 'rides_get_request_status';
