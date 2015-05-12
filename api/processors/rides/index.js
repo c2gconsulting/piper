@@ -1224,7 +1224,7 @@ function Rides(data) {
 						});
 					},
 		'rides_book_trip' : function(user, clientHandle, data) {
-						userkey = getUserKey(user.name, clientHandle);
+						var userkey = getUserKey(user.name, clientHandle);
 						logger.debug('HandleRequest: handling for rides_book_trip... %s', JSON.stringify(data));
 						if (data.confirmNeed === false) {
 							logger.debug('HandleRequest: handling for rides_book_trip...calling cancelrequest');
@@ -1372,7 +1372,7 @@ function cacheActiveRequest(username, clientHandle, data) {
 	var userkey = getUserKey(username, clientHandle);
 
 	var activeRequest = {
-		request_id : data.requestId,
+		requestId : data.request_id,
 		status : data.status,
 		eta    : data.eta
 	};
