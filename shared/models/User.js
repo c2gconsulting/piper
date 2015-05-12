@@ -1,13 +1,15 @@
 var mongoose = require('mongoose');
 
-// Create a new schema for our tweet data
+// Create a new schema for our data
 var schema = new mongoose.Schema({
     first_name      : String
   , last_name       : String
   , full_name       : String
   , email           : String
   , phone           : String
-  , avatar          : String
+  , avatar          : String 
+  , timezone        : String
+  , timezone_offset : Number
   , active          : Boolean
   , createdAt       : { type: Date, default: Date.now }
   , slackProfiles   : [{
@@ -29,7 +31,7 @@ schema.statics.getUserByID = function(userId, callback) {
 
   User.findOne({ '_id' : userId }).exec( function(err, doc) {
     if (err) {
-      promise.error(err);auth_client
+      promise.error(err);
       return;
     } 
     promise.complete(doc);
@@ -112,7 +114,7 @@ schema.statics.getUserBySlackID = function(userId, callback) {
  
   return promise;
 
-};
+}
 
 schema.statics.getUsersByClient = function(client, callback) {
   var promise = new mongoose.Promise;

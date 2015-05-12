@@ -41,6 +41,7 @@ db.getModel('clients', function(err, model) {
  * All such messages should be sent by handlers with routing key <mq.CONTROLLER_INBOUND>
  */
 var sub = mq.context.socket('SUB', {routing: 'topic'});
+var schedSub = mq.context.socket('SUB', {routing: 'topic'});
 
 logger.info('Piper Controller: Connecting to MQ Exchange <piper.events.in>...');
 sub.connect('piper.events.in', mq.CONTROLLER_INBOUND, function() {
@@ -48,7 +49,18 @@ sub.connect('piper.events.in', mq.CONTROLLER_INBOUND, function() {
 });
 
 sub.on('data', function(data) {
-	jsonData = JSON.parse(data);
+	var jsonData = JSON.parse(data);
+	if (data) onHandlerEvent(jsonData.id, jsonData.user, jsonData.client, jsonData.module, jsonData.body);
+});
+
+
+logger.info('Piper Controller: Connecting to MQ Exchange <piper.events.scheduler>...');
+schedSub.connect('piper.events.scheduler', mq.CONTROLLER_INBOUND, function() {
+	logger.info('Piper Controller: MQ Exchange <piper.events.scheduler> connected');
+});
+
+schedSub.on('data', function(data) {
+	var jsonData = JSON.parse(data);
 	if (data) onHandlerEvent(jsonData.id, jsonData.user, jsonData.client, jsonData.module, jsonData.body);
 });
 
@@ -369,7 +381,9 @@ var onSlackEvent = function(user, client, message) {
 							  , full_name       : user.full_name
 							  , email           : user.email
 							  , phone           : user.phone
-							  , avatar          : user.avatar 
+							  , avatar          : user.avatar
+							  , timezone		: user.timezone
+							  , timezone_offset	: user.timezone_offset 
 							  , active          : true
 							  , createdAt       : new Date()
 							  , slackProfiles   : [{
@@ -391,6 +405,22 @@ var onSlackEvent = function(user, client, message) {
 
 					});
 			}
+			
+			// update user timezone
+			User.findOneAndUpdate (
+				{ email: user.email }, 
+				{ timezone: user.timezone,
+				  timezone_offset: user.timezone_offset
+				},
+				{upsert: true}, function (err) {
+				if (err) {
+					logger.error('Unable to update user slack profile: ' + err);
+				} else {
+					logger.info('Slack Profile for User %s successfully updated', user.email);
+					cache.sadd(sukey, user.slackId);
+				}
+			});
+
 		});
 	
 	// save user details to cache
@@ -410,10 +440,12 @@ var onSlackEvent = function(user, client, message) {
 			logger.info('No context: ' + JSON.stringify(inContext));
 		}
 
-		// Update context with current user time
-		var dateTime = new Date(message.time*1000);
-		inContext.reference_time = dateTime.toISOString();
-		logger.debug(inContext.reference_time);
+		// Update context with current user timezone
+		//var dateTime = new Date(message.time * 1000);
+		//inContext.reference_time = dateTime.toISOString();
+		//logger.debug(inContext.reference_time);
+		//logger.debug(JSON.stringify(user));
+		inContext.timezone = user.timezone;
 		
 		// Interprete inbound message -> wit
 		var intentBody;
@@ -422,7 +454,7 @@ var onSlackEvent = function(user, client, message) {
 
 		wit.captureTextIntent(witAccessToken, message.text, inContext, function(error,feedback) {
 			if (error) {
-				var response = JSON.stringify(feedback);
+				//var response = JSON.stringify(feedback);
 				logger.error('ALARM! -> Error retrieving intent from wit.ai: '+ JSON.stringify(error));
 				logger.debug('Feedback: ' + JSON.stringify(feedback));
 				
@@ -451,7 +483,8 @@ var onSlackEvent = function(user, client, message) {
 
 				var retainState = false;
 				if (intentBody.outcomes[0]['confidence'] < witConfig.MIN_CONFIDENCE) {
-					intent = 'no_intent';
+					intent = 'unknown_intent';
+					intentBody.outcomes[0].intent = 'unknown_intent';
 					retainState = true; // don't change state if intent changed
 					logger.info('Low confidence, changing intent to intent_not_found');
 				}
@@ -483,7 +516,7 @@ var onSlackEvent = function(user, client, message) {
 						logger.debug('Processor not found for ' + getModule(intent, inContext.state) + ', defaulting to ' + getModule('intent_not_found'));
 					}
 				} else {
-					var processorModule = processorMap.processors[0][getModule('intent_not_found')];
+					processorModule = processorMap.processors[0][getModule('intent_not_found')];
 					logger.debug('No intent found, defaulting to ' + getModule('intent_not_found'));
 				}
 
@@ -493,25 +526,26 @@ var onSlackEvent = function(user, client, message) {
 					processMessage(user, client, Processor, intentBody);
 				} catch (e) {
 					logger.debug('Error processing intent for state: ' + getModule(intent, inContext.state) + ' -> ' + e + ', defaulting to ' + getModule('intent_not_found'));
-					var Processor = require(processorMap.processors[0][getModule('intent_not_found')]);
+					Processor = require(processorMap.processors[0][getModule('intent_not_found')]);
 					processMessage(user, client, Processor, intentBody);					
 				}
 			}										
 		});
 	});
-}
+};
 
 var processMessage = function(user, client, Processor, body) {
 	if (!processors[Processor.MODULE]) {
 		//instantiate and setup processor
 		processors[Processor.MODULE] = new Processor();
 		processors[Processor.MODULE].init();
-		processors[Processor.MODULE].on('message', onProcessorEvent);
+		processors[Processor.MODULE].on('message', onProcessorMessage);
+		processors[Processor.MODULE].on('rich_message', onProcessorRichMessage);
 		processors[Processor.MODULE].on('error', onProcessorError);	
 	} 
 
 	processors[Processor.MODULE].out(user, client, body);
-}
+};
 
 var onHandlerEvent = function(msgid, username, clientHandle, module, data) {
 	logger.debug('onHandlerEvent-> msgid: %s, username: %s, clientHandle: %s, module: %s, data: %s', msgid, username, clientHandle, module, JSON.stringify(data));
@@ -521,7 +555,8 @@ var onHandlerEvent = function(msgid, username, clientHandle, module, data) {
 		if (Processor) {
 			processors[Processor.MODULE] = new Processor();
 			processors[Processor.MODULE].init();
-			processors[Processor.MODULE].on('message', onProcessorEvent);
+			processors[Processor.MODULE].on('message', onProcessorMessage);
+			processors[Processor.MODULE].on('rich_message', onProcessorRichMessage);
 			processors[Processor.MODULE].on('error', onProcessorError);	
 
 			// send request
@@ -530,9 +565,10 @@ var onHandlerEvent = function(msgid, username, clientHandle, module, data) {
 	} else {
 		processors[module].in(msgid, username, clientHandle, data);
 	}
-}
+};
 
-var onProcessorEvent = function(module, username, clientHandle, message, state) {
+
+var onProcessorMessage = function(module, username, clientHandle, message, state) {
 	getClientID(clientHandle, function(err, clientID) {
 		if (clientID) {
 			logger.debug('module: %s, user: %s, client: %s, message: %s', module, username, clientHandle, message);
@@ -543,7 +579,22 @@ var onProcessorEvent = function(module, username, clientHandle, message, state) 
 			}
 		}
 	});
-}
+};
+
+
+var onProcessorRichMessage = function(module, username, clientHandle, message, attachments, state) {
+	getClientID(clientHandle, function(err, clientID) {
+		if (clientID) {
+			logger.debug('module: %s, user: %s, client: %s, message: %s, attachments: %s', module, username, clientHandle, message, JSON.stringify(attachments));
+			if (w[clientID]) {
+				w[clientID].sendRichDM(username, message, attachments);
+				if (state) setUserState(username, clientHandle, state);
+				logger.debug('Rich Message: ' + message + ' sent to user ' + username);
+			}
+		}
+	});
+};
+
 
 var onProcessorError = function(module, username, clientHandle, error, message, state) {
 	logger.info('PROCESSOR ERROR - %s: %s', module, error);
@@ -556,7 +607,7 @@ var onProcessorError = function(module, username, clientHandle, error, message, 
 			}
 		}
 	});
-}
+};
 
 var getProcessor = function(module) {
 	if (module) {

@@ -4,6 +4,9 @@
 	"SUSPECT_START_LOCATION" : "RIDES_confirm_start_location",
 	"NO_END_LOCATION" : "RIDES_get_end_location",
 	"BAD_END_ADDRESS" : "RIDES_get_end_location",
+	"NO_DEPARTURE_TIME" : "RIDES",
+	"NON_SPECIFIC_TIME" : "RIDES_get_departure_time",
+	"DEPARTURE_TOO_SOON" : "RIDES_confirm_ride_needed",
 	"SUSPECT_END_LOCATION" : "RIDES_confirm_end_location",
 	"NO_STARTLOC_PREFERENCE" : "RIDES_get_startloc_preference",
 	"NO_ENDLOC_PREFERENCE" : "RIDES_get_endloc_preference",
@@ -13,7 +16,8 @@
 	"NO_CONFIRM_CANCEL" : "RIDES_confirm_cancellation",
 	"NO_RIDE_ETA" : "RIDES_confirm_request",
 	"NO_CONFIRM_REQUEST" : "RIDES_confirm_request",
-	"NO_PRODUCTS_AVAILABLE" : " ",
+	"NO_CONFIRM_SCHEDULE" : "RIDES_confirm_schedule",
+	"NO_PRODUCTS_AVAILABLE" : "RIDES",
 	"CONFIRM_REQUEST_CANCEL" : "RIDES_confirm_cancellation",
 	"CANCEL_REQUEST_CANCEL" : "RIDES_confirm_ride_needed"
 }

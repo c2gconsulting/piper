@@ -14,8 +14,14 @@ window.onload = function(){
   // send to socket
   socket = io();
   
+  var options = {
+    enableHighAccuracy: true,
+    timeout: 8000,
+    maximumAge: 0
+  };
+  
   if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(success, error);
+    navigator.geolocation.getCurrentPosition(success, error, options);
   } else {
     error('not supported');
   }
@@ -52,6 +58,7 @@ function success(position) {
   };
   var map = new google.maps.Map(document.getElementById("mapcanvas"), myOptions);
   
+  
   var marker = new google.maps.Marker({
       position: latlng, 
       map: map, 
@@ -83,10 +90,8 @@ function error(msg) {
   s.innerHTML = typeof msg == 'string' ? msg : "failed";
   s.className = 'fail';
   
-  cl.innerHTML = "Close this window and return to your chat...";
-  if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
-    window.location.href = 'slack://open';
-  }
+  cl.innerHTML = "Location services seems to be switched off. Turn it on in your settings and refresh this page";
+
 }
 
 
