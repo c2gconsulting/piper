@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
 
-// Create a new schema for our tweet data
+// Create a new schema for our data
 var schema = new mongoose.Schema({
     first_name      : String
   , last_name       : String
@@ -39,7 +39,7 @@ schema.statics.getUserByID = function(userId, callback) {
   
   return promise;
 
-}
+};
 
 schema.statics.getUserByEmail = function(email, callback) {
   var promise = new mongoose.Promise;
@@ -55,7 +55,7 @@ schema.statics.getUserByEmail = function(email, callback) {
  
   return promise;
 
-}
+};
 
 schema.statics.getUserBySlackNameAndClient = function(name, client, callback) {
   var promise = new mongoose.Promise;
@@ -71,7 +71,7 @@ schema.statics.getUserBySlackNameAndClient = function(name, client, callback) {
  
   return promise;
 
-}
+};
 
 schema.statics.getUserPreference = function(email, prefKey, callback) {
   var promise = new mongoose.Promise;
@@ -98,7 +98,7 @@ schema.statics.getUserPreference = function(email, prefKey, callback) {
  
   return promise;
 
-}
+};
 
 schema.statics.getUserBySlackID = function(userId, callback) {
   var promise = new mongoose.Promise;
@@ -130,7 +130,7 @@ schema.statics.getUsersByClient = function(client, callback) {
  
   return promise;
 
-}
+};
 
 
 // Return a User model based upon the defined schema

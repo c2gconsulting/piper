@@ -1,71 +1,116 @@
 var mongoose = require('mongoose');
 
-// Create a new schema for our tweet data
+// Create a new schema for our data
 var schema = new mongoose.Schema({
     eventTime           : Date
-  , body       : [{}]
-  , routingKey    : String
-  , createdAt   : { type: Date, default: Date.now }
+  , body                : String
+  , routingKey          : String
+  , owner               : String
 });
 
+
 // Static methods
-schema.statics.registerEvent = function(eventTime,body,routingKey,callback) {
+schema.statics.createEvent = function(eventTime, body, routingKey, owner, callback) {
   var promise = new mongoose.Promise;
   if(callback) promise.addBack(callback);
 
-   Event (
-  {
-    eventTime: eventTime,
-      body: body,
-      routingKey: routingKey
-  }).save(function(err, doc){
-    
-       if (err) {
+  Event.create({ 'eventTime': eventTime, 'body': body, 'routingKey': routingKey, 'owner': owner }, function(err, doc) {
+    if (err) {
       promise.error(err);
       return;
-    } 
+    }
     promise.complete(doc);
   });
-  }
-
-
-schema.statics.getLatestEvent = function(callback) {
-  var promise = new mongoose.Promise;
-  if(callback) promise.addBack(callback);
-
-
-  Event.findOne({ "$query":{}, "$orderby":{ "eventDate": 1 }}).exec( function(err, doc) {
-     if (err) {
-      promise.error(err);
-      return;
-    } 
-    promise.complete(doc);
-  });
- 
+  
   return promise;
-}
+
+};
 
 
-
-schema.statics.getEvents = function(eventTime, callback) {
+schema.statics.getEventByID = function(eventId, callback) {
   var promise = new mongoose.Promise;
   if(callback) promise.addBack(callback);
 
-  Event.find({'eventTime' : eventTime }).exec( function(err, docs) {
-     if (err) {
+  Event.findOne({ '_id' : eventId }).exec( function(err, doc) {
+    if (err) {
+      promise.error(err);
+      return;
+    } 
+    promise.complete(doc);
+  });
+  
+  return promise;
+
+};
+
+schema.statics.getEventsByOwner = function(owner, callback) {
+  var promise = new mongoose.Promise;
+  if(callback) promise.addBack(callback);
+
+  Event.find({ 'owner' : owner }).exec( function(err, docs) {
+    if (err) {
       promise.error(err);
       return;
     } 
     promise.complete(docs);
   });
- 
+  
   return promise;
 
-}
+};
+
+schema.statics.getDueEvents = function(eventTime, callback) {
+  var promise = new mongoose.Promise;
+  if(callback) promise.addBack(callback);
+
+  Event.find({ 'eventTime': { $lt: eventTime }}).exec( function(err, docs) {
+    if (err) {
+      promise.error(err);
+      return;
+    } 
+    promise.complete(docs);
+  });
+  
+  return promise;
+
+};
+
+schema.statics.removeEvent = function(eventId, callback) {
+  var promise = new mongoose.Promise;
+  if(callback) promise.addBack(callback);
+
+  Event.remove({ '_id': eventId }, function(err, docs) {
+    if (err) {
+      promise.error(err);
+      return;
+    } 
+    promise.complete(docs);
+  });
+  
+  return promise;
+
+};
+
+
+schema.statics.removeDueEvents = function(eventTime, callback) {
+  var promise = new mongoose.Promise;
+  if(callback) promise.addBack(callback);
+
+  Event.remove({ 'eventTime': { $lt: eventTime }}, function(err, docs) {
+    if (err) {
+      promise.error(err);
+      return;
+    } 
+    promise.complete(docs);
+  });
+  
+  return promise;
+
+};
 
 
 
-// Return a Scheduler model based upon the defined schema
+// Return an Event model based upon the defined schema
 module.exports = Event = mongoose.model('events', schema);
 
 

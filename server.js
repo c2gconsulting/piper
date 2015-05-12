@@ -1,4 +1,5 @@
 var db = require('./shared/lib/db');
+var scheduler = require('./shared/lib/scheduler');
 var express = require('express');
 var http = require('http');
 var vhost = require('vhost');
@@ -8,6 +9,7 @@ var services = require('./servers.json').services;
 
 
 var ERROR_RESPONSE_CODE = 422;
+var SCHED_CRON_INTERVAL = 180000;
 
 // Connect to our mongo database
 db.connect();
@@ -81,6 +83,8 @@ io.on('connection', function(socket) {
 		utils.processGeo(data);
 	});
 });
+
+setInterval(scheduler.run, SCHED_CRON_INTERVAL); // check scheduler on interval
 
 
 

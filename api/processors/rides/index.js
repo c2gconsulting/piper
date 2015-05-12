@@ -3,6 +3,7 @@ var cache = require('../../../shared/lib/cache').getRedisClient();
 var logger = require('../../../shared/lib/log');
 var mq = require('../../../shared/lib/mq');
 var utils = require('../../../shared/lib/utils');
+var scheduler = require('../../../shared/lib/scheduler');
 var User = require('../../../shared/models/User');
 var responses = require('./dict/responses.json');
 var keywords = require('./dict/keywords.json');
@@ -68,6 +69,12 @@ function Rides(data) {
 		'rides_get_request_status' : [
 						'activeRequest'
 					],
+		'rides_get_schedule_status' : [
+						'default'
+					],
+		'rides_cancel_schedule' : [
+						'default'
+					],
 		'rides_get_driver_info' : [
 						'activeRequest'
 					],
@@ -78,12 +85,20 @@ function Rides(data) {
 						'startLong',
 						'productId'
 					],
+		'rides_get_destination' : [
+						'endLong',
+					],
 		'rides_get_info' : [
 						'infotype'
 					]				
 	};
 
 	this.validations = {
+		'default' : [
+						function(d, b, i) {
+							return true;
+						}
+				],
 		'confirmCancellation' : [
 						function(d, b, i) {
 							var state = b.context.state;
@@ -114,7 +129,7 @@ function Rides(data) {
 						function(d, b, i) {
 							var state = b.context.state;
 							if (b.nearTime) delete d.departureTime;
-							if (state === 'RIDES_confirm_ride_needed' && i.yes_no == 'true') b.touch = true;
+							if (state === 'RIDES_confirm_ride_needed' && i.yes_no === 'yes') b.touch = true;
 							if (d.intent !== 'rides_go_out' && state !== 'RIDES_confirm_ride_needed' && !b.restart) return d.confirmNeed = true;
 							if (d.intent === 'rides_request_trip') return d.confirmNeed = true;
 							if ((state === 'RIDES_confirm_ride_needed' && i.yes_no === 'yes')  || d.confirmNeed === true || d.confirmNeed === 'true') return d.confirmNeed = true;
@@ -128,11 +143,18 @@ function Rides(data) {
 							return i.hasActiveRequest;
 						},
 						function(d, b, i) {
+							var state = b.context.state;
+							if (state === 'RIDES_get_start_location' || state === 'RIDES_get_startloc_preference') {
+								if (!i.from && !i.to && !i.location && !d.startLong) i.from = b._text;
+							}
+						},
+						function(d, b, i) {
 							if (d.startLong && d.startLong !== 0) {
 								if (i.yes_no === 'no' && i.infotype === 'location') {  // user rejects captured location, can only be 'from'
 									delete d.startLong;
 									delete d.startLat;
-									if (data.lvlQueries && data.lvlQueries[d.errStartLocation] && !isNaN(data.lvlQueries[d.errStartLocation])) data.lvlQueries[d.errStartLocation] = 0; // reset if reset
+									if (d.lvlQueries && d.lvlQueries['NO_START_LOCATION'] && !isNaN(d.lvlQueries['NO_START_LOCATION'])) d.lvlQueries['NO_START_LOCATION'] = 0; // reset if reset
+									if (d.lvlQueries && d.lvlQueries['BAD_START_ADDRESS'] && !isNaN(d.lvlQueries['BAD_START_ADDRESS'])) d.lvlQueries['BAD_START_ADDRESS'] = 0; // reset if reset
 									b.touch = true;
 								}
 							}
@@ -161,7 +183,12 @@ function Rides(data) {
 											
 										if (doc) {
 											i.from = doc.pValue;
-											return getLocationByAddress(i.from).then (function (location) {
+											var options = {};
+											if (d.endLong) {
+												var location = d.endLat + ',' + d.endLong;
+												options = { 'location': location, 'radius': 50000 };
+											}
+											return getLocationByAddress(i.from, options).then (function (location) {
 												if (location) {
 													d.startLong = location.longt;
 													d.startLat = location.lat;
@@ -181,7 +208,12 @@ function Rides(data) {
 										}
 									});
 								} else {
-									return getLocationByAddress(i.from)
+									var options = {};
+									if (d.endLong) {
+										var location = d.endLat + ',' + d.endLong;
+										options = { 'location': location, 'radius': 50000 };
+									}
+									return getLocationByAddress(i.from, options)
 										.then (function (location) {
 											if (location) {
 												d.startLong = location.longt;
@@ -439,6 +471,24 @@ function Rides(data) {
 							return i.hasActiveRequest;
 						},
 						function(d, b, i) {
+							var state = b.context.state;
+							if (state === 'RIDES_get_end_location' || state === 'RIDES_get_endloc_preference') {
+								if (!i.from && !i.to && !i.location && !d.endLong) i.to = b._text;
+							}
+						},
+						function(d, b, i) {
+							if (d.endLong && d.endLong !== 0) {
+								if (i.yes_no === 'no' && i.infotype === 'destination') {  // user rejects captured destination
+									delete d.endLong;
+									delete d.endLat;
+									if (d.lvlQueries && d.lvlQueries['NO_END_LOCATION'] && !isNaN(d.lvlQueries['NO_END_LOCATION'])) d.lvlQueries['NO_END_LOCATION'] = 0; // reset if reset
+									if (d.lvlQueries && d.lvlQueries['BAD_END_ADDRESS'] && !isNaN(d.lvlQueries['BAD_END_ADDRESS'])) d.lvlQueries['BAD_END_ADDRESS'] = 0; // reset if reset
+									b.touch = true;
+								}
+							}
+							return false;
+						},
+						function(d, b, i) {
 							if(d.confirmNeed === false) return true; // exit validations if trip cancelled
 							if (!d.endLong || d.endLong === 0) return false;
 							if (d.errEndLocation === 'NO_END_LOCATION') delete d.errEndLocation;
@@ -461,7 +511,12 @@ function Rides(data) {
 											
 										if (doc) {
 											i.to = doc.pValue;
-											return getLocationByAddress(i.to).then (function (location) {
+											var options = {};
+											if (d.startLong) {
+												var location = d.startLat + ',' + d.startLong;
+												options = { 'location': location, 'radius': 50000 };
+											}
+											return getLocationByAddress(i.to, options).then (function (location) {
 												if (location) {
 													d.endLong = location.longt;
 													d.endLat = location.lat;
@@ -481,7 +536,12 @@ function Rides(data) {
 										}
 									});
 								} else {
-									return getLocationByAddress(i.to)
+									var options = {};
+									if (d.startLong) {
+										var location = d.startLat + ',' + d.startLong;
+										options = { 'location': location, 'radius': 50000 };
+									}
+									return getLocationByAddress(i.to, options)
 										.then (function (location) {
 											if (location) {
 												d.endLong = location.longt;
@@ -529,6 +589,12 @@ function Rides(data) {
 		'departureTime': [
 						function(d, b, i) {
 							return i.hasActiveRequest;
+						},
+						function(d,b,i) {
+							if (i.rejected_time && d.departureTime) {
+								if (moment(i.rejected_time).isSame(moment(d.departureTime))) delete d.departureTime;
+							}	
+							return false;
 						},
 						function(d, b, i) {
 							if(i.duration) {
@@ -807,6 +873,9 @@ function Rides(data) {
 								me.emit('message', Rides.MODULE, user.name, clientHandle, responseText);
 								return true;
 							},
+		'rides_cancel_schedule' : function(user, clientHandle, indata, data) {
+								return false; // ignore any misunderstood response
+							},
 		'rides_book_trip' : function(user, clientHandle, indata, data) {
 								if (indata.yes_no === 'no') {
 									if (data.confirmNeed === 'true' || data.confirmNeed === true) {
@@ -815,7 +884,7 @@ function Rides(data) {
 										me.emit('message', Rides.MODULE, user.name, clientHandle, responseText, errorContext['CONFIRM_REQUEST_CANCEL']);
 										return false;
 									} else {
-										//just terminate and move on
+										//just terminate the convo and move on
 										me.emit('message', Rides.MODULE, user.name, clientHandle, 'Ok');
 										return false;
 									}
@@ -944,8 +1013,18 @@ function Rides(data) {
 									var rbody = { header: 'cancel_request', requestId: activeRequest.requestId };
 									me.push(user, clientHandle, rbody);
 								} else {
-									me.emit('message', Rides.MODULE, user.name, clientHandle, 'Fine, your ride request has been cancelled');
+									//me.emit('message', Rides.MODULE, user.name, clientHandle, 'Fine, your ride request has been cancelled');
 									deleteActiveRequest(user.name, clientHandle);
+									var attachments = [
+												        {
+												            "fallback": "Fine, your ride request has been cancelled",
+												            "text": "Your ride request has been cancelled",
+												            "color": "danger"
+												        }
+												    ];
+									me.emit('rich_message', Rides.MODULE, user.name, clientHandle, '', attachments);
+									
+									
 								}	
 								return true;							
 							});
@@ -955,17 +1034,45 @@ function Rides(data) {
 							return false;
 						}
 					},
-		'rides_get_cost' : function(user, clientHandle, data) {
-						return getPriceEstimate(user.name, clientHandle, data).then(function (prices) {
-							var jPrices = JSON.parse(prices);
-							
-							// price text
-							if (jPrices.prices && jPrices.prices.length > 0) var priceText = 'An estimate for the ride is ' + jPrices.prices[0].estimate;
-							var failureText = 'Sorry cannot retrieve an estimate for your ride at this time, try again later';
-							var responseText = priceText == undefined ? failureText : priceText;
-							
-							me.emit('message', Rides.MODULE, user.name, clientHandle, responseText);
+		'rides_cancel_schedule' : function(user, clientHandle, data) {	
+						var userkey = getUserKey(user.name, clientHandle); 
+						return cache.zrange(userkey + ':scheduledrequests', 0, -1, 'withscores').then( function(schedules) {
+							if (schedules && schedules.length > 0) {	
+								me.emit('message', Rides.MODULE, user.name, clientHandle, 'Noted. Will probably still check in later in case you change your mind');
+							} else {
+								me.emit('message', Rides.MODULE, user.name, clientHandle, 'You have no rides scheduled');
+							}
 							return true;
+						});
+					},
+		'rides_get_destination' : function(user, clientHandle, data) {	
+						return getAddressByCoords(data.endLat, data.endLong).then( function(address) {
+							if (address) {	
+								me.emit('message', Rides.MODULE, user.name, clientHandle, 'You are headed to ' + address);
+							} else {
+								me.emit('message', Rides.MODULE, user.name, clientHandle, 'Sorry, I can\'t retrieve your destination');
+							}
+							return true;
+						});
+					},
+		'rides_get_cost' : function(user, clientHandle, data) {
+						return getActiveRequest(user.name, clientHandle).then( function(activeRequest) {
+							if (activeRequest && activeRequest.requestId) {
+								me.emit('message', Rides.MODULE, user.name, clientHandle, 'Sorry I can\'t check trip costs mid-trip, you\'ll get a receipt at the end');
+								return true;
+							} else {
+								return getPriceEstimate(user.name, clientHandle, data).then(function (prices) {
+									var jPrices = JSON.parse(prices);
+									
+									// price text
+									if (jPrices.prices && jPrices.prices.length > 0) var priceText = 'An estimate for the ride is ' + jPrices.prices[0].estimate;
+									var failureText = 'Sorry cannot retrieve an estimate for your ride at this time, try again later';
+									var responseText = priceText == undefined ? failureText : priceText;
+									
+									me.emit('message', Rides.MODULE, user.name, clientHandle, responseText);
+									return true;
+								});
+							}
 						});
 					},
 		'rides_get_request_status' : function(user, clientHandle, data) {
@@ -977,6 +1084,31 @@ function Rides(data) {
 								me.push(user, clientHandle, rbody);
 							} else {
 								me.emit('message', Rides.MODULE, user.name, clientHandle, 'Your request is still pending');
+							}
+							return true;
+						});
+					},
+		'rides_get_schedule_status' : function(user, clientHandle, data) {
+						var userkey = getUserKey(user.name, clientHandle); 
+						return cache.zrange(userkey + ':scheduledrequests', 0, -1, 'withscores').then( function(schedules) {
+							if (schedules && schedules.length > 0) {
+								if (schedules.length === 2) {
+									logger.debug('SCHEDULES: %s', JSON.stringify(schedules));
+									var schedText = momentz(moment(schedules[1]*1).add(30, 'minutes')).tz(user.timezone).calendar();
+									me.emit('message', Rides.MODULE, user.name, clientHandle, 'You have a pickup scheduled for ' + schedText.toLowerCase());
+								} else if (schedules.length === 4) {
+									logger.debug('SCHEDULES: %s', JSON.stringify(schedules));
+									schedText = momentz(moment(schedules[1]*1).add(30, 'minutes')).tz(user.timezone).calendar();
+									var schedText2 = momentz(moment(schedules[3]*1).add(30, 'minutes')).tz(user.timezone).calendar();
+									me.emit('message', Rides.MODULE, user.name, clientHandle, 'You have two pickups scheduled: ' + schedText.toLowerCase() + ' and ' + schedText2.toLowerCase());
+								} else {
+									logger.debug('SCHEDULES: %s', JSON.stringify(schedules));
+									schedText = momentz(moment(schedules[1]*1).add(30, 'minutes')).tz(user.timezone).calendar();
+									schedText2 = momentz(moment(schedules[3]*1).add(30, 'minutes')).tz(user.timezone).calendar();
+									me.emit('message', Rides.MODULE, user.name, clientHandle, 'You\'ve got a few pickups scheduled, I\'ll only focus on the 2 closest ones for now: ' + schedText.toLowerCase() + ' and ' + schedText2.toLowerCase());
+								}
+							} else {
+								me.emit('message', Rides.MODULE, user.name, clientHandle, 'You have no pickups scheduled');
 							}
 							return true;
 						});
@@ -1162,23 +1294,27 @@ function Rides(data) {
 						var userkey = getUserKey(user.name, clientHandle);
 						logger.debug('HandleRequest: handling for rides_schedule_trip... %s', JSON.stringify(data));
 						// check if there's an active request
-						return checkActiveRequest(user.name, clientHandle).then(function(active) {
-							if (active) {
+						return getActiveRequest(user.name, clientHandle).then(function(activeRequest) {
+							if (activeRequest && (activeRequest.status === 'accepted' || activeRequest.status === 'processing' || activeRequest.status === 'pending')) {
 								// tell user she has an active request...need to complete before booking
-								me.emit('message', Rides.MODULE, user.name, clientHandle, 'You already have another request active. Complete it before scheduling your ride');
+								me.emit('message', Rides.MODULE, user.name, clientHandle, 'You already have a request active. At least be on your way before scheduling another ride');
 							} else {
 								data.header = 'scheduled_trip';
-								var body = { 'module': Rides.MODULE, 'user': user, 'client': clientHandle, 'data': data };
+								
+								// delete non-required properties before scheduling
+								delete data.startLong;
+								delete data.startLat;
+								delete data.confirmSchedule; 
+								delete data.lvlQueries;
+								
+								var body = { 'module': Rides.MODULE, 'user': user.name, 'client': clientHandle, 'body': data };
 								var scheduleTime = moment(data.departureTime).subtract(30, 'minutes'); // Prompt 30 minutes earlier
 								
 								// call the scheduler
-								/*
-								scheduler.add(scheduleTime.toDate().getTime(), body, mq.CONTROLLER_INBOUND).then (function(eventId) {
+								scheduler.add(scheduleTime.toDate().getTime(), body, mq.CONTROLLER_INBOUND, Rides.MODULE).then (function(eventId) {
 									cache.zadd(userkey + ':scheduledrequests', scheduleTime.toDate().getTime(), eventId); //possibly make a then
-									me.emit('message', Rides.MODULE, user.name, clientHandle, 'Done, i\'ll notify you when its time to call the ride...');
+									me.emit('message', Rides.MODULE, user.name, clientHandle, 'Done, i\'ll follow up with you when its time to call the ride...');
 								});
-								*/	
-								me.emit('message', Rides.MODULE, user.name, clientHandle, 'Done, i\'ll follow up with you when its time to call the ride...');
 								cache.del(userkey + ':payload');
 							}
 							return true;
@@ -1204,7 +1340,7 @@ function normalizeTime(i) {
 			var timediff = d2.diff(d1, 'minutes');
 			var timedelta = 1440 - (timediff % 1440);
 			d2.add(timedelta, 'minutes');
-			i.datetime = d2.isAfter(d3.add(720, 'minutes')) ? d2.subtract(1440, 'minutes').format() : d2.format(); // switch AM <-> PM
+			i.datetime = d2.isAfter(d3.add(720, 'minutes')) ? d2.subtract(1440, 'minutes').format() : d2.format(); 
 			logger.debug('D1: %s, D2: %s, newtime: %s, timediff: %s, timedelta: %s', d1, d2, i.datetime, timediff, timedelta );
 		} else if (d1.isAfter(d3)) {
 			timediff = d1.diff(d3, 'minutes');
@@ -1256,7 +1392,7 @@ function cacheActiveRequest(username, clientHandle, data) {
 	var userkey = getUserKey(username, clientHandle);
 
 	var activeRequest = {
-		request_id : data.requestId,
+		requestId : data.request_id,
 		status : data.status,
 		eta    : data.eta
 	};
@@ -1395,8 +1531,11 @@ Rides.prototype.out = function(user, client, body) {
 	var me = this;
 	
 	checkActiveRequest(user.name, client.slackHandle).then(function(activeRequest) {
-		if (body.outcomes[0].intent === 'rides_cancel_trip' || body.outcomes[0].intent === 'default_cancel_request') {
-			var handlerTodo = 'rides_cancel_trip';
+		if (body.outcomes[0].intent === 'rides_cancel_trip' && body.outcomes[0].entities.infotag && body.outcomes[0].entities.infotag[0].value === 'schedule') {
+			var handlerTodo = 'rides_cancel_schedule';
+			body.touch = true;  // confirms the statement is understood
+		} else if (body.outcomes[0].intent === 'rides_cancel_trip' || body.outcomes[0].intent === 'default_cancel_request') {
+			handlerTodo = 'rides_cancel_trip';
 			body.touch = true;  // confirms the statement is understood
 		} else if (body.context.state === 'RIDES_confirm_cancellation' && body.outcomes[0].intent !== 'rides_request_trip') {
 			handlerTodo = 'rides_cancel_trip';
@@ -1406,6 +1545,9 @@ Rides.prototype.out = function(user, client, body) {
 			body.touch = true;
 		} else if (body.outcomes[0].intent === 'rides_schedule_trip') {
 			handlerTodo = 'rides_schedule_trip';
+			body.touch = true;
+		} else if (body.outcomes[0].intent === 'rides_cancel_schedule') {
+			handlerTodo = 'rides_cancel_schedule';
 			body.touch = true;
 		} else if (body.outcomes[0].intent === 'rides_request_trip' || body.outcomes[0].intent === 'rides_go_out') {
 			handlerTodo = 'rides_book_trip';
@@ -1432,10 +1574,7 @@ Rides.prototype.out = function(user, client, body) {
 		logger.debug('HandlerTodo->2nd Cut (getInfoQuery): %s', handlerTodo);
 		logger.debug('Body Touched?: %s', body.touch);
 		
-		validateHandlerTodo(user.name, client.slackHandle, handlerTodo).then(function(htd) {
-			logger.debug('HandlerTodo->3rd Cut (validateHandlerTodo): %s', htd);
-			me.processData(user, client.slackHandle, body, htd);  
-		});
+		me.processData(user, client.slackHandle, body, handlerTodo);  
 		
 	});	
 };
@@ -1465,6 +1604,12 @@ function getInfoQuery(body) {
 			case 'time':
 				return 'rides_get_eta';
 				break;
+			case 'schedule_status':
+				return 'rides_get_schedule_status';
+				break;
+			case 'destination':
+				return 'rides_get_destination';
+				break;
 			default:
 				return 'rides_get_request_status';
 		}		
@@ -1490,28 +1635,34 @@ function validateHandlerTodo(username, clientHandle, handlerTodo) {
 }
 
 
-function resolveBookOrSchedule(username, clientHandle, body, handlerTodo) {
+function resolveBookOrSchedule(username, clientHandle, body, htd) {
 	var userkey = getUserKey(username, clientHandle);
-	if (handlerTodo === 'rides_book_trip' || handlerTodo === 'rides_schedule_trip') {
-		return checkActiveRequest(username, clientHandle).then( function(active){
-			if (active) return handlerTodo;
-			return cache.hget(userkey + ':payload', 'departureTime').then(function(dTime) {
-				if (body.outcomes[0].entities.datetime || dTime) {
-					if (body.outcomes[0].entities.datetime) {
-						var i = extractEntities(body);
-						if (normalizeTime(i)) return 'rides_schedule_trip';
-					} else {
-						if (moment(dTime).isAfter(moment().add(CUTOFF_TIME, 'minutes'))) return 'rides_schedule_trip';
+	return validateHandlerTodo(username, clientHandle, htd).then (function(handlerTodo) {
+		if (handlerTodo === 'rides_book_trip' || handlerTodo === 'rides_schedule_trip') {
+			return checkActiveRequest(username, clientHandle).then( function(active){
+				if (active) return handlerTodo;
+				return cache.hget(userkey + ':payload', 'departureTime').then(function(dTime) {
+					if ((body.outcomes && body.outcomes[0].entities.datetime) || dTime) {
+						if (body.outcomes && body.outcomes[0].entities.datetime) {
+							var i = extractEntities(body);
+							if (i.datetime) {
+								if (normalizeTime(i)) return 'rides_schedule_trip';
+							} else {
+								if (i.datetime_from) return 'rides_schedule_trip';
+							}
+						} else {
+							if (moment(dTime).isAfter(moment().add(CUTOFF_TIME, 'minutes'))) return 'rides_schedule_trip';
+						}
+						body.nearTime = true;
+						body.touch = true;
 					}
-					body.nearTime = true;
-					body.touch = true;
-				}
-				return 'rides_book_trip';
-			});	
-		}); 
-	} else {
-		return when(handlerTodo);
-	}
+					return 'rides_book_trip';
+				});	
+			}); 
+		} else {
+			return when(handlerTodo);
+		}
+	});
 }
 
 
@@ -1715,8 +1866,10 @@ Rides.prototype.cancelRequest = function(username, clientHandle, data) {
     cache.expire(userkey + ':payload', CANCEL_TTL);
     cache.expire(userkey + ':datacheck', CANCEL_TTL);
 	cache.hdel(userkey + ':payload', 'departureTime');
-    //cache.del(userkey + ':activerequest'); // for now. Change to send handler request
- 
+	cache.hdel(userkey + ':payload', 'confirmRequest');
+	cache.hdel(userkey + ':payload', 'confirmSchedule');
+	cache.hdel(userkey + ':payload', 'lvlQueries');
+    
 };
 	
 /**
@@ -1754,9 +1907,8 @@ Rides.prototype.in = function(msgid, username, clientHandle, body) {
 			case 'scheduled_trip':
 				setUserPayload(username, clientHandle, body);
 				logger.debug('Done setting user payload...');
-
-				me.emit('message', Rides.MODULE, username, clientHandle, 'You have a pickup scheduled for 30 mins from now, do you still need the ride?', 'RIDES_confirm_ride_needed');
-
+				me.emit('message', Rides.MODULE, username, clientHandle, 'You have a pickup scheduled in about 30 mins, do you still need the ride?', 'RIDES_confirm_ride_needed');
+				if (body.schEventId) cache.zrem(getUserKey(username, clientHandle) + ':scheduledrequests', body.schEventId); // delete cached sched request
 				break;
 			case 'auth_link':
 				utils.shortenLink(body.authLink).then (function(shortAuthLink) {
@@ -1792,7 +1944,14 @@ Rides.prototype.in = function(msgid, username, clientHandle, body) {
 				me.processRequestUpdate(username, clientHandle, body);	
 				break;	
 			case 'request_cancel':
-				me.emit('message', Rides.MODULE, username, clientHandle, "Your ride has been canceled", " ");
+				var attachments = [
+						        {
+						            "fallback": "Your ride has been canceled",
+						            "text": "Your ride has been canceled",
+						            "color": "danger"
+						        }
+						    ];
+				me.emit('rich_message', Rides.MODULE, username, clientHandle, '', attachments, ' ');
 				me.cancelRequest(username, clientHandle, {});
 				deleteActiveRequest(username, clientHandle);
 				break;	
@@ -1813,10 +1972,43 @@ Rides.prototype.in = function(msgid, username, clientHandle, body) {
 				cacheActiveRequest(username, clientHandle, body);	
 				if (body.status === 'accepted') {
 					if (body.driver) {
+						var minText = body.eta > 1 ? 'minutes' : 'minute';
+						var etaText = body.eta + ' ' + minText;
+						var ratingText = body.driver.rating > 1 ? 'stars' : 'star';
+						ratingText = body.driver.rating + ' ' + ratingText;
+						
+						var fallbackMessage = body.driver.name + ' (' + ratingText +') will be there in ' + etaText + ' in a ' + body.vehicle.make + ' ' + body.vehicle.model + ', registration ' + body.vehicle.license_plate + '. \nYou can reach him on ' + body.driver.phone_number;
+						var feedbackMessage = body.driver.name + ' (' + ratingText +') will be there in a ' + body.vehicle.make + ' ' + body.vehicle.model + ', registration ' + body.vehicle.license_plate + '.';
+						
+						var attachments = [
+								        {
+								            "fallback": fallbackMessage,
+								            "title": "Your ride is on its way...",
+								            "text": feedbackMessage,
+											"fields": [
+										                {
+										                    "title": "ETA",
+										                    "value": etaText,
+										                    "short": true
+										                },
+										                {
+										                    "title": "Contact #",
+										                    "value": body.driver.phone_number,
+										                    "short": true
+										                }
+										            ],
+								            "color": "good"
+								        }
+								    ];
+						if (body.href) attachments[0].image_url = body.href;
+						if (body.mapLink) attachments[0].title_link = body.mapLink;
+						me.emit('rich_message', Rides.MODULE, username, clientHandle, '', attachments);	
+						
+						/*
 						var acceptedMessage = body.driver.name + ' (' + body.driver.rating +' stars) will be there in ' + body.eta + ' minutes in a ' + body.vehicle.make + ' ' + body.vehicle.model;
 						acceptedMessage += ', registration ' + body.vehicle.license_plate + '. \nYou can reach him on ' + body.driver.phone_number;
 						me.emit('message', Rides.MODULE, username, clientHandle, acceptedMessage);
-						if (body.href) me.emit('message', Rides.MODULE, username, clientHandle, body.href);
+						if (body.href) me.emit('message', Rides.MODULE, username, clientHandle, body.href);*/
 						//if (body.driver.picture_url != null) me.emit('message', Rides.MODULE, username, clientHandle, body.driver.picture_url);
 					} else {
 						me.emit('message', Rides.MODULE, username, clientHandle, 'Your ride is on its way...');	
@@ -1829,17 +2021,69 @@ Rides.prototype.in = function(msgid, username, clientHandle, body) {
 				cacheActiveRequest(username, clientHandle, body);	
 				if (body.status === 'accepted') {
 					if (body.driver) {
-						acceptedMessage = 'Your driver is ' + body.driver.name + ' (' + body.driver.rating +' stars). He\'ll be there in ' + body.eta + ' minutes. \nYou can reach him on ' + body.driver.phone_number;
-						me.emit('message', Rides.MODULE, username, clientHandle, acceptedMessage);
+						minText = body.eta > 1 ? 'minutes' : 'minute';
+						etaText = body.eta + ' ' + minText;
+						ratingText = body.driver.rating > 1 ? 'stars' : 'star';
+						ratingText = body.driver.rating + ' ' + ratingText;
+						
+						fallbackMessage = 'Your driver is ' + body.driver.name + ' (' + ratingText + '). He\'ll be there in ' + body.eta + ' minutes. \nYou can reach him on ' + body.driver.phone_number;
+						feedbackMessage = 'He will be there in a ' + body.vehicle.make + ' ' + body.vehicle.model + ', registration ' + body.vehicle.license_plate + '.';
+						
+						attachments = [
+								        {
+								            "fallback": fallbackMessage,
+								            "title": "Your driver is " + body.driver.name + " (" + ratingText + ")",
+								            "text": feedbackMessage,
+											"fields": [
+										                {
+										                    "title": "ETA",
+										                    "value": etaText,
+										                    "short": true
+										                },
+										                {
+										                    "title": "Contact #",
+										                    "value": body.driver.phone_number,
+										                    "short": true
+										                }
+										            ],
+								            "color": "good"
+								        }
+								    ];
+						
 						if (body.driver.picture_url != null) {
 							utils.shortenLink(body.driver.picture_url).then(function(driverPicLink){
-								me.emit('message', Rides.MODULE, username, clientHandle, driverPicLink);
+								if (driverPicLink) attachments[0].image_url = driverPicLink;
+								if (!driverPicLink) attachments[0].image_url = body.driver.picture_url;
+								me.emit('rich_message', Rides.MODULE, username, clientHandle, '', attachments);	
 							}).catch(function(error){
-								me.emit('message', Rides.MODULE, username, clientHandle, body.driver.picture_url);	
+								attachments[0].image_url = body.driver.picture_url;
+								me.emit('rich_message', Rides.MODULE, username, clientHandle, '', attachments);	
 							});	
 						}
 					} else {
 						me.emit('message', Rides.MODULE, username, clientHandle, 'Your ride should soon be on its way...can\'t get your driver\'s details just yet');	
+					}
+				} else if (body.status === 'in_progress') {
+					if (body.driver) {
+						ratingText = body.driver.rating > 1 ? 'stars' : 'star';
+						ratingText = body.driver.rating + ' ' + ratingText;
+						
+						fallbackMessage = 'Your driver is ' + body.driver.name + ' and he has a ' + body.driver.rating + ' rating. You can also ask him yourself tho ;)';
+						me.emit('message', Rides.MODULE, username, clientHandle, fallbackMessage);
+						
+					} else {
+						me.emit('message', Rides.MODULE, username, clientHandle, 'Oops, not sure. But here\'s an idea...ASK HIM YOURSELF! ;)');	
+					}
+				} else if (body.status === 'arriving') {
+					if (body.driver) {
+						ratingText = body.driver.rating > 1 ? 'stars' : 'star';
+						ratingText = body.driver.rating + ' ' + ratingText;
+						
+						fallbackMessage = 'Your driver is ' + body.driver.name + ' (' + ratingText + '). If you haven\'t seen him, you can reach him on ' + body.driver.phone_number;
+						me.emit('message', Rides.MODULE, username, clientHandle, fallbackMessage);
+						
+					} else {
+						me.emit('message', Rides.MODULE, username, clientHandle, 'Oops, not sure');	
 					}
 				} else {
 					me.processRequestQuery(username, clientHandle, body);
@@ -1849,17 +2093,71 @@ Rides.prototype.in = function(msgid, username, clientHandle, body) {
 				cacheActiveRequest(username, clientHandle, body);	
 				if (body.status === 'accepted') {
 					if (body.vehicle) {
-						acceptedMessage = 'Your ride is a ' + body.vehicle.make + ' ' + body.vehicle.model + ' driven by ' + body.driver.name + ' (' + body.driver.rating +' stars). He should be there in ' + body.eta + ' minutes. \nHis cell is ' + body.driver.phone_number;
-						me.emit('message', Rides.MODULE, username, clientHandle, acceptedMessage);
+						minText = body.eta > 1 ? 'minutes' : 'minute';
+						etaText = body.eta + ' ' + minText;
+						ratingText = body.driver.rating > 1 ? 'stars' : 'star';
+						ratingText = body.driver.rating + ' ' + ratingText;
+						
+						fallbackMessage = 'Your ride is a ' + body.vehicle.make + ' ' + body.vehicle.model + ' driven by ' + body.driver.name + ' (' + body.driver.rating +' stars). He should be there in ' + body.eta + ' minutes. \nHis cell is ' + body.driver.phone_number;
+						feedbackMessage = 'Your driver is ' + body.driver.name + ' (' + ratingText + ')';
+						
+						attachments = [
+								        {
+								            "fallback": fallbackMessage,
+								            "title": "Your ride is a " + body.vehicle.make + ' ' + body.vehicle.model + ', registration ' + body.vehicle.license_plate,
+								            "text": feedbackMessage,
+											"fields": [
+										                {
+										                    "title": "ETA",
+										                    "value": etaText,
+										                    "short": true
+										                },
+										                {
+										                    "title": "Contact #",
+										                    "value": body.driver.phone_number,
+										                    "short": true
+										                }
+										            ],   
+													
+								            "color": "good"
+								        }
+								    ];
+						
 						if (body.vehicle.picture_url != null) {
 							utils.shortenLink(body.vehicle.picture_url).then(function(vehiclePicLink){
-								me.emit('message', Rides.MODULE, username, clientHandle, vehiclePicLink);
+								if (vehiclePicLink) attachments[0].image_url = vehiclePicLink;
+								if (!vehiclePicLink) attachments[0].image_url = body.vehicle.picture_url;
+								me.emit('rich_message', Rides.MODULE, username, clientHandle, '', attachments);	
 							}).catch(function(error){
-								me.emit('message', Rides.MODULE, username, clientHandle, body.vehicle.picture_url);	
+								attachments[0].image_url = body.vehicle.picture_url;
+								me.emit('rich_message', Rides.MODULE, username, clientHandle, '', attachments);	
 							});	
 						}
 					} else {
 						me.emit('message', Rides.MODULE, username, clientHandle, 'Your ride should soon be on its way...can\'t get your vehicle details just yet');	
+					}
+				} else if (body.status === 'in_progress') {
+					if (body.vehicle) {
+						ratingText = body.driver.rating > 1 ? 'stars' : 'star';
+						ratingText = body.driver.rating + ' ' + ratingText;
+						
+						fallbackMessage = 'Your ride is a ' + body.vehicle.make + ' ' + body.vehicle.model + ' driven by ' + body.driver.name + ' (' + ratingText +')';
+						me.emit('message', Rides.MODULE, username, clientHandle, fallbackMessage);
+						me.emit('message', Rides.MODULE, username, clientHandle, 'Funny you\'re sitting with him and you\'re asking a robot ;)');
+						
+					} else {
+						me.emit('message', Rides.MODULE, username, clientHandle, 'Oops, not sure. But here\'s an idea...ASK HIM YOURSELF! ;)');	
+					}
+				} else if (body.status === 'arriving') {
+					if (body.driver) {
+						ratingText = body.driver.rating > 1 ? 'stars' : 'star';
+						ratingText = body.driver.rating + ' ' + ratingText;
+						
+						fallbackMessage = 'Your ride is a ' + body.vehicle.make + ' ' + body.vehicle.model + ' driven by ' + body.driver.name + ' (' + ratingText +'). If you haven\'t seen him yet, you can reach him on ' + body.driver.phone_number;
+						me.emit('message', Rides.MODULE, username, clientHandle, fallbackMessage);
+						
+					} else {
+						me.emit('message', Rides.MODULE, username, clientHandle, 'Oops, not sure');	
 					}
 				} else {
 					me.processRequestQuery(username, clientHandle, body);
@@ -1869,13 +2167,29 @@ Rides.prototype.in = function(msgid, username, clientHandle, body) {
 				cacheActiveRequest(username, clientHandle, body);	
 				if (body.status === 'accepted') {
 					if (body.driver) {
-						acceptedMessage = body.driver.name + ' is ' + body.eta + ' minutes away';
+						var acceptedMessage = body.driver.name + ' is ' + body.eta + ' minutes away';
 						me.emit('message', Rides.MODULE, username, clientHandle, acceptedMessage);
 						if (body.href) me.emit('message', Rides.MODULE, username, clientHandle, body.href);
 						//if (body.driver.picture_url != null) me.emit('message', Rides.MODULE, username, clientHandle, body.driver.picture_url);
 					} else {
 						me.emit('message', Rides.MODULE, username, clientHandle, 'Your ride should soon be on its way...can\'t get your driver\'s details just yet');	
 					}
+				} else if (body.status === 'in_progress') {
+					userkey = getUserKey(username, clientHandle);
+					cache.hgetall(userkey + ':payload').then(function(datahash) {
+						if (datahash && datahash.endLat) {
+							getAddressByCoords(datahash.endLat, datahash.endLong).then( function(address) {
+								if (address) {	
+									me.emit('message', Rides.MODULE, username, clientHandle, 'You are headed to ' + address);
+								} else {
+									me.emit('message', Rides.MODULE, username, clientHandle, 'Sorry, I can\'t retrieve your destination');
+								}
+								return true;
+							});
+						} else {
+							me.processRequestQuery(username, clientHandle, body);
+						}
+					});
 				} else {
 					me.processRequestQuery(username, clientHandle, body);
 				}
@@ -1908,10 +2222,36 @@ Rides.prototype.processRequestUpdate = function(username, clientHandle, body) {
 			break;
 		case 'accepted':
 			if (body.driver) {
-				var acceptedMessage = body.driver.name + ' (' + body.driver.rating +' stars) will be there in ' + body.eta + ' minutes in a ' + body.vehicle.make + ' ' + body.vehicle.model + ', registration ' + body.vehicle.license_plate + '. \nYou can reach him on ' + body.driver.phone_number;
-				me.emit('message', Rides.MODULE, username, clientHandle, acceptedMessage);
-				if (body.href) me.emit('message', Rides.MODULE, username, clientHandle, body.href);
-				//if (body.driver.picture_url != null) me.emit('message', Rides.MODULE, username, clientHandle, body.driver.picture_url);
+				var minText = body.eta > 1 ? 'minutes' : 'minute';
+				var etaText = body.eta + ' ' + minText;
+				var fallbackMessage = body.driver.name + ' (' + body.driver.rating +' stars) will be there in ' + etaText + ' in a ' + body.vehicle.make + ' ' + body.vehicle.model + ', registration ' + body.vehicle.license_plate + '. \nYou can reach him on ' + body.driver.phone_number;
+				var feedbackMessage = body.driver.name + ' (' + body.driver.rating +' stars) will be there in a ' + body.vehicle.make + ' ' + body.vehicle.model + ', registration ' + body.vehicle.license_plate + '.';
+				
+				var attachments = [
+						        {
+						            "fallback": fallbackMessage,
+						            "title": "Your ride is on its way...",
+						            "text": feedbackMessage,
+									"fields": [
+								                {
+								                    "title": "ETA",
+								                    "value": etaText,
+								                    "short": true
+								                },
+								                {
+								                    "title": "Contact #",
+								                    "value": body.driver.phone_number,
+								                    "short": true
+								                }
+								            ],
+						            "color": "good"
+						        }
+						    ];
+				if (body.href) attachments[0].image_url = body.href;
+				if (body.mapLink) attachments[0].title_link = body.mapLink;
+				me.emit('rich_message', Rides.MODULE, username, clientHandle, '', attachments);			
+				
+				
 			} else {
 				me.emit('message', Rides.MODULE, username, clientHandle, 'Your ride is on its way...');	
 			}
@@ -1921,19 +2261,40 @@ Rides.prototype.processRequestUpdate = function(username, clientHandle, body) {
 			if (body.href) me.emit('message', Rides.MODULE, username, clientHandle, body.href);
 			break;
 		case 'no_drivers_available':
-			me.emit('message', Rides.MODULE, username, clientHandle, "Sorry, no drivers available", " ");
+			attachments = [
+						        {
+						            "fallback": "Sorry, no drivers available",
+						            "text": "Sorry, no drivers available",
+						            "color": "danger"
+						        }
+						    ];
+			me.emit('rich_message', Rides.MODULE, username, clientHandle, '', attachments, ' ');
 			me.cancelRequest(username, clientHandle, {});
 			deleteActiveRequest(username, clientHandle);
 			break;
 		case 'in_progress':
 			break;
 		case 'driver_canceled':
-			me.emit('message', Rides.MODULE, username, clientHandle, "Sorry, the driver canceled...", " ");
+			attachments = [
+						        {
+						            "fallback": "Sorry, the driver canceled...",
+						            "text": "Sorry, the driver canceled...",
+						            "color": "danger"
+						        }
+						    ];
+			me.emit('rich_message', Rides.MODULE, username, clientHandle, '', attachments, ' ');
 			me.cancelRequest(username, clientHandle, {});
 			deleteActiveRequest(username, clientHandle);
 			break;
 		case 'rider_canceled':
-			me.emit('message', Rides.MODULE, username, clientHandle, "Your ride has been canceled", " ");
+			attachments = [
+						        {
+						            "fallback": "Your ride has been canceled",
+						            "text": "Your ride has been canceled",
+						            "color": "danger"
+						        }
+						    ];
+			me.emit('rich_message', Rides.MODULE, username, clientHandle, '', attachments, ' ');
 			me.cancelRequest(username, clientHandle, {});
 			deleteActiveRequest(username, clientHandle);
 			break;
@@ -1951,7 +2312,14 @@ Rides.prototype.processRequestQuery = function(username, clientHandle, body) {
 			me.emit('message', Rides.MODULE, username, clientHandle, 'Still waiting for a driver\'s confirmation...');
 			break;
 		case 'arriving':
-			me.emit('message', Rides.MODULE, username, clientHandle, "Your ride has arrived");
+			attachments = [
+						        {
+						            "fallback": "Your ride has arrived",
+						            "text": "Your ride has arrived",
+						            "color": "good"
+						        }
+						    ];
+			me.emit('rich_message', Rides.MODULE, username, clientHandle, '', attachments, ' ');
 			if (body.href) me.emit('message', Rides.MODULE, username, clientHandle, body.href);
 			break;
 		case 'no_drivers_available':
@@ -1963,12 +2331,26 @@ Rides.prototype.processRequestQuery = function(username, clientHandle, body) {
 			me.emit('message', Rides.MODULE, username, clientHandle, "You're on your way my friend");
 			break;
 		case 'driver_canceled':
-			me.emit('message', Rides.MODULE, username, clientHandle, "Sorry, the driver canceled...", " ");
+			var attachments = [
+						        {
+						            "fallback": "Sorry, the driver canceled...",
+						            "text": "Sorry, the driver canceled...",
+						            "color": "danger"
+						        }
+						    ];
+			me.emit('rich_message', Rides.MODULE, username, clientHandle, '', attachments, ' ');
 			me.cancelRequest(username, clientHandle, {});
 			deleteActiveRequest(username, clientHandle);
 			break;
 		case 'rider_canceled':
-			me.emit('message', Rides.MODULE, username, clientHandle, "Your ride has been canceled", " ");
+			attachments = [
+						        {
+						            "fallback": "Your ride has been canceled",
+						            "text": "Your ride has been canceled",
+						            "color": "danger"
+						        }
+						    ];
+			me.emit('rich_message', Rides.MODULE, username, clientHandle, '', attachments, ' ');
 			me.cancelRequest(username, clientHandle, {});
 			deleteActiveRequest(username, clientHandle);
 			break;
@@ -2066,9 +2448,9 @@ function extractEntities(body) {
 	return indata;
 }
 
-function getLocationByAddress(address) {
-	return geo.getCode(address).then(function(data){
-		logger.info('Geo data: ' + JSON.stringify(data));
+function getLocationByAddress(query, options) {
+	return geo.getPlaceCode(query, options).then(function(data){
+		logger.info('Geo Place data: ' + JSON.stringify(data));
 		if (data.status === 'OK' && data.results[0].geometry.location.lng) {
 			return {longt : data.results[0].geometry.location.lng, lat : data.results[0].geometry.location.lat };
 		} else {

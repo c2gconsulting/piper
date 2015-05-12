@@ -2,6 +2,7 @@ var EventEmitter = require('events').EventEmitter;
 var Slack = require('slack-client');
 var wit = require('../shared/lib/wit');
 var db = require('../shared/lib/db');
+var slackAPI = require('./lib/slack');
 var logger = require('../shared/lib/log');
 var CACHE_PREFIX = 'slackrouter:';
 var util = require('util');
@@ -32,7 +33,7 @@ SlackConnection.prototype.connect = function(){
 	this.slack.on('open', this.onOpen.bind(this));
 	this.slack.on('message', this.onMessage.bind(this));
 	this.slack.on('error', this.onError.bind(this));	
-}
+};
 
 
 SlackConnection.prototype.onOpen = function() {
@@ -59,7 +60,7 @@ SlackConnection.prototype.onOpen = function() {
 	//logger.info('As well as: %s', groups.join(', '));
 	//logger.info('You have %s unread ' + (unreads === 1 ? 'message' : 'messages'), unreads);
 	logger.info('SLACK_CONNECTION: Connection Opened');
-}
+};
 
 
 SlackConnection.prototype.onMessage = function(message) {
@@ -121,7 +122,7 @@ SlackConnection.prototype.onMessage = function(message) {
 
 		this.emit('message', piperUser, this.client, chatMessage);
 	}
-}
+};
 
 
 
@@ -133,8 +134,27 @@ SlackConnection.prototype.sendDM = function(username, message) {
 	} catch (e) {
 		logger.error('Unable to dispatch message to user %s, error: %s', username, e);
 	}
-}
+};
 
+
+SlackConnection.prototype.sendRichDM = function(username, message, attachments) {
+	var me = this;
+	try {
+		var channelID = this.slack.getDMByName(username).id;
+		var params = { token: this.slack.token, channel: channelID, text: message, unfurl_links: true };
+		params.username = this.slack.self.name;
+		if (attachments) params.attachments = JSON.stringify(attachments);
+		logger.debug('Params: %s', JSON.stringify(params));
+		
+		slackAPI.postRequest('chat.postMessage', params).then(function(response) {
+			logger.info('Rich Message sent...response: %s', JSON.stringify(response));
+			me.emit('dispatch', username, message, this.client);
+		});
+		
+	} catch (e) {
+		logger.error('Unable to dispatch message to user %s, error: %s', username, e);
+	}
+};
 
 
 
@@ -142,7 +162,7 @@ SlackConnection.prototype.onError = function(error) {
 	this.emit('error', error, this.client);
 	logger.error('Error: ' + JSON.stringify(error));
 	logger.info('SLACK_CONNECTION: Connection Error');
-}
+};
 
 
 SlackConnection.prototype.disconnect = function(){
@@ -154,7 +174,7 @@ SlackConnection.prototype.disconnect = function(){
 	} else {
 		return false;
 	}
-}
+};
 
 // Export the SlackConnection constructor from this module.
 module.exports = SlackConnection;

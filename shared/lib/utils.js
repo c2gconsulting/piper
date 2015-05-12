@@ -52,7 +52,7 @@ exports.processGeo = function(data) {
 		var cachekey = CACHE_PREFIX + data.ref;
 		logger.debug('CACHEKEY: %s', cachekey);
 		cache.hgetall(cachekey).then( function(userdata) {
-			if (userdata.module) {
+			if (userdata && userdata.module) {
 				var pub = mq.context.socket('PUB', {routing: 'topic'});
 				var qbody = { header : 'geo_data', lat : data.lat, longt : data.longt };
 				var qdata = { id : new Date().getTime(), user : userdata.user, client : userdata.client, module : userdata.module, body : qbody };

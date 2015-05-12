@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
 
-// Create a new schema for our tweet data
+// Create a new schema for our data
 var schema = new mongoose.Schema({
     email           : String
   , createdAt       : { type: Date, default: Date.now }

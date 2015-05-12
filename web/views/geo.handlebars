@@ -14,8 +14,14 @@ window.onload = function(){
   // send to socket
   socket = io();
   
+  var options = {
+    enableHighAccuracy: true,
+    timeout: 8000,
+    maximumAge: 0
+  };
+  
   if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(success, error);
+    navigator.geolocation.getCurrentPosition(success, error, options);
   } else {
     error('not supported');
   }
@@ -51,6 +57,7 @@ function success(position) {
     mapTypeId: google.maps.MapTypeId.ROADMAP
   };
   var map = new google.maps.Map(document.getElementById("mapcanvas"), myOptions);
+  
   
   var marker = new google.maps.Marker({
       position: latlng, 
