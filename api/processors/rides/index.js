@@ -85,6 +85,9 @@ function Rides(data) {
 						'startLong',
 						'productId'
 					],
+		'rides_get_destination' : [
+						'endLong',
+					],
 		'rides_get_info' : [
 						'infotype'
 					]				
@@ -1042,17 +1045,34 @@ function Rides(data) {
 							return true;
 						});
 					},
-		'rides_get_cost' : function(user, clientHandle, data) {
-						return getPriceEstimate(user.name, clientHandle, data).then(function (prices) {
-							var jPrices = JSON.parse(prices);
-							
-							// price text
-							if (jPrices.prices && jPrices.prices.length > 0) var priceText = 'An estimate for the ride is ' + jPrices.prices[0].estimate;
-							var failureText = 'Sorry cannot retrieve an estimate for your ride at this time, try again later';
-							var responseText = priceText == undefined ? failureText : priceText;
-							
-							me.emit('message', Rides.MODULE, user.name, clientHandle, responseText);
+		'rides_get_destination' : function(user, clientHandle, data) {	
+						return getAddressByCoords(data.endLat, data.endLong).then( function(address) {
+							if (address) {	
+								me.emit('message', Rides.MODULE, user.name, clientHandle, 'You are headed to ' + address);
+							} else {
+								me.emit('message', Rides.MODULE, user.name, clientHandle, 'Sorry, I can\'t retrieve your destination');
+							}
 							return true;
+						});
+					},
+		'rides_get_cost' : function(user, clientHandle, data) {
+						return getActiveRequest(user.name, clientHandle).then( function(activeRequest) {
+							if (activeRequest && activeRequest.requestId) {
+								me.emit('message', Rides.MODULE, user.name, clientHandle, 'Sorry I can\'t check trip costs mid-trip, you\'ll get a receipt at the end');
+								return true;
+							} else {
+								return getPriceEstimate(user.name, clientHandle, data).then(function (prices) {
+									var jPrices = JSON.parse(prices);
+									
+									// price text
+									if (jPrices.prices && jPrices.prices.length > 0) var priceText = 'An estimate for the ride is ' + jPrices.prices[0].estimate;
+									var failureText = 'Sorry cannot retrieve an estimate for your ride at this time, try again later';
+									var responseText = priceText == undefined ? failureText : priceText;
+									
+									me.emit('message', Rides.MODULE, user.name, clientHandle, responseText);
+									return true;
+								});
+							}
 						});
 					},
 		'rides_get_request_status' : function(user, clientHandle, data) {
@@ -1587,6 +1607,9 @@ function getInfoQuery(body) {
 			case 'schedule_status':
 				return 'rides_get_schedule_status';
 				break;
+			case 'destination':
+				return 'rides_get_destination';
+				break;
 			default:
 				return 'rides_get_request_status';
 		}		
@@ -2040,6 +2063,28 @@ Rides.prototype.in = function(msgid, username, clientHandle, body) {
 					} else {
 						me.emit('message', Rides.MODULE, username, clientHandle, 'Your ride should soon be on its way...can\'t get your driver\'s details just yet');	
 					}
+				} else if (body.status === 'in_progress') {
+					if (body.driver) {
+						ratingText = body.driver.rating > 1 ? 'stars' : 'star';
+						ratingText = body.driver.rating + ' ' + ratingText;
+						
+						fallbackMessage = 'Your driver is ' + body.driver.name + ' and he has a ' + body.driver.rating + ' rating. You can also ask him yourself tho ;)';
+						me.emit('message', Rides.MODULE, username, clientHandle, fallbackMessage);
+						
+					} else {
+						me.emit('message', Rides.MODULE, username, clientHandle, 'Oops, not sure. But here\'s an idea...ASK HIM YOURSELF! ;)');	
+					}
+				} else if (body.status === 'arriving') {
+					if (body.driver) {
+						ratingText = body.driver.rating > 1 ? 'stars' : 'star';
+						ratingText = body.driver.rating + ' ' + ratingText;
+						
+						fallbackMessage = 'Your driver is ' + body.driver.name + ' (' + ratingText + '). If you haven\'t seen him, you can reach him on ' + body.driver.phone_number;
+						me.emit('message', Rides.MODULE, username, clientHandle, fallbackMessage);
+						
+					} else {
+						me.emit('message', Rides.MODULE, username, clientHandle, 'Oops, not sure');	
+					}
 				} else {
 					me.processRequestQuery(username, clientHandle, body);
 				}
@@ -2091,6 +2136,29 @@ Rides.prototype.in = function(msgid, username, clientHandle, body) {
 					} else {
 						me.emit('message', Rides.MODULE, username, clientHandle, 'Your ride should soon be on its way...can\'t get your vehicle details just yet');	
 					}
+				} else if (body.status === 'in_progress') {
+					if (body.vehicle) {
+						ratingText = body.driver.rating > 1 ? 'stars' : 'star';
+						ratingText = body.driver.rating + ' ' + ratingText;
+						
+						fallbackMessage = 'Your ride is a ' + body.vehicle.make + ' ' + body.vehicle.model + ' driven by ' + body.driver.name + ' (' + ratingText +')';
+						me.emit('message', Rides.MODULE, username, clientHandle, fallbackMessage);
+						me.emit('message', Rides.MODULE, username, clientHandle, 'Funny you\'re sitting with him and you\'re asking a robot ;)');
+						
+					} else {
+						me.emit('message', Rides.MODULE, username, clientHandle, 'Oops, not sure. But here\'s an idea...ASK HIM YOURSELF! ;)');	
+					}
+				} else if (body.status === 'arriving') {
+					if (body.driver) {
+						ratingText = body.driver.rating > 1 ? 'stars' : 'star';
+						ratingText = body.driver.rating + ' ' + ratingText;
+						
+						fallbackMessage = 'Your ride is a ' + body.vehicle.make + ' ' + body.vehicle.model + ' driven by ' + body.driver.name + ' (' + ratingText +'). If you haven\'t seen him yet, you can reach him on ' + body.driver.phone_number;
+						me.emit('message', Rides.MODULE, username, clientHandle, fallbackMessage);
+						
+					} else {
+						me.emit('message', Rides.MODULE, username, clientHandle, 'Oops, not sure');	
+					}
 				} else {
 					me.processRequestQuery(username, clientHandle, body);
 				}	
@@ -2106,6 +2174,22 @@ Rides.prototype.in = function(msgid, username, clientHandle, body) {
 					} else {
 						me.emit('message', Rides.MODULE, username, clientHandle, 'Your ride should soon be on its way...can\'t get your driver\'s details just yet');	
 					}
+				} else if (body.status === 'in_progress') {
+					userkey = getUserKey(username, clientHandle);
+					cache.hgetall(userkey + ':payload').then(function(datahash) {
+						if (datahash && datahash.endLat) {
+							getAddressByCoords(datahash.endLat, datahash.endLong).then( function(address) {
+								if (address) {	
+									me.emit('message', Rides.MODULE, username, clientHandle, 'You are headed to ' + address);
+								} else {
+									me.emit('message', Rides.MODULE, username, clientHandle, 'Sorry, I can\'t retrieve your destination');
+								}
+								return true;
+							});
+						} else {
+							me.processRequestQuery(username, clientHandle, body);
+						}
+					});
 				} else {
 					me.processRequestQuery(username, clientHandle, body);
 				}
