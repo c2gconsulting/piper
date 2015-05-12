@@ -1178,7 +1178,7 @@ Rides.prototype.in = function(msgid, username, clientHandle, body) {
 	if (this.msgid !== msgid) {
 		switch (body.header) {
 			case 'geo_data':
-				setUserGeoData(username, clientHandle, body);
+				setUserGeoData(userusername, clientHandle, body);
 				logger.debug('Done setting user geodata...');
 
 				geo.getGeoStaticMapLink(body.lat, body.longt).then (function (mapLink) {

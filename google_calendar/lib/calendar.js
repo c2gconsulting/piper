@@ -2,19 +2,18 @@ var readline = require('readline');
 var google = require('googleapis');
 var googleAuth = require('google-auth-library');
 var calendar = google.calendar('v3');
-var User = require('../shared/models/GoogleCalendarUser');
-var cache = require('../shared/lib/cache').getRedisClient();
-var SCOPES = ['https://www.googleapis.com/auth/google_calendar.readonly'];
-var AuthClient = 'google_calender';
+var User = require('../../shared/models/GoogleCalendarUser');
+var cache = require('../../shared/lib/cache').getRedisClient();
+var SCOPES = ['https://www.googleapis.com/auth/calendar.readonly'];
 var _ = require('underscore');
-var logger = require('../shared/lib/log');
-
+var logger = require('../../shared/lib/log');
+var when = require('when');
+var EXPIRE = 86400000; //one day expiration time
 // Load client secrets from a config file.
-var content = require('../shared/config/client_secret.json');
-
-var getCalenderEvent = function(user){
-    authorize(user, content, getEvents );
-}
+var credentials = require('../../shared/config/client_secret.json');
+var clientSecret = credentials.installed.client_secret;
+var clientId = credentials.installed.client_id;
+var redirectUrl = credentials.installed.redirect_uris[0];
 /**
  * Create an OAuth2 client with the given credentials, and then execute the
  * given callback function.
@@ -23,10 +22,7 @@ var getCalenderEvent = function(user){
  * @param {function} callback The callback to call with the authorized client.
  */
  //User
-function authorize(userdata, credentials, callback) {
-    var clientSecret = credentials.installed.client_secret;
-    var clientId = credentials.installed.client_id;
-    var redirectUrl = credentials.installed.redirect_uris[0];
+function authorize(userdata, callback) {
     var auth = new googleAuth();
     var oauth2Client = new auth.OAuth2(clientId, clientSecret, redirectUrl);
     var user = userdata.user, client = userdata.client;
@@ -34,11 +30,20 @@ function authorize(userdata, credentials, callback) {
     User.getUserAuthorisation(user, client)
         .then(function(u){
             //get token
-            var token = u.token[0];
-            logger.debug('Retrieved Token %s', token);
-            oauth2Client.credentials = token;
-            callback(oauth2Client);
-        },getNewToken(user, client, oauth2Client, callback));
+            if(u) {
+                var token = u.token[0];
+                logger.debug('Retrieved Token %s', token );
+                oauth2Client.credentials = token;
+                callback(oauth2Client);
+            } else {
+                getNewToken(user, client, oauth2Client, callback);
+            }
+
+        },function(e){
+           logger.debug('Error %s', e);
+        }
+
+    );
 }
 
 /**
@@ -50,35 +55,23 @@ function authorize(userdata, credentials, callback) {
  *     client.
  */
 function getNewToken(user, client, oauth2Client, callback) {
+
     var authUrl = oauth2Client.generateAuthUrl({
         access_type: 'offline',
         scope: SCOPES
     });
-    logger.info('Authorize this app by visiting this url: ', authUrl);
-    var rl = readline.createInterface({
-        input: process.stdin,
-        output: process.stdout
+    var id = new Date().getTime();
+    //generate authorisation url and cache with reddis
+    var key = user + '@' + client +  '-' + 'calendarAuth';
+    cache.hmset(id, {authUrl: authUrl, user: user, client: client}, function(err, res){
+        if(res){
+            var gurl = "calendar.example.com/auth?id=" + id;
+            callback('',gurl);
+        }
     });
-    rl.question('Enter the code from that page here: ', function(code) {
-        rl.close();
-        oauth2Client.getToken(code, function(err, token) {
-            if (err) {
-                logger.debug('Error while trying to retrieve access token', err);
-                return;
-            }
-            oauth2Client.credentials = token;
-            console.log(JSON.stringify(token) + 'Received token');
-            // store user token to be used for later execution
-            //
-            User.updateUserAuthorisation(user, client, token)
-                .then(function(result){
-                    logger.debug('User %s google calender token %s saved', user,result)}, function(error){
-                    logger.debug('Error %s', error);
-                });
-            callback(oauth2Client);
-        });
-    });
+
 }
+
 
 /**
  * Gets the next 10 events on the user's primary google_calendar.
@@ -86,6 +79,7 @@ function getNewToken(user, client, oauth2Client, callback) {
  * @param {google.auth.OAuth2} auth An authorized OAuth2 client.
  */
 function getEvents(auth) {
+    var promise = new Promise(function(resolve, reject){
     calendar.events.list({
         auth: auth,
         calendarId: 'primary',
@@ -96,20 +90,54 @@ function getEvents(auth) {
     }, function(err, response) {
         if (err) {
             logger.debug('There was an error contacting the Calendar service: ' + err);
-            return;
-        }
-        var events = response.items;
-        if (events.length == 0) {
-            logger.info('No upcoming events found.');
+            reject(err);
         } else {
-            logger.debug(JSON.stringify(events));
-            logger.info('Upcoming 10 events:');
-            for (var i = 0; i < events.length; i++) {
-                var event = events[i];
-                var start = event.start.dateTime || event.start.date;
-                logger.debug('%s - %s', start, event.summary);
-            }
+            resolve(response);
         }
+        });
+        //if (events.length == 0) {
+        //    logger.info('No upcoming events found.');
+        //} else {
+        //    logger.debug(JSON.stringify(events));
+        //    logger.info('Upcoming 10 events:');
+        //    for (var i = 0; i < events.length; i++) {
+        //        var event = events[i];
+        //        var start = event.start.dateTime || event.start.date;
+        //        logger.debug('%s - %s', start, event.summary);
+        //    }
+        //}
     });
+    return promise;
 }
-module.exports.getCalenderEvent = getCalenderEvent;
+
+function validateCode(user, client, code) {
+    var promise = new Promise(function (resolve, reject) {
+        var auth = new googleAuth();
+        var oauth2Client = new auth.OAuth2(clientId, clientSecret, redirectUrl);
+
+        oauth2Client.getToken(code, function (err, token) {
+            if (err) {
+                logger.debug('Error while trying to retrieve access token', err);
+                reject(err);
+            } else {
+                oauth2Client.credentials = token;
+                // store user token to be used for later execution
+                //
+                User.updateUserAuthorisation(user, client, token)
+                    .then(function (result) {
+                        logger.debug('User %s google calender token %s saved', user, result)
+                    }, function (error) {
+                        logger.debug('Error %s', error);
+                    });
+                resolve(oauth2Client);
+            }
+
+        });
+    });
+    return promise;
+
+}
+
+module.exports.authorize = authorize;
+module.exports.getEvents = getEvents;
+module.exports.validateCode = validateCode;

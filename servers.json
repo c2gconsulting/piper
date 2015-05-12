@@ -59,6 +59,10 @@
       {
         "host" : "travel.example.com",
         "path" : "./travel"
+      },
+      {
+        "host" : "calendar.example.com",
+        "path" : "./google_calendar"
       }
 
 	]

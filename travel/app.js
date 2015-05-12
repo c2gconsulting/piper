@@ -134,7 +134,6 @@ router.get('/getcode', function(req, res){
 
 });
 
-
 router.get('/nearby', function(req, res) {
     var address = req.query.address;
     if(address){

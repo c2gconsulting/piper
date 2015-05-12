@@ -7,7 +7,7 @@ var schema = new mongoose.Schema({
   , full_name       : String
   , email           : String
   , phone           : String
-  , avatar          : String 
+  , avatar          : String
   , active          : Boolean
   , createdAt       : { type: Date, default: Date.now }
   , slackProfiles   : [{
@@ -29,7 +29,7 @@ schema.statics.getUserByID = function(userId, callback) {
 
   User.findOne({ '_id' : userId }).exec( function(err, doc) {
     if (err) {
-      promise.error(err);
+      promise.error(err);auth_client
       return;
     } 
     promise.complete(doc);
@@ -37,7 +37,7 @@ schema.statics.getUserByID = function(userId, callback) {
   
   return promise;
 
-}
+};
 
 schema.statics.getUserByEmail = function(email, callback) {
   var promise = new mongoose.Promise;
@@ -53,7 +53,7 @@ schema.statics.getUserByEmail = function(email, callback) {
  
   return promise;
 
-}
+};
 
 schema.statics.getUserBySlackNameAndClient = function(name, client, callback) {
   var promise = new mongoose.Promise;
@@ -69,7 +69,7 @@ schema.statics.getUserBySlackNameAndClient = function(name, client, callback) {
  
   return promise;
 
-}
+};
 
 schema.statics.getUserPreference = function(email, prefKey, callback) {
   var promise = new mongoose.Promise;
@@ -96,7 +96,7 @@ schema.statics.getUserPreference = function(email, prefKey, callback) {
  
   return promise;
 
-}
+};
 
 schema.statics.getUserBySlackID = function(userId, callback) {
   var promise = new mongoose.Promise;
@@ -112,7 +112,7 @@ schema.statics.getUserBySlackID = function(userId, callback) {
  
   return promise;
 
-}
+};
 
 schema.statics.getUsersByClient = function(client, callback) {
   var promise = new mongoose.Promise;
@@ -128,7 +128,7 @@ schema.statics.getUsersByClient = function(client, callback) {
  
   return promise;
 
-}
+};
 
 
 // Return a User model based upon the defined schema
