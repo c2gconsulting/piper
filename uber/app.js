@@ -12,7 +12,7 @@ var cache = require('../shared/lib/cache').getRedisClient();
 var CACHE_PREFIX = 'uber-handler:';
 var RIDES_DESC = 'rides';
 var ERROR_RESPONSE_CODE = 422;
-var prod = false;
+var prod = true;
 var when = require('when');
 
 // Create the Express application
@@ -97,7 +97,7 @@ function onProcessorEvent(id, user, client, body) {
 						push(user.email, rbody);
 					});
 				} else {
-					var rbody = { header: 'insufficient_data', endpoint: 'products' };
+					rbody = { header: 'insufficient_data', endpoint: 'products' };
 					push(user.email, rbody);
 				}
 				break;
@@ -120,15 +120,9 @@ function onProcessorEvent(id, user, client, body) {
 										logger.error('Ride Request Error: %s', JSON.stringify(error));
 										switch (error.statusCode) {
 											case 401:
-												if (error.error.code === 'unauthorized') {
-													cacheRequestData(id, user, client, body); // restart after auth
-													cache.hdel(emailCacheKey, 'access_token');
-													requestAuth(user.email);
-												} else {
-													var ebody = { header: 'request_error', status: 'create_error' };
-													if (error.error.errors) ebody.title = error.error.errors[0].title;
-													push(user.email, ebody);
-												}
+												cacheRequestData(id, user, client, body); // restart after auth
+												cache.hdel(emailCacheKey, 'access_token');
+												requestAuth(user.email);
 												break;
 											case 422:
 												var ebody = { header: 'request_error', status: 'create_error' };
@@ -140,13 +134,13 @@ function onProcessorEvent(id, user, client, body) {
 													cacheRequestData(id, user, client, body); // restart after auth
 													requestSurgeConfirmation(user.email, error.error.meta.surge_confirmation.surge_confirmation_id, error.error.meta.surge_confirmation.href);
 												} else {
-													var ebody = { header: 'request_error', status: error.error.errors[0].code };
+													ebody = { header: 'request_error', status: error.error.errors[0].code };
 													if (error.error.errors) ebody.title = error.error.errors[0].title;
 													push(user.email, ebody);
 												}
 												break;
 											default:
-												var ebody = { header: 'request_error', status: 'create_error' };
+												ebody = { header: 'request_error', status: 'create_error' };
 												if (error.error.errors) ebody.title = error.error.errors[0].title;
 												push(user.email, ebody);
 										}
@@ -174,7 +168,7 @@ function onProcessorEvent(id, user, client, body) {
 							).then(function(response) {
 								logger.debug('getRequestDetails->RESPONSE: %s', JSON.stringify(response));
 								var rbody = response;
-								rbody.header = 'request_details';
+								rbody.header = body.tag == undefined ? 'request_details' : body.tag;
 								if (response.location && response.location.latitude) {
 									cache.hgetall(emailCacheKey).then(function(userData) {
 										if (userData && userData.request_data) {
@@ -200,29 +194,22 @@ function onProcessorEvent(id, user, client, body) {
 								logger.error('Request Details Error: %s', JSON.stringify(error));
 								switch (error.statusCode) {
 									case 401:
-										if (error.error.code === 'unauthorized') {
-											cacheRequestData(id, user, client, body); // restart after auth
-											cache.hdel(emailCacheKey, 'access_token');
-											requestAuth(user.email);
-										} else {
-											var ebody = { header: 'request_error', status: 'retrieve_error' };
-											if (error.error.errors) ebody.title = error.error.errors[0].title;
-											push(user.email, ebody);
-										}
-										
-										break;
+										cacheRequestData(id, user, client, body); // restart after auth
+										cache.hdel(emailCacheKey, 'access_token');
+										requestAuth(user.email);
+									break;
 									case 422:
 										var ebody = { header: 'request_error', status: 'retrieve_error' };
 										if (error.error.errors) ebody.title = error.error.errors[0].title;
 										push(user.email, ebody);
 										break;
 									case 409:
-										var ebody = { header: 'request_error', status: error.error.errors[0].code };
+										ebody = { header: 'request_error', status: error.error.errors[0].code };
 										if (error.error.errors) ebody.title = error.error.errors[0].title;
 										push(user.email, ebody);
 										break;
 									default:
-										var ebody = { header: 'request_error', status: 'retrieve_error' };
+										ebody = { header: 'request_error', status: 'retrieve_error' };
 										if (error.error.errors) ebody.title = error.error.errors[0].title;
 										push(user.email, ebody);
 								}
@@ -266,16 +253,9 @@ function onProcessorEvent(id, user, client, body) {
 								logger.error('Request Details Hook Error: %s', JSON.stringify(error));
 								switch (error.statusCode) {
 									case 401:
-										if (error.error.code === 'unauthorized') {
-											cacheRequestData(id, user, client, body); // restart after auth
-											cache.hdel(emailCacheKey, 'access_token');
-											requestAuth(user.email);
-										} else {
-											var ebody = { header: 'request_error', status: 'hook_retrieve_error' };
-											if (error.error.errors) ebody.title = error.error.errors[0].title;
-											push(user.email, ebody);
-										}
-										
+										cacheRequestData(id, user, client, body); // restart after auth
+										cache.hdel(emailCacheKey, 'access_token');
+										requestAuth(user.email);
 										break;
 									case 422:
 										var ebody = { header: 'request_error', status: 'hook_retrieve_error' };
@@ -283,12 +263,12 @@ function onProcessorEvent(id, user, client, body) {
 										push(user.email, ebody);
 										break;
 									case 409:
-										var ebody = { header: 'request_error', status: error.error.errors[0].code };
+										ebody = { header: 'request_error', status: error.error.errors[0].code };
 										if (error.error.errors) ebody.title = error.error.errors[0].title;
 										push(user.email, ebody);
 										break;
 									default:
-										var ebody = { header: 'request_error', status: 'hook_retrieve_error' };
+										ebody = { header: 'request_error', status: 'hook_retrieve_error' };
 										if (error.error.errors) ebody.title = error.error.errors[0].title;
 										push(user.email, ebody);
 								}
@@ -320,16 +300,9 @@ function onProcessorEvent(id, user, client, body) {
 								logger.error('Get Request Map Error: %s', JSON.stringify(error));
 								switch (error.statusCode) {
 									case 401:
-										if (error.error.code === 'unauthorized') {
-											cacheRequestData(id, user, client, body); // restart after auth
-											cache.hdel(emailCacheKey, 'access_token');
-											requestAuth(user.email);
-										} else {
-											var ebody = { header: 'request_error', status: 'retrieve_error' };
-											if (error.error.errors) ebody.title = error.error.errors[0].title;
-											push(user.email, ebody);
-										}
-										
+										cacheRequestData(id, user, client, body); // restart after auth
+										cache.hdel(emailCacheKey, 'access_token');
+										requestAuth(user.email);						
 										break;
 									case 422:
 										var ebody = { header: 'request_error', status: 'retrieve_error' };
@@ -337,12 +310,12 @@ function onProcessorEvent(id, user, client, body) {
 										push(user.email, ebody);
 										break;
 									case 409:
-										var ebody = { header: 'request_error', status: error.error.errors[0].code };
+										ebody = { header: 'request_error', status: error.error.errors[0].code };
 										if (error.error.errors) ebody.title = error.error.errors[0].title;
 										push(user.email, ebody);
 										break;
 									default:
-										var ebody = { header: 'request_error', status: 'retrieve_error' };
+										ebody = { header: 'request_error', status: 'retrieve_error' };
 										if (error.error.errors) ebody.title = error.error.errors[0].title;
 										push(user.email, ebody);
 								}
@@ -364,16 +337,9 @@ function onProcessorEvent(id, user, client, body) {
 								logger.error('Get Request Receipt Error: %s', JSON.stringify(error));
 								switch (error.statusCode) {
 									case 401:
-										if (error.error.code === 'unauthorized') {
-											cacheRequestData(id, user, client, body); // restart after auth
-											cache.hdel(emailCacheKey, 'access_token');
-											requestAuth(user.email);
-										} else {
-											var ebody = { header: 'request_error', status: 'retrieve_error' };
-											if (error.error.errors) ebody.title = error.error.errors[0].title;
-											push(user.email, ebody);
-										}
-										
+										cacheRequestData(id, user, client, body); // restart after auth
+										cache.hdel(emailCacheKey, 'access_token');
+										requestAuth(user.email);			
 										break;
 									case 422:
 										var ebody = { header: 'request_error', status: 'retrieve_error' };
@@ -381,12 +347,12 @@ function onProcessorEvent(id, user, client, body) {
 										push(user.email, ebody);
 										break;
 									case 409:
-										var ebody = { header: 'request_error', status: error.error.errors[0].code };
+										ebody = { header: 'request_error', status: error.error.errors[0].code };
 										if (error.error.errors) ebody.title = error.error.errors[0].title;
 										push(user.email, ebody);
 										break;
 									default:
-										var ebody = { header: 'request_error', status: 'retrieve_error' };
+										ebody = { header: 'request_error', status: 'retrieve_error' };
 										if (error.error.errors) ebody.title = error.error.errors[0].title;
 										push(user.email, ebody);
 								}
@@ -406,16 +372,9 @@ function onProcessorEvent(id, user, client, body) {
 								logger.error('Cancel Error: %s', JSON.stringify(error));
 								switch (error.statusCode) {
 									case 401:
-										if (error.error.code === 'unauthorized') {
-											cacheRequestData(id, user, client, body); // restart after auth
-											cache.hdel(emailCacheKey, 'access_token');
-											requestAuth(user.email);
-										} else {
-											var ebody = { header: 'request_error', status: 'delete_error' };
-											if (error.error.errors) ebody.title = error.error.errors[0].title;
-											push(user.email, ebody);
-										}
-										
+										cacheRequestData(id, user, client, body); // restart after auth
+										cache.hdel(emailCacheKey, 'access_token');
+										requestAuth(user.email);					
 										break;
 									case 422:
 										var ebody = { header: 'request_error', status: 'delete_error' };
@@ -423,12 +382,12 @@ function onProcessorEvent(id, user, client, body) {
 										push(user.email, ebody);
 										break;
 									case 409:
-										var ebody = { header: 'request_error', status: error.error.errors[0].code };
+										ebody = { header: 'request_error', status: error.error.errors[0].code };
 										if (error.error.errors) ebody.title = error.error.errors[0].title;
 										push(user.email, ebody);
 										break;
 									default:
-										var ebody = { header: 'request_error', status: 'delete_error' };
+										ebody = { header: 'request_error', status: 'delete_error' };
 										if (error.error.errors) ebody.title = error.error.errors[0].title;
 										push(user.email, ebody);
 								}
@@ -440,6 +399,8 @@ function onProcessorEvent(id, user, client, body) {
 		msgid = id;
 	}
 }
+
+
 
 function onRoutesEvent(data) {
 	if (msgid !== data.id) {
@@ -463,12 +424,12 @@ function onRoutesEvent(data) {
 				break;
 			case 'surge':
 				// send user acknowledgement
-				var body = { header : 'surge_ack' };
+				body = { header : 'surge_ack' };
 				logger.debug('Calling push(%s,%s)', data.email,JSON.stringify(body));
 				push(data.email, body);
 
 				// pick up active request and process
-				var emailCacheKey = CACHE_PREFIX + data.email;
+				emailCacheKey = CACHE_PREFIX + data.email;
 				cache.hget(emailCacheKey, 'request_data').then(function(requestData) {
 					if (requestData) {
 						logger.debug('RequestData: %s', requestData);
@@ -521,6 +482,7 @@ function onRoutesEvent(data) {
 	}
 }
 
+
 function cacheRequestData(id, user, client, body) {
 	var requestData = JSON.stringify({
 				'id': id,
@@ -544,7 +506,7 @@ function checkAuth(email) {
 				if (doc && doc.access_token) {
 					// user and access_token exists...check for expiry
 					logger.debug('checkAuth.access_token: %s', JSON.stringify(doc));
-					if (typeof doc.tokenExpiry == Date && new Date() < doc.tokenExpiry) {
+					if (new Date() < new Date(doc.tokenExpiry)) {
 						cache.hset(emailCacheKey, 'access_token', doc.access_token); // update cache
 						return doc.access_token; // valid token, return
 					} else {
@@ -563,12 +525,9 @@ function checkAuth(email) {
 function checkSurge(email, body) {
 	// check cache for access token
 	var emailCacheKey = CACHE_PREFIX + email;
-	logger.debug('++++++++++++++++++++++++++++++++ CHECK SURGE 1, email: %s', email);
 	if (body.surge_confirmation_id) {
-		logger.debug('++++++++++++++++++++++++++++++++ CHECK SURGE 2, surge conf id: %s', body.surge_confirmation_id);
 		return when(false);
 	} else {
-		logger.debug('++++++++++++++++++++++++++++++++ CHECK SURGE 3, surge conf id: %s', body.surge_confirmation_id);
 		return cache.hget(emailCacheKey, 'access_token').then(function (access_token) {
 			return uber.getRequestEstimate(access_token, body.productId, body.startLat, body.startLong, body.endLat, body.endLong, prod
 				).then(function(response) {
@@ -577,7 +536,7 @@ function checkSurge(email, body) {
 						requestSurgeConfirmation(email, response.price.surge_confirmation_id, response.price.surge_confirmation_href);
 						return true; // surge active
 					} else {
-						return false
+						return false;
 					}
 				}).catch(function(error){
 					logger.error('requestEstimate->ERROR: %s', JSON.stringify(error));

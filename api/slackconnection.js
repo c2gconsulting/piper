@@ -4,6 +4,7 @@ var wit = require('../shared/lib/wit');
 var db = require('../shared/lib/db');
 var logger = require('../shared/lib/log');
 var CACHE_PREFIX = 'slackrouter:';
+var util = require('util');
 var CONTEXT_TTL = 900;
 var cache;
 
@@ -85,6 +86,9 @@ SlackConnection.prototype.onMessage = function(message) {
 		// if (user.name === channel.name) channel.send('Hey @' + user.name + ' quit changing your messages you already sent, its very confusing');
 	}
 
+	//logger.debug('USER DETAILS: %s', util.inspect(user));
+	//logger.debug('MESSAGE DETAILS: %s', util.inspect(message));
+	
 	try{
 		logger.info('Received: %s %s @%s %s "%s"', type, (channel.is_channel ? '#' : '') + channel.name, user.name, time, text);
 	} catch (e) {
@@ -105,6 +109,8 @@ SlackConnection.prototype.onMessage = function(message) {
 						  'first_name' : user.profile.first_name,
 						  'last_name' : user.profile.last_name,
 						  'full_name' : user.profile.real_name,
+						  'timezone' : user.tz,
+						  'timezone_offset' : user.tz_offset,
 						  'phone' : user.profile.phone,
 						  'is_admin' : user.is_admin,
 						  'avatar' : user.profile.image_48 };
