@@ -52,7 +52,7 @@ $('.pForm').on('submit', function(e) {
               var resp = JSON.parse(xmlhttp.responseText);
               switch (resp.error) {
                 case 'existing_client':
-                  var msg = resp.name + ' is already registered. Redirecting to Slack...';
+                  var msg = resp.name + ' is already registered. <br>Redirecting to Slack...';
                   $('#feedback').removeClass('text-success text-danger').addClass('text-info');
                   $('#feedback').html(msg);
                   setTimeout(function() { window.location.href = 'http://' + resp.domain + '.slack.com/messages/@' + resp.bot; }, 5000);
