@@ -26,7 +26,7 @@ app.disable('etag');
 
 // Index Route
 app.get('/geo', routes.geo);
-//app.get('/', routes.index);
+app.get('/', routes.index);
 
 // Page Route
 //app.get('/page/:page/:skip', routes.page);

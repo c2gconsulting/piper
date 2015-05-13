@@ -2,38 +2,57 @@ var fs = require('fs'),
 	db = require('../shared/lib/db'),
 	mq = require('../shared/lib/mq');
 
-var express = require('express');
+var express = require('express'),
+	exphbs = require('express-handlebars'),
+	http = require('http'),
+	routes = require('./routes');
 
 var wit = require('../shared/lib/wit');
+var slackAPI = require('./lib/slack');
 var SlackConnection = require('./slackconnection');
 var User = require('../shared/models/User');
+var Client = require('../shared/models/Client');
 var logger = require('../shared/lib/log');
 var witConfig = require('../shared/config/wit.json');
 var cache = require('../shared/lib/cache').getRedisClient();
 
 var CACHE_PREFIX = 'api-server:';
 var ERROR_RESPONSE_CODE = 422;
+var AUTH_ERROR_RESPONSE_CODE = 409;
 var CONTEXT_TTL = 36000;
 
 var w = [];
 var processors = [];
-
-
-var app = exports.app = express(); // Create the Express application
+  
+// Create an express instance and set a port variable
+var app = exports.app = express();
 var router = express.Router(); // Create our Express router
-var witAccessToken = process.env.WIT_ACCESS_TOKEN || witConfig.WIT_ACCESS_TOKEN; //enable local env variable settings to override global config
+app.set('views', 'home/views/');
 
-/* 	Retrieve Models:
- * 	- clients
- */
-
-db.getModel('clients', function(err, model) {
-	if (err) {
-		logger.error('Fatal error: ' + err + '. Please resolve and restart the service'); // Unable to retrieve clients db object
-	} else {
-		Client = model;
-	}	
+// Create `ExpressHandlebars` instance with a default layout.
+var hbs = exphbs.create({
+    defaultLayout: 'main',
+    layoutsDir: 'home/views/layouts/',
+    partialsDir: 'home/views/partials/',
+    compilerOptions: undefined
 });
+
+// Register `hbs` as our view engine using its bound `engine()` function.
+app.engine('handlebars', hbs.engine);
+app.set('view engine', 'handlebars');
+
+
+// Disable etag headers on responses
+app.disable('etag');
+
+// WEB Routes
+app.get('/geo', routes.geo);
+app.get('/', routes.index);
+app.use("/", express.static(__dirname + "/public/"));
+
+app.use('/api', router); //api router
+
+var witAccessToken = process.env.WIT_ACCESS_TOKEN || witConfig.WIT_ACCESS_TOKEN; //enable local env variable settings to override global config
 
 
 /*
@@ -86,53 +105,57 @@ Client.find({'isActive': true }, function (err, clients) {
 
 
 /* 
- *	Endpoints
+ *	API Endpoints
  */
  router.get('/register', function(req, res) {	
-	var name = req.query.name,
-		slackHandle = req.query.handle,
-		slackToken = req.query.token,
-		adminContact = req.query.contact,
-		adminEmail = req.query.email;
-
-	var dataOk = true,
-		invalidParam = '';
-
-	if (!name) {
-		dataOk = false;
-		invalidParam = 'name';
-	} else if (!slackHandle) {
-		dataOk = false;
-		invalidParam = 'slackHandle';
-	} else if (!slackToken) {
-		dataOk = false;
-		invalidParam = 'slackToken';
-	} else if (!adminContact) {
-		dataOk = false;
-		invalidParam = 'adminContact';
-	} else if (!adminEmail) {
-		dataOk = false;
-		invalidParam = 'adminEmail';
-	}
-
-	if (dataOk) {
-		if (registerClient({
-	  		"name": name,
-	  		"slackHandle": slackHandle,
-	  		"slackToken": slackToken,
-	  		"adminContact": adminContact,
-	  		"adminEmail": adminEmail,
-	  		"isActive": "True"
-			})){
-			res.end('Client ' + name + ' successfully registered and activated');
-		} else {
-			res.statusCode = ERROR_RESPONSE_CODE;
-			res.end('Unable to register client ' + name);
-		}
+	var token = req.query.token;
+	
+	if (token) {
+		slackAPI.postRequest('rtm.start', { token: token }).then(function(response) {
+			logger.info('New Client RTM.API...response status: %s', JSON.stringify(response.ok)); 
+			var adminContact, adminEmail;
+			if (response && response.ok === true) {
+				response.users.every(function(user) {
+					if (user.is_primary_owner) {
+						adminContact = user.real_name;
+						adminEmail = user.profile.email;
+						return false;
+					} 
+					return true;
+				});
+				registerClient({
+				  		"name": response.team.name,
+				  		"slackHandle": response.team.domain,
+				  		"slackToken": token,
+				  		"adminContact": adminContact,
+				  		"adminEmail": adminEmail,
+				  		"isActive": true}, function (err){
+						if (!err) {	  
+							var resp = { 'ok': true,
+							 'domain': response.team.domain,
+							 'email' : adminEmail,
+							 'name'	 : response.team.name,
+							 'bot'   : response.self.name
+							};			
+							res.statusCode = 200; // All good
+							res.json(resp); 
+						} else {
+							res.statusCode = ERROR_RESPONSE_CODE;
+							var r = { 'ok': false, 'error': err };
+							res.json(r);
+						} 
+				});
+			} else {
+				res.statusCode = AUTH_ERROR_RESPONSE_CODE;
+				if (!response) response = { 'ok': false };
+				res.json(response);
+			}	
+		});
 	} else {
 		res.statusCode = ERROR_RESPONSE_CODE;
-		res.end ('Missing parameter for ' + invalidParam);
-	}
+		var resp = { 'ok': false, 'error': 'invalid_token' };
+		res.json(resp);
+	}	
 });
 
 router.get('/connect', function(req, res) {
@@ -276,8 +299,6 @@ router.get('/gethandler', function(req, res) {
 
 });
 
-// Register all our routes with /
-app.use('/', router);
 
 
 var createSlackConnection = function(client) {
@@ -669,18 +690,20 @@ var removeSlackConnection = function(client) {
 	}
 }		
 
-var registerClient = function(client) {
+var registerClient = function(client, cb) {
 	try {
 		// Check if client already registered
 		Client.findOne({ slackHandle:client.slackHandle }, function (err, newClient) {
 			if (!err && newClient) {
 				// client already exists - exit
 				logger.info('Client ' + client.slackHandle + ' already registered');
+				cb('existing_client');
 			} else {
 				var c = new Client(client);
 				c.save(function(err) {
 					if (err) {
 						logger.error('Cannot register new client: ' + err);
+						cb('registration_failure');
 					} else {
 						logger.info('Client successfully registered, firing up slack worker...');
 						Client.findOne({ slackHandle:client.slackHandle }, function (err, nc) {
@@ -688,10 +711,11 @@ var registerClient = function(client) {
 								// Newly created client - load in cache
 								cache.hmset('client:' + nc._id, '_id', nc._id, 'slackHandle', nc.slackHandle, 'slackToken', nc.slackToken, 'adminContact', nc.adminContact, 'adminEmail', nc.adminEmail, 'isActive', nc.isActive);
 								cache.hset('clients', nc.slackHandle, nc._id);
-
 								createSlackConnection(nc);
+								cb();
 							} else {
 								logger.error('Error, unable to load client: ' + err);
+								cb('registration_failure');
 							}
 						});
 
@@ -702,6 +726,7 @@ var registerClient = function(client) {
 		return true;
 	} catch (e) {
 		logger.error('Unable to register new client: ' + e);
+		cb('registration_failure');
 		return false;
 	}
 
