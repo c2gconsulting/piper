@@ -1,25 +1,30 @@
 var inputReady = true;
-var input = $('.token-input');
+var input = $('.form-control');
 input.focus();
 $('.container').on('click', function(e) {
   input.focus();
 });
+console.log('GOT HERE 1');
+var spext = $('#feedback').html();
+console.log('Field: ' + spext);
 
-input.on('keyup', function(e) {
-  $('.new-output').text(input.val());
-});
 
-$('.transparent').on('submit', function(e) {
+$('.pForm').on('submit', function(e) {
   e.preventDefault();
-  var val = $(this).children($('.token-input')).val();
+  var val = $('.form-control').val();
   if (val && val != '') {
+    console.log('GOT HERE 3');
+    var spext = $('#feedback').html();
+    console.log('Field: ' +  spext);
     if (invalidToken(val)) {
-      $('.new-output').removeClass('new-output');
       resetForm('The token you provided is invalid. Please copy the correct one carefully and try again');
     } else {
-      $('.new-output').removeClass('new-output');
+      $('#feedback').removeClass('text-success text-danger').addClass('text-info');
       var msg = 'Connecting to Slack...';
-      $('.topcontainer').append('<p class="prompt">' + msg + '</p>');
+      $('#feedback').html(msg);
+
+      // disable text box and submit button 
+      input.disabled = true;   
     
       var xmlhttp;
       if (window.XMLHttpRequest) { // code for IE7+, Firefox, Chrome, Opera, Safari
@@ -35,23 +40,21 @@ $('.transparent').on('submit', function(e) {
               resp = { 'ok': false };
             }
             if (resp.ok) {
-              $('.prompt').removeClass('prompt');
+              $('#feedback').removeClass('text-info text-danger').addClass('text-success');
               var m1 = 'Connected! Attaching to ' + resp.name + '\'s account as @' + resp.bot + '......................';
-              var m2 = 'Housekeeping and other very important stuff......................................';
-              var m3 = 'Congratulations, you\'re all set! The administrator for your account is ' + resp.email;
-              var m4 = 'Redirecting to Slack...';
-              $('.topcontainer').append('<p class="prompt">' + m1 + '</p>');
-              setTimeout(function() { $('.prompt').removeClass('prompt'); $('.topcontainer').append('<p class="prompt">' + m2 + '</p>'); }, 3000);
-              setTimeout(function() { $('.prompt').removeClass('prompt'); $('.topcontainer').append('<p class="prompt">' + m3 + '</p>'); }, 5000);
-              setTimeout(function() { $('.prompt').removeClass('prompt'); $('.topcontainer').append('<p class="prompt">' + m4 + '</p>'); }, 8000);
-              setTimeout(function() { window.location.href = 'http://' + resp.domain + '.slack.com/messages/@' + resp.bot; }, 12000);
+              var m2 = 'Congratulations, you\'re all set! The administrator for your account is ' + resp.email;
+              var m3 = 'Redirecting to Slack...';
+              $('#feedback').html(m1);
+              setTimeout(function() { $('#topc').append('<p class="text-success">' + m2 + '</p>'); }, 3000);
+              setTimeout(function() { $('#topc').append('<p class="text-success">' + m3 + '</p>'); }, 5000);
+              setTimeout(function() { window.location.href = 'http://' + resp.domain + '.slack.com/messages/@' + resp.bot; }, 8000);
             } else {
               var resp = JSON.parse(xmlhttp.responseText);
               switch (resp.error) {
                 case 'existing_client':
                   var msg = resp.name + ' is already registered. Redirecting to Slack...';
-                  $('.prompt').removeClass('prompt');
-                  $('.topcontainer').append('<p class="prompt">' + msg + '</p>');
+                  $('#feedback').removeClass('text-success text-danger').addClass('text-info');
+                  $('#feedback').innerHTML = msg;
                   setTimeout(function() { window.location.href = 'http://' + resp.domain + '.slack.com/messages/@' + resp.bot; }, 5000);
                   break;
                 case 'registration_failure':
@@ -72,16 +75,22 @@ $('.transparent').on('submit', function(e) {
 });
 
 function invalidToken(token) {
+  console.log('GOT HERE-> invalidtoken');
   if (token.length !== 40) return true;
   if (token.substr(0, 3) !== 'xox') return true;
   return false;
 }
 
 function resetForm(message) {
-  var input = $('.token-input');
-  $('.prompt').removeClass('prompt');
-            
+  console.log('Got here->resetForm: ' + message);
+  var input = $('.form-control');
   input.val('');
-  $('.topcontainer').append('<p>' + message + '</p><p class="p1 new-output"></p>');
-  $('.new-output').velocity('scroll', { duration: 100 });
+  
+  $('#feedback').removeClass('text-success text-info').addClass('text-danger');
+  $('#feedback').html(message);
+  
+  // enable text box and submit button and set focus
+  input.disabled = false;
+  input.focus();
+  
 }

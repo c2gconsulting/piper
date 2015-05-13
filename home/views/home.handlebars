@@ -6,6 +6,10 @@
     <title>Piper</title>
      <style>
      
+html {
+    position: relative;
+    min-height: 100%;
+}
 
 @-webkit-keyframes cursor-blink {
   0% {
@@ -211,7 +215,9 @@
 body {
   background: #000;
   padding-top: 10px;
+  margin: 0 0 30px;
 }
+
 
 
 .topcontainer .p1 {
@@ -301,6 +307,21 @@ form, input {
   opacity: 1;
   background-color: black;
 }
+
+.footer {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  padding-top: 5px;
+  height: 30px;
+  color: #9f9f9f;
+  font-size: 10px;
+  font-family: Verdana;
+  background-color: #050505;
+  text-align: center;
+}
+
 </style>
 <script src='js/codepen.1.js'></script>
 <script type="text/javascript">
@@ -325,6 +346,13 @@ form, input {
         </div>
       </div>
     </div>
+    
+    <div class="footer">
+      <div class="container">
+        <p >© 2015 PiperLabs, Inc - Deep Learning Technologies</p>
+      </div>
+    </div>
+    
     <script src='//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
     <script src='//cdnjs.cloudflare.com/ajax/libs/velocity/1.2.2/velocity.min.js'></script>  
     <script src="js/home.js"></script>
