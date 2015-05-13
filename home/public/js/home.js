@@ -80,10 +80,5 @@ function resetForm(message) {
             
   input.val('');
   $('.topcontainer').append('<p>' + message + '</p><p class="p1 new-output"></p>');
-
-  $('.new-output').velocity(
-    'scroll'
-  ), {
-    duration: 100
-  }
+  $('.new-output').velocity('scroll', { duration: 100 });
 }
