@@ -39,7 +39,7 @@ $('.transparent').on('submit', function(e) {
               var m1 = 'Connected! Attaching myself to ' + resp.name + '\'s account as @' + resp.bot + '......................';
               var m2 = 'Housekeeping and other very important stuff......................................';
               var m3 = 'Congratulations, you\'re all set! The administrator for your account is ' + resp.email;
-              var m4 = 'Redirecting to slack...';
+              var m4 = 'Redirecting to Slack...';
               $('.topcontainer').append('<p class="prompt">' + m1 + '</p>');
               setTimeout(function() { $('.prompt').removeClass('prompt'); $('.topcontainer').append('<p class="prompt">' + m2 + '</p>'); }, 3000);
               setTimeout(function() { $('.prompt').removeClass('prompt'); $('.topcontainer').append('<p class="prompt">' + m3 + '</p>'); }, 5000);
@@ -49,7 +49,9 @@ $('.transparent').on('submit', function(e) {
               var resp = JSON.parse(xmlhttp.responseText);
               switch (resp.error) {
                 case 'existing_client':
-                  resetForm('You have already been registered with this token, enter a different token to register a new account, or <a href="http://slack.com" target=_blank>proceed to Slack</a>');
+                  var msg = resp.name + ' is already registered. Redirecting to Slack...';
+                  $('.topcontainer').append('<p class="prompt">' + msg + '</p>');
+                  setTimeout(function() { window.location.href = 'http://' + resp.domain + '.slack.com/messages/@' + resp.bot; }, 5000);
                   break;
                 case 'registration_failure':
                   resetForm('Oops, something went wrong. Please wait a moment then try again'); 

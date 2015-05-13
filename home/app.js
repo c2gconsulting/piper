@@ -127,9 +127,10 @@ Client.find({'isActive': true }, function (err, clients) {
 				  		"name": response.team.name,
 				  		"slackHandle": response.team.domain,
 				  		"slackToken": token,
+						"botAlias": response.self.name,
 				  		"adminContact": adminContact,
 				  		"adminEmail": adminEmail,
-				  		"isActive": true}, function (err){
+				  		"isActive": true}, function (err, c){
 						if (!err) {	  
 							var resp = { 'ok': true,
 							 'domain': response.team.domain,
@@ -142,6 +143,12 @@ Client.find({'isActive': true }, function (err, clients) {
 						} else {
 							res.statusCode = ERROR_RESPONSE_CODE;
 							var r = { 'ok': false, 'error': err };
+							if (err === 'existing_client') {
+								r.domain = response.team.domain;
+								r.email = adminEmail;
+								r.name = response.team.name;
+								r.bot = c.botAlias || response.self.name;
+							}
 							res.json(r);
 						} 
 				});
@@ -697,7 +704,7 @@ var registerClient = function(client, cb) {
 			if (!err && newClient) {
 				// client already exists - exit
 				logger.info('Client ' + client.slackHandle + ' already registered');
-				cb('existing_client');
+				cb('existing_client', newClient);
 			} else {
 				var c = new Client(client);
 				c.save(function(err) {

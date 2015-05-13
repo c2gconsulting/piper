@@ -5,6 +5,7 @@ var schema = new mongoose.Schema({
     name                : String
   , slackHandle         : String
   , slackToken          : String
+  , botAlias            : String
   , adminContact        : String
   , adminEmail          : String
   , isActive            : Boolean
