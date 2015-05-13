@@ -4,8 +4,11 @@ var JSX = require('node-jsx').install(),
 module.exports = {
 
   index: function(req, res) { 
-      res.render('home',{layout: false});
-
+      if ( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(req.headers['user-agent']) ) { 
+        res.render('mhome',{layout: false}); 
+      } else {
+        res.render('home',{layout: false});
+      }
   },
   geo: function(req, res) {
       var ref = req.query.ref == false ? undefined : req.query.ref;

@@ -50,6 +50,7 @@ $('.transparent').on('submit', function(e) {
               switch (resp.error) {
                 case 'existing_client':
                   var msg = resp.name + ' is already registered. Redirecting to Slack...';
+                  $('.prompt').removeClass('prompt');
                   $('.topcontainer').append('<p class="prompt">' + msg + '</p>');
                   setTimeout(function() { window.location.href = 'http://' + resp.domain + '.slack.com/messages/@' + resp.bot; }, 5000);
                   break;
