@@ -1301,11 +1301,14 @@ function Rides(data) {
 							} else {
 								data.header = 'scheduled_trip';
 								
+									
 								// delete non-required properties before scheduling
 								delete data.startLong;
 								delete data.startLat;
 								delete data.confirmSchedule; 
 								delete data.lvlQueries;
+								delete data.confirmNeed;
+								delete data.confirmCancellation;
 								
 								var body = { 'module': Rides.MODULE, 'user': user.name, 'client': clientHandle, 'body': data };
 								var scheduleTime = moment(data.departureTime).subtract(30, 'minutes'); // Prompt 30 minutes earlier
@@ -1315,7 +1318,16 @@ function Rides(data) {
 									cache.zadd(userkey + ':scheduledrequests', scheduleTime.toDate().getTime(), eventId); //possibly make a then
 									me.emit('message', Rides.MODULE, user.name, clientHandle, 'Done, i\'ll follow up with you when its time to call the ride...');
 								});
-								cache.del(userkey + ':payload');
+								cache.hdel(userkey + ':payload', 'endLong');
+								cache.hdel(userkey + ':payload', 'endLat');
+								cache.hdel(userkey + ':payload', 'departureTime');
+								cache.hdel(userkey + ':payload', 'confirmSchedule');
+								cache.hdel(userkey + ':payload', 'lvlQueries');
+								cache.hdel(userkey + ':payload', 'confirmNeed');
+								
+								cache.expire(userkey + ':payload', CANCEL_TTL);
+    							cache.expire(userkey + ':datacheck', CANCEL_TTL);
+	
 							}
 							return true;
 						});
