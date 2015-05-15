@@ -1599,6 +1599,7 @@ function getInfoQuery(body) {
 		logger.debug('GetInfoQuery->Infotype: %s', infotype);
 		switch (infotype) {
 			case 'location':
+				if (body.outcomes[0].entities.infotype[1] && body.outcomes[0].entities.infotype[1].value === 'destination') return 'rides_get_destination'; 
 				return 'rides_get_driver_location';
 				break;
 			case 'cost':
