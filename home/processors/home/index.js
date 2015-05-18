@@ -8,6 +8,7 @@ var User = require('../../../shared/models/User');
 var responses = require('./dict/responses.json');
 var capabilities = require('./dict/capabilities.json');
 var geo = require('./lib/geo');
+//var chitchat = require('./lib/chitchat');
 var when = require('when');
 var moment = require('moment');
 var momentz = require('moment-timezone');
