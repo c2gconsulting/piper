@@ -1564,7 +1564,7 @@ Rides.prototype.out = function(user, client, body) {
 		} else if (body.outcomes[0].intent === 'rides_request_trip' || body.outcomes[0].intent === 'rides_go_out') {
 			handlerTodo = 'rides_book_trip';
 			body.touch = true;
-		} else if (body.outcomes[0].intent === 'rides_info_query' || body.context.state === 'RIDES_info_query' ) {
+		} else if (body.outcomes[0].intent === 'rides_info_query' || body.outcomes[0].intent === 'default_info_query' || body.context.state === 'RIDES_info_query' ) {
 			handlerTodo = 'rides_get_info';
 			body.touch = true;
 		} else if (activeRequest) {

@@ -4,7 +4,7 @@
 			"LEAVE.REQ" : "./processors/leaveRequest/leaveRequest.redis",
 			"TRAVEL.REQ" : "./processors/travelRequest/bookFlight",
 			"NOTHING.DOING" : "./processors/general/doNothing",
-			"CHITCHAT" : "./processors/general/chitchat",
+			"CHITCHAT" : "./processors/home/index",
 			"RIDES" : "./processors/rides/index"
 		}
 	],

@@ -650,7 +650,7 @@ var getProcessor = function(module) {
 		}
 	}
 	return false;
-}
+};
 
 
 var getModule = function(intent, state) {
@@ -716,7 +716,7 @@ var registerClient = function(client, cb) {
 						Client.findOne({ slackHandle:client.slackHandle }, function (err, nc) {
 							if (!err && nc) {
 								// Newly created client - load in cache
-								cache.hmset('client:' + nc._id, '_id', nc._id, 'slackHandle', nc.slackHandle, 'slackToken', nc.slackToken, 'adminContact', nc.adminContact, 'adminEmail', nc.adminEmail, 'isActive', nc.isActive);
+								cache.hmset('client:' + nc._id, nc);
 								cache.hset('clients', nc.slackHandle, nc._id);
 								createSlackConnection(nc);
 								cb();
