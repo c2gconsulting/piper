@@ -100,10 +100,15 @@ function Home(data) {
 						return true;
 					},
 		'home_chitchat' : function(user, clientHandle, data) {
-						// invoke chitchat processor with textMessage
-						// retrieve response and send back to user
-						me.emit('message', Home.MODULE, user.name, clientHandle, 'Your message is ' + data.textMessage);
-						return true;
+						/* invoke chitchat processor with textMessage
+						 * retrieve response and send back to user
+						 */
+						 
+						// return chitchat.processMessage(user.name + '@' + clientHandle, data.textMessage).then(function(responseText)) {
+							// me.emit('message', Home.MODULE, user.name, clientHandle, responseText);
+							me.emit('message', Home.MODULE, user.name, clientHandle, 'Your message is ' + data.textMessage);
+							return true;
+						//});
 					}			
 					
 	};
