@@ -1,22 +1,22 @@
-var readline = require('readline');
 var google = require('googleapis');
 var googleAuth = require('google-auth-library');
 var calendar = google.calendar('v3');
+var gmail = google.gmail('v1');
 var User = require('../../shared/models/GoogleCalendarUser');
 var cache = require('../../shared/lib/cache').getRedisClient();
-var SCOPES = ['https://www.googleapis.com/auth/calendar.readonly'];
+var SCOPES = ['https://www.googleapis.com/auth/gmail.readonly','https://www.googleapis.com/auth/calendar.readonly'];
 var _ = require('underscore');
 var logger = require('../../shared/lib/log');
 var when = require('when');
-var EXPIRE = 86400000; //one day expiration time
+var CACHE_PREFIX = 'google-apps:';
 // Load client secrets from a config file.
 var credentials = require('../../shared/config/client_secret.json');
-var clientSecret = credentials.installed.client_secret;
-var clientId = credentials.installed.client_id;
-var redirectUrl = credentials.installed.redirect_uris[0];
+var clientSecret = credentials.web.client_secret;
+var clientId = credentials.web.client_id;
+var redirectUrl = credentials.web.redirect_uris[0];
 /**
  * Create an OAuth2 client with the given credentials, and then execute the
- * given callback function.
+ * given callback function.web
  *
  * @param {Object} credentials The authorization client credentials.
  * @param {function} callback The callback to call with the authorized client.
@@ -60,15 +60,9 @@ function getNewToken(user, client, oauth2Client, callback) {
         access_type: 'offline',
         scope: SCOPES
     });
-    var id = new Date().getTime();
-    //generate authorisation url and cache with reddis
-    var key = user + '@' + client +  '-' + 'calendarAuth';
-    cache.hmset(id, {authUrl: authUrl, user: user, client: client}, function(err, res){
-        if(res){
-            var gurl = "calendar.example.com/auth?id=" + id;
-            callback('',gurl);
-        }
-    });
+    //add a state to auth url
+    var state = user + '@' + client;
+    callback('', authUrl + '&state=' + state);
 
 }
 
@@ -110,7 +104,7 @@ function getEvents(auth) {
     return promise;
 }
 
-function validateCode(user, client, code) {
+function valCode(code, userkey) {
     var promise = new Promise(function (resolve, reject) {
         var auth = new googleAuth();
         var oauth2Client = new auth.OAuth2(clientId, clientSecret, redirectUrl);
@@ -121,15 +115,20 @@ function validateCode(user, client, code) {
                 reject(err);
             } else {
                 oauth2Client.credentials = token;
-                // store user token to be used for later execution
-                //
-                User.updateUserAuthorisation(user, client, token)
-                    .then(function (result) {
-                        logger.debug('User %s google calender token %s saved', user, result)
-                    }, function (error) {
-                        logger.debug('Error %s', error);
-                    });
-                resolve(oauth2Client);
+                // store user token to persistent storage, to be used for later execution
+                var uk = userkey.split("@");
+                if (uk.length > 1) {
+                    var user = uk[0], client = uk[1];
+                    User.updateUserAuthorisation(user, client, token)
+                        .then(function (result) {
+                            logger.debug('User %s google calender token %s saved', user, result);
+                            // update cache
+                        }, function (error) {
+                            logger.debug('Error %s', error);
+                        });
+                    resolve(oauth2Client);
+                }
+
             }
 
         });
@@ -138,6 +137,59 @@ function validateCode(user, client, code) {
 
 }
 
+function getMailList(auth) {
+    var promise = new Promise(function(resolve, reject){
+        gmail.users.messages.list({
+            'auth': auth,
+            'userId': 'me',
+            'labelIds': 'IMPORTANT',
+            'maxResults': 20
+        }, function(err, response) {
+            if (err) {
+                logger.error('There was an error contacting the Gmail service: ' + err);
+                reject(err);
+            } else {
+                resolve(response);
+            }
+        });
+        //if (events.length == 0) {
+        //    logger.info('No upcoming events found.');
+        //} else {
+        //    logger.debug(JSON.stringify(events));
+        //    logger.info('Upcoming 10 events:');
+        //    for (var i = 0; i < events.length; i++) {
+        //        var event = events[i];
+        //        var start = event.start.dateTime || event.start.date;
+        //        logger.debug('%s - %s', start, event.summary);
+        //    }
+        //}
+    });
+    return promise;
+}
+function readMail(auth, id) {
+    var promise = new Promise(function(resolve, reject){
+        logger.debug('Readmail method called');
+        gmail.users.messages.get({
+            auth: auth,
+            id: id,
+            userId: 'me',
+            format: 'full'
+        }, function(err, response){
+            if (err) {
+                logger.error('Error occurred' + err);
+                reject(err);
+            } else {
+                logger.debug('Response received');
+                resolve(response);
+            }
+        })
+    });
+    return promise;
+}
+
+
 module.exports.authorize = authorize;
 module.exports.getEvents = getEvents;
-module.exports.validateCode = validateCode;
+module.exports.getMailList = getMailList;
+module.exports.readMail = readMail;
+module.exports.valCode = valCode;

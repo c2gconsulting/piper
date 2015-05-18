@@ -29,6 +29,7 @@
     "express-handlebars": "^2.0.0",
     "google-auth-library": "^0.9.5",
     "googleapis": "^2.0.3",
+    "js-base64": "^2.1.8",
     "log": "1.4.0",
     "moment": "^2.10.2",
     "moment-timezone": "^0.3.1",

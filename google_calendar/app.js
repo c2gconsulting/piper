@@ -5,7 +5,7 @@ var logger = require('../shared/lib/log');
 var express = require('express');
 var rd_client = require('../shared/lib/cache').getRedisClient();
 var when = require('when');
-var calEvent = require('./lib/calendar');
+var calEvent = require('./lib/gapps');
 var path = require('path');
 var bodyParser = require('body-parser');
 
@@ -31,34 +31,6 @@ connect to message queue
 logger.info('Google calendar Handler Connecting to Message Queue <piper.events.out>... ');
 sub.connect('piper.events.out', 'events.*', function(){
    logger.info('Google events.* succesfully connected to <piper.events.out>');
-});
-
-//define routes
-
-router.get('/', function(req, res){
-    res.end('<H1>Welcome to C2G PIPER Google Calendar HANDLER</H1>');
-});
-
-router.get('/events', function(req, res){
-    //set username for events
-    var user = req.query.username;
-    var client = req.query.client;
-    var data = {user: user, client: client };
-    if(user && client) calEvent.authorize(data, function(auth){
-        console.log('the auth received is' + JSON.stringify(auth));
-        calEvent.getEvents(auth)
-            .then(function(events){
-                console.log('This was called expecting events');
-                res.end(JSON.stringify(events));
-            }, function(err){
-                console.log('This error was called');
-                res.end(JSON.stringify(err));
-            }
-        );
-    })
-});
-router.get('/calendar', function(req, res){
-    res.render('index');
 });
 
 sub.on('data', function(data) {

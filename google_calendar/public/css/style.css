@@ -170,3 +170,9 @@ body {
 .sbtn {
     margin-top: 5px;
 }
+.has-success h2{
+    color: green;
+}
+.has-error h2{
+    color: orangered;
+}

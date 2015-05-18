@@ -13,16 +13,10 @@
 </div>
 
 <div class="inner cover">
-<% if(data) { %>
     <div class="has-success">
-        <h2> Successful... You will receive a notification on slack.</h2>
+        <h2> Successful</h2>
+        <p>You will receive a notification on slack.</p>
         <p> You can now close this page.</p>
     </div>
-<% } else { %>
-    <div class="has-error">
-        <h2> Error During Authorization.</h2>
-        <p> Please start the process again by clicking the back button or Contact one of our administrator.</p>
-    </div>
-<% } %>
 </div>
 <% include ../partials/footer %>
