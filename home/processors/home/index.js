@@ -7,8 +7,7 @@ var scheduler = require('../../../shared/lib/scheduler');
 var User = require('../../../shared/models/User');
 var responses = require('./dict/responses.json');
 var capabilities = require('./dict/capabilities.json');
-var geo = require('./lib/geo');
-//var chitchat = require('./lib/chitchat');
+var chitchat = require('./lib/chitchat');
 var when = require('when');
 var moment = require('moment');
 var momentz = require('moment-timezone');
@@ -101,15 +100,10 @@ function Home(data) {
 						return true;
 					},
 		'home_chitchat' : function(user, clientHandle, data) {
-						/* invoke chitchat processor with textMessage
-						 * retrieve response and send back to user
-						 */
-						 
-						// return chitchat.processMessage(user.name + '@' + clientHandle, data.textMessage).then(function(responseText)) {
-							// me.emit('message', Home.MODULE, user.name, clientHandle, responseText);
-							me.emit('message', Home.MODULE, user.name, clientHandle, 'Your message is ' + data.textMessage);
+						return chitchat.processMessage(user.name, clientHandle, data.textMessage).then(function(responseText){
+							me.emit('message', Home.MODULE, user.name, clientHandle, responseText);
 							return true;
-						//});
+						});
 					}			
 					
 	};
