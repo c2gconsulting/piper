@@ -6,11 +6,11 @@ var express = require('express');
 var rd_client = require('../shared/lib/cache').getRedisClient();
 var CACHE_PREFIX = 'piper-travel-handler:';
 //require travel class that does actual activities
-var tclass = require('../api/processors/travelRequest/travelClass');
+var tclass = require('../home/processors/travelRequest/travelClass');
 //for beta processing
-var betap = require('../api/processors/travelRequest/betaProc');
+var betap = require('../home/processors/travelRequest/betaProc');
 //require redis cache clear settings
-var ttl_time = require('../api/processors/travelRequest/settings');
+var ttl_time = require('../home/processors/travelRequest/settings');
 //require geocode js
 var geocode = require('./geocode');
 var when = require('when');

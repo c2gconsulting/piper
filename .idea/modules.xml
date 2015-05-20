@@ -2,10 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$USER_HOME$/dhlca/.idea/dhlca.iml" filepath="$USER_HOME$/dhlca/.idea/dhlca.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/piper.iml" filepath="$PROJECT_DIR$/.idea/piper.iml" />
-      <module fileurl="file://$PROJECT_DIR$/../scheduler/.idea/scheduler.iml" filepath="$PROJECT_DIR$/../scheduler/.idea/scheduler.iml" />
-      <module fileurl="file://$PROJECT_DIR$/../solution/.idea/solution.iml" filepath="$PROJECT_DIR$/../solution/.idea/solution.iml" />
     </modules>
   </component>
 </project>
