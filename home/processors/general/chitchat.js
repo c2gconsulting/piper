@@ -3,12 +3,11 @@ var logger = require('../../../shared/lib/log');
 var mq = require('../../../shared/lib/mq');
 
 var CACHE_PREFIX = 'chitchat:';
-var cache;
+var cache = require('../../../shared/lib/cache').getRedisClient();
 
 
 function ChitChat(data) {
 	EventEmitter.call(this);
-	cache = require('../../../shared/lib/cache').getRedisClient();
 	this.pub = mq.context.socket('PUB', {routing: 'topic'});
 	this.sub = mq.context.socket('SUB', {routing: 'topic'});
 }
@@ -31,15 +30,16 @@ ChitChat.prototype.init = function(){
  * @param client - the company that owns this message
  * @param body - JSON object with request details
  */
-ChitChat.prototype.out = function(username, client, body) {
+ChitChat.prototype.out = function(user, client, body) {
+	logger.debug('GOT TO OUT...');
 	var Cleverbot = require('./cleverbot');
 	var cBot = new Cleverbot();
 	var me = this;
   	cBot.write(body._text, function(err, text){
   		if (!err) {
-  			me.emit('message', ChitChat.MODULE, username, client, text);	
+  			me.emit('message', ChitChat.MODULE, user.name, client.slackHandle, text);	
   		} else {
-  			me.emit('error', ChitChat.MODULE, username, client, err, text);
+  			me.emit('error', ChitChat.MODULE, user.name, client.slackHandle, err, text);
   		}
   	});
 }
