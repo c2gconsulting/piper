@@ -2,27 +2,27 @@
 	"services": [
 		{
 			"host" : "api.piperlabs.com",
-			"path" : "./api"
+			"path" : "./home"
 		},
 		{
 			"host" : "api.example.com",
-			"path" : "./api"
+			"path" : "./home"
 		},
 		{
 			"host" : "www.piperlabs.com",
-			"path" : "./web"
+			"path" : "./home"
 		},
 		{
 			"host" : "www.example.com",
-			"path" : "./web"
+			"path" : "./home"
 		},
 		{
 			"host" : "piperlabs.com",
-			"path" : "./web"
+			"path" : "./home"
 		},
 		{
 			"host" : "example.com",
-			"path" : "./web"
+			"path" : "./home"
 		},
 		{
 			"host" : "generic.piperlabs.com",

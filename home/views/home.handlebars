@@ -1,0 +1,360 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Piper</title>
+     <style>
+     
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+@-webkit-keyframes cursor-blink {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+@-moz-keyframes cursor-blink {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+@keyframes cursor-blink {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+@-webkit-keyframes type {
+  from {
+    width: 0;
+  }
+}
+@-moz-keyframes type {
+  from {
+    width: 0;
+  }
+}
+@keyframes type {
+  from {
+    width: 0;
+  }
+}
+@-webkit-keyframes type2 {
+  0% {
+    width: 0;
+  }
+  25% {
+    width: 0;
+  }
+}
+@-moz-keyframes type2 {
+  0% {
+    width: 0;
+  }
+  25% {
+    width: 0;
+  }
+}
+@keyframes type2 {
+  0% {
+    width: 0;
+  }
+  25% {
+    width: 0;
+  }
+}
+@-webkit-keyframes type3 {
+  0% {
+    width: 0;
+  }
+  60% {
+    width: 0;
+  }
+}
+@-moz-keyframes type3 {
+  0% {
+    width: 0;
+  }
+  60% {
+    width: 0;
+  }
+}
+@keyframes type3 {
+  0% {
+    width: 0;
+  }
+  60% {
+    width: 0;
+  }
+}
+@-webkit-keyframes type4 {
+  0% {
+    width: 0;
+  }
+  60% {
+    width: 0;
+  }
+  100% {
+    width: 100;
+  }
+}
+@-moz-keyframes type4 {
+  0% {
+    width: 0;
+  }
+  60% {
+    width: 0;
+  }
+  100% {
+    width: 100;
+  }
+}
+@keyframes type4 {
+  0% {
+    width: 0;
+  }
+  60% {
+    width: 0;
+  }
+  100% {
+    width: 100;
+  }
+}
+@-webkit-keyframes type5 {
+  0% {
+    width: 0;
+  }
+  70% {
+    width: 0;
+  }
+}
+@-moz-keyframes type5 {
+  0% {
+    width: 0;
+  }
+  70% {
+    width: 0;
+  }
+}
+@keyframes type5 {
+  0% {
+    width: 0;
+  }
+  70% {
+    width: 0;
+  }
+}
+@-webkit-keyframes type6 {
+  0% {
+    width: 0;
+  }
+  85% {
+    width: 0;
+  }
+  100% {
+    width: 100;
+  }
+}
+@-moz-keyframes type6 {
+  0% {
+    width: 0;
+  }
+  85% {
+    width: 0;
+  }
+  100% {
+    width: 100;
+  }
+}
+@keyframes type6 {
+  0% {
+    width: 0;
+  }
+  85% {
+    width: 0;
+  }
+  100% {
+    width: 100;
+  }
+}
+@-webkit-keyframes blink {
+  to {
+    opacity: .0;
+  }
+}
+@-moz-keyframes blink {
+  to {
+    opacity: .0;
+  }
+}
+@keyframes blink {
+  to {
+    opacity: .0;
+  }
+}
+body {
+  background: #000;
+  padding-top: 10px;
+  margin: 0 0 30px;
+}
+
+
+
+.topcontainer .p1 {
+  animation: type 4s steps(60, end);
+}
+.topcontainer .p1:nth-child(2) {
+  animation: type2 8s steps(60, end);
+}
+.topcontainer .p1:nth-child(3) {
+  animation: type3 10s steps(60, end);
+}
+.topcontainer .p1:nth-child(4) {
+  animation: type4 16s steps(60, end);
+}
+.topcontainer .p1:nth-child(5) {
+  animation: type5 20s steps(60, end);
+}
+.topcontainer .p1:nth-child(6) {
+  animation: type6 20s steps(10, end);
+}
+.topcontainer p {
+  color: lime;
+  font-family: "Courier";
+  font-size: 18px;
+  margin: 10px 0 0 10px;
+  white-space: nowrap;
+  overflow: hidden;
+  width: 80em;
+}
+.topcontainer p a {
+  color: lime;
+  font-family: "Courier";
+  font-size: 20px;
+}
+.topcontainer p:before {
+  content: '> ';
+  display: inline-block;
+}
+.topcontainer .blink4 {
+  opacity: 1;
+  animation: blink 1s infinite;
+}
+.topcontainer .new-output {
+  display: inline-block;
+}
+.topcontainer .new-output:after {
+  display: inline-block;
+  vertical-align: -0.15em;
+  width: 0.75em;
+  height: 1em;
+  margin-left: 5px;
+  background: #1ff042;
+  box-shadow: 1px 1px 1px rgba(31, 240, 66, 0.65), -1px -1px 1px rgba(31, 240, 66, 0.65), 1px -1px 1px rgba(31, 240, 66, 0.65), -1px 1px 1px rgba(31, 240, 66, 0.65);
+  -webkit-animation: cursor-blink 1.25s steps(1) infinite;
+  -moz-animation: cursor-blink 1.25s steps(1) infinite;
+  animation: cursor-blink 1.25s steps(1) infinite;
+  content: '';
+}
+
+.topcontainer .prompt {
+  display: inline-block;
+}
+.topcontainer .prompt:after {
+  display: inline-block;
+  vertical-align: -0.15em;
+  width: 0.75em;
+  height: 1em;
+  margin-left: 5px;
+  background: #1ff042;
+  box-shadow: 1px 1px 1px rgba(31, 240, 66, 0.65), -1px -1px 1px rgba(31, 240, 66, 0.65), 1px -1px 1px rgba(31, 240, 66, 0.65), -1px 1px 1px rgba(31, 240, 66, 0.65);
+  animation: cursor-blink 1.25s infinite;
+  content: '';
+}
+
+::selection {
+  background: black;
+}
+
+.transparent {
+  opacity: 0;
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+
+form, input {
+  opacity: 1;
+  background-color: black;
+}
+
+.footer {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  padding-top: 5px;
+  height: 30px;
+  color: #6f6f6f;
+  font-size: 10px;
+  font-family: Verdana;
+  background-color: #050505;
+  text-align: center;
+}
+
+</style>
+<script src='js/codepen.1.js'></script>
+<script type="text/javascript">
+  //if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+  //  window.location.href = window.location.protocol + '//m.' + window.location.host;
+  //}
+</script>
+  </head>
+  <body>
+    <div class="content">
+      <div class="container">
+        <form class="transparent">
+          <input type="text" class="token-input">
+        </form>
+        <div class="topcontainer">
+          <p class="p1">hello, I'm Piper</p>
+          <p class="p1">Kinda like SIRI...but for mission-critical stuff ;)</p>
+          <p class="p1">I'm available through <a href="http://slack.com" target=_blank>Slack</a></p>
+          <p class="p1">To activate: <a href="https://slack.com/signin?redir=%2Fservices%2Fnew%2Fbot" target=_blank>GO to your slack account and create a BOT</a>...... </p>
+          <p class="p1">Copy the token generated and paste it below</p>
+          <p class="p1 new-output"></p>
+        </div>
+      </div>
+    </div>
+    
+    <div class="footer">
+      <div class="container">
+        <p >© 2015 PiperLabs, Inc - Deep Learning Technologies</p>
+      </div>
+    </div>
+    
+    <script src='//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+    <script src='//cdnjs.cloudflare.com/ajax/libs/velocity/1.2.2/velocity.min.js'></script>  
+    <script src="js/home.js"></script>
+  </body>
+</html>
