@@ -35,6 +35,22 @@ SlackConnection.prototype.connect = function(){
 	this.slack.on('error', this.onError.bind(this));	
 };
 
+SlackConnection.prototype.reconnect = function(){
+	if (!this.slack.connected) {
+		this.slack = new Slack(this.client.slackToken, true, true);
+		try {
+			this.slack.login();
+		} catch (e) {
+			logger.error('Cannot create connection for ' + this.client.slackHandle + '.slack.com: ' + e);
+		}
+		
+		this.slack.on('open', this.onOpen.bind(this));
+		this.slack.on('message', this.onMessage.bind(this));
+		this.slack.on('error', this.onError.bind(this));
+	}
+};
+
+
 
 SlackConnection.prototype.onOpen = function() {
 	var channels = [],

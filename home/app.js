@@ -103,6 +103,9 @@ Client.find({'isActive': true }, function (err, clients) {
 	}
 });
 
+//Schedule daily connection refresh
+
+
 
 /* 
  *	API Endpoints
@@ -192,6 +195,9 @@ router.get('/connect', function(req, res) {
 	});
 });
 
+router.get('/refreshconnections', function(req, res) {
+	refreshConnections();
+});
 
 router.get('/disconnect', function(req, res) {
 	var slackHandle = req.query.handle;
@@ -362,7 +368,14 @@ var createSlackConnection = function(client) {
 		return false;
 	}
 
-}
+};
+
+var refreshConnections = function() {
+	for (var i=0; i<w.length; i++) {
+		w[i].reconnect();
+	}
+};
+
 
 var onSlackEvent = function(user, client, message) {
 
