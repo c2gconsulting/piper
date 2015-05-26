@@ -47,6 +47,9 @@ SlackConnection.prototype.reconnect = function(){
 		this.slack.on('open', this.onOpen.bind(this));
 		this.slack.on('message', this.onMessage.bind(this));
 		this.slack.on('error', this.onError.bind(this));
+		return true;
+	} else {
+		return false;
 	}
 };
 

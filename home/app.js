@@ -196,7 +196,8 @@ router.get('/connect', function(req, res) {
 });
 
 router.get('/refreshconnections', function(req, res) {
-	refreshConnections();
+	var count = refreshConnections();
+	res.end('Refreshed ' + count + ' connections');
 });
 
 router.get('/disconnect', function(req, res) {
@@ -371,9 +372,11 @@ var createSlackConnection = function(client) {
 };
 
 var refreshConnections = function() {
+	var count = 0;
 	for (var i=0; i<w.length; i++) {
-		w[i].reconnect();
+		if (w[i].reconnect()) count++;
 	}
+	return count;
 };
 
 
