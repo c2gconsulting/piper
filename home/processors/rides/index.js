@@ -1301,7 +1301,6 @@ function Rides(data) {
 							} else {
 								data.header = 'scheduled_trip';
 								
-									
 								// delete non-required properties before scheduling
 								delete data.startLong;
 								delete data.startLat;
@@ -1846,7 +1845,7 @@ Rides.prototype.processData = function(user, clientHandle, body, htd) {
 													// data is complete and valid
 													logger.debug('No more missing data: calling handleRequest for %s', handlerTodo);
 													me.handleRequest[handlerTodo](user, clientHandle, datahash);
-													
+													cache.hdel(userkey + ':payload', 'handlerTodo');
 												} else {
 													if (datahash.cancelFlag) me.cancelRequest(user.name, clientHandle, datahash);
 												}

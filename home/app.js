@@ -13,6 +13,7 @@ var SlackConnection = require('./slackconnection');
 var User = require('../shared/models/User');
 var Client = require('../shared/models/Client');
 var logger = require('../shared/lib/log');
+var scheduler = require('../shared/lib/scheduler');
 var witConfig = require('../shared/config/wit.json');
 var cache = require('../shared/lib/cache').getRedisClient();
 
@@ -103,8 +104,18 @@ Client.find({'isActive': true }, function (err, clients) {
 	}
 });
 
+/*
 //Schedule daily connection refresh
+cache.get(CACHE_PREFIX + 'refsched').then(function(val){
+	if (!val) {
+		var sbody = { 'module': '', 'user': '', 'client': '', 'body': { header: 'refresh_connections' } };
+		var scheduleTime = new Date();
+		scheduler.add(scheduleTime.toDate().getTime(), sbody, mq.CONTROLLER_INBOUND, 'HOME');
+	}
+});
 
+								
+*/
 
 
 /* 
