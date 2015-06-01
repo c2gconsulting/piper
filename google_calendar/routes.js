@@ -4,6 +4,7 @@ var calEvent = require('./lib/gapps');
 var cache = require('../shared/lib/cache').getRedisClient();
 var logger = require('../shared/lib/log');
 var base64 = require('js-base64').Base64;
+var mq = require('../shared/lib/mq');
 //define routes
 //define root
 router.get('/', function(req, res){
@@ -106,12 +107,36 @@ router.get('/oauth2callback', function(req, res){
     var code = req.query.code;
     var state = req.query.state;
     if (code && state){
-        calEvent.valCode(code, state)
-            .then(function(auth){
-                res.render('pages/success', {title: 'Piper Access grant Successful'})
-            },function(err){
-                res.render('pages/error', {title: 'Unsuccessful Authorization', error: err});
-            })
+        var uk = state.split("@");
+        if (uk.length > 1) {
+            var user = uk[0], client = uk[1];
+            calEvent.valCode(code, user, client)
+                .then(function (auth) {
+                    //send a message to the user confirming his/her succesful authorisation
+                    // notify handler_main
+                    var pub = mq.context.socket('PUB', {routing: 'topic'});
+                    //get users last message
+                    var userkey = 'calendar_events:' + user + '@' + client + ':lastMessage';
+                    cache.hget(userkey, 'data')
+                        .then(function(data){
+                            var qbody = data;
+                            var qdata = {id: new Date().getTime(), user: user, client: client, header: 'auth', body: qbody};
+                            if(data) qdata['process'] = true;
+                            cache.hdel(userkey, 'data');
+
+                            logger.info('Google Calendar: Connecting to MQ Exchange <piper.events.out>...');
+                            pub.connect('piper.events.out', function () {
+                                logger.info('Google Calendar : <piper.events.out> connected');
+                                pub.publish('calendar.auth', JSON.stringify(qdata));
+                            });
+                        })
+
+
+                    res.render('pages/success', {title: 'Piper Access grant Successful'})
+                }, function (err) {
+                    res.render('pages/error', {title: 'Unsuccessful Authorization', error: err});
+                })
+        }
     }
 });
 

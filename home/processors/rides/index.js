@@ -862,7 +862,7 @@ function Rides(data) {
 		'infotype' : function(user, clientHandle, data) {
 						me.emit('message', Rides.MODULE, user.name, clientHandle, 'What do you want to know?', Rides.MODULE + "_info_query");
 						return false;
-					},			
+					}
 					
 	};
 	

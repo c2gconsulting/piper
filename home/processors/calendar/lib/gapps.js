@@ -1,17 +1,17 @@
 var google = require('googleapis');
 var googleAuth = require('google-auth-library');
 var calendar = google.calendar('v3');
-var mq = require('../../shared/lib/mq');
 var gmail = google.gmail('v1');
-var User = require('../../shared/models/GoogleCalendarUser');
-var cache = require('../../shared/lib/cache').getRedisClient();
+var User = require('../../../../shared/models/GoogleCalendarUser');
+var cache = require('../../../../shared/lib/cache').getRedisClient();
+var utils = require('../../../../shared/lib/utils');
 var SCOPES = ['https://www.googleapis.com/auth/gmail.readonly','https://www.googleapis.com/auth/calendar.readonly'];
 var _ = require('underscore');
-var logger = require('../../shared/lib/log');
+var logger = require('../../../../shared/lib/log');
 var when = require('when');
 var CACHE_PREFIX = 'google-apps:';
 // Load client secrets from a config file.
-var credentials = require('../../shared/config/client_secret.json');
+var credentials = require('../../../../shared/config/client_secret.json');
 var clientSecret = credentials.web.client_secret;
 var clientId = credentials.web.client_id;
 var redirectUrl = credentials.web.redirect_uris[0];
@@ -22,26 +22,26 @@ var redirectUrl = credentials.web.redirect_uris[0];
  * @param {Object} credentials The authorization client credentials.
  * @param {function} callback The callback to call with the authorized client.
  */
- //User
-function authorize(userdata, callback) {
+//User
+function authorize(user, client) {
+    logger.debug('User authorisation for %s', user);
     var auth = new googleAuth();
     var oauth2Client = new auth.OAuth2(clientId, clientSecret, redirectUrl);
-    var user = userdata.user, client = userdata.client;
     // Check if we have previously stored a token.
-    User.getUserAuthorisation(user, client)
+   return User.getUserAuthorisation(user, client)
         .then(function(u){
             //get token
             if(u) {
                 var token = u.token[0];
                 logger.debug('Retrieved Token %s', token );
                 oauth2Client.credentials = token;
-                callback(oauth2Client);
+                return oauth2Client;
             } else {
-                getNewToken(user, client, oauth2Client, callback);
+               return getNewToken(user, client, oauth2Client);
             }
 
         },function(e){
-           logger.debug('Error %s', e);
+            logger.debug('Error %s', e);
         }
 
     );
@@ -55,15 +55,16 @@ function authorize(userdata, callback) {
  * @param {getEventsCallback} callback The callback to call with the authorized
  *     client.
  */
-function getNewToken(user, client, oauth2Client, callback) {
-
+function getNewToken(user, client, oauth2Client) {
+    logger.debug('getting new user token');
     var authUrl = oauth2Client.generateAuthUrl({
         access_type: 'offline',
         scope: SCOPES
     });
     //add a state to auth url
     var state = user + '@' + client;
-    callback('', authUrl + '&state=' + state);
+    //callback('', authUrl + '&state=' + state);
+   return utils.shortenLink(authUrl + '&state=' + state);
 
 }
 
@@ -75,20 +76,20 @@ function getNewToken(user, client, oauth2Client, callback) {
  */
 function getEvents(auth) {
     var promise = new Promise(function(resolve, reject){
-    calendar.events.list({
-        auth: auth,
-        calendarId: 'primary',
-        timeMin: (new Date()).toISOString(),
-        maxResults: 10,
-        singleEvents: true,
-        orderBy: 'startTime'
-    }, function(err, response) {
-        if (err) {
-            logger.debug('There was an error contacting the Calendar service: ' + err);
-            reject(err);
-        } else {
-            resolve(response);
-        }
+        calendar.events.list({
+            auth: auth,
+            calendarId: 'primary',
+            timeMin: (new Date()).toISOString(),
+            maxResults: 10,
+            singleEvents: true,
+            orderBy: 'startTime'
+        }, function(err, response) {
+            if (err) {
+                logger.debug('There was an error contacting the Calendar service: ' + err);
+                reject(err);
+            } else {
+                resolve(response);
+            }
         });
         //if (events.length == 0) {
         //    logger.info('No upcoming events found.');
@@ -105,10 +106,11 @@ function getEvents(auth) {
     return promise;
 }
 
-function valCode(code, user, client) {
-    return new Promise(function (resolve, reject) {
+function valCode(code, userkey) {
+    var promise = new Promise(function (resolve, reject) {
         var auth = new googleAuth();
         var oauth2Client = new auth.OAuth2(clientId, clientSecret, redirectUrl);
+
         oauth2Client.getToken(code, function (err, token) {
             if (err) {
                 logger.debug('Error while trying to retrieve access token', err);
@@ -116,28 +118,24 @@ function valCode(code, user, client) {
             } else {
                 oauth2Client.credentials = token;
                 // store user token to persistent storage, to be used for later execution
+                var uk = userkey.split("@");
+                if (uk.length > 1) {
+                    var user = uk[0], client = uk[1];
                     User.updateUserAuthorisation(user, client, token)
                         .then(function (result) {
                             logger.debug('User %s google calender token %s saved', user, result);
-                            // update cache and notify handler main
-                            // notify handler_main
-                            var pub = mq.context.socket('PUB', {routing: 'topic'});
-                            var qbody = { access_token : data.access_token };
-                            var qdata = { id : new Date().getTime(), email : userdata.email, header: 'auth', body : qbody };
-                            logger.info('UBER_ROUTES_AUTH: Connecting to MQ Exchange <piper.events.out>...');
-                            pub.connect('piper.events.out', function() {
-                                logger.info('UBER_ROUTES_AUTH: <piper.events.out> connected');
-                                pub.publish('uber.routes', JSON.stringify(qdata));
-                            });
+                            // update cache
                         }, function (error) {
                             logger.debug('Error %s', error);
                         });
                     resolve(oauth2Client);
+                }
 
             }
 
         });
     });
+    return promise;
 
 }
 

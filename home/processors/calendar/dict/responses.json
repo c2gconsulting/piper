@@ -1,0 +1,13 @@
+{
+  "default_authorization" : [
+    "You'll need to authorize me to access your google account. Click here... @authUrl",
+    "Please Click @authUrl to sign in to your google account",
+    "Follow the link @authUrl to gain access to your google account",
+    "for us to know, please follow this link @authUrl"
+  ],
+  "NO_EVENT_DATE" : [
+    "Please supply a date or period which you'll love to check",
+    "@username We can only check if you tell us a date",
+    "@username all we need is for you to say something like 'What do i have for today' "
+  ]
+}

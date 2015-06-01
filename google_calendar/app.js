@@ -29,8 +29,8 @@ var msgid = new Date().getTime();
 connect to message queue
 */
 logger.info('Google calendar Handler Connecting to Message Queue <piper.events.out>... ');
-sub.connect('piper.events.out', 'events.*', function(){
-   logger.info('Google events.* succesfully connected to <piper.events.out>');
+sub.connect('piper.events.out', 'calendar.*', function(){
+   logger.info('Google calendar.* succesfully connected to <piper.events.out>');
 });
 
 sub.on('data', function(data) {
@@ -39,7 +39,15 @@ sub.on('data', function(data) {
 });
 
 var onMessage = function (data) {
-    logger.debug('onMessage data processing occurs here');
+    logger.debug(JSON.stringify(data));
+    //call push to push the data to the inbound controller///after other processing
+    if(data.process){
+        push(data.user, data.client, JSON.parse(data.body));
+    } else{
+        //no body.. set processor to process default
+        push(data.user, data.client);
+    }
+
 };
 
 /**
@@ -49,10 +57,10 @@ var onMessage = function (data) {
  * @param body - JSON object with message to be processed by the handler
  */
 var push = function(user, client, body) {
-    data = { 'id': new Date().getTime(), 'user': user, 'client': client, 'body': body };
+    data = { 'id': new Date().getTime(), 'user': user, 'client': client, module:'CALENDAR', 'body': body };
     logger.info('google_calendar_handler: Connecting to MQ Exchange <piper.events.in>...');
     pub.connect('piper.events.in', function() {
         logger.info('google_calendar handler:  MQ Exchange <piper.events.in> connected');
-        logger.debug('push message to the relivant subscriber');
+        pub.publish(mq.CONTROLLER_INBOUND, JSON.stringify(data));
     });
 };

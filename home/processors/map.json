@@ -1,11 +1,13 @@
 {
 	"processors" : [
 		{
+            "CALENDAR" : "./processors/calendar/index",
 			"LEAVE.REQ" : "./processors/leaveRequest/leaveRequest.redis",
 			"TRAVEL.REQ" : "./processors/travelRequest/bookFlight",
 			"NOTHING.DOING" : "./processors/general/doNothing",
 			"CHITCHAT" : "./processors/general/chitchat.mq",
 			"RIDES" : "./processors/rides/index"
+
 		}
 	],
 	"modules" : [
@@ -21,7 +23,8 @@
 			"book_travel" : "TRAVEL",
 			"do_nothing" : "NOTHING",
 			"intent_not_found" : "CHITCHAT",
-			"chitchat" : "CHITCHAT"
+			"chitchat" : "CHITCHAT",
+            "calendar_get_events" : "CALENDAR"
 		}
 
 	]

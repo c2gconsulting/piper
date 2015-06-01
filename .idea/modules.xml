@@ -3,6 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/piper.iml" filepath="$PROJECT_DIR$/.idea/piper.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../tradedepot/.idea/tradedepot.iml" filepath="$PROJECT_DIR$/../tradedepot/.idea/tradedepot.iml" />
+      <module fileurl="file://$USER_HOME$/Desktop/tradedepot/.idea/tradedepot.iml" filepath="$USER_HOME$/Desktop/tradedepot/.idea/tradedepot.iml" />
     </modules>
   </component>
 </project>
