@@ -164,9 +164,12 @@ router.post('/incode', function(req,res){
 });
 router.post('/contextio', function(req, res){
     logger.debug('message received from context io \n');
+    code = { "code": 200 }
+    res.end('OK');
 })
 
 router.post('/contextio-failure', function(req, res){
     logger.debug('message received from context io failure \n');
+    res.end('OK');
 })
 module.exports = router;
