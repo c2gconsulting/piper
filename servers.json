@@ -57,11 +57,11 @@
 			"path" : "./uber"
 		},
       {
-        "host" : "travel.example.com",
+        "host" : "travel.piperlabs.io",
         "path" : "./travel"
       },
       {
-        "host" : "calendar.example.com",
+        "host" : "calendar.piperlabs.io",
         "path" : "./google_calendar"
       }
 
