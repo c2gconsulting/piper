@@ -5,7 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c314f80d-e0b1-4f3f-9e57-0a65bd60846b" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shared/config/wit.json" afterPath="$PROJECT_DIR$/shared/config/wit.json" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/google_calendar/routes.js" afterPath="$PROJECT_DIR$/google_calendar/routes.js" />
     </list>
     <ignored path="piper.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -35,11 +35,21 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="wit.json" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/shared/config/wit.json">
+      <file leaf-file-name="gapps.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/google_calendar/lib/gapps.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.047393367" vertical-offset="0" max-vertical-offset="633">
-              <caret line="2" column="57" selection-start-line="2" selection-start-column="57" selection-end-line="2" selection-end-column="57" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="675" max-vertical-offset="3060">
+              <caret line="76" column="26" selection-start-line="76" selection-start-column="26" selection-end-line="76" selection-end-column="26" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="routes.js" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/google_calendar/routes.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.8173516" vertical-offset="2028" max-vertical-offset="2685">
+              <caret line="171" column="58" selection-start-line="171" selection-start-column="58" selection-end-line="171" selection-end-column="58" />
               <folding />
             </state>
           </provider>
@@ -90,7 +100,6 @@
         <option value="$PROJECT_DIR$/google_calendar/app.js" />
         <option value="$PROJECT_DIR$/shared/config/contextio.json" />
         <option value="$PROJECT_DIR$/mails/lib/maillib.js" />
-        <option value="$PROJECT_DIR$/google_calendar/routes.js" />
         <option value="$PROJECT_DIR$/google_calendar/lib/gapps.js" />
         <option value="$PROJECT_DIR$/home/processors/calendar/dict/responses.json" />
         <option value="$PROJECT_DIR$/home/processors/calendar/index.js" />
@@ -105,6 +114,7 @@
         <option value="$PROJECT_DIR$/servers.json" />
         <option value="$PROJECT_DIR$/shared/config/client_secret.json" />
         <option value="$PROJECT_DIR$/shared/config/wit.json" />
+        <option value="$PROJECT_DIR$/google_calendar/routes.js" />
       </list>
     </option>
   </component>
@@ -167,25 +177,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="shared" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="piper" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="piper" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="shared" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="config" />
+              <option name="myItemId" value="google_calendar" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -571,20 +563,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/google_calendar/lib/gapps.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="1611" max-vertical-offset="3060">
-          <caret line="110" column="80" selection-start-line="110" selection-start-column="80" selection-end-line="110" selection-end-column="80" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/google_calendar/routes.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.29680365" vertical-offset="1500" max-vertical-offset="2550">
-          <caret line="113" column="39" selection-start-line="113" selection-start-column="39" selection-end-line="113" selection-end-column="39" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/uber/routes.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.3652968" vertical-offset="225" max-vertical-offset="2505">
@@ -706,6 +684,22 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.047393367" vertical-offset="0" max-vertical-offset="633">
           <caret line="2" column="57" selection-start-line="2" selection-start-column="57" selection-end-line="2" selection-end-column="57" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/google_calendar/lib/gapps.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="675" max-vertical-offset="3060">
+          <caret line="76" column="26" selection-start-line="76" selection-start-column="26" selection-end-line="76" selection-end-column="26" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/google_calendar/routes.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.8173516" vertical-offset="2028" max-vertical-offset="2685">
+          <caret line="171" column="58" selection-start-line="171" selection-start-column="58" selection-end-line="171" selection-end-column="58" />
           <folding />
         </state>
       </provider>
