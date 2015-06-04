@@ -2071,6 +2071,8 @@ Rides.prototype.in = function(msgid, username, clientHandle, body) {
 								attachments[0].image_url = body.driver.picture_url;
 								me.emit('rich_message', Rides.MODULE, username, clientHandle, '', attachments);	
 							});	
+						} else {
+							me.emit('rich_message', Rides.MODULE, username, clientHandle, '', attachments);
 						}
 					} else {
 						me.emit('message', Rides.MODULE, username, clientHandle, 'Your ride should soon be on its way...can\'t get your driver\'s details just yet');	
@@ -2144,6 +2146,8 @@ Rides.prototype.in = function(msgid, username, clientHandle, body) {
 								attachments[0].image_url = body.vehicle.picture_url;
 								me.emit('rich_message', Rides.MODULE, username, clientHandle, '', attachments);	
 							});	
+						} else {
+							me.emit('rich_message', Rides.MODULE, username, clientHandle, '', attachments);
 						}
 					} else {
 						me.emit('message', Rides.MODULE, username, clientHandle, 'Your ride should soon be on its way...can\'t get your vehicle details just yet');	
