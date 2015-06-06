@@ -63,6 +63,14 @@
       {
         "host" : "calendar.piperlabs.io",
         "path" : "./google_calendar"
+      },
+      {
+        "host" : "mails.piperlabs.io",
+        "path" : "./mails"
+      },
+      {
+        "host" : "mails.piperlabs.com",
+        "path" : "./mails"
       }
 
 	]
