@@ -37,4 +37,7 @@ router.get('/connect_token', function(req, res){
    var token = req.query.contextio_token;
     if(token) logger.info(token);
 });
+router.get('/callback', function(req, res){
+   logger.info('Recevied with params ' + JSON.stringify(req.query));
+});
 module.exports = router;

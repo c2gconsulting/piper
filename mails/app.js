@@ -7,9 +7,19 @@ var rd_client = require('../shared/lib/cache').getRedisClient();
 var when = require('when');
 var path = require('path');
 var bodyParser = require('body-parser');
+var request = require('request-promise');
 // Create the Express application
 var app = exports.app = express();
+var credentials = require('../shared/config/contextio.json');
 var router = express.Router(); // Create our Express router
+
+//check if request will return valid data
+var url = 'https://api.context.io/lite/users',
+    auth = {
+        callback: 'http://mail.piperlabs.io/callback/',
+        consumer_key: credentials['key'],
+        consumer_secret: credentials['secret']
+    }
 
 // configure app
 app.set('view engine', 'ejs');
