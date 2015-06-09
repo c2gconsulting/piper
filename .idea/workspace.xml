@@ -36,10 +36,10 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="routes.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="routes.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/mails/routes.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.6839623" vertical-offset="90" max-vertical-offset="1185">
+            <state vertical-scroll-proportion="0.0" vertical-offset="234" max-vertical-offset="1185">
               <caret line="35" column="13" selection-start-line="35" selection-start-column="13" selection-end-line="35" selection-end-column="26" />
               <folding />
             </state>
@@ -49,18 +49,28 @@
       <file leaf-file-name="app.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/mails/app.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="279" max-vertical-offset="1095">
+            <state vertical-scroll-proportion="0.0" vertical-offset="459" max-vertical-offset="1095">
               <caret line="38" column="34" selection-start-line="38" selection-start-column="34" selection-end-line="38" selection-end-column="34" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="calls.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="servers.json" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/servers.json">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-25.25" vertical-offset="459" max-vertical-offset="1230">
+              <caret line="71" column="18" selection-start-line="71" selection-start-column="18" selection-end-line="71" selection-end-column="37" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="calls.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/mails/lib/calls.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-10.96875" vertical-offset="474" max-vertical-offset="1065">
-              <caret line="55" column="66" selection-start-line="55" selection-start-column="66" selection-end-line="55" selection-end-column="66" />
+            <state vertical-scroll-proportion="0.5939086" vertical-offset="474" max-vertical-offset="1065">
+              <caret line="55" column="40" selection-start-line="55" selection-start-column="40" selection-end-line="55" selection-end-column="40" />
               <folding />
             </state>
           </provider>
@@ -838,14 +848,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/servers.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="1.7401961" vertical-offset="0" max-vertical-offset="1230">
-          <caret line="71" column="18" selection-start-line="71" selection-start-column="18" selection-end-line="71" selection-end-column="37" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/node_modules/contextio/lib/oauth.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="5.5871406" vertical-offset="2203" max-vertical-offset="11325">
@@ -870,9 +872,25 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/mails/routes.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="234" max-vertical-offset="1185">
+          <caret line="35" column="13" selection-start-line="35" selection-start-column="13" selection-end-line="35" selection-end-column="26" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/servers.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-25.25" vertical-offset="459" max-vertical-offset="1230">
+          <caret line="71" column="18" selection-start-line="71" selection-start-column="18" selection-end-line="71" selection-end-column="37" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/mails/app.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="279" max-vertical-offset="1095">
+        <state vertical-scroll-proportion="0.0" vertical-offset="459" max-vertical-offset="1095">
           <caret line="38" column="34" selection-start-line="38" selection-start-column="34" selection-end-line="38" selection-end-column="34" />
           <folding />
         </state>
@@ -880,16 +898,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/mails/lib/calls.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-10.96875" vertical-offset="474" max-vertical-offset="1065">
-          <caret line="55" column="66" selection-start-line="55" selection-start-column="66" selection-end-line="55" selection-end-column="66" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/mails/routes.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.6839623" vertical-offset="90" max-vertical-offset="1185">
-          <caret line="35" column="13" selection-start-line="35" selection-start-column="13" selection-end-line="35" selection-end-column="26" />
+        <state vertical-scroll-proportion="0.5939086" vertical-offset="474" max-vertical-offset="1065">
+          <caret line="55" column="40" selection-start-line="55" selection-start-column="40" selection-end-line="55" selection-end-column="40" />
           <folding />
         </state>
       </provider>

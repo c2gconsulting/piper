@@ -53,7 +53,7 @@ module.exports = Client = {
     },
     connect_tokens : function(method, params, token){
         var url = 'https://api.context.io/lite/connect_tokens';
-        var callback_url = 'http://piperlabs.io:3000/connect_token';
+        var callback_url = 'http://mail.piperlabs.io:3000/connect_token';
         params['callback_url'] = callback_url;
         //optional parameter are email first and last name
         if(!token){
