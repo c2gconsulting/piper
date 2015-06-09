@@ -16,6 +16,11 @@
     <div class="has-success">
         <h2> Successful</h2>
         <p>You will receive a notification on slack.</p>
+        <% if(response){ %>
+        <div class="response">
+            <%= response %>
+        </div>
+        <% } %>
         <p> You can now close this page.</p>
     </div>
 </div>
