@@ -4,6 +4,7 @@ var cache = require('../shared/lib/cache').getRedisClient();
 var logger = require('../shared/lib/log');
 var mq = require('../shared/lib/mq');
 var mailClient = require('./lib/calls');
+var MailUser = require('../shared/models/MailUser');
 
 //define routes
 router.get('/', function(req, res){
@@ -69,6 +70,36 @@ router.get('/connect', function(req, res){
 router.get('/connected_tokens', function(req, res){
     mailClient.connect_tokens('get')
         .then(function(result) {
+            res.end(result);
+        }, function(error){
+            if(typeof error !== 'string') error = JSON.stringify(error);
+            logger.error('Something went wrong please check error \n' + error);
+            res.end(error);
+        })
+});
+
+router.get('/webhooks', function(req, res){
+    var userid = req.query.userid;
+    mailClient.webhooks('get', userid)
+        .then(function(result) {
+            res.end(result);
+        }, function(error){
+            if(typeof error !== 'string') error = JSON.stringify(error);
+            logger.error('Something went wrong please check error \n' + error);
+            res.end(error);
+        })
+});
+
+router.get('/post_webhooks', function(req, res){
+    var userid = req.query.userid;
+    //delete userid from query
+    delete req.query.userid;
+    logger.info(JSON.stringify(req.query));
+    var params = req.query;
+    //call webhook function from client
+    mailClient.webhooks('post', userid, params)
+        .then(function(result){
+            if(typeof result !== 'string') result = JSON.stringify(result);
             res.end(result);
         }, function(error){
             if(typeof error !== 'string') error = JSON.stringify(error);

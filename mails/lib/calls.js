@@ -5,6 +5,9 @@ var oauth = require('./oauth.js'),
     logger = require('../../shared/lib/log'),
     querystring = require('querystring'),
     credentials = require('../../shared/config/contextio.json');
+//require mailUser Model
+var MailUser = require('../../shared/models/MailUser'); // why do I need this?
+
 var authKey = {
     oauth_consumer_key: credentials['key'],
     oauth_version: '1.0'
@@ -66,6 +69,13 @@ module.exports = Client = {
             return this.doCall( method, url, params);
         }
 
+    },
+    webhooks : function(method, userid, params ){
+        if(userid) { // we can remove our local check since any invalid request will return a type error
+            var url = 'https://api.context.io/lite/users/' + userid + '/webhooks';
+            //available methods are ('GET' and 'POST')
+            return this.doCall(method, url, params); //
+        }
     }
 
 };
