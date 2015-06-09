@@ -37,6 +37,7 @@ router.get('/connect_token', function(req, res){
    var token = req.query.contextio_token;
     if(token) logger.info('Receved token is \n' + token);
     logger.info('other parameters recevied are \n' + JSON.stringify(req.query));
+    res.render('pages/success', {'title' :'Successful Authorization'})
 });
 
 router.get('/connect', function(req, res){

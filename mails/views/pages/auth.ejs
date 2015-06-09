@@ -1,0 +1,62 @@
+<% include ../partials/header %>
+
+            <div class="masthead clearfix">
+                <div class="inner">
+                    <h3 class="masthead-brand"> Piper </h3>
+                    <nav>
+                        <ul class="nav masthead-nav">
+                            <li class="active"><a href="#">Home</a></li>
+                            <li><a href="#">Features</a></li>
+                            <li><a href="#">Contact</a></li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+
+            <div class="inner cover">
+                <h1 class="cover-heading">Piper Google Calendar Authentication</h1>
+                <p class="lead">Click on the buton below and select the account you want to integrate. When the link Opens, Allow piper to read calendar info. Copy the generated code and paste in the box below</p>
+
+                <form method="POST" action="/incode" id="indataform">
+                    <input type="text" id="input-code" onchange="updateButton()" class="form-control" placeholder="Input Code from the Authorization page" name="code">
+                    <input type="hidden" name="user" value="<%= auth.user %>">
+                    <input type="hidden" name="client" value="<%= auth.client %>">
+                    <input type="submit" id="submit-button" value="Submit" class="btn btn-lg btn-default sbtn" disabled="disabled">
+                </form>
+
+                <p class="lead">
+                <a href= "#" class="btn btn-lg btn-default" id="authorise"> Authorize Piper </a>
+                </p>
+            </div>
+<script>
+        if ( window.location.toString().indexOf('#') >= 1 ){
+
+            document.getElementById('authorise').style.display = 'none';
+            document.getElementById('indataform').style.display = 'block';
+        }
+
+   document.getElementById('authorise').onclick = function(){
+       this.style.display = 'none';
+       document.getElementById('indataform').style.display = 'block';
+       var w = window.screen.availWidth / 2;
+       var h = window.screen.availHeight / 2;
+       var url = "<%= auth.authUrl %>".replace(/&amp;/g, '&');
+       console.log(url);
+       window.open(url, "Piper Google Calendar page", "width=" + w + ", height=" + h);
+
+   }
+        document.getElementById ("input-code").onchange = function(){
+            var status;
+            if (this.value == '') // change the condition if required.
+                status = true;
+            else
+                status = false;
+
+            document.getElementById ("submit-button").disabled = status;
+        }
+
+
+
+
+</script>
+<% include ../partials/footer %>
