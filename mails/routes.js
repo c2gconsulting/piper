@@ -41,6 +41,8 @@ router.get('/connect_token', function(req, res){
         mailClient.connect_tokens('get', {}, token)
             .then(function(result){
                 res.render('pages/success', {'title' :'Successful Authorization', 'response' : result})
+            }, function(error){
+                res.render('pages/error', {'title' : 'Request Error'});
             })
     }
     logger.info('other parameters recevied are \n' + JSON.stringify(req.query));
