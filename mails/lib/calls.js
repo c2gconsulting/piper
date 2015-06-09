@@ -70,9 +70,11 @@ module.exports = Client = {
         }
 
     },
-    webhooks : function(method, userid, params ){
+    webhooks : function(method, userid, params, webhookid ){
         if(userid) { // we can remove our local check since any invalid request will return a type error
             var url = 'https://api.context.io/lite/users/' + userid + '/webhooks';
+            //if webhookid then url += /webhookid
+            if(webhookid) url += '/' + webhookid ; // available methods are ('GET, POST, DELETE')
             //available methods are ('GET' and 'POST')
             return this.doCall(method, url, params); //
         }

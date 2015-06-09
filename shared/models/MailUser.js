@@ -13,6 +13,9 @@ var schema = new mongoose.Schema({
         username   : String
         , active   : String
     }]
+    ,settings   :  [{
+        'receive_on_slack' : {type: String, default: false }
+    }]
 });
 
 // Static methods

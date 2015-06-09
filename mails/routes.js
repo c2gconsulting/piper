@@ -80,17 +80,21 @@ router.get('/connected_tokens', function(req, res){
 
 router.get('/webhooks', function(req, res){
     var userid = req.query.userid;
-    mailClient.webhooks('get', userid)
-        .then(function(result) {
-            res.end(result);
-        }, function(error){
-            if(typeof error !== 'string') error = JSON.stringify(error);
-            logger.error('Something went wrong please check error \n' + error);
-            res.end(error);
-        })
+    var webhookid = req.query.webhookid;
+    if(userid){
+        mailClient.webhooks('get', userid, {}, webhookid)
+            .then(function(result) {
+                res.end(result);
+            }, function(error){
+                if(typeof error !== 'string') error = JSON.stringify(error);
+                logger.error('Something went wrong please check error \n' + error);
+                res.end(error);
+            })
+    }
 });
 
 router.get('/post_webhooks', function(req, res){
+    //e.g http://mails.piperlabs.io:3000/post_webhooks?userid=557704135cb0735c3a8b4567&callback_url=http://mails.piperlabs.io:3000/contextio&failure_notif_url=http://mails.piperlabs.io:3000/contextio-failure&include_body=1
     var userid = req.query.userid;
     //delete userid from query
     delete req.query.userid;
