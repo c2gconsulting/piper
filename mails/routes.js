@@ -3,13 +3,9 @@ var router = express.Router();
 var cache = require('../shared/lib/cache').getRedisClient();
 var logger = require('../shared/lib/log');
 var mq = require('../shared/lib/mq');
-var credentials = require('../shared/config/contextio.json');
-/*global ContextIO, console*/
-var ContextIO = require('contextio');
-var ctxioClient = new ContextIO.Client('2.0', 'https://api.context.io', { key: credentials['key'], secret: credentials['secret'] });
+var mailClient = require('./lib/calls');
 
 //define routes
-//define root
 router.get('/', function(req, res){
     res.render('pages/index', {id: null});
 });
@@ -27,16 +23,51 @@ router.post('/contextio-failure', function(req, res){
     logger.debug(body);
     res.end('OK');
 });
-router.get('/accounts', function(req, res){
-    ctxioClient.accounts().get({limit:15}, function (err, response) {
-        if (err) throw err;
-        res.end(JSON.stringify(response.body));
-    });
+router.get('/users', function(req, res){
+    mailClient.users('get')
+        .then(function(result) {
+            res.end(result);
+        }, function(error){
+            if(typeof error !== 'string') error = JSON.stringify(error);
+            logger.error('Something went wrong please check error \n' + error);
+            res.end(error);
+        })
 });
 router.get('/connect_token', function(req, res){
    var token = req.query.contextio_token;
-    if(token) logger.info(token);
+    if(token) logger.info('Receved token is \n' + token);
+    logger.info('other parameters recevied are \n' + JSON.stringify(req.query));
 });
+
+router.get('/connect', function(req, res){
+    var email = req.query.email,
+        firstname = req.query.firstname,
+        lastname = req.query.lastname,
+        params = { email : email, first_name : firstname, last_name : lastname};
+    mailClient.connect_tokens('post', params)
+        .then(function(result) {
+            //check if result has a browser_redirect_url if true then redirect the user for authentication
+            result = JSON.parse(result)
+            if(result.hasOwnProperty('browser_redirect_url'))logger.info('Request has a redirect url');
+            res.redirect(result.browser_redirect_url);
+        }, function(error){
+            if(typeof error !== 'string') error = JSON.stringify(error);
+            logger.error('Something went wrong please check error \n' + error);
+            res.end(error);
+        })
+});
+
+router.get('/connected_tokens', function(req, res){
+    mailClient.connect_tokens('get')
+        .then(function(result) {
+            res.end(result);
+        }, function(error){
+            if(typeof error !== 'string') error = JSON.stringify(error);
+            logger.error('Something went wrong please check error \n' + error);
+            res.end(error);
+        })
+});
+
 router.get('/callback', function(req, res){
    logger.info('Recevied with params ' + JSON.stringify(req.query));
 });

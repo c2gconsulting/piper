@@ -39,6 +39,7 @@
     "node-bitlyapi": "^0.4.0",
     "node-jsx": "^0.12.4",
     "promise-redis": "0.0.1",
+    "querystring": "^0.2.0",
     "rabbit.js": "^0.4.2",
     "react": "^0.13.2",
     "redis": "0.12.1",
