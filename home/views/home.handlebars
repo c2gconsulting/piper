@@ -87,7 +87,7 @@ html {
   0% {
     width: 0;
   }
-  60% {
+  50% {
     width: 0;
   }
 }
@@ -95,7 +95,7 @@ html {
   0% {
     width: 0;
   }
-  60% {
+  50% {
     width: 0;
   }
 }
@@ -103,7 +103,7 @@ html {
   0% {
     width: 0;
   }
-  60% {
+  50% {
     width: 0;
   }
 }
@@ -111,40 +111,31 @@ html {
   0% {
     width: 0;
   }
-  60% {
+  50% {
     width: 0;
-  }
-  100% {
-    width: 100;
   }
 }
 @-moz-keyframes type4 {
   0% {
     width: 0;
   }
-  60% {
+  50% {
     width: 0;
-  }
-  100% {
-    width: 100;
   }
 }
 @keyframes type4 {
   0% {
     width: 0;
   }
-  60% {
+  50% {
     width: 0;
-  }
-  100% {
-    width: 100;
   }
 }
 @-webkit-keyframes type5 {
   0% {
     width: 0;
   }
-  70% {
+  60% {
     width: 0;
   }
 }
@@ -152,7 +143,7 @@ html {
   0% {
     width: 0;
   }
-  70% {
+  60% {
     width: 0;
   }
 }
@@ -160,7 +151,7 @@ html {
   0% {
     width: 0;
   }
-  70% {
+  60% {
     width: 0;
   }
 }
@@ -168,14 +159,27 @@ html {
   0% {
     width: 0;
   }
-  85% {
+  75% {
     width: 0;
-  }
-  100% {
-    width: 100;
   }
 }
 @-moz-keyframes type6 {
+  0% {
+    width: 0;
+  }
+  75% {
+    width: 0;
+  }
+}
+@keyframes type6 {
+  0% {
+    width: 0;
+  }
+  75% {
+    width: 0;
+  }
+}
+@-webkit-keyframes type7 {
   0% {
     width: 0;
   }
@@ -186,7 +190,18 @@ html {
     width: 100;
   }
 }
-@keyframes type6 {
+@-moz-keyframes type7 {
+  0% {
+    width: 0;
+  }
+  85% {
+    width: 0;
+  }
+  100% {
+    width: 100;
+  }
+}
+@keyframes type7 {
   0% {
     width: 0;
   }
@@ -230,13 +245,16 @@ body {
   animation: type3 10s steps(60, end);
 }
 .topcontainer .p1:nth-child(4) {
-  animation: type4 16s steps(60, end);
+  animation: type4 15s steps(60, end);
 }
 .topcontainer .p1:nth-child(5) {
   animation: type5 20s steps(60, end);
 }
 .topcontainer .p1:nth-child(6) {
-  animation: type6 20s steps(10, end);
+  animation: type6 25s steps(60, end);
+}
+.topcontainer .p1:nth-child(7) {
+  animation: type7 25s steps(10, end);
 }
 .topcontainer p {
   color: lime;
@@ -340,7 +358,8 @@ form, input {
           <p class="p1">hello, I'm Piper</p>
           <p class="p1">Kinda like SIRI...but for mission-critical stuff ;)</p>
           <p class="p1">I'm available through <a href="http://slack.com" target=_blank>Slack</a></p>
-          <p class="p1">To activate: <a href="https://slack.com/signin?redir=%2Fservices%2Fnew%2Fbot" target=_blank>GO to your slack account and create a BOT</a>...... </p>
+          <p class="p1">For a quick test <a href="http://slack.piperlabs.io" target=_blank>you can join our guest channel</a></p>
+          <p class="p1">To activate for your team: <a href="https://slack.com/signin?redir=%2Fservices%2Fnew%2Fbot" target=_blank>GO to your slack account and create a BOT</a>...... </p>
           <p class="p1">Copy the token generated and paste it below</p>
           <p class="p1 new-output"></p>
         </div>
