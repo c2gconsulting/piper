@@ -1,5 +1,6 @@
 //google api key
-var key = 'AIzaSyAirrY3I7ccfsfG9y6LcRsWRkZzLcVhHKA';
+//var key = 'AIzaSyAirrY3I7ccfsfG9y6LcRsWRkZzLcVhHKA';
+var key = 'AIzaSyDKMo_KkXAtMVS7e_TW4guluV-v7c9GAvY';
 var request = require('request-promise');
 var when = require('when');
 var utils = require('../../../../shared/lib/utils');
@@ -71,6 +72,7 @@ var getReverseCode = function(lat, lng) {
         'method': 'get',
         'qs': {'latlng': latlng, 'result_type': 'street_address', 'key': key}
     };
+    //logger.debug('LIB.GEO->URL PARAMS: %s, %s', latlng, key);
     return request(requrl).then(function(data) {
         try {
             return JSON.parse(data);

@@ -475,6 +475,7 @@ function Rides(data) {
 							if (state === 'RIDES_get_end_location' || state === 'RIDES_get_endloc_preference') {
 								if (!i.from && !i.to && !i.location && !d.endLong) i.to = b._text;
 							}
+							return false;
 						},
 						function(d, b, i) {
 							if (d.endLong && d.endLong !== 0) {
@@ -538,8 +539,8 @@ function Rides(data) {
 								} else {
 									var options = {};
 									if (d.startLong) {
-										var location = d.startLat + ',' + d.startLong;
-										options = { 'location': location, 'radius': 50000 };
+										var latlng = d.startLat + ',' + d.startLong;
+										options = { 'location': latlng, 'radius': 50000 };
 									}
 									return getLocationByAddress(i.to, options)
 										.then (function (location) {
@@ -2478,7 +2479,7 @@ function getLocationByAddress(query, options) {
 
 function getAddressByCoords(lat, lng) {
 	return geo.getReverseCode(lat, lng).then(function(data){
-		//logger.info('Geo data: ' + JSON.stringify(data));
+		//logger.debug('Geo data: ' + JSON.stringify(data));
 		if (data.status === 'OK' && data.results[0].formatted_address) {
 			return data.results[0].formatted_address;
 		} else {
@@ -2611,6 +2612,9 @@ function setTerminal(d, b, i) {
 			break;
 	}
 
+	// delete suspicion marker from prior test
+	if (d.errStartLocation === 'SUSPECT_START_LOCATION') delete d.errStartLocation;
+	if (d.errEndLocation === 'SUSPECT_END_LOCATION') delete d.errEndLocation;
 
 	// fromTo memory selection
 	if (!terminalSet) {
