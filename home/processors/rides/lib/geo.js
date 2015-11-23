@@ -1,6 +1,6 @@
 //google api key
 //var key = 'AIzaSyAirrY3I7ccfsfG9y6LcRsWRkZzLcVhHKA';
-var key = 'AIzaSyDKMo_KkXAtMVS7e_TW4guluV-v7c9GAvY';
+var key = 'AIzaSyBRJJ8KzvJ-Xvecv9LLr2ZkDoLUFd7n7uI';
 var request = require('request-promise');
 var when = require('when');
 var utils = require('../../../../shared/lib/utils');
